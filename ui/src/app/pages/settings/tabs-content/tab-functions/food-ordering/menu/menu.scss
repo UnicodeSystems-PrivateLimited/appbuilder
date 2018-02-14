@@ -1,0 +1,108 @@
+food-ordering-menu{
+    .email-wrap-tab{
+        .nav{
+            li{
+                &.nav-item{
+                    width: 25%; text-align: center;
+                    border-right: 1px solid rgba(204, 204, 204, 0.7) !important;
+                    a{
+                        &.nav-link{  
+                            &.active{background: #fff0e7 !important;}
+                            }
+                    }
+                    &:last-child{
+                        border-right: none !important;
+                    }
+                }
+            }
+        }
+
+        .tab-pane,app-dialog{
+            
+            .formcontrol {  min-height: 52px;  }
+
+            textarea{  border: 1px solid #ccc; }
+
+            span{color: #8f8e8e}
+
+            h2{ color: #424242;  font-size: 15px !important;}
+        }
+        .tab-pane{padding: 10px; 
+            &.email-wrap-tab-tabset-4{
+                padding:20px 10px 30px;
+                .ui-multiselect-panel{
+                    max-height: 140px;
+                    overflow: hidden;
+                    overflow-y: auto;
+
+                    .ui-widget-header{margin-bottom: 0px;}
+                }
+                .ui-chkbox{
+                    .ui-chkbox-box{margin-right: 0;}
+                }
+            }
+        }
+
+        .full-width{width:100%;}
+
+        span{color: #8f8e8e; font-size: 13px;}
+        
+        h2{  color: #424242; font-size: 15px !important;}
+    }
+    .sidebar-image-container{
+        padding-top: 20px;
+    }
+    label.default{    margin: 0px !important; padding: 12px 10px;  background: rgba(0,0,0,.1);}
+    .custom-margin-none{margin: none !important}
+
+    .sub-title{font-size: 15px !important;}
+    
+    .tab_section{
+        label{
+            &.switch{margin-top: 0;}
+        }
+        input{
+            &.input-class{
+                &.allow-max-qty{max-width: 76px}
+                &.input-charges{max-width: 60px;}
+            }
+        }
+        .tab-wrapper{
+             .tab-detail{min-height: 42px;
+                .option-amount{
+                    margin-right: 6px;
+                    .ui-dropdown{
+                        min-width: 60px;
+                        label{margin:0; }
+                    }
+                }
+            }
+        }
+        .custom-subcate{
+            .tab-detail{
+                float: right;
+                max-width: 95%;
+            }
+            .option-amount{
+                margin-right: 6px;
+                .ui-dropdown{
+                    min-width: 60px;
+                    label{margin:0; }
+                }
+            }
+        }
+    }
+    .select-availability{
+        .ui-multiselect{ min-height: 32px; display: flex;  align-items: center;}
+        .ui-multiselect-trigger{ display: flex;  align-items: center;}
+        .ui-multiselect-panel{border: 1px solid #ccc}
+        label{margin-bottom: 0px;}
+    }
+}
+.add-app{
+    &.custom-width-dialog{
+        .ui-dialog{
+            width:820px;
+        }
+    }
+} 

@@ -1,0 +1,228 @@
+<div class="flex-100  c-overview-wrapper relative c-promote-wrapper c-setings-wrapo">
+
+    <div class=" analytics" id="page_analytics">
+        <!-- Created Meng Xia -->
+        <div data-name="console" class="analytics-console-content">
+            <!-- Created Meng Xia -->
+            <div class="page-top-2">
+
+                <div class="alert alert-demo hide"><span></span>
+                    <p>This is example data, your application needs at least 15 user downloads for iOS or Android in order for
+                        real user data to start appearing.</p>
+                </div>
+                <div class="sub-toolbar">
+                    <div id="appval-input" class="nav-ele trans pull-left m-r-10">
+                        <p-dropdown [options]="appType" [(ngModel)]="selectedAppType" class=" border-all layout-align-center-center layout-row"
+                            (onChange)="onChangeAppType($event)"></p-dropdown>
+                    </div>
+                    <div id="appval-input" class="nav-ele trans pull-left ">
+                        <p-dropdown [options]="dateRange" [(ngModel)]="selectedDateRange" class=" border-all layout-align-center-center layout-row"
+                            (onChange)="onChangeDateRange($event)"></p-dropdown>
+                    </div>
+                    <div id="daterange" class="nav-ele selectbox pull-left">
+                        <i class="fa fa-calendar"></i>
+                        <span>{{startDate}}~{{endDate}}</span>
+                    </div>
+                    <div class="clear"></div>
+                </div>
+                <div class="clearfix"></div>
+            </div>
+            <div>
+                <div class="console-dashboard-box" style="test_cache_miss2">
+                    <div class="sblock-row multi-col row clearfix">
+                        <div *ngIf="selectedAppType == 1" class="col-md-4 sbcol block-downloads">
+                            <div class="sblock">
+                                <p class="st">
+                                    Downloads
+                                </p>
+                                <div class="sb-scol col-xs-6">
+                                    <p class="icon-ios"><i class="fa fa-apple"></i></p>
+                                    <p class="sv ios-download">{{iosDownloads}}</p>
+                                </div>
+                                <div class="sb-scol md col-xs-6">
+                                    <p class="icon-android"><i class="fa fa-android"></i></p>
+                                    <p class="sv android-download">{{androidDownloads}}</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="sbcol block-visitors" [class.col-md-4]="selectedAppType == 1" [class.col-md-6]="selectedAppType == 2">
+                            <div class="sblock">
+                                <p class="st">Total Sessions</p>
+                                <div class="sb-scol col-ios" [class.col-xs-4]="selectedAppType == 1" [class.col-xs-6]="selectedAppType == 2">
+                                    <p class="icon-ios"><i class="fa fa-apple"></i></p>
+                                    <p class="sv ios-total-visitor">{{iosSession}}</p>
+                                </div>
+                                <div class="sb-scol md col-android" [class.col-xs-4]="selectedAppType == 1" [class.col-xs-6]="selectedAppType == 2">
+                                    <p class="icon-android"><i class="fa fa-android"></i></p>
+                                    <p class="sv android-total-visitor">{{androidSession}}</p>
+                                </div>
+                                <div *ngIf="selectedAppType == 1" class="sb-scol col-xs-4 col-html5">
+                                    <p class="icon-html5"><i class="fa fa-html5" aria-hidden="true"></i></p>
+                                    <p class="sv html5-total-visitor">{{html5Session}}</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                        <div class="sbcol block-average" [class.col-md-4]="selectedAppType == 1" [class.col-md-6]="selectedAppType == 2">
+                            <div class="sblock">
+                                <p class="st">Average Time In App (Minutes)</p>
+                                <div class="sb-scol col-ios" [class.col-xs-4]="selectedAppType == 1" [class.col-xs-6]="selectedAppType == 2">
+                                    <p class="icon-ios"><i class="fa fa-apple"></i></p>
+                                    <p class="sv ios-time">{{iosAvgTime}}min</p>
+                                </div>
+                                <div class="sb-scol md col-android" [class.col-xs-4]="selectedAppType == 1" [class.col-xs-6]="selectedAppType == 2">
+                                    <p class="icon-android"><i class="fa fa-android"></i></p>
+                                    <p class="sv android-time">{{androidAvgTime}}min</p>
+                                </div>
+                                <div *ngIf="selectedAppType == 1" class="sb-scol col-xs-4 col-html5">
+                                    <p class="icon-html5"><i class="fa fa-html5" aria-hidden="true"></i></p>
+                                    <p class="sv html5-time">{{html5AvgTime}}min</p>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <tabset class="container-tab-detail ana-wrap-2">
+                    <tab heading="USERS" class="ana-use">
+                        <div class="pad-15">
+                            <div *ngIf="iosSession || androidSession || html5Session" class="inner">
+                                <div class="col-lg-8 chart-box">
+                                    <div class="col-lg-12">
+                                        <div class="col-md-4"><span class="ios-legend chart-legend"></span>iOS</div>
+                                        <div class="col-md-4"><span class="android-legend chart-legend"></span>Android</div>
+                                        <div class="col-md-4"><span class="html5-legend chart-legend"></span>HTML5</div>
+                                    </div>
+                                    <div *ngIf="showChart">
+                                        <div *ngIf="showChartLoader" class="fm-spinner">
+                                            <div class="fm-double-bounce1"></div>
+                                            <div class="fm-double-bounce2"></div>
+                                        </div>
+                                        <chartist [data]="chartData" [chartType]="'line'"></chartist>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 list-box">
+                                    <div class="user-country-analytics m-b-10">
+                                        <table class="user-ca-table table toggle-square no-paging footable-loaded footable">
+                                            <thead>
+                                                <tr>
+                                                    <th width="65%" class="footable-sortable ">Country<span class="footable-sort-indicator"></span></th>
+                                                    <th class="footable-sortable"><span (click)="onCountrySessionsSortClick()">Sessions</span><span (click)="onCountrySessionsSortClick()" class="footable-sort-indicator"></span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let country of (countrySessions | slice: (countrySessionsCurrentPage * countrySessionsPerPage - countrySessionsPerPage):(countrySessionsCurrentPage * countrySessionsPerPage))"
+                                                    class="accordion-toggle footable-even" [style.display]="'table-row'">
+                                                    <td>
+                                                        <span class="footable-toggle"></span>
+                                                        <img src="http://www.geognos.com/api/en/countries/flag/{{country.country_code}}.png" width="26">
+                                                        <span class="country-name">{{country.country}}</span>
+                                                        <div class="clearfix"></div>
+                                                    </td>
+                                                    <td>{{country.sessions}}</td>
+                                                </tr>
+                                                <tr *ngIf="!countrySessions.length">
+                                                    <td colspan="2">Nothing to show here.</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot *ngIf="countrySessions.length">
+                                                <tr class="pagination-wrap">
+                                                    <td colspan="7">
+                                                        <div class="pagination pagination-centered">
+                                                            <pagination [directionLinks]="false" [totalItems]="countrySessions.length" [itemsPerPage]="countrySessionsPerPage" [(ngModel)]="countrySessionsCurrentPage"
+                                                                (pageChanged)="onCountryPageChanged($event)"></pagination>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <nothing-found *ngIf="!iosSession && !androidSession && !html5Session"></nothing-found>
+                        </div>
+                    </tab>
+                    <tab heading="FEATURES" id="tab_mailinglist">
+                        <div class="pad-15">
+                            <div *ngIf="tabSessions.length" class="inner">
+                                <div class="col-lg-8 chart-box">
+                                    <div class="col-lg-12">
+                                        <div class="col-md-4"><span class="ios-legend chart-legend"></span>iOS</div>
+                                        <div class="col-md-4"><span class="android-legend chart-legend"></span>Android</div>
+                                        <div class="col-md-4"><span class="html5-legend chart-legend"></span>HTML5</div>
+                                    </div>
+                                    <div *ngIf="showTabsChart">
+                                        <chartist [data]="tabsChartData" [chartType]="'bar'"></chartist>
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 list-box">
+                                    <div class="user-country-analytics border-all m-b-10">
+                                        <table class="user-ca-table table toggle-square no-paging footable-loaded footable">
+                                            <thead>
+                                                <tr>
+                                                    <th width="65%" class="footable-sortable border-b border-r">Popular Features<span class="footable-sort-indicator"></span></th>
+                                                    <th class="footable-sortable border-b"><span (click)="onTabSessionsSortClick()">Sessions</span><span (click)="onTabSessionsSortClick()" class="footable-sort-indicator"></span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let session of (tabSessions | slice: (tabSessionsCurrentPage * tabSessionsPerPage - tabSessionsPerPage):(tabSessionsCurrentPage * tabSessionsPerPage))"
+                                                    class="accordion-toggle footable-even" [style.display]="'table-row'">
+                                                    <td class="border-b border-r">
+                                                        <span class="footable-toggle"></span>
+                                                        <span class="country-name">{{session.tab_name}}</span>
+                                                        <div class="clearfix"></div>
+                                                    </td>
+                                                    <td class="border-b">{{session.total_sessions}}</td>
+                                                </tr>
+                                                <tr *ngIf="!countrySessions.length">
+                                                    <td colspan="2">Nothing to show here.</td>
+                                                </tr>
+                                            </tbody>
+                                            <tfoot *ngIf="countrySessions.length">
+                                                <tr class="pagination-wrap">
+                                                    <td colspan="7">
+                                                        <div class="pagination pagination-centered">
+                                                            <pagination [directionLinks]="false" [totalItems]="tabSessions.length" [itemsPerPage]="tabSessionsPerPage" [(ngModel)]="tabSessionsCurrentPage"
+                                                                (pageChanged)="onTabSessionsPageChanged($event)"></pagination>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <nothing-found *ngIf="!tabSessions.length"></nothing-found>
+                        </div>
+                    </tab>
+
+                </tabset>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- select  Date Dialog START -->
+<p-dialog [draggable]="false" header="Select Custom Date Range" [(visible)]="showCustomDateRangeDialog" modal="modal" class="app-dialog customRange submitted-tab">
+   <form class="border-all web-bg white-bg ">
+        <div class="layout-column layout-align-start-start">
+        <div class="layout-row flex-100 layout-align-start-center m-b-10 width-100">
+            <label>From</label>
+            <p-calendar readonlyInput="true" [(ngModel)]="custom_start_date" [maxDate]="custom_end_date"></p-calendar>
+        </div>
+        <div class="layout-row flex-100 layout-align-start-center width-100">
+            <label>To</label>
+            <p-calendar readonlyInput="true" [(ngModel)]="custom_end_date" [minDate]="custom_start_date"></p-calendar>
+        </div>
+    </div>
+   </form>
+    <footer>
+        <div class="p-t-10 p-b-10 ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a pButton icon="fa-check" label="OK" class=" login-btn cncle-btn cursor-p" (click)="onSubmitCustomDate()">OK</a>
+        </div>
+    </footer>
+</p-dialog>
+<!-- select  Date Dialog END -->

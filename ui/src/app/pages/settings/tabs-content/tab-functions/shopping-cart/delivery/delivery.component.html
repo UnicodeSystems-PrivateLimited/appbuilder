@@ -1,0 +1,294 @@
+<div class="cart-inventory-tab">
+    <div class="layout-row layout-align-space-between-center">
+        <span>Select how your customers receive items purchases.</span>
+        <button class="btn green-btn" (click)="onSaveClick()">SAVE DELIVERY OPTIONS</button>
+    </div>
+
+    <div class="layout-column  m-t-10 border-b-padding">
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="switch m-r-10 m-b-0">
+                <input type="checkbox" [(ngModel)]="delivery.is_pickup_method">
+                <div class="slider round"></div>
+                
+            </label>
+            <span class="m-l-10">Pickup Method
+                    <i class="fa fa-info-circle l"
+                       tooltip="Allow items to be picked up."
+                       tooltipPlacement="right" aria-hidden="true"></i></span>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="flex-30">
+                 Pickup Title
+                <i class="fa fa-info-circle l"
+                   tooltip="Enter your own title for 'Pickup' here."
+                   tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+            <input class="input-class flex-50  m-t-10" type="text" [(ngModel)]="delivery.pickup_title"
+                   [disabled]="!delivery.is_pickup_method" placeholder="Pickup">
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="flex-30">
+                Pickup Confirmation Message
+                <i class="fa fa-info-circle l"
+                   tooltip="Message to be displayed once a user completes a 'pickup' order."
+                   tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+            <input class="input-class flex-50  m-t-10" type="text" [(ngModel)]="delivery.pickup_confirmation_message"
+                   [disabled]="!delivery.is_pickup_method" placeholder="Your order will be ready for pickup in 3 days.">
+        </div>
+    </div>
+
+    <div class="layout-column  m-t-10 border-b-padding">
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="switch m-r-10 m-b-0">
+                <input type="checkbox" [(ngModel)]="delivery.is_digital_method">
+                <div class="slider round"></div>                
+            </label>
+            <span class="m-l-10">Digital Method
+                    <i class="fa fa-info-circle l"
+                       tooltip="Electronically send items. Users are required to enter a valid email address to receive purchase."
+                       tooltipPlacement="right" aria-hidden="true"></i></span>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="flex-30">
+                Digital Title
+                <i class="fa fa-info-circle l"
+                   tooltip="Enter your own title for 'Digital' here."
+                   tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+            <input class="input-class flex-50 m-t-10" type="text" [(ngModel)]="delivery.digital_title"
+                   [disabled]="!delivery.is_digital_method" placeholder="Email">
+        </div>
+    </div>
+
+    <div  class="layout-column  m-t-10 border-b-padding">
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="switch m-r-10 m-b-0">
+                <input type="checkbox" [(ngModel)]="delivery.is_shipping_method" (change)="onShippingMethodChange()">
+                <div class="slider round"></div>                
+            </label>
+            <span class="m-l-10"> Shipping Method
+                    <i class="fa fa-info-circle l"
+                       tooltip="Allow items to be shipped."
+                       tooltipPlacement="right" aria-hidden="true"></i></span>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="flex-30">
+                Shipping Title
+                <i class="fa fa-info-circle l"
+                   tooltip="Enter your own title for 'Ship' here."
+                   tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+            <input class="input-class flex-50 m-t-10" type="text" [(ngModel)]="delivery.shipping_title"
+                   [disabled]="!delivery.is_shipping_method" placeholder="Delivery">
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="flex-30">
+                Shipping Minimum
+                <span class="required">*</span>
+                <i class="fa fa-info-circle l"
+                   tooltip="Minimum purchase price for shipping."
+                   tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+            <label class="layout-row layout-align-start-center flex-60 m-t-10">
+            <span class="currency-symbol" [innerHTML]="service.currencySymbolList[currency] || currency"></span>
+            <input class="input-class flex-85" type="text" [(ngModel)]="delivery.shipping_minimum"
+                   [disabled]="!delivery.is_shipping_method">
+                </label>
+            
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="flex-30">
+                Free Shipping Amount
+                <span class="required">*</span>
+                <i class="fa fa-info-circle l"
+                   tooltip="Minimum purchase price for free shipping."
+                   tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+            <label class="layout-row layout-align-start-center flex-60 m-t-10">
+            <span class="currency-symbol" [innerHTML]="service.currencySymbolList[currency] || currency"></span>
+            <input class="input-class flex-85" type="text" [(ngModel)]="delivery.free_shipping_amount"
+                   [disabled]="!delivery.is_shipping_method">
+                   </label>
+           
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="flex-30">
+                Shipping Days
+                <span class="required">*</span>
+                <i class="fa fa-info-circle l"
+                   tooltip="Number of days before item ships from factory."
+                   tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+            <input class="input-class flex-50 m-t-10" type="text" [(ngModel)]="delivery.shipping_days"
+                   [disabled]="!delivery.is_shipping_method">
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10 m-b-10">
+            <label class="switch m-r-10 m-b-0">
+                <input type="checkbox" [(ngModel)]="delivery.is_shipping_fee_taxable"
+                       [disabled]="!delivery.is_shipping_method">
+                <div class="slider round"></div>
+            </label>
+            <span class="m-l-10">Shipping Fee Taxable</span>
+            
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="switch m-r-10 m-b-0">
+                <input type="checkbox" [(ngModel)]="delivery.is_delivery_address_validation"
+                       [disabled]="!delivery.is_shipping_method">
+                <div class="slider round"></div>               
+            </label>
+            <span class="m-l-10"> Delivery Address Validation
+                    <i class="fa fa-info-circle l"
+                       tooltip="Custom shipping charges can only be used with this feature enabled."
+                       tooltipPlacement="right" aria-hidden="true"></i></span>
+        </div>
+    </div>
+
+    <div class="relative">
+        <div *ngIf="!delivery.is_delivery_address_validation" class="overlay"></div>
+
+        <div class="layout-column flex-100">
+            <span class="heading-title m-t-10">Shipping Charges</span>
+        </div>
+
+        <div class="layout-row layout-align-space-between-center m-t-10">
+                <div class="layout-row layout-align-start-center">
+                    <label class="checkbox-inline custom-checkbox nowrap  layout-row layout-align-center-center"> 
+                    <input type="checkbox" [(ngModel)]="shippingChargesCheckAllToggle"
+                             (click)="onShippingChargeSelectAllCheck()"><span>&nbsp;</span>
+                            </label>
+                             Select All</div>
+            <div class="layout-row layout-align-space-between-center">
+                <button class="green-btn" type="button" (click)="onAddNewShippingChargeClick()">Add New Shipping Charge
+                </button>
+                <span class="lastspan-out m-l-10">
+                    <button class="red"
+                            [class.checkTrue]="selectedShippingCharges.length > 0 && selectedShippingCharges.indexOf(true) !== -1"
+                            (click)="onDeleteShippingChargeClick()"><i class="fa fa-trash"
+                                                                       title="delete"></i></button>
+                </span>
+            </div>       
+        </div>
+
+        <div>
+            <div *ngFor="let charge of shippingCharges" class="layout-row flex-100 border-with-padding Taxamount-list">
+                              
+                <div class="layout-column layout-align-start-center flex-75 ">
+                    <div class="layout-row layout-align-start-center m-t-10 full-width">
+                            <label class="checkbox-inline custom-checkbox nowrap  layout-row layout-align-center-center"> 
+                        <input type="checkbox" [(ngModel)]="selectedShippingCharges[charge.id]"
+                            (click)="onShippingChargeCheck()">
+                            <span>&nbsp;</span>
+                        </label>
+
+                        <span class="flex-30">Country: </span>
+                        <span>{{charge.country == 1 ? "Default" : countryList[charge.country]}}</span>
+                    </div>
+                    <div class="layout-row layout-align-start-center m-t-10 full-width">
+                        <span class="flex-30 padding-and-margin">Price: </span>
+                        <span>{{charge.price}}</span>
+                    </div>
+               </div>
+            
+            <div class="layout-row layout-align-end-start flex-25">
+                    <button type="button" (click)="onEditShippingChargeClick(charge)" style="width:90px;" class="button-edit"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
+            </div>
+            </div>
+        </div>
+
+        <div class="layout-column flex-100 m-t-10">
+            <span class="heading-title m-t-10">Blocked Countries</span>
+        </div>
+
+        <div class="layout-row layout-align-space-between-center m-t-10">
+                <div class="layout-row layout-align-start-center">
+                <label class="checkbox-inline custom-checkbox nowrap  layout-row layout-align-center-center"> 
+                    <input type="checkbox" [(ngModel)]="blockedCountriesCheckAllToggle"
+                             (click)="onBlockedCountrySelectAllCheck()">
+                             <span>&nbsp;</span>
+                            </label>
+                            Select All
+                </div>
+        <div class="layout-row layout-align-space-between-center">  
+        <button class="green-btn" type="button" (click)="onAddNewBlockedCountryClick()">Add New Blocked Country
+            </button>
+            <span class="lastspan-out m-l-10">
+                    <button class="red"
+                            [class.checkTrue]="selectedBlockedCountries.length > 0 && selectedBlockedCountries.indexOf(true) !== -1"
+                            (click)="onDeleteBlockedCountryClick()"><i class="fa fa-trash"
+                                                                       title="delete"></i></button>
+                </span>
+            </div>    
+        </div>
+
+        <div>
+            <div *ngFor="let country of blockedCountries" class="layout-row flex-100 border-with-padding Taxamount-list">
+                
+                <div class="layout-row layout-align-start-center flex-75">
+                        <label class="checkbox-inline custom-checkbox nowrap  layout-row layout-align-center-center"> 
+                                <input type="checkbox" [(ngModel)]="selectedBlockedCountries[country.id]"
+                                (click)="onBlockedCountryCheck()">
+                                    <span>&nbsp;</span>
+                                </label>
+                    <span>{{countryList[country.country]}}</span>
+                </div>
+                <div class="layout-row layout-align-end-start flex-25">
+                <button type="button" (click)="onEditBlockedCountryClick(country)" style="max-width:90px;" class="button-edit"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<p-dialog [draggable]="false" [header]="shippingChargeFormHeader" [(visible)]="showShippingChargeFormDialog"
+          modal="modal"
+          class="app-dialog add-app s-tab-add menu-tb-ad edit-tax-ammount-dia">
+    <form (ngSubmit)="onShippingChargeFormSubmit()" class="white-bg web-bg border-all">
+        <div class="layout-column m-b-20 dialog-box-height">
+            <div class="layout-row layout-align-space-between ">
+                <div class="layout-column flex-45">
+                    <label>Country <span class="required">*</span></label>
+                    <p-dropdown [options]="shippingChargeCountryOptions" [(ngModel)]="shippingCharge.country"
+                                [filter]="true"
+                                class="cat-drop"></p-dropdown>
+                </div>
+                <div class="layout-column flex-45">
+                    <label>Price <span class="required">*</span></label>
+                    <input class="input-class flex-50" type="text" [(ngModel)]="shippingCharge.price" required="required">
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="">
+                <div class="save-btn">
+                    <button class="blue-btn btn" type="submit">SAVE</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+</p-dialog>
+
+<p-dialog [draggable]="false" [header]="blockedCountryFormHeader" [(visible)]="showBlockedCountryFormDialog"
+          modal="modal"
+          class="app-dialog add-app s-tab-add menu-tb-ad">
+    <form (ngSubmit)="onBlockedCountryFormSubmit()" class="white-bg web-bg border-all">
+        <div class="layout-column m-b-20">
+            <div class="layout-column m-b-10">
+                <label>Country <span class="required">*</span></label>
+                <p-dropdown [options]="blockedCountryOptions" [(ngModel)]="blockedCountry.country"
+                            [filter]="true"
+                            class="cat-drop"></p-dropdown>
+            </div>
+        </div>
+        <footer>
+            <div class="">
+                <div class="save-btn">
+                    <button class="blue-btn btn" type="submit">SAVE</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+</p-dialog>

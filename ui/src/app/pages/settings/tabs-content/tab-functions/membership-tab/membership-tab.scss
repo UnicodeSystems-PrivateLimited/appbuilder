@@ -1,0 +1,9 @@
+@import '../../../../../theme/sass/flex';
+.height-mem {
+    height:400px;
+    overflow:auto;
+}
+button.red.checkGrpTrue {
+    background: red !important;
+    color: #fff;
+}

@@ -1,0 +1,68 @@
+<div class="flex-100 layout-row main-social-tab-container">
+    <div class="flex-35 layout-column pos-rel">
+        <div class="layout-row layout-align-space-between flex-10">
+            <div class="layout-column">
+                <span class="m-b-10">Default Theme Settings</span>
+                <span class="m-b-10">Disable to create a more customized theme.</span>
+            </div>
+            <div class="switch layout-align-start-center layout-row">
+                <input id="cmn-toggle-theme" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="themeData.cThemeData.theme_default_settings" (change)="defaultCMSData($event)">
+                <label [attr.for]="'cmn-toggle-theme'"></label>
+            </div>
+        </div>
+         <div *ngIf="themeData.defaultCmsSettingButton" class="default-active-2"></div>
+        <div class="layout-column flex-100 border-all white-bg m-t-20">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Logo</div>
+            <div class="layout-column flex-100 layout-align-start-center p-t-10" style="height: 149px !important;">
+                <span>Required size is exactly 333 x 107 in PNG format.</span>
+                <div class="border-all pad-15 m-t-10">
+                    <div class="" style="height:107px ;width:333px;"><img src="{{themeData.cThemeData.theme_logo}}" style="max-width: 100%;max-height: 100%"></div>
+                </div>
+                <div class="m-t-20 m-b-20">
+                    <button type="button" class="green-btn m-r-10" (click)="openReplaceLogoDialog()">Replace</button>
+                    <!--<button type="button" class="green-btn m-l-10" (click)="openEditLogoDialog()">Edit</button>-->
+                </div>
+            </div>
+        </div>
+        <div class="layout-column border-all white-bg m-t-20 flex-30">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Page Title</div>
+            <div class="layout-row layout-align-start-center set_pading pad-15" style="height:100px;">
+                <input class="ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="themeData.cThemeData.theme_page_title">
+            </div>
+        </div>
+        <div class="layout-column border-all white-bg m-t-20 cust flex-100">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Theme</div>
+            <div class="layout-row layout-align-start-center">
+                <div class="drp-da flex-100 layout-row p-l-10 p-r-10">
+                    <p-dropdown [options]="themeData.allTheme" [(ngModel)]="themeData.cThemeData.theme_type" class=" flex-100 cat-drop layout-align-center-center layout-row" (onChange)="onThemeColorChange($event)"></p-dropdown>
+                </div>
+            </div>
+            <div class="layout-row  layout-align-start-center updatecolor-box">
+                <span class="layout-column layout-align-start-center flex-50">Header Background Color1</span>
+                <div class="layout-column stau-switch layout-align-end-center flex-25 ">
+                    <input class="input-class" [(colorPicker)]="themeData.cThemeData.theme_header_bg_color1" [style.background]="themeData.cThemeData.theme_header_bg_color1"
+                        [value]="themeData.cThemeData.theme_header_bg_color1" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'"
+                        readonly/>
+                </div>
+            </div>
+            <div class="layout-row  layout-align-start-center updatecolor-box">
+                <span class="layout-column layout-align-start-center flex-50">Header Background Color2</span>
+                <div class="layout-column stau-switch layout-align-end-center flex-25 ">
+                    <input class="input-class" [(colorPicker)]="themeData.cThemeData.theme_header_bg_color2" [style.background]="themeData.cThemeData.theme_header_bg_color2"
+                        [value]="themeData.cThemeData.theme_header_bg_color2" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'"
+                        readonly/>
+                </div>
+            </div>
+            <div class="layout-row layout-align-start-center updatecolor-box">
+                <span class="layout-column layout-align-start-center flex-50">Header Background Color3</span>
+                <div class="layout-column stau-switch layout-align-end-center flex-25 ">
+                    <input class="input-class" [(colorPicker)]="themeData.cThemeData.theme_header_bg_color3" [style.background]="themeData.cThemeData.theme_header_bg_color3"
+                        [value]="themeData.cThemeData.theme_header_bg_color3" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'"
+                        readonly/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ba-cpanel-preview class="flex-65 p-l-10 m-l-10 layout-column"></ba-cpanel-preview>
+    <ba-cpanel-image-uploader *ngIf="replaceLogoDialog" [headerTitle]="headerTitleOfDialog" [imageType]="logotype" (complete)="onReplaceDialogDismiss($event)"></ba-cpanel-image-uploader>
+</div>

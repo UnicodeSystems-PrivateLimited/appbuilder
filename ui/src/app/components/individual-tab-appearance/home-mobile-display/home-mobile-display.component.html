@@ -1,0 +1,97 @@
+<div class="layout-row layout-align-center-start ">
+	<form class="layout-column flex-75  ">
+		<div class="layout-column mobile-view-wrapper ">
+			<img src="assets/img/mobile-view.png" />
+			<div class="layout-row mobile-view-wrapp-1 layout-wrap layout-align-start-start">
+				<div class="mob-scr-1" *ngIf="mobileView.layout.home_layout != 1">
+					<div class="searchbar-data-contain">
+						<div class="searchbar-input-container">
+							<i class="fa fa-search"></i>
+							<input class="searchbar-input ng-untouched ng-pristine ng-valid" autocomplete="off" autocorrect="off" spellcheck="false"
+								type="search" placeholder="Search">
+						</div>
+
+						<!-- SLIDER LIST -->
+						<div class="height-mobil layout-column layout-wrap image-wrappper" *ngIf="mobileView.layout.home_layout == 2">
+							<div [style.background-size]="'100%'" [style.background-repeat]="'round'" class="image-wrap layout-align-start-center layout-row appeare-individualtab-list"
+								*ngFor="let tab of tabs">
+								<div class="individual-tab-image"><img src="{{tab.icon_src}}" class="m-t-10" *ngIf='(tab.id == service.tabData.id ? homeData?.icon_color?.show_icon : (homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon ? homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon : homeScreenService.homeScreenSettings.icon_color?.show_icon)) && (tab.type == 1)'>
+									 <i [style.font-size]="'x-large'" [style.color]="tab.id == service.tabData.id ? homeData?.icon_color?.icon_color : (homeScreenService.individualSettings[tab.id]?.icon_color?.icon_color ? homeScreenService.individualSettings[tab.id]?.icon_color?.icon_color : homeScreenService.homeScreenSettings.icon_color?.icon_color)" *ngIf="(tab.id == service.tabData.id ? homeData?.icon_color?.show_icon : (homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon ? homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon : homeScreenService.homeScreenSettings.icon_color?.show_icon)) && (tab.type == 2)" class="Glyphter icon-{{tab.icon_name}}" aria-hidden="true"></i></div>
+								<label [style.color]="tab.id == service.tabData.id ? homeData?.buttons?.text_color : ( homeScreenService.individualSettings[tab.id]?.buttons?.text_color ? homeScreenService.individualSettings[tab.id]?.buttons?.text_color : homeScreenService.homeScreenSettings.buttons?.text_color)">{{tab.title}}</label>
+							</div>
+						</div>
+						<!-- SLIDER TILES -->
+						<div class="height-mobil layout-row layout-wrap layout-align-start-start" *ngIf="mobileView.layout.home_layout == 3">
+							<div [style.background-size]="'100%'" [style.background-repeat]="'round'" [style.background-color]="tab.id == service.tabData.id ? homeData?.buttons?.background_tint : ( homeScreenService.individualSettings[tab.id]?.buttons?.background_tint ? homeScreenService.individualSettings[tab.id]?.buttons?.background_tint : homeScreenService.homeScreenSettings.buttons?.background_tint)"
+								[style.background-image]="'url(' + service.buttonBgImageSrcs[tab.id == service.tabData.id ? homeData?.buttons?.background_img : ( homeScreenService.individualSettings[tab.id]?.buttons?.background_img ? homeScreenService.individualSettings[tab.id]?.buttons?.background_img : homeScreenService.homeScreenSettings.buttons?.background_img )] + ')'"
+								[style.opacity]="tab.id == service.tabData.id ? homeData?.buttons?.background_opacity / 100 : ( homeScreenService.individualSettings[tab.id]?.buttons?.background_opacity ? homeScreenService.individualSettings[tab.id]?.buttons?.background_opacity : homeScreenService.homeScreenSettings.buttons?.background_opacity)"
+								class="image-wrap layout-align-center-center flex-45 layout-column appeare-individualtab-phone" *ngFor="let tab of tabs">
+								<img src="{{tab.icon_src}}" class="m-t-10" *ngIf='(tab.id == service.tabData.id ? homeData?.icon_color?.show_icon : (homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon ? homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon : homeScreenService.homeScreenSettings.icon_color?.show_icon)) && (tab.type == 1)'>
+							  	<i [style.font-size]="'x-large'" [style.color]="tab.id == service.tabData.id ? homeData?.icon_color?.icon_color : (homeScreenService.individualSettings[tab.id]?.icon_color?.icon_color ? homeScreenService.individualSettings[tab.id]?.icon_color?.icon_color : homeScreenService.homeScreenSettings.icon_color?.icon_color) " *ngIf="(tab.id == service.tabData.id ? homeData?.icon_color?.show_icon : (homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon ? homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon : homeScreenService.homeScreenSettings.icon_color?.show_icon)) && (tab.type == 2)" class="Glyphter icon-{{tab.icon_name}}" aria-hidden="true"></i>
+								<label  *ngIf="tab.id == service.tabData.id ? homeData?.buttons?.show_text : ( homeScreenService.individualSettings[tab.id]?.buttons?.show_text ? homeScreenService.individualSettings[tab.id]?.buttons?.show_text : homeScreenService.homeScreenSettings.buttons?.show_text) "
+									[style.color]="tab.id == service.tabData.id ? homeData?.buttons?.text_color : ( homeScreenService.individualSettings[tab.id]?.buttons?.text_color ? homeScreenService.individualSettings[tab.id]?.buttons?.text_color : homeScreenService.homeScreenSettings.buttons?.text_color)">{{tab.title}}</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- TRADITIONAL-->
+				<div [style.background]="'url(' + homeScreenService.app.background_img + ')'" [style.background-size]="'cover'" [style.background-position]="'center center'"
+					*ngIf="mobileView.layout.home_layout == 1 && mobileView.layout.traditional_position != LAYOUT_BOTTOM" class="{{traditionalLayoutClasses[mobileView.layout.traditional_position ? mobileView.layout.traditional_position : LAYOUT_BOTTOM]}} mobile-view-wrapp-1 abc sec{{mobileView.layout.traditional_position ? mobileView.layout.traditional_position : LAYOUT_BOTTOM}}">
+					<div [style.background-size]="'100%'" [style.background-repeat]="'round'" [style.background-color]="tab.id == service.tabData.id ? homeData?.buttons?.background_tint : ( homeScreenService.individualSettings[tab.id]?.buttons?.background_tint ? homeScreenService.individualSettings[tab.id]?.buttons?.background_tint : homeScreenService.homeScreenSettings.buttons?.background_tint)"
+						[style.opacity]="tab.id == service.tabData.id ? homeData?.buttons?.background_opacity / 100 : ( homeScreenService.individualSettings[tab.id]?.buttons?.background_opacity ? homeScreenService.individualSettings[tab.id]?.buttons?.background_opacity : homeScreenService.homeScreenSettings.buttons?.background_opacity)"
+						[style.background-image]="'url(' + service.buttonBgImageSrcs[tab.id == service.tabData.id ? homeData?.buttons?.background_img : ( homeScreenService.individualSettings[tab.id]?.buttons?.background_img ? homeScreenService.individualSettings[tab.id]?.buttons?.background_img : homeScreenService.homeScreenSettings.buttons?.background_img )] + ')'"
+						*ngFor="let tab of tabs | slice:0:(mobileView.layout.traditional_tab_number)" class="text-center layout-column image-wrap">
+						<!--<i class="fa fa-pencil-square-o"></i>-->
+						<img src="{{tab.icon_src}}"  class="abc" *ngIf='(tab.id == service.tabData.id ? homeData?.icon_color?.show_icon : (homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon ? homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon : homeScreenService.homeScreenSettings.icon_color?.show_icon)) && (tab.type == 1)'>
+				     	<i [style.font-size]="'x-large'" [style.color]="tab.id == service.tabData.id ? homeData?.icon_color?.icon_color : (homeScreenService.individualSettings[tab.id]?.icon_color?.icon_color ? homeScreenService.individualSettings[tab.id]?.icon_color?.icon_color : homeScreenService.homeScreenSettings.icon_color?.icon_color) " *ngIf="(tab.id == service.tabData.id ? homeData?.icon_color?.show_icon : (homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon ? homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon : homeScreenService.homeScreenSettings.icon_color?.show_icon)) && (tab.type == 2)" class="Glyphter icon-{{tab.icon_name}}" aria-hidden="true"></i>
+						<label *ngIf="tab.id == service.tabData.id ? homeData?.buttons?.show_text : ( homeScreenService.individualSettings[tab.id]?.buttons?.show_text ? homeScreenService.individualSettings[tab.id]?.buttons?.show_text : homeScreenService.homeScreenSettings.buttons?.show_text) "
+							[style.color]="tab.id == service.tabData.id ? homeData?.buttons?.text_color : ( homeScreenService.individualSettings[tab.id]?.buttons?.text_color ? homeScreenService.individualSettings[tab.id]?.buttons?.text_color : homeScreenService.homeScreenSettings.buttons?.text_color)">{{tab.title}}</label>
+					</div>
+				</div>
+
+				<!-- TRADITIONAL POSITION BOTTOM -->
+				<div [style.background]="'url(' + homeScreenService.app.background_img + ')'" [style.background-size]="'cover'" [style.background-position]="'center center'"
+					*ngIf="(mobileView.layout.home_layout == 1 && mobileView.layout.traditional_position == LAYOUT_BOTTOM)" class="layout-column mobile-view-wrapp-1 abc sec2">
+					<div *ngIf="mobileView.layout.home_layout == 1">
+						<div *ngFor="let row of homeScreenService.tabRowsIterator" class="layout-row" style="width: 100%;    text-align: center;">
+							<div class="layout-row layout-row layout-align-center-center" style="width: 100%;">
+								<div *ngFor="let tab of tabs | slice:(row * mobileView.layout.traditional_tab_number):(row * mobileView.layout.traditional_tab_number + mobileView.layout.traditional_tab_number)"
+									class="image-wrap  layout-column text-center" [style.background-color]="tab.id == service.tabData.id ? homeData?.buttons?.background_tint : ( homeScreenService.individualSettings[tab.id]?.buttons?.background_tint ? homeScreenService.individualSettings[tab.id]?.buttons?.background_tint : homeScreenService.homeScreenSettings.buttons?.background_tint)"
+									[style.background-image]="'url(' + service.buttonBgImageSrcs[tab.id == service.tabData.id ? homeData?.buttons?.background_img : ( homeScreenService.individualSettings[tab.id]?.buttons?.background_img ? homeScreenService.individualSettings[tab.id]?.buttons?.background_img : homeScreenService.homeScreenSettings.buttons?.background_img )] + ')'"
+									[style.opacity]="tab.id == service.tabData.id ? homeData?.buttons?.background_opacity / 100 : ( homeScreenService.individualSettings[tab.id]?.buttons?.background_opacity ? homeScreenService.individualSettings[tab.id]?.buttons?.background_opacity : homeScreenService.homeScreenSettings.buttons?.background_opacity)"
+									[style.background-size]="'100%'" [style.background-repeat]="'round'" [class.three-tab]="mobileView.layout.traditional_tab_number == 3"
+									[class.four-tab]="mobileView.layout.traditional_tab_number == 4" [class.five-tab]="mobileView.layout.traditional_tab_number == 5">
+									<img src="{{tab.icon_src}}" *ngIf='(tab.id == service.tabData.id ? homeData?.icon_color?.show_icon : (homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon ? homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon : homeScreenService.homeScreenSettings.icon_color?.show_icon)) && (tab.type == 1)'>
+							     	<i [style.font-size]="'x-large'" [style.color]="tab.id == service.tabData.id ? homeData?.icon_color?.icon_color : (homeScreenService.individualSettings[tab.id]?.icon_color?.icon_color ? homeScreenService.individualSettings[tab.id]?.icon_color?.icon_color : homeScreenService.homeScreenSettings.icon_color?.icon_color) " *ngIf="(tab.id == service.tabData.id ? homeData?.icon_color?.show_icon : (homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon ? homeScreenService.individualSettings[tab.id]?.icon_color?.show_icon : homeScreenService.homeScreenSettings.icon_color?.show_icon)) && (tab.type == 2)" class="Glyphter icon-{{tab.icon_name}}" aria-hidden="true"></i>
+									<label *ngIf="tab.id == service.tabData.id ? homeData?.buttons?.show_text : ( homeScreenService.individualSettings[tab.id]?.buttons?.show_text ? homeScreenService.individualSettings[tab.id]?.buttons?.show_text : homeScreenService.homeScreenSettings.buttons?.show_text)"
+										[style.color]="tab.id == service.tabData.id ? homeData?.buttons?.text_color : ( homeScreenService.individualSettings[tab.id]?.buttons?.text_color ? homeScreenService.individualSettings[tab.id]?.buttons?.text_color : homeScreenService.homeScreenSettings.buttons?.text_color)">{{tab.title}}</label>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<div class="moc-scr-2 layout-align-start-start layout-column">
+					<div class="satus-bar">
+						<!-- STATUS BAR -->
+						<div class="part-1 layout-row flex-100 layout-align-space-between">
+							<div class="flex-10 layout-align-space-between-center layout-row">
+								<i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+							</div>
+
+							<div class="flex-60 layout-align-end-center layout-row">
+								<i class="fa fa-wifi m-r-10" aria-hidden="true"></i>
+								<i class="fa fa-signal m-r-10" aria-hidden="true"></i>
+								<div>100% <i class="fa fa-battery-full" aria-hidden="true"></i></div>
+								<div class="m-l-10">21:40</div>
+							</div>
+						</div>
+					</div>
+					<div *ngIf="mobileView.layout.home_layout != 1 " [style.background]="'url(' + homeScreenService.app.background_img + ')'"
+						[style.background-size]="'cover'" [style.background-position]="'center center'" [style.height]="'100%'" [style.width]="'100%'"></div>
+				</div>
+			</div>
+		</div>
+	</form>
+</div>

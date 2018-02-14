@@ -1,0 +1,224 @@
+<div class="pagination-block layout-row flex-100 layout-wrap">
+    <div class="flex-55 layout-row">
+        <form class="form-search-app layout-row" (ngSubmit)="searchRequestedApp()">
+            <div class=" drp-da   layout-align-center-center layout-row ">
+                <p-dropdown [options]="appUpdateTypes" [(ngModel)]="requestedAppSearch.updateTypes" class="cat-drop app-drop layout-align-center-center layout-row"></p-dropdown>
+            </div>
+            <div class="drp-da layout-align-center-center layout-row ">
+                <p-dropdown [options]="requestTypes" [(ngModel)]="requestType" class="cat-drop app-drop layout-align-center-center layout-row"></p-dropdown>
+            </div>
+            <div class="layout-align-start-center layout-row">
+                <ul class="link-block layout-row">
+                    <li>
+                        <div class="input-group btn-group">
+                            <input type="text" [(ngModel)]="requestedAppSearch.title" class="form-control txt-less-bottom" placeholder="Search App">
+                            <span class="input-group-btn">
+                            <button class="group-btn-style" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </span>
+                        </div>
+                    </li>
+                    <li>
+                        <button (click)="refreshRequestedApps()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+    <div class="page-block flex-45 layout-row layout-align-end-center flex-sm-50">
+        <div class="cate-block flex-20 layout-row layout-align-center-center">
+            <span>Total: {{totalItems}}</span>
+            <p-dropdown [options]="count" [(ngModel)]="selectedCount" (onChange)="setItemsPerPage(selectedCount)" class="cat-drop count-drop layout-align-end layout-row"></p-dropdown>
+        </div>
+        <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"
+            [maxSize]="maxSize" class="pagination-sm layout-row layout-align-center-center" previousText="&lsaquo;" nextText="&rsaquo;"
+            firstText="&laquo;" lastText="&raquo;">
+        </pagination>
+    </div>
+</div>
+<div *ngIf="showLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+
+<div *ngIf="!showLoader" class="data-table">
+    <div class="layout-row layout-align-end-center pad-10">
+        <span class="c-p help-ipa" (click)="onClickHelp()">Help <i class="fa fa-question-circle" aria-hidden="true"></i></span>
+    </div>
+    <div>
+        <div>
+            <div class="data-table-list">
+                <div class="data-table-row row ">
+                    <div>
+                        <div class="data-cell col-xs-2 data-cell-date border-r c-p">
+                            <strong (click)="sortData(1)"> App Name [App Code]</strong>
+                            <i *ngIf="sortFor==1 && sortType=='asc'" class="fa fa-sort-asc" aria-hidden="true"></i>
+                            <i *ngIf="sortFor==1 && sortType=='desc'" class="fa fa-sort-desc" aria-hidden="true"></i>
+                        </div>
+                        <div class="data-cell col-xs-2 data-cell-time border-r c-p">
+                            <strong (click)="sortData(2)"> Client Email</strong>
+                            <i *ngIf="sortFor==2 && sortType=='asc'" class="fa fa-sort-asc" aria-hidden="true"></i>
+                            <i *ngIf="sortFor==2 && sortType=='desc'" class="fa fa-sort-desc" aria-hidden="true"></i>
+                        </div>
+                        <div class="data-cell col-xs-3 data-cell-data border-r ">
+                            <strong>  Apple Access (UserName,DevName,Password)</strong>
+                        </div>
+                        <div class="data-cell col-xs-2 data-cell-data border-r c-p">
+                            <strong (click)="sortData(3)"> Requested On</strong>
+                            <i *ngIf="sortFor==3 && sortType=='asc'" class="fa fa-sort-asc" aria-hidden="true"></i>
+                            <i *ngIf="sortFor==3 && sortType=='desc'" class="fa fa-sort-desc" aria-hidden="true"></i>
+                        </div>
+                        <div class="data-cell col-xs-1 data-cell-data border-r c-p">
+                            <strong (click)="sortData(4)">  Update Type</strong>
+                            <i *ngIf="sortFor==4 && sortType=='asc'" class="fa fa-sort-asc" aria-hidden="true"></i>
+                            <i *ngIf="sortFor==4 && sortType=='desc'" class="fa fa-sort-desc" aria-hidden="true"></i>
+                        </div>
+                        <div class="data-cell col-xs-2 data-cell-data border-r">
+                            <strong> Action</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="data-table-row row " *ngFor="let app of requestedAppList;let i=index;" [class.priority]="app.update_type==2 || app.update_type==4">
+                    <div>
+                        <div class="data-cell col-xs-2 data-cell-date border-r">
+                            {{app.app_name}} &nbsp;[{{app.app_code}}]
+                        </div>
+                        <div class="data-cell col-xs-2 data-cell-time border-r">
+                            {{app.email}}
+                        </div>
+                        <div class="data-cell col-xs-3 data-cell-data border-r">
+                            <div class="data-cell col-xs-4 data-cell-data border-r">
+                                {{app.apple_user_name}}
+                            </div>
+                            <div class="data-cell col-xs-4 data-cell-data border-r">
+                                {{app.apple_dev_name}}
+                            </div>
+                            <div class="data-cell col-xs-4 data-cell-data">
+                                {{app.apple_password}}
+                            </div>
+                        </div>
+                        <div class="data-cell col-xs-2 data-cell-time border-r">
+                            {{app.created_at|dateTimeFormatPipe:'MMMM Do YYYY, h:mm a'}}
+                        </div>
+                        <div class="data-cell col-xs-1 data-cell-data border-r">
+                            <span *ngIf="app.update_type">{{appUpdateTypes[app.update_type].value}}</span>
+                        </div>
+                        <div class="data-cell col-xs-2 data-cell-data icons-wrapper" *ngIf="app.ipa_request_status==0">
+                            <div class="data-cell col-xs-3 data-cell-data c-p">
+                                <span (click)="markAsDone(app.id,i)"><i class="fa fa-check" aria-hidden="true" tooltip="Mark as done" tooltipPlacement="bottom"></i></span>
+                            </div>
+                            <div class="data-cell col-xs-3 data-cell-data c-p">
+                                <span (click)="onAppInfo(app.app_id,app.app_name,app.app_code)"><i class="fa fa-info-circle" aria-hidden="true" tooltip=" App Log" tooltipPlacement="bottom"></i></span>
+                            </div>
+                            <div class="data-cell col-xs-3 data-cell-data">
+                                <a href="#/pages/ipaRequest/appInfoView/{{app.app_id}}" class="view-icon"><i class="fa fa-eye" aria-hidden="true" tooltip="view" tooltipPlacement="bottom"></i></a>
+                            </div>
+                            <div class="data-cell col-xs-3 data-cell-data c-p">
+                                <span (click)="openEmailDialog(app.email,app.app_name)" class="email-icon"> <i class="fa fa-envelope-o" aria-hidden="true" tooltip="Email" tooltipPlacement="bottom"></i></span>
+                            </div>
+                        </div>
+                        <div class="data-cell col-xs-2 data-cell-data icons-wrapper" *ngIf="app.ipa_request_status==1">
+                            <div class="data-cell col-xs-4 data-cell-data c-p">
+                                <span (click)="onAppInfo(app.app_id,app.app_name,app.app_code)"><i class="fa fa-info-circle" aria-hidden="true" tooltip=" App Log" tooltipPlacement="bottom"></i></span>
+                            </div>
+                            <div class="data-cell col-xs-4 data-cell-data">
+                                <a href="#/pages/ipaRequest/appInfoView/{{app.app_id}}" class="view-icon"><i class="fa fa-eye" aria-hidden="true" tooltip="view" tooltipPlacement="bottom"></i></a>
+                            </div>
+                            <div class="data-cell col-xs-4 data-cell-data c-p">
+                                <span (click)="openEmailDialog(app.email,app.app_name)" class="email-icon"> <i class="fa fa-envelope-o" aria-hidden="true" tooltip="Email" tooltipPlacement="bottom"></i></span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<p-dialog [draggable]="false"  header="Help" [(visible)]="showAppHelpDialog" modal="modal" class="help-modal statistics-dialog app-dialog add-app s-tab-add menu-tb list-graph info-2 entry-list-submited">
+    <div class="layout-column flex-100 form-field-wrap">
+        <div class="layout-row flex-100 layout-align-start-center m-b-10">
+            <app-help></app-help>
+        </div>
+    </div>
+</p-dialog>
+<p-dialog  [draggable]="false" header="Send Mail" [(visible)]="showEmailDialog" modal="modal" class="help-modal statistics-dialog app-dialog add-app s-tab-add menu-tb list-graph info-2 entry-list-submited">
+    <div class="layout-column flex-100 form-field-wrap">
+        <div class="layout-row flex-100 layout-align-start-center ">
+            <div class=" flex-100 layout-column layout-align-space-between">
+                <div class="flex-100 layout-row add-app">
+                    <label class="flex-50">To</label>
+                    <div class="flex-50"><span class="layout-row detl-ipa-data">{{emailData.client_email}}</span></div>
+                </div>
+                <div class="layout-row flex-100 add-app layout-align-start-center">
+                    <label class="flex-50">Email Type</label>
+                    <div class="flex-50">
+                        <p-dropdown class="category-dropdown drop-li-width" [options]="emailTypes" [(ngModel)]="emailData.email_type"
+                            [style]="{'width':'170px'}"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class=" flex-100 layout-row layout-align-space-between layout-align-start-center">
+            <label class="flex-50">Subject</label>
+            <div class="flex-50"><input class="input-class" type="text" placeholder="email subject" [(ngModel)]="emailData.subject" /></div>
+        </div>
+        <div class=" flex-100 layout-column layout-align-space-between email-content">
+            <label>Email Content</label>
+            <div id="description-editor"></div>
+        </div>
+    </div>
+    <div class="layout-align-center-center save-btn m-b-20 m-t-10">
+        <button class="blue-btn btn btn-lg" type="submit" [disabled]="disableSendMailButton" (click)="sendMail()">Send Mail</button>
+    </div>
+    <!--<footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="send mail" class="login-btn" (click)="sendMail()">Send Mail</a>
+        </div>
+        </footer>-->
+</p-dialog>
+
+<p-dialog [draggable]="false"  [header]="appName " [(visible)]="showAppInfoDialog" modal="modal" class="help-modal statistics-dialog app-dialog add-app s-tab-add menu-tb list-graph info-2 entry-list-submited" (onAfterHide)="onCloseAppLogDialog()">
+    <div class="layout-column flex-100 form-field-wrap">
+        <div class="coment-conct-wrap">
+            <table class="flex-100 layout-column" cellpadding="0">
+                <tbody class="comment-box-wrap">
+                    <tr class="layout-row flex-100">
+                        <td class="flex-30 layout-row layout-align-center-center cl-up">Email</td>
+                        <td class="flex-70 layout-row">
+                            <table class="layout-row flex-100">
+                                <tbody class="layout-row flex-100">
+                                    <tr class="layout-row flex-100">
+                                        <td class="flex-80 layout-align-center-center cl-up">Requested On</td>
+                                        <td class="flex-80 layout-align-center-center cl-up">Instruction</td>
+                                        <td class="flex-80 layout-align-center-center cl-up">Update Type</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="comment-box-wrap ">
+                    <tr class="layout-row flex-100" *ngFor="let item of appHistory">
+                        <td class="flex-30 layout-row layout-align-center-center cl-up-1  b-l-r">{{item.email}}</td>
+                        <td class="flex-70 layout-row">
+                            <table class="layout-row flex-100">
+                                <tbody class="layout-column flex-100">
+                                    <tr class="layout-row flex-100 ">
+                                        <td class="flex-80 layout-align-center-center cl-up-1 border-r "> {{item.created_at | dateTimeFormatPipe:'MMMM Do YYYY, h:mm a'}}</td>
+                                        <td class="flex-80 layout-align-center-center cl-up-1 border-r "> {{item.instruction}}</td>
+                                        <td class="flex-80 layout-align-center-center cl-up-1 border-r "> {{appUpdateTypes[item.update_type].value}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="layout-align-center-center save-btn m-b-20 m-t-10">
+        <button class="blue-btn btn btn-lg" type="submit" (click)="onCloseAppLogDialog()">Close</button>
+    </div>
+</p-dialog>

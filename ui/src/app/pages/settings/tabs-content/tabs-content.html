@@ -1,0 +1,24 @@
+<div class="content-data tabcontainer-width all-tabs-content-data">
+    <div class="flex-50 layout-align-end-start which-feature-text">
+        <div class="tab-second-heading-content first-heading-space"><span><i class="fa fa-info" aria-hidden="true"></i></span>Which Features do you want in your App</div>
+    </div>
+    <!--<div class="flex-50 layout-row tab-head layout-align-end-center push-notify-btn">
+        <div class="layout-column">
+            <div class="layout-row">                        
+                <!--<button class="green-btn" round (click)="onCpanelClick()">CPanel</button>-->
+               
+            <!--</div>
+        </div>
+    </div>-->
+    <div class="flex-100 layout-row layout-wrap layout-align-space-between main-tab-container all-maded-tabs">
+        <div class="my-tabs content-tab-detail flex-100">
+            <ul class="nav nav-tabs tab-content-tab cursor_p" [dragula]='"first-bag"' [dragulaModel]="tabs">
+                <li *ngFor="let tab of tabs" (click)="onTabSelect(tab)" [class.active]="tab.active" [class.inactive-tab]="tab.status == 2">
+                    <a><i class="fa fa-ellipsis-v  cursor-move "></i> <i class="fa fa-ellipsis-v  cursor-move "></i> {{tab.title}}</a>
+                </li>
+            </ul>
+            <router-outlet></router-outlet>
+           
+        </div>
+    </div>
+</div>

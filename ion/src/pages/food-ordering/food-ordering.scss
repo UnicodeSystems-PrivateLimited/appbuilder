@@ -1,0 +1,17 @@
+page-food-ordering {
+
+    ion-content {
+        .start-btn-container {
+            display: flex;
+            justify-content: center;
+            padding: 60px;
+        }
+        .ios-p {
+            font-size: 1.2rem !important;
+        }
+        .android-p {
+            font-size: 1.4rem !important;
+        }
+    }
+
+}

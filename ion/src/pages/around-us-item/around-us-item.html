@@ -1,0 +1,122 @@
+<!--
+  Generated template for the AroundUsItem page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+    [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+    [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+    <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+      [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{title}}</ion-title>
+    <ion-buttons end>
+      <button ion-button icon-only (click)="onSharingClick()" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="ios-share-outline"></ion-icon>
+            </button>
+    </ion-buttons>
+  </ion-navbar>
+
+</ion-header>
+
+<div class="map-wrap fix-map">
+  <div id="item-map" class="map-fix"></div>
+</div>
+<ion-content class="fix-content">
+  <md-spinner [state]="loader || commentLoader" [type]="'fixed'"></md-spinner>
+
+  <ion-scroll scrollY="true">
+    <div [style.background]="'url(' + bgImage + ')'" [style.height]="'100%'">
+      <ion-list>
+        <ion-item class="btn-update">
+          <ion-avatar item-left>
+            <span>   <img *ngIf="itemData.image && itemData.image !== ''" [src]="itemData.image">
+               <div [style.background-color]='itemData.color' *ngIf="!itemData.image" class="noaroundImage">
+                                </div>
+               </span>
+          </ion-avatar>
+          <h2>{{title}}</h2>
+          <h3>{{itemData.category_name}}</h3>
+        </ion-item>
+      </ion-list>
+      <ion-card class="comments-card around-us-wrap">
+        <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+          [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar) | hex2rgba"
+          (click)="toggleOpeningCard()">
+          {{'DESCRIPTION' | translate}}
+          <ion-icon *ngIf="!toggle_openingtime_card" name="arrow-dropdown-circle"></ion-icon>
+          <ion-icon *ngIf="toggle_openingtime_card" name="arrow-dropup-circle"></ion-icon>
+        </ion-card-header>
+        <ion-card-content *ngIf="toggle_openingtime_card" [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+          <div [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+            class="desc-box" [innerHTML]="itemData.information" padding>
+          </div>
+          <p [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+            *ngIf="!itemData.information || itemData.information === ''"> {{'NOTHINGTEXT' | translate}} </p>
+        </ion-card-content>
+      </ion-card>
+
+      <ion-card class="comments-card around-us-wrap" *ngIf="globalService.appScreenConfigData && globalService.appScreenConfigData?.user_comment_ability">
+        <ion-card-header [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar) | hex2rgba"
+          [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+          (click)="toggleCommentsCard()">
+          {{comments.length}} {{'COMMENTSWITHLENGTH' | translate}}
+          <ion-icon *ngIf="!toggle_comment_card" name="arrow-dropdown-circle"></ion-icon>
+          <ion-icon *ngIf="toggle_comment_card" name="arrow-dropup-circle"></ion-icon>
+        </ion-card-header>
+        <ion-list *ngIf="comments.length && toggle_comment_card">
+          <ion-item *ngFor="let comment of comments; let i = index;" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar))| hex2rgba">
+            <ion-avatar *ngIf="comment.picture && comment.picture !== ''" item-left>
+              <img [src]="comment.picture">
+            </ion-avatar>
+            <ion-icon *ngIf="!comment.picture || comment.picture === ''" name="person" item-left></ion-icon>
+            <span>
+                        <h2 [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{comment.name}}</h2>
+                        <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{comment.description}}</p>
+                        </span>
+            <span item-right>
+                  <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{comment.created_at | servertimeformatpipe}}</p>
+                        </span>
+          </ion-item>
+
+        </ion-list>
+        <ion-item *ngIf="!comments.length && toggle_comment_card" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+          [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+          {{'NOCOMMENTSTEXT' | translate}}
+        </ion-item>
+        <ion-row *ngIf="toggle_comment_card" [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+          <button ion-button icon-left (click)="onPostCommentClick()" [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+            [style.color]="globalService.initData.globalStyleSettings.features.button_text">
+                            <ion-icon name="text"></ion-icon>
+                            {{'POSTBUTTONTEXT' | translate}}
+                        </button>
+        </ion-row>
+      </ion-card>
+    </div>
+  </ion-scroll>
+
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar color="primary" no-shadow>
+    <ion-row>
+      <ion-col center text-center width-25 (click)="showCallPrompt()">
+        <ion-icon name="call"></ion-icon>
+        <span> {{'CALLUSTITLE' | translate}}</span>
+      </ion-col>
+      <ion-col center text-center width-25 (click)="onDirectionClick()">
+        <ion-icon name="compass"></ion-icon>
+        <span> {{'DIRECTIONTITLE' | translate}}</span>
+      </ion-col>
+      <ion-col center text-center width-25 (click)="onMailClick()">
+        <ion-icon name="mail"></ion-icon>
+        <span> {{'EMAILTITLE' | translate}}</span>
+      </ion-col>
+      <ion-col center text-center width-25 (click)="onWebsiteClick()">
+        <ion-icon name="home"></ion-icon>
+        <span> {{'WEBSITETITLE' | translate}}</span>
+      </ion-col>
+    </ion-row>
+  </ion-toolbar>
+</ion-footer>

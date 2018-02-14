@@ -1,0 +1,371 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-35">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+            </ul>
+        </div>
+    </div>
+
+
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="dotted-bootom-div layout-column layout-align-end">
+                <div class=" layout-row layout-align-space-between-center pdf-box ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                        <li class="title-sbhead">You have {{listCategory.length}} category(s)</li>
+                    </ul>
+                    <button class="green-btn" (click)="showAddCategoryDialog()">
+                        <i class="fa fa-plus ion-right" aria-hidden="true"></i> Add New Category
+                    </button>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()">
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedCategory.length > 0 && selectedCategory.indexOf(true) !== -1" (click)="onCategoryDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>
+            </div>
+            <div [dragula]="CATEGORY_LIST_BAG_NAME" [dragulaModel]="listCategory">
+                <div class="dotted-bootom-div layout-row somespace-top layout-align-start-center" *ngFor="let item of listCategory">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedCategory[item.id]" (click)="onCheckCategoryTabChange(selectedCategory[item.id], item.id)">
+                            <span></span>
+                        </label>
+                        <span class="layout-row layout-align-center-center"><i aria-hidden="true" class="fa fa-arrows cursor-move"></i></span>
+                        <div class="">
+                            <img src="{{item.thumbnail|| '../../../../assets/img/no-image.png'}}" width="50px" alt="{{item.name + 'thumbnail'}}">
+                        </div>
+                        <div class="layout-column menu-tb-span m-l-10">
+                            <span>{{item.section}}</span>
+                            <span>{{item.name}}</span>
+                            <span *ngIf="item.status === 2" class="menu-item-disabled">INACTIVE</span>
+                        </div>
+                    </div>
+                    <div class="flex-50 layout-row layout-align-end  remove-r-padding  pad-r-15">
+                        <span class=""><button class="edit-btn add-button" (click)="showListItemContentDialog(item.id)">Add Items</button></span>
+                        <span class="wrap-address "><button class="red" (click)="showEditCategoryDialog(item.id)">Edit</button></span>
+                        <!--<span class="wrap-address "><button class="red" (click)="onDeleteClick(item.id)">Delete</button></span>-->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+
+
+
+
+</div>
+<!-- Add Category Dialog START-->
+<p-dialog [draggable]="false"  header="Add New Category" [(visible)]="addCategoryDialogDisplay" modal="modal" class="app-dialog add-app  ct3-dialog info-wrap info-2"
+    (onAfterHide)="onCategoryDialogHide()" >
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form (ngSubmit)="onAddCategorySubmit()">
+        <div class="layout-column border-all white-bg ">
+            <div class="web-bg">
+                <div class="layout-row m-b-15 layout-align-space-between">
+                    <div class="layout-column flex-45">
+                        <label>Section
+                            <i class="fa fa-info-circle l" tooltip="Specify the section title. This can be used to categorize information" tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <input class="input-class" type="text" [(ngModel)]="addCategoryData.section">
+                    </div>
+                    <div class="layout-column flex-45">
+                        <label>Name
+                            <i class="fa fa-info-circle l" tooltip="Enter the name or title" tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <input class="input-class" type="text" [(ngModel)]="addCategoryData.name">
+                    </div>
+                </div>
+                <div class="layout-row m-b-15 layout-align-space-between">
+                    <div>
+                        <label class="checkbox-inline custom-checkbox nowrap">
+                            <input  id="inlineCheckbox01" type="checkbox" [(ngModel)]="addCategoryData.status">
+                            <span>Active
+                                <i class="fa fa-info-circle l" tooltip="Check this box to have this category active" tooltipPlacement="right" aria-hidden="true"></i>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-start-center" *ngIf="imageShow">
+                    <span>Thumbnail</span>
+                    <span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Upload Thumbnail Image' tooltipPlacement="right" aria-hidden="true"></i></span>
+                    <thumbnail-file-reader (delete)="deleteThumbnailCategoryImage(event,addCategoryData.id)" [btnText]="'Upload Image'" [defaultPicture]="addCategoryData.thumbnail"
+                        (complete)="onThumbnailCategoryImageChange($event)">
+                    </thumbnail-file-reader>
+                </div>
+            </div>
+
+        </div>
+        <p-footer>
+            <div class="save-btn">
+                <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+            </div>
+        </p-footer>
+    </form>
+</p-dialog>
+<!-- Add Category Dialog END-->
+
+<!-- List Category Item Dialog START-->
+<p-dialog [draggable]="false"  header="Item List" [(visible)]="listCategoryItemDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add menu-tb info-wrap info-2"
+    >
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="layout-column  item-list-wrapper white-bg web-bg border-all " *ngIf="categoryItems">
+        <div class="layout-column layout-align-space-between mn-tb-1">
+            <!--<div class="dotted-bootom-div layout-column layout-align-end">-->
+            <div class=" layout-row layout-align-space-between-center ">
+                <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                    <li class="title-sbhead">You have {{categoryItems.length}} item(s)</li>
+                </ul>
+                <button class="green-btn" (click)="showAddCategoryItemDialog()">
+                    <i class="fa fa-plus" aria-hidden="true"></i> Add New Item
+                </button>
+            </div>
+            <div class="layout-row layout-align-space-between m-t-10">
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAllItem" (change)="onCheckAllItemChange()" >
+                    <span>Select All</span>
+                </label>
+                <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onItemDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+            </div>
+        </div>
+        <div [dragula]="CATEGORY_ITEM_BAG_NAME" [dragulaModel]="categoryItems">
+            <div *ngFor="let item of categoryItems" class="dotted-bootom-div layout-row somespace-top mn-tb-2 layout-align-start-center">
+                <div class="flex-80 layout-row layout-align-start-center">
+                    <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">                        
+                        <input type="checkbox" id="inlineCheckbox06"  [(ngModel)]="selectedItem[item.id]" (click)="onCheckItemTabChange(selectedItem[item.id], item.id)">
+                        <span></span>
+                    </label>
+                    <span><i class="fa fa-arrows cursor-moves" aria-hidden="true"></i></span>
+                    <div class="">
+                        <img src="{{item.thumbnail|| '../../../../assets/img/no-image.png'}}" width="50px">
+                    </div>
+                    <div class="layout-column menu-tb-span m-l-10">
+                        <span>{{item.name}}</span>
+                        <span *ngIf="item.status === 2" class="menu-item-disabled">INACTIVE</span>
+                    </div>
+
+                </div>
+                <div class="flex-20 layout-row layout-align-end">
+                    <button class="green {{item.id}}" (click)="showEditContentDialog(item.id)"><i class="fa fa-pencil-square-o"></i></button>
+                    <!--<span class="lastspan-out"><button class="red" (click)="onDeleteItemClick(item.id)"><i class="fa fa-trash"></i></button></span>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+<!-- List Category Item Dialog END-->
+
+
+<!-- Add Category Item Dialog START -->
+<p-dialog [draggable]="false"  header="Add New Category Item" class="app-dialog add-app info-wrap info-2" [(visible)]="addCategoryItemDialogDisplay"
+    modal="modal" (onAfterHide)="onCategoryItemDialogHide()" >
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form (ngSubmit)="onAddItemSubmit()">
+        <div class="border-all white-bg web-bg edit-dialog-wrap">
+            <div class="layout-align-start"> <span class="layout-row setspace">Color Settings :</span></div>
+            <div class="layout-row layout-align-start content-center-align">
+                <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox" id="inlineCheckbox01" type="checkbox"  [(ngModel)]="addCategoryItemData.use_global_colors" (click)="onItemUseGlobalClick()">
+                    <span>Use Global Background & Text Colors <i class="fa fa-info-circle layout-row setinput-icon" tooltip="Use the Global Background & Text Colors instead of custom colors" tooltipPlacement="right" aria-hidden="true"></i></span>
+                </label> </div>
+
+            <div class="updatecolor-box layout-row block-1">
+                <div class="overlay" [style.display]="itemOverlayDisplay"></div>
+
+                <label>Background</label><span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Select a custom background color for your text area. You must click "Update Colors" in order for the changes to reflect. The global color will be used if nothing is selected.' tooltipPlacement="right" aria-hidden="true"></i></span>
+                <input class="input-class" [(colorPicker)]="addCategoryItemData.background_color" [style.background]="addCategoryItemData.background_color"
+                    [value]="addCategoryItemData.background_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly>
+
+                <label>Text</label><span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Select a custom text color. You must click "Update Colors" in order for the changes to reflect. The global color will be used if nothing is selected.' tooltipPlacement="right" aria-hidden="true"></i></span>
+                <input class="input-class" [(colorPicker)]="addCategoryItemData.text_color" [style.background]="addCategoryItemData.text_color"
+                    [value]="addCategoryItemData.text_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly>
+
+
+                <button type="button" (click)="onUpdateColorClick()">Update Colors</button>
+            </div>
+
+            <div class="againtab-container-box">
+                <div class="header-background">
+                    <tabset class="container-tab-detail">
+                        <tab heading="General Information">
+                            <div class="tabinner-space">
+                                <div class="uploaded-file-box">
+                                    <div class="layout-row  layout-align-start-center" *ngIf="imageShow">
+                                        <label class="checkbox-inline custom-checkbox nowrap">
+                                   <input id="inlineCheckbox01" type="checkbox" [(ngModel)]="addCategoryItemData.is_header_required">
+                                    <span>&nbsp;</span>
+                                </label>
+
+                                        <span>Phone Header Image</span>
+                                        <i class="fa fa-info-circle  setinput-icon" tooltip='Upload a Phone Header Image 640x264px.' tooltipPlacement="right" aria-hidden="true"></i>
+
+                                        <thumbnail-file-reader (delete)="deleteImage(event,'phone_header',addCategoryItemData.id)" [btnText]="'Browse'" [imageTypeHeader]="true"
+                                            [defaultPicture]="addCategoryItemData.phone_header_image" (complete)="onPhoneHeaderImageChange($event)">
+                                        </thumbnail-file-reader>
+                                    </div>
+                                    <div class=" layout-row layout-align-start-center p-l-25" *ngIf="imageShow">
+                                        <span class="m-l-10 p-l-20">Tablet Header Image</span>
+                                        <i class="fa fa-info-circle  setinput-icon" tooltip='Upload a Tablet Header Image 1536x634px.' tooltipPlacement="right" aria-hidden="true"></i>
+
+                                        <thumbnail-file-reader (delete)="deleteImage(event,'tablet_header',addCategoryItemData.id)" [btnText]="'Browse'" [imageTypeHeader]="true"
+                                            [defaultPicture]="addCategoryItemData.tablet_header_image" (complete)="onTabletHeaderImageChange($event)">
+                                        </thumbnail-file-reader>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="layout-row m-b-15 layout-align-space-between">
+                                        <div class="layout-column flex-45">
+                                            <label class="layout-row">Section
+                                                <i class="fa fa-info-circle layout-row setinput-icon" tooltip="section" tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                            <input id="sectoin" type="text" [(ngModel)]="addCategoryItemData.section">
+                                        </div>
+                                        <div class="layout-column flex-45">
+                                            <label class="layout-row">Name
+                                                <i class="fa fa-info-circle layout-row setinput-icon" tooltip="Name" tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                            <input id="name" type="text" [(ngModel)]="addCategoryItemData.name">
+                                        </div>
+                                    </div>
+
+                                    <div class="layout-column">
+                                        <label class="checkbox-inline custom-checkbox nowrap">
+                                            <input id="inlineCheckbox02" type="checkbox" [(ngModel)]="addCategoryItemData.add_header_and_comment">
+                                            <span>  Add Header & Comment Sections<i class="fa fa-info-circle layout-row setinput-icon" tooltip="This will display a header image section and enable commenting ability" tooltipPlacement="right" aria-hidden="true"></i></span>
+                                        </label>
+                                        <label class="checkbox-inline custom-checkbox nowrap m-t-10">
+                                            <input id="inlineCheckbox03" type="checkbox" [(ngModel)]="addCategoryItemData.status">
+                                            <span>Status<i class="fa fa-info-circle layout-row setinput-icon" tooltip="status" tooltipPlacement="right" aria-hidden="true"></i></span>
+                                        </label>
+
+                                    </div>
+
+                                    <div class="m-t-10">
+                                        <label>Description<span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Enter your content here, you can also use images, links and more' tooltipPlacement="right" aria-hidden="true"></i></span></label>
+                                        <!--<ckeditor *ngIf="showEditor" [config]="ckEditorConfig" [(ngModel)]="addCategoryItemData.description"></ckeditor>-->
+                                        <div id="description-editor"></div>
+                                    </div>
+                                </div>
+                                <div class="layout-row m-t-10 layout-align-start-center" *ngIf="imageShow">
+                                    <span>Thumbnail</span>
+                                    <span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Upload Thumbnail Image 1536x634px.' tooltipPlacement="right" aria-hidden="true"></i></span>
+
+                                    <thumbnail-file-reader (delete)="deleteThumbnailImage(event,'thumbnail',addCategoryItemData.id)" [btnText]="'Browse'" [defaultPicture]="addCategoryItemData.thumbnail"
+                                        (complete)="onThumbnailImageChange($event)">
+                                    </thumbnail-file-reader>
+                                </div>
+                            </div>
+                        </tab>
+                        <tab heading="Comments" ng-reflect-heading="Comments" class="tab-pane">
+                            <div class="tabinner-space comment-sec">
+                                <span>Showing {{comments.length}} Comment(s):</span>
+
+                                <div class="coment-conct-wrap">
+                                    <table class="flex-100 layout-column">
+                                        <tbody class="comment-box-wrap">
+                                            <tr class="layout-row flex-100">
+                                                <td class="flex-30 layout-row layout-align-center-center cl-up">Date</td>
+                                                <td class="flex-70 layout-row">
+                                                    <table class="layout-row flex-100">
+                                                        <tbody class="layout-row flex-100">
+                                                            <tr class="layout-row flex-100">
+                                                                <td class="flex-80 layout-align-center-center cl-up">Name/Comment</td>
+                                                                <td class="flex-20 layout-align-center-center cl-up opening-time-wrap-th "></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody class="comment-box-wrap ">
+                                            <tr class="layout-row flex-100" *ngFor="let comment of comments">
+                                                <td class="flex-30 layout-row layout-align-center-center cl-up-1  b-l-r">{{comment.date}}</td>
+                                                <td class="flex-70 layout-row">
+                                                    <table class="layout-row flex-100">
+                                                        <tbody class="layout-column flex-100">
+                                                            <tr class="layout-row flex-100 ">
+                                                                <td class="flex-80 layout-align-center-center cl-up-1 border-r "> {{comment.name}}</td>
+                                                                <td class="flex-20 layout-align-center-center layout-row cl-up-1 "><button class="red" type="button" (click)="deleteComment(comment.id)">Delete</button></td>
+                                                            </tr>
+                                                            <tr class="cl-up-1 layout-row flex-100 layout-align-start-center ">
+                                                                {{comment.description}}
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+            <div class="save-btn">
+                <button class="blue-btn btn btn-lg" [disabled]="add_new_item_button_hide" type="submit">Save Changes</button>
+            </div>
+        </div>
+
+    </form>
+</p-dialog>
+<!-- Add Category Item Dialog END -->
+
+<!-- Delete Item Dialog START 
+<p-dialog header="Delete Item ?" [(visible)]="showDeleteItemDialog" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected menu item ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteItem()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class="login-btn cncle-btn cursor-p" (click)="showDeleteItemDialog=false">No</a>
+        </div>
+    </footer>
+</p-dialog>-->
+<!-- Delete Item Dialog END -->
+
+<!-- Delete Category Dialog START 
+<p-dialog header="Delete Category ?" [(visible)]="showDeleteCategoryDialog" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected Category ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteCategory()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class="login-btn cncle-btn cursor-p" (click)="showDeleteCategoryDialog=false">No</a>
+        </div>
+    </footer>
+</p-dialog>
+ Delete Category Dialog END -->

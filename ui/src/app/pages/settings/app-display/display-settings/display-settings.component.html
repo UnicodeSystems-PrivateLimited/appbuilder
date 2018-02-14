@@ -1,0 +1,53 @@
+<div class="layout-row flex-100">
+    <p-tabView class="layout-row flex-70 app-disply-section" (onChange)="onSettingsTabChange($event)">
+        <p-tabPanel header="HOME SCREEN" class="layout-row ">
+            <p-tabView orientation="left" class="mon-left-wrap" (onChange)="onHomeScreenTabChange($event)">
+                <p-tabPanel header="LAYOUT" [selected]="true" [disabled]="homeScreenService.disabledHomeScreenTabs[TAB_LAYOUT]">
+                    <layout (traditionalPositionChange)="onTraditionalPositionChange($event)"></layout>
+                </p-tabPanel>
+                <p-tabPanel header="EXTRA BUTTONS" [disabled]="homeScreenService.disabledHomeScreenTabs[TAB_EXTRA_BUTTONS]">
+                    <extra-buttons></extra-buttons>
+                </p-tabPanel>
+                <p-tabPanel header="SUBTABS" [disabled]="homeScreenService.disabledHomeScreenTabs[TAB_SUBTABS]">
+                    <sub-tabs></sub-tabs>
+                </p-tabPanel>
+                <p-tabPanel header="HEADERS" [disabled]="homeScreenService.disabledHomeScreenTabs[TAB_HEADERS]">
+                    <header></header>
+                </p-tabPanel>
+                <p-tabPanel header="BUTTONS" [disabled]="homeScreenService.disabledHomeScreenTabs[TAB_BUTTONS]">
+                    <buttons></buttons>
+                </p-tabPanel>
+                <p-tabPanel header="ICON COLOR" [disabled]="homeScreenService.disabledHomeScreenTabs[TAB_ICON_COLOR]">
+                    <icon-color></icon-color>
+                </p-tabPanel>
+            </p-tabView>
+        </p-tabPanel>
+        <p-tabPanel header="GLOBAL STYLE" class="layout-row ">
+            <p-tabView orientation="left" class="mon-left-wrap">
+                <p-tabPanel header="HEADER" [selected]="true">
+                    <headers></headers>
+                </p-tabPanel>
+                <p-tabPanel header="FONTS">
+                    <fonts></fonts>
+                </p-tabPanel>
+                <p-tabPanel header="LISTS">
+                    <lists></lists>
+                </p-tabPanel>
+                <p-tabPanel header="FEATURES">
+                    <features></features>
+                </p-tabPanel>
+                <p-tabPanel header="INDIVIDUAL TABS">
+                    <individual-tabs></individual-tabs>
+                </p-tabPanel>
+                <p-tabPanel header="BLUR EFFECT">
+                    <blur-effect></blur-effect>
+                </p-tabPanel>
+            </p-tabView>
+        </p-tabPanel>
+    </p-tabView>
+    <app-display-mobile *ngIf="homeScreenService.homeScreenSettingsReady && selectedSettingsTab == 0" [settings]="homeScreenService.homeScreenSettings"
+        [appId]="appId" [selectedTab]="selectedTab" class="layout-column layout-align-start-center flex-30"></app-display-mobile>
+    <app-display-global *ngIf="globalStyleService.globalStyleSettingsReady && selectedSettingsTab == 1" [globalSettings]="globalStyleService.globalStyleSettings"
+        [appId]="appId" [selectedTab]="selectedTab" class="layout-column layout-align-start-center flex-30"></app-display-global>
+
+</div>

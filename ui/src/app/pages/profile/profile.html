@@ -1,0 +1,105 @@
+<div class="tp-profile" *ngIf="account">
+    <div class="layout-row layout-align-space-between ">
+        <div class="inner-first-container flex-25">
+            <div class="profile-image">
+                <ba-card title="Picture Uploader" baCardClass="with-scroll">
+                    <ba-picture-uploader [picture]="profile.picture" [defaultPicture]="defaultPicture" [uploaderOptions]="uploaderOptions"></ba-picture-uploader>
+                </ba-card>
+            </div>
+        </div>
+        <div class="inner-first-container flex-70">
+            <div class="layout-row layout-align-space-between inner-heading">
+                <div class="">Personal Detail</div>
+                <div *ngIf="dataService.account.role == 1 || dataService.account.role == 5" class="edit-btn" (click)="showDialog()"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>Edit</div>
+            </div>
+            <div class="inner-container-content">
+                <div class="container-content-box">
+                    <form class="form-horizontal">
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="tp-key col-sm-4 form-control-label">First Name</label>
+                            <div class="col-sm-6">
+                                <label for="inputEmail3" class="tp-value form-control-label">{{account?.first_name}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputEmail3" class="tp-key col-sm-4 form-control-label">Last Name</label>
+                            <div class="col-sm-6">
+                                <label for="inputEmail3" class="tp-value form-control-label">{{account?.last_name}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label for="inputPassword3" class="tp-key col-sm-4 form-control-label">Email</label>
+                            <div class="col-sm-6">
+                                <label for="inputEmail3" class="tp-value form-control-label">{{account?.email}}</label>
+                            </div>
+                        </div>
+                        <div class="form-group row"  *ngIf="dataService.account.role == 1 || dataService.account.role == 5">
+                            <label for="inputPassword3" class="tp-key col-sm-4 form-control-label">Change Password</label>
+                            <div class="col-sm-6 m-r-10">
+                                <label for="inputEmail3" (click)="dialogChangePass()" class="tp-value  form-control-label edt-c-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i>&nbsp;&nbsp;&nbsp;Edit</label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Edit Profile Modal-->
+
+    <p-dialog [draggable]="false"  header="Edit Profile" [(visible)]="display" modal="modal" class="app-dialog carte-dialog " (onAfterHide)="cancelProfile()" >
+        <div *ngIf="isDelayedRunning" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form class="border-all web-bg white-bg">
+            <div class="form-group">
+                <label for="FirstName">First Name</label>
+                <input type="text" class="form-control input-class2" id="exampleInputFirstName" placeholder="First Name" [(ngModel)]="account.first_name">
+            </div>
+            <div class="form-group">
+                <label for="LastName">Last Name</label>
+                <input type="text" class="form-control input-class2" id="exampleInputLastName" placeholder="Last Name" [(ngModel)]="account.last_name">
+            </div>
+            <div class="form-group">
+                <label for="Email">Email Address</label>
+                <input type="email" class="form-control input-class2" id="exampleInputEmail" placeholder="Email Address" [(ngModel)]="account.email">
+            </div>
+        </form>
+        <p-footer>
+            <div class="layout-row layout-align-end-center">
+                <button type="submit" class=" cncl-btn cursor-p" (click)="cancelProfile()">Cancel</button>&nbsp;&nbsp;&nbsp;
+                <button type="submit" class=" green-btn cursor-p" (click)="profileUpdate()">Submit</button>
+            </div>
+        </p-footer>
+    </p-dialog>
+
+    <!--Change Password Modal-->
+
+    <p-dialog [draggable]="false"  header="Change Password" [(visible)]="changePass" modal="modal" class="app-dialog carte-dialog " >
+        <div *ngIf="isDelayedRunning" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form class="border-all white-bg web-bg">
+            <div class="form-group">
+                <label for="oPassword">Old Password</label>
+                <input type="password" class="form-control input-class2" id="exampleInputName" placeholder="Old Password" [(ngModel)]="data.old_password">
+            </div>
+            <div class="form-group">
+                <label for="nPassword">New Password </label>
+                <input type="password" class="form-control input-class2" id="exampleInputEmail" placeholder="New Password" [(ngModel)]="data.new_password">
+            </div>
+            <div class="form-group">
+                <label for="cPassword">Confirm Password </label>
+                <input type="password" class="form-control input-class2" id="exampleInputEmailConfirm" placeholder="Confirm Password" [(ngModel)]="data.confirm_password">
+            </div>
+        </form>
+        <p-footer>
+            <div class="layout-row layout-align-end-center">
+                <button type="submit" class=" cncl-btn  cursor-p" (click)="changePass=false">Cancel</button>&nbsp;&nbsp;&nbsp;
+                <button type="submit" class=" green-btn  cursor-p" (click)="changePassword()">Submit</button>
+            </div>
+        </p-footer>
+    </p-dialog>
+</div>

@@ -1,0 +1,8 @@
+<div class="header tabinner-space m-t-10 button-tab-wrapper">
+    <div class="layout-column layout-row layout-align-start-center">
+        <div class="layout-row layout-from-wrap layout-align-start-center flex-100">
+            <label class="flex-30">Global Fonts</label>
+            <p-dropdown class="layout-row layout-align-start-center flex-100" [options]="service.font_list" [(ngModel)]="service.globalStyleSettings.fonts.font_id" (onChange)="onFontClick(service.globalStyleSettings.fonts.font_id)"></p-dropdown>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="auth-main">
+    <div class="header ">
+        <img src="../../assets/img/logo.png"/>
+    </div>
+    <div class="login-box layout-align-center-center layout-column">
+        <form [ngFormModel]="form" (ngSubmit)="onSubmit(form.value)" class="layout-column layout-align-center-center" >
+            <h3>Member Login <img src="../../assets/img/hand.png"/></h3>
+            <div class="input-group" [ngClass]="{'has-error': (!email.valid && email.touched), 'has-success': (email.valid && email.touched)}">
+                 <span><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                <input [ngFormControl]="email" type="email" value="john.snow@gmail.com" class="form-control with-primary-addon" placeholder="Email" aria-describedby="basic-addon1" required="">
+            </div>
+            <div class="input-group" [ngClass]="{'has-error': (!password.valid && password.touched), 'has-success': (password.valid && password.touched)}">
+                 <span><i class="fa fa-lock" aria-hidden="true"></i></span>
+                <input [ngFormControl]="password" value="12345" type="password" class="form-control with-primary-addon" placeholder="Password" aria-describedby="basic-addon1" required="">
+            </div>
+            <button  [disabled]="!form.valid" type="submit">Log In</button>
+            
+        </form>
+        <a href="../#/forgotPassword" >Forgot your password?</a>
+    </div>
+</div>

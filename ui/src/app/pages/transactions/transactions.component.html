@@ -1,0 +1,669 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready" class="flex-100 c-submitted-wraper mar-15 border-all c-submitd-wrapper">
+    <tabset *ngIf="foodOrderingTabIds.length" class="container-tab-detail" #foodOrdersTabset>
+        <tab *ngFor="let foodTab of foodOrderingTabIds;" heading="{{foodTab.title}}" (select)="onTabChange($event,foodTab.id)">
+            <div class="pad-15 tab-foodOrders" id="tab_foodorders">
+                <div class="row">
+                    <div class="col-sm-3 form-elements">
+                        <div class="form-element active">
+                            <div class="subtitle layout-row layout-align-center-center">
+                                <span>Order Requests</span>
+                                <p></p>
+                            </div>
+                            <div class="row two-columns">
+                                <div class="col-sm-6">
+                                    <span>{{foodOrderCount.recent_orders?foodOrderCount.recent_orders:0}}</span>Recent Orders
+                                </div>
+                                <div class="col-sm-6">
+                                    <span>{{foodOrderCount.total_orders?foodOrderCount.total_orders:0}}</span>Total Orders
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-element future-order-section">
+                            <div class="subtitle future-order-content layout-row layout-align-center-center">
+                                <span class="future-order-value m-r-10">{{foodOrderCount.future_orders?foodOrderCount.future_orders:0}}</span>&nbsp;
+                                <span class=" m-l-10">Future Orders</span>
+                            </div>
+
+                        </div>
+                        <div class="search-row search-keywords-field">
+                            <form class="form-search-app">
+                                <div class="nav-search m-b-10">
+                                    <div class="search-box">
+                                        <i class="fa fa-search ion-right"></i>
+                                        <input type="text" [(ngModel)]="foodOrdersSearch.title" class="search-key-container form-control" placeholder="Search">
+                                    </div>
+                                </div>
+                                <div class="layout-row layout-align-center-center  m-b-10">
+                                    <p-dropdown [options]="locationList" [(ngModel)]="foodOrdersSearch.location" class="cat-drop app-drop layout-align-center-center layout-row flex-100"></p-dropdown>
+                                </div>
+                                <div class="layout-row layout-align-center-center  m-b-10">
+                                    <p-dropdown [options]="orderTypes" [(ngModel)]="foodOrdersSearch.type" class="cat-drop app-drop layout-align-center-center layout-row flex-100"></p-dropdown>
+                                </div>
+                                <div class="layout-row layout-align-center-center  m-b-10">
+                                    <p-dropdown [options]="orderStates" [(ngModel)]="foodOrdersSearch.states" class="cat-drop app-drop layout-align-center-center layout-row flex-100"></p-dropdown>
+                                </div>
+                                <div class="layout-row layout-align-center-center  m-b-10">
+                                    <p-dropdown [options]="paidStatus" [(ngModel)]="foodOrdersSearch.status" class="cat-drop app-drop layout-align-center-center layout-row flex-100"></p-dropdown>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- <div class="layout-row layout-align-center-center m-b-10">
+                            <span>Select or drag to select your date or range</span>
+                        </div>
+                        <p-calendar [(ngModel)]="currentDate" [inline]="true" class="m-b-10"></p-calendar> -->
+                        <div class="layout-row layout-align-space-between-center m-t-10">
+                            <button class="promo-btn" (click)="resetSearch()">Reset</button>
+                            <button class="promo-btn" (click)="searchInFoodOrders()">Search</button>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-9 form-entries">
+                        <div class="submitted-data-list">
+                            <div *ngIf="ordersList.length" class="row actionbar">
+                                <div class="col-md-12 layout-row layout-align-space-between-center">
+                                    <div class="pull-left">
+                                        <div class="select-all">
+                                            <label class="checkbox-inline custom-checkbox nowrap m-l-10">
+                                                <input type="checkbox" [(ngModel)]="checkAll" (change)="onCheckAllChange()" id="check-all" />
+                                                <span>Select All</span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right membershp-login-wrp-1">
+                                        <div class="btn-group btn-group-download">
+                                            <button type="button" class="btn btn-info btn-custom btn-hyper dropdown-toggle export-dropdown" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                Export&nbsp;&nbsp;
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li class="disabled c-p" [class.checktrue]="checkedOrder.length > 0 && checkedOrder.indexOf(true) !== -1">
+                                                    <a data-type="csv" data-range="selected" (click)="downloadCsv(2)">+ CSV&nbsp;(Selected)</a>
+                                                </li>
+                                                <li class="bar c-p">
+                                                    <a data-type="csv" data-range="all" (click)="downloadCsv(1)">+ CSV&nbsp;(Total)</a>
+                                                </li>
+                                                <!-- <li>
+                                                    <a href="#" data-type="xml" data-range="selected" class="disabled">+ XML&nbsp;(Selected)</a>
+                                                </li>
+                                                <li class="bar">
+                                                    <a href="#" data-type="xml" data-range="all">+ XML&nbsp;(Total)</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-type="rss" data-range="selected" class="disabled">+ RSS&nbsp;(Selected)</a>
+                                                </li>
+                                                <li>
+                                                    <a href="#" data-type="rss" data-range="all">+ RSS&nbsp;(Total)</a>
+                                                </li> -->
+                                            </ul>
+                                        </div>
+                                        <label class=" list m-b-0 c-p" disabled="disabled">
+                                            <i class="fa fa-trash" [class.checkTrue]="checkedOrder.length > 0 && checkedOrder.indexOf(true) !== -1" (click)="deleteOrders()"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix">
+                            </div>
+                            <div class="data-table">
+                                <!-- <div *ngIf="showEmailFormLoader" class="fm-spinner">
+                                    <div class="fm-double-bounce1"></div>
+                                    <div class="fm-double-bounce2"></div>
+                                </div> -->
+                                <div *ngIf="ordersList.length">
+                                    <div *ngFor="let orders of ordersList; let i=index;">
+                                        <div class="data-table-title">{{orders[0].datetime|date:'mediumDate'}}</div>
+                                        <div class="data-table-list">
+                                            <div class="data-table-row row " *ngFor="let order of orders; let j=index;" [class.selected]="order.id==selectedOrder" (click)="selecteOrder(order.id)">
+                                                <div class="first-row">
+                                                    <div class="data-cell col-xs-2">
+                                                        <div class="checker">
+                                                            <label class="checkbox-inline custom-checkbox nowrap m-l-10">
+                                                                <input type="checkbox" id="check-all" [(ngModel)]="checkedOrder[order.id]" (change)="onCheckChange(checkedOrder[order.id], order.id)"
+                                                                />
+                                                                <span>
+                                                                    <strong>ID:</strong>&nbsp;{{order.id}}</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="data-cell col-xs-2 data-cell-totalprice">
+                                                        <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{order.total_price}}
+                                                    </div>
+                                                    <div class="data-cell col-xs-3 data-cell-datetime">
+                                                        <i class="fa fa-hourglass" aria-hidden="true"></i>{{order.datetime|date:'medium'}}
+                                                    </div>
+                                                    <div class="data-cell col-xs-2 data-cell-order-status">
+                                                        <span class="" [class.order-served]="order.order_status==3" [class.order-unserved]="order.order_status==2" [class.order-cancel]="order.order_status==1">
+                                                            <i class="fa fa-circle" aria-hidden="true"></i> {{order.order_status==1?'Canceled':order.order_status==2?'Unserved':'Served'}}</span>
+                                                    </div>
+                                                    <div class="data-cell col-xs-2 data-cell-user">
+                                                        <i class="fa fa-user" aria-hidden="true"></i> {{order.contact.firstName+' '+order.contact.lastName}}
+                                                    </div>
+                                                    <div class="data-cell col-xs-1 data-cell-data">
+                                                        <span class="data-tble-i pull-right" data-form-data-id="1476467">
+                                                            <i *ngIf="showOrderDetail[order.id]" class="fa fa-angle-down dropdown-toggler c-p" (click)="showOrderDetails(order.id)"></i>
+                                                            <i *ngIf="!showOrderDetail[order.id]" class="fa fa-angle-up dropdown-toggler c-p" (click)="showOrderDetails(order.id)"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+
+                                                <div class="second-row">
+                                                    <div class="data-cell col-xs-8 data-cell-address">
+                                                        <label class="m-l-10">
+                                                            <i class="fa fa-map-marker" aria-hidden="true"></i> {{order.address_section_1}}
+                                                        </label>
+                                                    </div>
+                                                    <div class="data-cell col-xs-4 data-cell-time">
+                                                        <i class="fa fa-check" aria-hidden="true"></i> {{order.type==1?'Dine In':order.type==2?'Takeout':'Delivery'}}
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                                <div *ngIf="showOrderDetail[order.id]" class="data-details">
+                                                    <!-- <div class="data-sub-table fixer-fix"> -->
+                                                    <div class="row layout-row layout-wrap layout-align-stretch">
+                                                        <div class="col-xs-4 items-ordered">
+                                                            <div class="detail-title">Items Ordered</div>
+                                                            <div class="order-items">
+                                                                <div class="row order-item main-item" *ngFor="let item of order.items;">
+
+                                                                    <div class="col-xs-12 clearfix layout-row layout-align-space-between-center">
+                                                                        <div class="order-item-name col-xs-8">({{item.quantity}}) {{item.item_name}}</div>
+                                                                        <div class="order-item-price col-xs-4 pull-right">
+                                                                            <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{item.item_price}}
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-xs-12 clearfix layout-row layout-align-space-between-center m-l-10" *ngFor="let order of item.options;">
+                                                                        <div class="order-item-name col-xs-8">({{order.quantity}}) {{order.option.title}}</div>
+                                                                        <div class="order-item-price col-xs-4 pull-right">
+                                                                            <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{order.option.charges}}</div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="m-t-10">
+                                                                    <div class="row order-item" *ngFor="let tax of order.tax_list;">
+                                                                        <div class="col-xs-12 clearfix layout-row layout-align-space-between-center">
+                                                                            <div class="order-item-name col-xs-8">{{tax.tax.tax_name}}</div>
+                                                                            <div class="order-item-price col-xs-4">
+                                                                                <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{tax.amount}}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="m-t-10">
+                                                                    <div class="row order-item" *ngIf="order.tip && order.tip.amount && order.tip?.percent">
+                                                                        <div class="col-xs-12 clearfix layout-row layout-align-space-between-center">
+                                                                            <div class="order-item-name col-xs-8">Tip(%{{order.tip.percent}})</div>
+                                                                            <div class="order-item-price col-xs-4">
+                                                                                <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{order.tip.amount}}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="m-t-10">
+                                                                    <div class="row order-item" *ngIf="order.convenience_fee">
+                                                                        <div class="col-xs-12 clearfix layout-row layout-align-space-between-center">
+                                                                            <div class="order-item-name col-xs-8">Convenience Fee</div>
+                                                                            <div class="order-item-price col-xs-4">
+                                                                                <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{order.convenience_fee}}</div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="detail-subtitle">
+                                                                <strong>Amount Previously Paid</strong>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-xs-12">
+                                                                    <div class="order-item-price pull-right" *ngIf="order.paid_status==1">
+                                                                        <span [innerHTML]="currencySymbol" class="currencySymbol"></span>0.00</div>
+                                                                    <div class="order-item-price" *ngIf="order.paid_status==2">
+                                                                        <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{order.total_charges}}</div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-4 time-location">
+                                                            <div class="detail-title">Time &amp; Location Received</div>
+                                                            <p>{{order.datetime|date:'MMM d, y, HH:mm:ss'}}</p>
+                                                            <br>
+                                                            <br>
+                                                            <p>
+                                                                <span *ngIf="order.address_section_1">{{order.address_section_1+' '}}</span>
+                                                                <span *ngIf="order.address_section_2">{{order.address_section_2}}</span>
+                                                            </p>
+                                                        </div>
+                                                        <div class="col-xs-3 delivery-info">
+                                                            <div class="detail-title">Delivery Information</div>
+                                                            <p>{{order.contact.firstName+' '+order.contact.lastName}}</p>
+                                                            <p *ngIf="order.contact.phone">{{order.contact.phone}}</p>
+                                                            <p *ngIf="order.contact.email">{{order.contact.email}}</p>
+                                                            <p *ngIf="order.contact.locationName">{{order.contact.locationName}},</p>
+                                                            <p *ngIf="order.contact.addressLine">{{order.contact.addressLine}},</p>
+                                                            <p *ngIf="order.contact.apartment">{{order.contact.apartment}}</p>
+                                                            <p *ngIf="order.contact.zip">{{order.contact.zip}}</p>
+                                                        </div>
+                                                        <div class="col-xs-12 additional-notes clearfix"></div>
+                                                        <div class="clearfix full-width">
+                                                            <div class="btn-edit pull-right c-p" (click)="onOpenEditOrderDialog(order)">
+                                                                <i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!-- </div> -->
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="!ordersList.length" class="layout-column text-center no-data-found layout-align-start-center white-bg border-all">
+                                    <h2>Nothing to see here !</h2>
+                                </div>
+                                <div *ngIf="ordersList.length" class="page-block layout-row layout-align-end-center ">
+
+                                    <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"
+                                        [maxSize]="maxSize" class="pagination-sm layout-row m-r-10 layout-align-end-center flex-100 pagi-tabsub"
+                                        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                                    </pagination>
+                                    <div class="flex-20 layout-row layout-align-space-between-center dis-wrap">
+                                        <span class="flex-100 layout-row">Total: {{totalItems}}</span>
+                                        <p-dropdown [options]="count" [(ngModel)]="selectedCount" (onChange)="setItemsPerPage(selectedCount)" class="layout-align-end layout-row  cat-drop flex-100"></p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+    <div *ngIf="!foodOrderingTabIds.length" class="layout-column text-center no-data-found layout-align-start-center white-bg">
+        <h2>Nothing to see here !</h2>
+    </div>
+</div>
+<!-- select  Date Dialog START -->
+<p-dialog id="order-dialog" [draggable]="false" header="Edit Order" [(visible)]="showEditOrderDialog" modal="modal" class="app-dialog submitted-tab"
+    width="1000" (onAfterHide)="closeModel()">
+    <tabset class="container-tab-detail">
+        <tab heading="ITEMS ORDERED">
+            <div>
+                <div>
+                    <div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="header-edit-item layout-row layout-align-space-between-center">
+                                    <!-- Update -->
+                                    <div class="m-r-10">
+                                        <div class="select-all layout-row layout-align-start-center">
+                                            <label class="checkbox-inline custom-checkbox nowrap">
+                                                <input [(ngModel)]="checkAllItems" type="checkbox" (change)="onItemCheckAllChange()" id="check-all" />
+                                                <span>Select All</span>
+                                            </label>
+
+                                        </div>
+
+                                    </div>
+                                    <div class="layout-row layout-align-end-center">
+
+                                        <button type="button" class="btn m-l-10" *ngIf="!isAddItem && !isEditItem" (click)="onClickAddItem()">Add Item</button>
+                                        <button type="button" class="btn  m-r-10" *ngIf="selectedFoodItems || isEditItem" (click)="confirmChange()">Confirm Change</button>
+                                        <button type="button" class="btn" *ngIf="isAddItem" (click)="onClickCancel()">Cancel</button>
+
+                                        <label class=" list m-b-0 c-p" disabled="disabled">
+                                            <i class="fa fa-trash" [class.checkTrue]="checkedItems.indexOf(true) !== -1 || isAnyOptionSelected" (click)="deleteItems()"></i>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="modal-edit-order-container">
+                                    <div class="modal-add-new-order m-t-10">
+                                        <div class="option-list option-list-cate" *ngIf="isAddItem || isEditItem">
+                                            <form>
+                                                <span *ngIf="selectedFoodCategory || isEditItem" class="back-cate c-p" (click)="onClickBack()">Back</span>
+                                                <div *ngIf="isAddItem" class="layout-row layout-align-start-center">
+                                                    <div class="layout-row layout-align-start-center flex-100 form-group">
+                                                        <div class="flex-100">
+                                                            <span>Category
+                                                                <span class="required-mark">*</span>
+                                                            </span>
+                                                            <div class="layout-row layout-align-start-center flex-100">
+                                                                <!-- <p-dropdown [options]="foodCategory" [(ngModel)]="selectedFoodCategory" (onChange)="changeFoodCategory(selectedFoodCategory)" placeholder="Choose Category" class="cat-drop app-drop layout-align-center-center layout-row"></p-dropdown> -->
+                                                                <div class="dropdown flex-100">
+                                                                    <button class="btn cat-btn dropdown-toggle layout-row layout-align-space-between-center" type="button" data-toggle="dropdown">
+                                                                        <span *ngIf="!selectedFoodCategory" class="flex-90"> Choose Category&nbsp;</span>{{selectedFoodCategory?.label}}
+                                                                        &nbsp;
+                                                                        <span class="caret flex-10 layout-align-center-center">&nbsp;</span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li *ngFor="let cat of foodCategory;" class="c-p" [class.active]="selectedFoodCategory?.value== cat.value">
+                                                                            <a (click)="changeFoodCategory(cat)">{{cat.label}}</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="selectedFoodCategory && isAddItem" class="option-list">
+                                                    <div class="layout-row form-group">
+                                                        <div class="flex-100">
+                                                            <span>Item
+                                                                <span class="required-mark">*</span>
+                                                            </span>
+                                                            <div class="layout-row layout-align-start-center flex-100">
+                                                                <!-- <p-dropdown [options]="foodItems" (onChange)="changeFoodItem(selectedFoodItems)" [(ngModel)]="selectedFoodItems" class="cat-drop app-drop layout-align-center-center layout-row"></p-dropdown> -->
+                                                                <div class="dropdown flex-100">
+                                                                    <button class="btn cat-btn dropdown-toggle layout-row layout-align-space-between-center" type="button" data-toggle="dropdown">
+                                                                        <span *ngIf="!selectedFoodItems" class="flex-90"> Choose Item&nbsp;</span>{{selectedFoodItems?.label}}
+                                                                        &nbsp;
+                                                                        <span class="caret flex-10">&nbsp;</span>
+                                                                    </button>
+                                                                    <ul class="dropdown-menu">
+                                                                        <li *ngFor="let cat of foodItems;" class="c-p" [class.active]="selectedFoodItems?.value== cat.value">
+                                                                            <a (click)="changeFoodItem(cat)">{{cat.label}}</a>
+                                                                        </li>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div *ngIf="selectedFoodItems || isEditItem" class="new-order-step step3 option-list" data-step="3" style="display: block;">
+                                                    <div class="new-order-items-options">
+                                                        <div class="layout-row form-group">
+                                                            <div class="flex-100">
+                                                                <span>Choose Quantity</span>
+                                                                <input type="text" [(ngModel)]="chooseQuantity" class="form-control" name="quantity">
+                                                            </div>
+                                                        </div>
+                                                        <div class="layout-row form-group">
+                                                            <div class="flex-100">
+                                                                <span>Size</span>
+                                                                <div class="layout-row layout-align-center-center flex-100">
+                                                                    <!-- <p-dropdown [options]="itemSizes" [(ngModel)]="selectedItemSize" class="cat-drop app-drop layout-align-center-center layout-row"></p-dropdown> -->
+                                                                    <div class="dropdown flex-100">
+                                                                        <button class="btn cat-btn dropdown-toggle layout-row layout-align-space-between-center" type="button" data-toggle="dropdown">
+                                                                            <span *ngIf="!itemSizes.length" class="flex-90">No Results Found</span> {{selectedItemSize?.label}}
+                                                                            &nbsp;
+                                                                            <span class="caret pull-right flex-10">&nbsp;</span>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu">
+                                                                            <li *ngFor="let cat of itemSizes;" class="c-p" [class.active]="selectedItemSize?.value== cat.value">
+                                                                                <a (click)="changeItemSize(cat)">{{cat.label}}</a>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="layout-row form-group">
+                                                            <div class="flex-100">
+                                                                <span>Options</span>
+                                                                <div class="layout-row layout-align-center-center flex-100" click-outside (clickOutside)="onClickOutside($event)">
+                                                                    <!-- <p-dropdown [options]="options" [(ngModel)]="selectedOptions" class="cat-drop app-drop layout-align-center-center layout-row"></p-dropdown> -->
+                                                                    <div class="dropdown flex-100">
+                                                                        <button class="btn cat-btn layout-row" id="order-option" type="button">
+
+                                                                            <span *ngIf="!options.length" class="flex-90">No Results Found</span>
+                                                                            <span class="flex-90" *ngIf="options.length && !(getSelectedOrderLength())">none selected</span>
+                                                                            <span class="flex-90" *ngIf="options.length &&  getSelectedOrderLength() && !checkAllOption">
+                                                                                <span [innerHTML]="getSelectedOrderLength()"></span> selected</span>
+                                                                            <span class="flex-90" *ngIf="options.length &&  getSelectedOrderLength() && checkAllOption">All selected (
+                                                                                <span [innerHTML]="getSelectedOrderLength()"></span>)</span>
+                                                                            <span class="caret flex-10">&nbsp;</span>
+                                                                        </button>
+                                                                        <ul class="dropdown-menu order-menulist" id="order-menu-list">
+                                                                            <div class="checker select-all-check m-l-10">
+                                                                                <label class="checkbox-inline custom-checkbox nowrap m-l-10">
+                                                                                    <input type="checkbox" [(ngModel)]="checkAllOption" (change)="onCheckAllOptionChange()" id="check-all" />
+                                                                                    <span> Select All</span>
+                                                                                </label>
+
+                                                                            </div>
+                                                                            <li *ngFor="let option of options;" class="orderlist-Item">
+                                                                                <ul>
+                                                                                    <label>{{option[0].option_type_title}}</label>
+                                                                                    <li *ngFor="let opt of option;">
+                                                                                        <label class="checkbox-inline custom-checkbox nowrap">
+                                                                                            <input type="checkbox" [(ngModel)]="checkedOptions[opt.id]" (change)="onOptionCheck(checkedOptions[opt.id],opt.id)" id="check-all"
+                                                                                            />
+                                                                                            <span>{{opt.title}} (
+                                                                                                <p [innerHTML]="currencySymbol" class="currencySymbol"></p>{{opt.charges}})</span>
+                                                                                        </label>
+
+                                                                                    </li>
+                                                                                </ul>
+                                                                            </li>
+                                                                        </ul>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row form-group">
+                                                            <div class="col-md-12">
+                                                                <span>Specific Instructions</span>
+                                                                <span>Additional Notes</span>
+                                                                <textarea name="note" [(ngModel)]="additionalNote" class="form-control" rows="4"></textarea>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                    <form id="form_order_items">
+                                        <div class="layout-column tab-wrapper">
+                                            <div *ngFor="let item of orderData.items;let j=index;" class="layout-column m-t-10 inventory-tab-header">
+                                                <div class="tab-detail flex-100 layout-row">
+                                                    <div class="layout-row flex-90 pad-12-12 tab-stauts-cheak layout-align-start-center">
+                                                        <div class="icon-cheak m-l-10 layout-align-start-center flex-60">
+                                                            <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                                                                <input type="checkbox" class="ng-valid ng-dirty ng-touched" [(ngModel)]="checkedItems[j]" (change)="onCheckItemChange(checkedItems[j], j)">
+                                                                <span></span>
+                                                                <div class="layout-row layout-align-start-center layout-wrap">({{item.quantity}}) {{item.item_name}}</div>
+
+                                                            </label>
+                                                        </div>
+                                                        <div>
+                                                            <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{item.item_price}}</div>
+                                                    </div>
+                                                    <div class="tab-stauts-cheak layout-row flex-10 pad-12-12 layout-align-center-center">
+                                                        <div class="edit-app c-p" (click)="onItemEdit(item,j)">
+                                                            <i aria-hidden="true" class="fa fa-pencil"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div *ngFor="let option of item.options;let i=index" class="tab-detail  flex-80 m-l-10">
+                                                    <div class="tab-detail flex-100 layout-row m-t-10 customize-tab-details">
+                                                        <div class="layout-row flex-100 pad-12-12 tab-stauts-cheak layout-align-space-between-center">
+                                                            <div class="flex-55 layout-align-start-center layout-row">
+                                                                <div class="icon-cheak layout-align-start-center flex-10.0">
+                                                                    <label class="custom-checkbox nowrap layout-row layout-align-start-center">
+                                                                        <input type="checkbox" [(ngModel)]="selectedItemOptions[j][option.option.id]" (change)="onChangeItemsOptionCheck(j)" class="ng-valid ng-dirty ng-touched">
+                                                                        <span></span>
+                                                                        <div class="options-title layout-row layout-align-start-center layout-wrap">{{option.option.title}}</div>
+                                                                    </label>
+
+
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="flex-45 layout-align-space-between-center layout-row">
+                                                                <div class="currency-symbol">
+                                                                    <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{option.option.charges}}</div>
+                                                                <div class="layout-row layout-align-start-center input-option-qty">
+                                                                    <input [(ngModel)]="option.quantity" type="number" min="0" />
+                                                                    <span>Qty</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div *ngFor="let tax of orderData.tax_list;" class="tab-detail  flex-80">
+                                                <div class="tab-detail flex-100 layout-row m-t-10 customize-tab-details tax-details">
+                                                    <div class="layout-row flex-100 pad-12-12 tab-stauts-cheak layout-align-space-between-center">
+                                                        <!-- <div class="flex-100 layout-align-center-center layout-row  m-l-10"> -->
+                                                        <div class="layout-column flex-85">
+                                                            {{tax.tax.tax_name}}
+                                                        </div>
+                                                        <div class="currency-symbol flex-15">
+                                                            <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{tax.amount}}</div>
+                                                        <!-- </div> -->
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-detail  flex-80 " *ngIf="orderData.convenience_fee">
+                                                <div class="tab-detail flex-100 layout-row m-t-10 customize-tab-details">
+                                                    <div class="layout-row flex-100 pad-12-12 tab-stauts-cheak layout-align-start-center">
+                                                        <div class="flex-100 layout-align-space-between-center layout-row">
+                                                            <div class="layout-column flex-85">
+                                                                Convenience Fee
+                                                            </div>
+                                                            <div class="currency-symbol flex-15">
+                                                                <span [innerHTML]="currencySymbol" class="currencySymbol"></span>{{orderData.convenience_fee}}</div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <form id="form_items_ordered">
+                                    <div class="row form-group">
+                                        <div class="col-md-4">
+                                            <span>Type</span>
+                                            <div class="layout-row layout-align-center-center">
+                                                <p-dropdown [options]="editOrderTypes" [(ngModel)]="orderData.type" class="cat-drop app-drop layout-align-center-center layout-row flex-100"></p-dropdown>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-7">
+                                            <span>Date &amp; Time</span>
+                                            <div class="input-group datetimepicker layout-row layout-align-start-center">
+                                                <input type="text" class="form-control" name="placed_on" [value]="orderData.datetime" disabled>
+                                                <span class="calender-icon">
+                                                    <i class="fa fa-calendar" aria-hidden="true"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group only_food_orders">
+                                        <div class="col-md-12">
+                                            <span>Addresses</span>
+                                            <div class="layout-row layout-align-center-center">
+                                                <p-dropdown [options]="editlocationList" [(ngModel)]="orderData.location_id" class="cat-drop app-drop layout-align-center-center layout-row flex-100"></p-dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-3">
+                                            <span>State</span>
+                                            <div class="layout-row layout-align-center-center">
+                                                <p-dropdown [options]="editorderStatus" [(ngModel)]="orderData.order_status" class="cat-drop app-drop layout-align-center-center layout-row flex-100"></p-dropdown>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <span>Paid</span>
+                                            <div class="layout-row layout-align-center-center">
+                                                <p-dropdown [options]="editpaidStatus" [(ngModel)]="orderData.paid_status" class="cat-drop app-drop layout-align-center-center layout-row flex-100"></p-dropdown>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row form-group">
+                                        <div class="col-md-12">
+                                            <span>Shipping Instructions</span>
+                                            <textarea id="modal_order_note" [(ngModel)]="orderData.shipping_instructions" name="delivery_note" class="form-control" rows="4"></textarea>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </tab>
+        <tab heading="CUSTOMER INFORMATION">
+            <form class="customer-information">
+                <div class="layout-row flex-100 layout-wrap">
+                    <input type="hidden" [(ngModel)]="orderData.contact.email" id="d_email" value="">
+                    <div class="layout-row flex-100 layout-align-start-center m-b-10 modal-subtitle">Delivery Address</div>
+                    <div class="layout-row flex-100 layout-wrap m-t-10">
+                        <div class="layout-column flex-50 layout-align-space-start-center">
+                            <div class="layout-row flex-100 layout-align-space-between-center m-b-10">
+                                <div class="flex-50  p-l-r-10">
+                                    <div class="form-group layout-column">
+                                        <label for="d_first_name">First Name</label>
+                                        <input type="text" [(ngModel)]="orderData.contact.firstName" class="form-control" id="d_first_name" name="first_name" placeholder="First Name">
+                                    </div>
+                                </div>
+                                <div class="flex-50  p-l-r-10">
+                                    <div class="form-group layout-column">
+                                        <label for="d_last_name">Last Name</label>
+                                        <input type="text" [(ngModel)]="orderData.contact.lastName" class="form-control" id="d_last_name" name="last_name" placeholder="Last Name">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-row flex-100 layout-align-space-between-center m-t-10 m-b-10">
+                                <div class="flex-50  p-l-r-10">
+                                    <div class="form-group layout-column">
+                                        <label for="d_address1">Address 1</label>
+                                        <input type="text" [(ngModel)]="orderData.contact.addressLine" class="form-control" id="d_address1" name="address1" placeholder="Address1">
+                                    </div>
+                                </div>
+                                <!-- <div class="flex-50  p-l-r-10">
+                                    <div class="form-group layout-column">
+                                        <label for="d_address2">Address 2</label>
+                                        <input type="text" class="form-control" id="d_address2" name="address2" placeholder="Address2">
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                        <div class="layout-column flex-50 layout-align-space-start-center">
+                            <!-- <div class="layout-row flex-100 layout-align-space-between-center m-b-10">
+                                <div class="flex-50  p-l-r-10">
+                                    <div class="form-group layout-column">
+                                        <label for="d_city">City</label>
+                                        <input type="text" class="form-control" id="d_city" name="city" placeholder="City">
+                                    </div>
+                                </div>
+                                <div class="flex-50  p-l-r-10">
+                                    <div class="form-group layout-column">
+                                        <label for="d_state">State</label>
+                                        <input type="text" class="form-control" id="d_state" name="state" placeholder="State">
+                                    </div>
+                                </div>
+                            </div> -->
+                            <div class="layout-row flex-100 layout-align-space-between-center m-b-10">
+                                <div class="flex-50  p-l-r-10">
+                                    <div class="form-group layout-column">
+                                        <label for="d_zipcode">Zip or Postal Code</label>
+                                        <input type="text" [(ngModel)]="orderData.contact.zip" class="form-control" id="d_zipcode" name="zipcode" placeholder="Zip or Postal Code">
+                                    </div>
+                                </div>
+                                <div class="flex-50  p-l-r-10">
+                                    <div class="form-group layout-column">
+                                        <label for="d_phone">Phone Number</label>
+                                        <input type="text" [(ngModel)]="orderData.contact.phone" class="form-control" id="d_phone" name="phone" placeholder="Phone Number">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </tab>
+    </tabset>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="Cancel" class=" login-btn cncle-btn c-p" (click)="closeModel()">Cancel</a>
+            <a type="" pButton icon="fa-check" label="Save" class=" login-btn cncle-btn cursor-p" (click)="onClickSave()">Save</a>
+        </div>
+    </footer>
+</p-dialog>

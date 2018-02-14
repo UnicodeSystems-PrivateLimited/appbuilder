@@ -1,0 +1,32 @@
+<div class="phone app-screen">
+    <div class="layout-column border-b ">
+        <div class="layout-row">
+            <label class="f-18 m-b-20 p-t-10">Blur Effect Details:</label>
+        </div>
+        <div class="layout-row">
+            <label class="m-b-10"><i class="fa fa-info-circle l"></i> blur effect can be enabled globally for all tabs including the home screen.</label>
+        </div>
+        <div class="layout-row">
+            <span class="m-b-10">
+            <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox"   id="checkbox01" [(ngModel)]="service.globalBlurCheckAll" (change)="onCheckAllChange()" >
+                    <span class="layout-row" >Turn on blur effect for all tabs</span>
+            </label>
+            </span>
+        </div>
+        <div class="height-data pad-5">
+            <div class="globalblur layout-column">
+                <div class="overlay" [style.display]="service.overlayDisplay"></div>
+                <label class="box layout-row layout-align-start-center trsh-no " *ngFor="let tab of service.appTabs">
+                                    <span class="layout-align-start-center flex-80 layout-row m-l-10">{{tab.title}}</span>
+                                    <span class="layout-align-end-center flex-20 layout-row">
+                                        <label class="checkbox-inline custom-checkbox nowrap">
+                    <input type="checkbox"  id="checkbox02" [(ngModel)]="service.globalStyleSettings.blur_effect[tab.id]"  (click)="onCheckTabChange(service.globalStyleSettings.blur_effect[tab.id], tab.id)">
+                    <span class="layout-row" >&nbsp;</span>
+                </label>
+                </span>
+                </label>
+            </div>
+        </div>
+    </div>
+</div>

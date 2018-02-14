@@ -1,0 +1,806 @@
+<div *ngIf="showMainLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="!showMainLoader" class=" flex-100  c-overview-wrapper relative c-promote-wrapper">
+    <tabset class="container-tab-detail" #cPromoteTab>
+        <tab heading="Share Your App">
+            <div class="mar-15 border-all">
+                <div class="layout-row flex-100 c-promote-first">
+                    <div class="flex-70 layout-row" [style.background]="'url(' + bgImage+ ')'" [style.background-size]="'cover'">
+                        <div class="layout-row pad-50">
+                            <div>
+                                <div class="img-device-panel" style="position:relative;">
+                                    <img src="assets/img/simulator.png" />
+                                    <div style="position:absolute;top: 52px;left: 17px;">
+                                        <img [src]="appShareingSetting.promote_bg_image?appShareingSetting.promote_bg_image:defaultImage" />
+                                    </div>
+                                    <i class="fa fa-cogs" aria-hidden="true" (click)="showHideBackgroundSelector()"></i>
+                                    <!--<button>&nbsp;</button>-->
+                                </div>
+                            </div>
+
+                            <div class="pad-15 flex-100 cpromote-template">
+                                <h2 *ngIf="appDetails">{{appDetails?.app_name}}</h2>
+                                <div class="layout-align-start- layout-column dem-c-wrap pad-15">
+                                    <div class="layout-row dis-wrap layout-align-start-center">
+                                        <i class="fa fa-map-marker" aria-hidden="true"></i>
+                                        <p-dropdown class="category-dropdown m-l-10 layout-row border-all cat-drop flex-70 layout-align-start-center" [options]="clientLocations"
+                                            [(ngModel)]="appShareingSetting.location" [style.width]="'100px'"></p-dropdown>
+                                            <div class="switch layout-align-start-center flex-40 layout-row layout-align-end-center">
+                                                <input id="mw-toggle-theme-location" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="appShareingSetting.location_show">
+                                                <label [attr.for]="'mw-toggle-theme-location'" class="layout-row m-r-10"></label>
+                                            </div>
+                                        </div>
+                                    <div class="layout-row layout-align-start-center m-t-10">
+
+                                        <i class="fa fa-phone m-r-10 " tooltip="This is a sample phone number. Please enter your phone number on the Account Settings page"
+                                            tooltipPlacement="bottom" aria-hidden="true"></i>
+
+                                        <span class="flex-70" *ngIf="appDetails && appDetails.client_phone">{{appDetails.client_phone}}</span>
+                                        <div class="switch layout-align-start-center flex-40 layout-row layout-align-end-center">
+                                            <input id="mw-toggle-theme-phone" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="appShareingSetting.phone_show">
+                                            <label [attr.for]="'mw-toggle-theme-phone'" class="layout-row m-r-10"></label>
+                                        </div>
+                                    </div>
+                                    <div class="layout-row m-b-20 layout-align-start-center m-t-10">
+                                        <i class="fa fa-envelope m-r-10" aria-hidden="true"></i>
+                                        <span class="flex-70" *ngIf="appDetails"> {{appDetails?.client_email}}</span>
+                                        <div class="switch layout-align-start-center flex-40 layout-row layout-align-end-center">
+                                            <input id="mw-toggle-theme-email" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="appShareingSetting.email_show">
+                                            <label [attr.for]="'mw-toggle-theme-email'" class="layout-row m-r-10"></label>
+                                        </div>
+                                    </div>
+                                    <div class="layout-row m-t-10">
+                                        <textarea class="flex-100" [(ngModel)]="appShareingSetting.description"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-30 layout-column ">
+                        <div class="layout-row flex-100 m-b-5 ab-panel-c layout-align-start-center">
+                            <div class="layout-row flex-50">
+                                <img src="{{iosAppQr}}" />
+                            </div>
+                            <div class="layout-column flex-50">
+                                <div class="avaible-img m-b-20">
+                                    <a href="../api/ws/function/CustomerPortal/promote/download/qr?url={{iosAppUrl}}"><img src="assets/img/qr_iphone.png" /></a>
+                                </div>
+                                <span>iOS App</span>
+                            </div>
+                            <div *ngIf="!iosAppQr" class="layout-column flex-100 c-img-rel text-center">
+                                <i class="fa fa-apple" aria-hidden="true"></i>
+                                <span>Your iOS QR code isn't ready yet. Visit the Settings > App Info section to plug in your App Store URL if your iOS app is already live.</span>
+                            </div>
+                        </div>
+                        <div class="layout-row flex-100 m-b-5 ab-panel-c layout-align-start-center">
+                            <div class="layout-row flex-50">
+                                <img src="{{androidAppQr}}" />
+                            </div>
+                            <div class="layout-column flex-50">
+                                <div class="avaible-img m-b-20">
+                                    <a href="../api/ws/function/CustomerPortal/promote/download/qr?url={{androidAppUrl}}"><img src="assets/img/qr_android.png" /></a>
+                                </div>
+                                <span>Android App</span>
+                            </div>
+                            <div *ngIf="!androidAppQr" class="layout-column flex-100 c-img-rel text-center">
+                                <i class="fa fa-android" aria-hidden="true"></i>
+                                <span>Your Android QR code isn't ready yet. Visit the Settings > App Information section to plug in your Android Market URL if your Android app is already live.</span>
+                            </div>
+                        </div>
+                        <div class="layout-row flex-100 layout-align-start-center">
+                            <div class="layout-row flex-50">
+                                <img src="{{mobWebsiteQr}}" />
+                            </div>
+                            <div class="layout-column flex-50">
+                                <div class="avaible-img m-b-20">
+                                    <a href="../api/ws/function/CustomerPortal/promote/download/qr?url={{mobWebsiteUrl}}"><img src="assets/img/qr_other.png" /></a>
+                                </div>
+                                <span>HTML5 App</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-row flex-100">
+                    <div class="layout-row flex-70 border-r layout-align-space-between-center pad-10">
+                        <div class="layout-row flex-20 layout-align-space-between-center">
+                            <button (click)="socialShare('facebook')"><i class="fa fa-facebook-square" aria-hidden="true"></i></button>
+                            <button (click)="socialShare('twitter')"><i class="fa fa-twitter-square" aria-hidden="true"></i></button>
+                            <button (click)="socialShare('linkedin')"><i class="fa fa-linkedin-square" aria-hidden="true"></i></button>
+                            <button (click)="socialShare('googleplus')"><i class="fa fa-google-plus-square" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="switch layout-align-start-center flex-40 layout-row layout-align-end-center">
+                            <input id="mw-toggle-theme" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="appShareingSetting.mobile_website_redirect">
+                            <label [attr.for]="'mw-toggle-theme'" class="layout-row m-r-10"></label>Mobile Website Redirect
+                            <i class="fa ion-left fa-info-circle l" tooltip="Check this box to redirect iOS & Android users to the App Store & Play Store listings when they visit the HTML5 app. This encourages users to install the native apps. Note: This option does not apply to other platforms (Windows, Blackberry, etc.)."
+                                tooltipPlacement="top"></i>
+                        </div>
+                    </div>
+                    <div class="layout-row flex-30 pad-10 layout-align-space-between-center border-top">
+
+                        <!-- <button class="promo-btn" (click)="rebuildCodes()">Rebuild Codes</button> -->
+                        <button class="promo-btn" [class.disabled]="!androidAppQr || !iosAppQr" (click)="downloadFlyer()">Download Flyer</button>
+                    </div>
+                </div>
+            </div>
+        </tab>
+
+
+        <tab heading="Email Marketing" class="email-promote-wrapper">
+            <div data-name="email_marketing" class="panel panel-default panel-email pad-15">
+                <div class="panel-body" id="pbody_em">
+                    <form id="frm_email_marketing">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="panel panel-default subpanel subpanel-em">
+                                    <div class="panel-heading" id="tab_mailinglist">
+                                        <div class="row" [class.with-overlay]="!emailMarketingSetting.CollectEmailButton">
+                                            <div class="">
+                                                <div class="layout-row layout-align-space-between-center">
+                                                    <div class="layout-row layout-align-start-center col-md-6"><label class="switch  m-r-10 m-b-0">
+                                                    <input type="checkbox" [(ngModel)]="emailMarketingSetting.CollectEmailButton">
+                                                  <div class="slider round"></div>
+                                                </label>
+                                                        <span>Collect Email Addresses  <i class="fa fa-info-circle l" tooltip="Collect your app users email addresses"
+                                                   tooltipPlacement="right" aria-hidden="true"></i></span></div>
+                                                    <p-multiSelect defaultLabel="Select Features" [options]="tabList" [(ngModel)]="emailMarketingSetting.selectedTabs" class="layout-row col-md-6 flex-50 mul-sel"></p-multiSelect>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel-body pbody-email-collect">
+                                        <div class="email-dic-1" [class.with-overlay]="!emailMarketingSetting.CollectEmailButton">
+                                            <div class="overlay" *ngIf="!emailMarketingSetting.CollectEmailButton"></div>
+                                            <div class="row dis-wrap">
+                                                <div class="col-md-6 form-group">
+                                                    <label>Prompt Frequency<i class="fa fa-info-circle l" tooltip="Choose how often the app will prompt users to sign up."
+                                                   tooltipPlacement="right" aria-hidden="true"></i></label>
+                                                </div>
+                                                <div class="col-md-6 form-group cat-drop">
+                                                    <p-dropdown class="flex-100 layout-row" [options]="PromptFrequency" [(ngModel)]="emailMarketingSetting.selectedPromptFrequency"></p-dropdown>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-6 form-group ">
+                                                    <label>Prompt Text <i class="fa fa-info-circle l" tooltip="Personalize the message to encourage users to share their email addresses."
+                                        tooltipPlacement="right" aria-hidden="true"></i></label>
+                                                </div>
+                                                <div class="col-md-6 form-group">
+                                                    <div class="relative">
+                                                        <span class="language_indicator_wrap move_right">
+                      <span class="language_description_inline_indicator m-b-10  "></span>Editing
+                                                        Content in: <strong></strong>
+                                                        </span>
+                                                        <textarea (keydown)="onCharCount()" [(ngModel)]="emailMarketingSetting.promptText" id="txt_popup_text" class="form-control"
+                                                            rows="8" name="popup_text" placeholder="Please enter your email address to receive free coupons and rewards."
+                                                            maxlength="128"></textarea>
+                                                        <div class="charleft text-counter" style="text-align: right; position: absolute; right: 2px; bottom: 2px; background-color: rgb(255, 255, 255); border-width: 1px 0px 0px 1px; border-style: solid; border-color: rgb(204, 204, 204); border-image: initial; padding: 2px 5px; border-radius: 0px 0px 4px;">{{charCount}} Characters Left</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Popup previewer -->
+                                            <div class="form-group clearfix popup-preview">
+                                                <div class="popup-demo pull-right">
+                                                    <div class="upper">
+                                                        <h4>Enter Your Email</h4>
+                                                        <p id="popup_text_preview">{{emailMarketingSetting.promptText}}</p>
+                                                    </div>
+                                                    <div class="middle text-center">info@sample.com</div>
+                                                    <div class="lower clearfix">
+                                                        <div class="col l">Close</div>
+                                                        <div class="col r">Send</div>
+                                                    </div>
+                                                </div>
+                                                <div class="clearfix"></div>
+                                            </div>
+                                        </div>
+
+                                        <div class=" info-emails">
+                                            <div class="">
+                                                <div class="info-download">
+                                                    <span id="total_new_collected_emails">{{newMailingListUserEmaiCount}}</span>
+                                                    <label>New Emails Since Last Download</label>
+                                                    <button type="button" class="btn btn-info btn-hyper underline btn-view-all-emails btn-legacy pull-right" (click)="emailMarketingUserModel()">See All</button>
+                                                    <button type="button" class="btn btn-info btn-hyper underline btn-download-emails btn-legacy pull-right" (click)="downloadEmailMarketingEmailList()">Export</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="panel panel-default subpanel subpanel-sync relative">
+                                    <div class="panel-heading" id="tab_mailinglist">
+                                        <div class="layout-row layout-align-start-center"><label class="switch  m-r-10 m-b-0">
+                                                    <input type="checkbox" [(ngModel)]="emailMarketingSetting.emailMarketingButton">
+                                                  <div class="slider round"></div>
+                                                </label>
+                                            <span>Email Marketing Integrations <i class="fa fa-info-circle l" tooltip="Use our email marketing integrations to create and send campaigns to your app users. In order to use this feature, please update your source code to our Hazel release version."
+                    tooltipPlacement="right" aria-hidden="true"></i></span></div>
+
+                                    </div>
+                                    <div class="panel-body pbody-3rdparty with-overlay" [class.with-overlay]="!emailMarketingSetting.emailMarketingButton">
+                                        <div class="overlay" *ngIf="!emailMarketingSetting.emailMarketingButton"></div>
+                                        <ul class="third-parties clearfix">
+                                            <li class="third-party-mc" (click)="showMailchimpDialog()">
+                                                <a id="show_modal_mc" class="outerc modal-trigger-3rdparty" data-key="mc" data-modal-id="modal_mc">
+                                                    <div class="innerc text-center">
+                                                        <img src="assets/img/mc.png" width="96%" title="MailChimp">
+                                                    </div>
+                                                </a>
+                                                <!--<button data-key="mc" type="button" class="btn btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                            </li>
+                                            <li class="third-party-ic active" (click)="showiContactDialog()">
+                                                <a id="show_modal_ic" class="outerc modal-trigger-3rdparty" data-key="ic" data-modal-id="modal_ic">
+                                                    <div class="innerc text-center">
+                                                        <img src="assets/img/ic.png" width="96%" title="iContact">
+                                                    </div>
+                                                </a>
+                                                <!--<button data-key="ic" type="button" class="btn btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                            </li>
+                                            <!--<li class="third-party-cc" (click)="showConstantContactDialog()">
+                                                <a id="show_modal_cc" class="outerc modal-trigger-3rdparty" data-key="cc" data-modal-id="modal_cc">
+                                                    <div class="innerc text-center">
+                                                        <img src="assets/img/cc.png" width="96%" title="Constant Contact">
+                                                    </div>
+                                                </a>
+                                                <!--<button data-key="cc" type="button" class="btn btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                            <!--</li>-->
+                                            <!--<li class="third-party-cm" (click)="showCampaignMonitorDialog()">
+                                                <a id="show_modal_cm" class="outerc modal-trigger-3rdparty" data-key="cm" data-modal-id="modal_cm">
+                                                    <div class="innerc text-center">
+                                                        <img src="assets/img/cm.png" width="96%" title="Campaign Monitor">
+                                                    </div>
+                                                </a>-->
+                                            <!--<button data-key="cm" type="button" class="btn btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                            <!--</li>
+                                            <li class="third-party-gr" (click)="showGetResponseDialog()">
+                                                <a id="show_modal_gr" class="outerc modal-trigger-3rdparty" data-key="gr" data-modal-id="modal_gr">
+                                                    <div class="innerc text-center">
+                                                        <img src="assets/img/gr.png" width="96%" title="GetResponse">
+                                                    </div>
+                                                </a>-->
+                                            <!--<button data-key="gr" type="button" class="btn btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                            <!--</li>
+                                            <li class="third-party-em" (click)="showMyEmmaDialog()">
+                                                <a id="show_modal_em" class="outerc modal-trigger-3rdparty" data-key="em" data-modal-id="modal_em">
+                                                    <div class="innerc text-center">
+                                                        <img src="assets/img/em.png" width="96%" title="My Emma">
+                                                    </div>
+                                                </a>-->
+                                            <!--<button data-key="em" type="button" class="btn btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                            <!--</li>-->
+
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </tab>
+
+        <!--user activity
+        -->
+        <tab heading="User Activity" class="user-actvity-wrapper">
+            <div *ngIf="showUserActivityLoader" class="fm-spinner">
+                <div class="fm-double-bounce1"></div>
+                <div class="fm-double-bounce2"></div>
+            </div>
+            <div *ngIf="!showUserActivityLoader && userActivityList.length" id="tab_user_activity" class="tab-pane fade active in" role="tabpanel"
+                data-ref="user_activity">
+                <div data-name="user_activity" class="panel panel-default panel-act flex-100  border-all mar-15">
+                    <div class="panel-heading pad-10">
+                        <div class="page-row pagi top with_trash ">
+                            <div class="with_checkall">
+                                <div class="chk-all layout-row layout-align-space-between-center membershp-login-wrp-1">
+                                    <label class="checkbox-inline custom-checkbox nowrap">
+                                       <input type="checkbox" id="check-all" [(ngModel)]="checkAllUserList" (change)="onCheckAllUserListChange()">
+                                        <span> Check All</span>
+                                     </label>
+                                    <label class=" list m-b-0">
+                                         <i class="fa fa-trash" [class.checkTrue]="selectedUsersIds.length > 0 && selectedUsersIds.indexOf(true) !== -1" (click)="deleteUsers()"></i>
+                                     </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row panel-body">
+                        <div class="col-md-6 layout-column" *ngFor="let user of showActivityList;let i=index;">
+                            <div class="user-box">
+                                <div class="box-header">
+                                    <div class="box-header-date known clearfix layout-row layout-align-space-between-center">
+                                        <span class="user_info_icon no-demo flex-30  layout-row layout-align-start-center">
+                                                 <label class="checkbox-inline custom-checkbox nowrap">
+                                                      <input type="checkbox" id="check-all" [(ngModel)]="selectedUsersIds[i]" (change)="onCheckUserChange(selectedUsersIds[i],i)">
+                                                       <span><i class="fa fa-user ion-right"></i>User Info</span>
+                                        </label>
+                                        </span>
+                                        <label class=" layout-row flex-70 layout-align-end" for="chk_useract_ff04718e301b66ae"><span>First logged in,</span>&nbsp;{{user[0].created_at|date:'fullDate'}}<i class="fa fa-andriod ion-left"></i></label>
+                                    </div>
+                                    <div class="box-header-username">
+                                        <div class="row-xs">
+                                            <div class="col-lg-4 col-email">
+                                                <div class="col-inner clearfix">
+                                                    <span class="contact-icon"><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                                                    <span class="contact-name">
+                                                              <span class="outerc">
+                                                                <span  class="innerc">
+                                                                      {{user[0].email?user[0].email:'email@gmail.com'}}
+                                                                 </span>
+                                                    </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-fb ">
+                                                <div class="col-inner clearfix">
+                                                    <span class="contact-icon"><i class="fa fa-facebook" aria-hidden="true"></i></span>
+                                                    <span class="contact-name">
+                                                            <span class="outerc">
+                                                              <span class="innerc innerc-avatar">
+                                                                  <img *ngIf="user[0].social_media_type==1" src="{{user[0].social_profile_pic}}" height="32px" width="32px"/>
+                                                                  <img *ngIf="user.length>1 && user[1].social_media_type==1" src="{{user[1].social_profile_pic}}" height="32px" width="32px"/>
+                                                                  <img *ngIf="user.length<2 && user[0].social_media_type!=1" src="assets/img/default_social.png" height="32px" width="32px"/>
+                                                              </span>
+                                                    <span *ngIf="user[0].social_media_type==1" class="innerc innerc-name">{{user[0].name}}</span>
+                                                    <span *ngIf="user.length>1 && user[1].social_media_type==1" class="innerc innerc-name">{{user[1].name}}</span>
+                                                    <span *ngIf="user.length<2 && user[0].social_media_type!=1" class="innerc innerc-name">Facebook Username</span>
+                                                    </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4 col-tw ">
+                                                <div class="col-inner clearfix">
+                                                    <span class="contact-icon"><i class="fa fa-twitter" aria-hidden="true"></i></span>
+                                                    <span class="contact-name">
+                                                           <span class="outerc">
+                                                                <span class="innerc innerc-avatar">
+                                                                   <img *ngIf="user[0].social_media_type==2" src="{{user[0].social_profile_pic}}" height="32px" width="32px"/>
+                                                                   <img *ngIf="user.length>1 && user[1].social_media_type==2" src="{{user[1].social_profile_pic}}" height="32px" width="32px"/>
+                                                                   <img *ngIf="user.length<2 && user[0].social_media_type!=2" src="assets/img/default_social.png" height="32px" width="32px"/>
+                                                                </span>
+                                                    <span *ngIf="user[0].social_media_type==2" class="innerc innerc-name">{{user[0].name}}</span>
+                                                    <span *ngIf="user.length>1 && user[1].social_media_type==2" class="innerc innerc-name">{{user[1].name}}</span>
+                                                    <span *ngIf="user.length<2 && user[0].social_media_type!=2" class="innerc innerc-name">Twitter Username</span>
+                                                    </span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="box-body">
+                                    <div class="panel-group">
+                                        <div class="panel panel-default panel-social-act collapsible layout-column">
+                                            <div class="panel-heading layout-row layout-align-space-between-center">
+                                                <span class="social_activity_icon "><i class="fa fa-spinner" aria-hidden="true"></i> &nbsp;Social Activity</span>
+                                                <i *ngIf="toggleSocialActivity[i]" class="fa fa-sort-asc" aria-hidden="true" (click)="showHideSocialActivity(i)"></i>
+                                                <i *ngIf="!toggleSocialActivity[i]" class="fa fa-sort-desc" aria-hidden="true" (click)="showHideSocialActivity(i)"></i>
+                                            </div>
+                                            <div *ngIf="toggleSocialActivity[i]" class="panel-collapse collapse in" id="pcollapse_socialact_ff04718e301b66ae_0" role="tabpanel"
+                                                aria-expanded="true" style="">
+                                                <div class="panel-body pad-10">
+                                                    <p>
+                                                        <span><i class="fa fa-envelope" aria-hidden="true"></i></span>
+                                                        <span class="social-activity-title">Push Notifications:{{user[0].push_noti_count?user[0].push_noti_count:'0'}}</span>
+                                                        <i class="ion-left helper fa fa-question-circle" tooltipPlacement="right" tooltip="The Push Notifications number will be increased by 1 when a notification has arrived AND the banner is clicked by the user, which opens the application.In the foreground state, the number will be increased automatically as soon as it arrivesIn the background state, the number will be increased only when a user clicks the notification banner. (we consider clicking of the notification banner, receiving a push notification)"></i>
+                                                    </p>
+                                                    <div class="clearfix"></div>
+                                                    <p></p>
+                                                    <p>
+                                                        <span><i class="fa fa-share-alt" aria-hidden="true"></i></span>
+                                                        <span class="social-activity-title">Shares: {{user|addCountPipe:'share'}}</span>
+                                                        <i class="ion-left helper fa fa-question-circle" tooltipPlacement="right" tooltip="All shares within the application"></i>
+                                                    </p>
+                                                    <div class="clearfix"></div>
+                                                    <p></p>
+                                                    <p>
+                                                        <span><i class="fa fa-gift" aria-hidden="true"></i></span>
+                                                        <span class="social-activity-title">Loyalty: {{user|addCountPipe:'activity'}}</span>
+                                                        <i class="ion-left helper fa fa-question-circle" tooltipPlacement="right" tooltip="All unlock / redeem counts for the QR Coupon, GPS Coupon, &amp; Loyalty features"></i>
+                                                    </p>
+                                                    <div class="clearfix"></div>
+                                                    <p></p>
+                                                    <p>
+                                                        <span><i class="fa fa-comments" aria-hidden="true"></i></span>
+                                                        <span class="social-activity-title">Fan Wall Posts: {{user|addCountPipe:'fanwall'}}</span>
+                                                        <i class=" ion-left  helper fa fa-question-circle" tooltipPlacement="right" tooltip="All comment posts &amp; replies on FanWall v1, v2 features"></i>
+                                                    </p>
+                                                    <div class="clearfix"></div>
+                                                    <p></p>
+                                                    <p>
+                                                        <span><i class="fa fa-commenting-o" aria-hidden="true"></i></span>
+                                                        <span class="social-activity-title">User Comments: {{user|addCountPipe:'comment'}}</span>
+                                                        <i class="ion-left helper fa fa-question-circle" tooltipPlacement="right" tooltip="These are all comment posts within your application with the exception of comments on FanWall posts"></i>
+                                                    </p>
+                                                    <div class="clearfix"></div>
+                                                    <p></p>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="panel panel-default panel-tab-act collapsible">
+                                            <div class="panel-heading layout-row layout-align-space-between-center">
+                                                <span class="social_activity_icon "><i class="fa fa-list" aria-hidden="true"></i> &nbsp;Feature Activity</span>
+                                                <i *ngIf="toggleFeatureActivity[i]" class="fa fa-sort-asc" aria-hidden="true" (click)="showHideFeatureActivity(i)"></i>
+                                                <i *ngIf="!toggleFeatureActivity[i]" class="fa fa-sort-desc" aria-hidden="true" (click)="showHideFeatureActivity(i)"></i>
+                                            </div>
+                                            <div *ngIf="toggleFeatureActivity[i]" class="" id="pcollapse_tabact_cchh_demo_d2e07f89-50fc-4394-bea5-6ea7c44994ab_1" role="tabpanel">
+                                                <div class="panel-body chart-panel pad-10 text-center">
+                                                    <div class="chart-wrapper">
+                                                        <div *ngIf="chartData[i]">
+                                                            <chartist *ngIf="showChart[i]" [data]="chartData[i]" [chartType]="'bar'"></chartist>
+                                                        </div>
+                                                        <div *ngIf="!chartData[i]" class="no_feature_activity">
+                                                            <div class="no_feature_icon"></div>
+                                                            <h2>Nothing to see here!</h2>
+                                                            <p>This user has not visited any features within your application
+                                                                just yet. Try sending out push notifications linked to specific
+                                                                features to get your users more involved.</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="page-block layout-row layout-align-end-center ">
+                        <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"
+                            [maxSize]="maxSize" class="pagination-sm layout-row m-r-10 layout-align-start-center" previousText="&lsaquo;"
+                            nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                        </pagination>
+                        <div class="flex-15 layout-row layout-align-space-between-center dis-wrap">
+                            <span>Total: {{totalItems}}</span>
+                            <p-dropdown [options]="count" [(ngModel)]="selectedCount" (onChange)="setItemsPerPage(selectedCount)" class="layout-align-end layout-row cat-drop flex-60 m-r-10"></p-dropdown>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div *ngIf="!showUserActivityLoader && !userActivityList.length" class="panel-body chart-panel pad-10 text-center">
+                <div class="chart-wrapper">
+                    <div class="no_feature_activity">
+                        <div class="no_feature_icon"></div>
+                        <h2>Nothing to see here!</h2>
+                    </div>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+    <button [disabled]="disableSaveButton" class="green-btn custome-port-btn" (click)="savePromoteSetting()">save</button>
+
+</div>
+
+<p-dialog [draggable]="false"  header="BACKGROUND IMAGE" [(visible)]="showBackgroundChooser" modal="modal" class=" backg-inf-dia app-dialog add-app s-tab-add bg-dialog-1">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="header-background promote-wrap-1 border-all white-bg">
+        <tabset class="container-tab-detail">
+            <tab heading="Auto-Generated">
+                <form class="pad-10">
+                    <div class="layout-column flex-100 web-bg">
+                        <div class="layout-row layout-align-space-between-start">
+                            <!--<span class="layout-column">-->
+                            <div class="layout-column">
+                                <p style="color:#000;"><i class="fa fa-info-circle l"></i> Auto-generated screenshots are located here. Choose your
+                                    screenshots by selecting each individually.</p>
+                                <p style="color:#000;"><i class="fa fa-info-circle l"></i> You may also use your uploaded screenshots stored in
+                                    the "Uploaded" area.</p>
+                            </div>
+                            <i class="fa fa-download" aria-hidden="true" (click)="downloadBgImage()"></i>
+                        </div>
+                    </div>
+                </form>
+                <div class="">
+                    <div class="layout-row layout-wrap layout-wrap phone-image-wrap no-bg m-t-10">
+                        <div class="flex-25 layout-row layout-align-center-center related-to" *ngFor="let image of autoGeneratedScreenShot;" (click)="targetImage(image.id)">
+                            <span *ngIf="targetedImageId==image.id"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <img src="{{image.bg_image}}" [class.right-img]="targetedImageId==image.id" />
+                        </div>
+                    </div>
+                </div>
+            </tab>
+            <tab heading="Uploaded">
+                <form class="pad-10">
+                    <div class="layout-column flex-100 pad-5">
+                        <div class="layout-column">
+                            <div class="layout-row layout-align-space-between-start">
+                                <div class="layout-column">
+                                    <p style="color:#000;"><i class="fa fa-info-circle l"></i> Upload a custom promote image.</p>
+                                    <p style="color:#000;"><i class="fa fa-info-circle l"></i> Recommended size '640px x 960px'.</p>
+                                </div>
+                                <div class="layout-row layout-align-end-center">
+                                    <i class="fa fa-trash" aria-hidden="true" (click)="deleteImages()"></i>
+                                    <i class="fa fa-download" aria-hidden="true" (click)="downloadBgImage()"></i>
+                                </div>
+                            </div>
+                            <div class="layout-row layout-align-start-center">
+                                <input type="file" name="image" accept="image/*" (change)="fileChangeEvent($event)">
+                                <button *ngIf="fileToUpload" [disabled]="uploadBottonDisable" class="green-btn" (click)="uploadPromoteImages()">Upload</button>
+                            </div>
+                        </div>
+                        <div class="layout-row">
+                        </div>
+                    </div>
+                </form>
+                <div class="">
+                    <div class="layout-row layout-wrap layout-wrap phone-image-wrap no-bg m-t-10">
+                        <div class="flex-25 layout-row layout-align-center-center related-to" *ngFor="let image of promoteUploadedImages;" (click)="targetImage(image.id)">
+                            <span *ngIf="targetedImageId==image.id"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <img src="{{image.bg_image}}" [class.right-img]="targetedImageId==image.id" />
+                        </div>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+        <button class="green-btn" (click)="selectPromoteImages()">Select</button>
+    </div>
+</p-dialog>
+<p-dialog  [draggable]="false" header="All Emails Collected" [(visible)]="showEmailMarketingUserModel" modal="modal" class="app-dialog add-app promote-list">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg membershp-login-wrp-1" *ngIf="emailMarketingUserList.length">
+        <div class="layout-row flex-100 layout-align-end m-b-10 list"> <i class="fa fa-trash" [class.checkTrue]="selectedEmailIds.length > 0 && selectedEmailIds.indexOf(true) !== -1" (click)="deleteUserEmailId()"></i></div>
+        <div class="layout-column border-all">
+            <div class="layout-row flex-100 border-b">
+                <div class="layout-row flex-10 layout-align-center-center pad-10 border-r"></div>
+                <div class="layout-row flex-30 layout-align-start-center pad-10 border-r">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [(ngModel)]="checkAll" (change)="onChangeCheckAll()">
+            <span> Date</span>
+        </label>
+                </div>
+                <div class="layout-row flex-60 layout-align-start-center pad-10">Email Address</div>
+            </div>
+            <div class="layout-row flex-100 border-b" *ngFor="let user of emailMarketingUserList;let i=index;">
+                <div class="layout-row flex-10 layout-align-center-center pad-10 border-r">{{i+1}}</div>
+                <div class="layout-row flex-30 layout-align-start-center pad-10 border-r">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [(ngModel)]="selectedEmailIds[user.id]" (click)="onCheckTabChange(selectedEmailIds[user.id], user.id)">
+            <span>  {{user.created_at}}</span>
+        </label>
+                </div>
+                <div class="layout-row flex-60 layout-align-start-center pad-10">{{user.email_id}}</div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!emailMarketingUserList.length" class="layout-column text-center no-data-found layout-align-start-center border-all white-bg">
+        <h2>Nothing to see here !</h2>
+        <span>It seems you're lacking some users' emails. Try adjusting the frequency or location of the prompt to get your users more engaged and involved.</span>
+    </div>
+</p-dialog>
+<!--Mailchimp Integration Dialog START -->
+<p-dialog  [draggable]="false" header="Mailchimp Integration" [(visible)]="showMailchimpDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <form>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>API Key</label>
+                        <input class="input-class" type="text" [(ngModel)]="mailChimp.apiKey">
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>List Id</label>
+                        <input class="input-class" type="text" [(ngModel)]="mailChimp.listId">
+                    </div>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" [disabled]="disableAddButton" class="green-btn m-r-10" (click)="onMailChimp()">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showMailchimpDialogBox=false">Cancel</button>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<!-- Mailchimp Integration Dialog END -->
+<!--iContact Integration Dialog START -->
+<p-dialog [draggable]="false"  header="iContact Integration" [(visible)]="showiContactDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <p style="color: red" *ngIf="iContact.application_id == null">Please fill up the API AppID field.</p>
+        <div class="web-bg">
+            <div class="layout-row flex-100">
+                <div class="layout-column flex-100">
+                    <label>Application Id<i class="fa fa-info-circle l" tooltip="To get the Application ID you need to register you application in 'iContact'.Open https://application.icontact.com/lcp/core/registerapplication to register your application" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <input class="input-class" type="text" [(ngModel)]="iContact.application_id">
+                </div>
+            </div>
+            <div class="layout-row flex-100">
+                <div class="layout-column flex-50 m-r-10">
+                    <label>Username<i class="fa fa-info-circle l" tooltip="Specify your 'iContact' account ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <input class="input-class" type="text" [(ngModel)]="iContact.user_name">
+                </div>
+                <div class="layout-column flex-50">
+                    <label>APP Password<i class="fa fa-info-circle l" tooltip="Please enter application password. (You need to enable it after registration, in enable step you should create password for this application)" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <input class="input-class" type="text" [(ngModel)]="iContact.app_password">
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" [disabled]="disableAddButton" (click)="getIContactAcDetails()" class="blue-btn">Retrieve</button>
+            </div>
+        </div>
+        <div class="web-bg">
+            <div class="layout-row flex-100">
+                <div class="layout-column flex-50 m-r-10" *ngIf="account.length">
+                    <label>Account ID<i class="fa fa-info-circle l" tooltip="Select an account ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <p-dropdown class="border-all m-l-10 m-r-10 flex-30" [options]="account" [(ngModel)]="iContact.account_id" (onChange)="getIContactClientFolderId($event)"
+                        [style]="{'width':'140px'}"></p-dropdown>
+                </div>
+                <div class="layout-column flex-50 m-r-10" *ngIf="folder.length">
+                    <label>Client Folder ID<i class="fa fa-info-circle l" tooltip="Select an client folder ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <p-dropdown class="border-all m-l-10 m-r-10 flex-30" [options]="folder" [(ngModel)]="iContact.client_folder_id" (onChange)="getIContactClientList($event)"
+                        [style]="{'width':'140px'}"></p-dropdown>
+                </div>
+                <div class="layout-column flex-50 m-r-10" *ngIf="lists.length">
+                    <label>Lists<i class="fa fa-info-circle l" tooltip="Contacts will be subscribed to selected lists" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <p-dropdown class="border-all m-l-10 m-r-10 flex-30" [options]="lists" [(ngModel)]="iContact.listId" [style]="{'width':'140px'}"></p-dropdown>
+                </div>
+            </div>
+        </div>
+        <div class="layout-row save-btn">
+            <button type="button" [disabled]="disableAddButton" class="green-btn m-r-10" (click)="uploadIContact()">UPLOAD CONTACTS</button>
+            <button type="button" class="blue-btn" (click)="showiContactDialogBox = false">Cancel</button>
+        </div>
+    </div>
+</p-dialog>
+<!-- iContact Integration Dialog END -->
+
+<!--ConstantContact Integration Dialog START -->
+<p-dialog  [draggable]="false" header="ConstantContact Integration" [(visible)]="showConstantContactDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <form>
+            <p style="color: red">Please fill up the API key field.</p>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-100">
+                        <label>API Key<i class="fa fa-info-circle l" tooltip="You should request API key for this application in 'ConstantContract'.After you register your application, you will get the key" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>Username<i class="fa fa-info-circle l" tooltip="Specify your 'Constant Contract' account ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>Password<i class="fa fa-info-circle l" tooltip="Specify your 'Constant Contract' account password" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="blue-btn">Retrieve</button>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" class="green-btn m-r-10">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showConstantContactDialogBox = false">Cancel</button>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<!-- ConstantContact Integration Dialog END -->
+<!--CampaignMonitor Integration Dialog START -->
+<p-dialog  [draggable]="false" header="CampaignMonitor Integration" [(visible)]="showCampaignMonitorDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <form>
+            <p style="color: red">Please fill up the API key field.</p>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-100">
+                        <label>API Key<i class="fa fa-info-circle l" tooltip="Specify API key. (You can find your API key by logging into your account</p> and licking on the 'Account Settings' link at the top left on the screen.If you don't have API key, click on 'Generate your API key' link on right side of the screen, then click 'Generate my API key button'" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="blue-btn">Retrieve</button>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" class="green-btn m-r-10">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showCampaignMonitorDialogBox = false">Cancel</button>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<!-- CampaignMonitor Integration Dialog END -->
+
+<!--GetResponse Integration Dialog START -->
+<p-dialog  [draggable]="false" header="GetResponse Integration" [(visible)]="showGetResponseDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <form>
+            <p style="color: red">Please fill up the API key field.</p>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-100">
+                        <label>API Key<i class="fa fa-info-circle l" tooltip="Specify API key. (The API key is assigned to every pro account.Open http://www.getresponse.com/my_api_key.html) to get the key" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="blue-btn">Retrieve</button>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" class="green-btn">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showGetResponseDialogBox = false">Cancel</button>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<!-- GetResponse Integration Dialog END -->
+
+<!--MyEmma Integration Dialog START -->
+<p-dialog  [draggable]="false" header="MyEmma Integration" [(visible)]="showMyEmmaDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <form>
+            <p style="color: red">Please fill up the API key field.</p>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-100">
+                        <label>Public API key<i class="fa fa-info-circle l" tooltip="Specify public API key. ('API key' tab present under account settings)" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-50">
+                        <label>Private API Key<i class="fa fa-info-circle l" tooltip="Specify your 'My Emma' private api key." tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>Account ID<i class="fa fa-info-circle l" tooltip="Specify account ID. ('Account & Billing' link present in the upper right corner in 'MyEmma' account, next to 'Login' button)" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="blue-btn">Retrieve</button>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" class="green-btn">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showMyEmmaDialogBox = false">Cancel</button>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<!-- MyEmma Integration Dialog END -->

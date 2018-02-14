@@ -1,0 +1,1 @@
+export * from './content-tab-3.component';

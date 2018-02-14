@@ -1,0 +1,32 @@
+<!--
+  Generated template for the LanguageSelector page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header no-border>
+  <ion-navbar>
+    <ion-buttons end>
+      <button ion-button (click)="startApp('skip')" color="primary">Skip</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+  <ion-list radio-group [(ngModel)]="selectedLanguage">
+    <ion-list-header>
+      Choose App Language
+    </ion-list-header>
+    <ion-item *ngFor="let lang of languages;let i=index;">
+      <ion-label>{{lang.name}}</ion-label>
+      <ion-radio value="{{lang.code}}"></ion-radio>
+    </ion-item>
+  </ion-list>
+  <ion-item class="text-center">
+    <button ion-button icon-right large (click)="startApp('continue')">
+        Continue
+        <ion-icon name="arrow-forward"></ion-icon>
+      </button>
+  </ion-item>
+</ion-content>

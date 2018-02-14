@@ -1,0 +1,187 @@
+<!--
+  Generated template for the LoyaltyTabDesc page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">
+            <div [innerHTML]="itemData.is_advance == 1 ? itemData.loyalty_title : itemData.reward_text"></div>
+        </ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="onSharingClick()" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="ios-share-outline"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content [style.background]="'url(' + bgImage + ')'">
+    <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+    <div *ngIf="itemData.is_advance == 0">
+        <div class="header-image">
+            <div *ngIf="itemData.phone_header_image"  class="head-wrp-to"> <img [src]="itemData.phone_header_image"></div>
+            <ion-grid>
+                <ion-row *ngIf="itemData.reward_text">{{itemData.reward_text}}</ion-row>
+            </ion-grid>
+        </div>
+
+        <ion-card class="comments-card around-us-wrap" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+            [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+            <ion-card-header>
+                <p *ngIf="itemData.square_count != target">{{'GPSCOUPON.LOYALTYTEXT1' | translate}} {{count}} {{'GPSCOUPON.LOYALTYTEXT2' | translate}}</p>
+                <p *ngIf="itemData.square_count == target">{{'GPSCOUPON.LOYALTYTEXT3' | translate}}</p>
+            </ion-card-header>
+
+            <ion-card-content>
+                <ion-row>
+                    <ion-col>
+                        <button *ngIf="itemData.square_count != target" ion-button (click)="onStampClick()" [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+                            [style.color]="globalService.initData.globalStyleSettings.features.button_text">
+                        {{'GPSCOUPON.STAMPCARD' | translate}}
+                        </button>
+                        <button *ngIf="itemData.square_count == target" ion-button (click)="onRedeemClick()" [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+                            [style.color]="globalService.initData.globalStyleSettings.features.button_text">
+                        {{'GPSCOUPON.REDEEM' | translate}}
+                        </button>
+                    </ion-col>
+                    <ion-col>
+                        <ion-label> {{'GPSCOUPON.POSTACTIVITY' | translate}}?</ion-label>
+                        <ion-toggle [(ngModel)]="activity.active"></ion-toggle>
+                    </ion-col>
+                </ion-row>
+            </ion-card-content>
+        </ion-card>
+        <ion-card class="comments-card around-us-wrap">
+            <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+                [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar) | hex2rgba"
+                (click)="toggleOpeningCard()">
+                {{'GPSCOUPON.ACTIVITY' | translate}}
+                <ion-icon *ngIf="!toggle_activity_card" name="arrow-dropdown-circle"></ion-icon>
+                <ion-icon *ngIf="toggle_activity_card" name="arrow-dropup-circle"></ion-icon>
+            </ion-card-header>
+            <ion-list *ngIf="activities.length && toggle_activity_card">
+                <ion-item *ngFor="let item of activities; let i = index;" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar))| hex2rgba">
+                    <ion-avatar *ngIf="item.picture && item.picture !== ''" item-left>
+                        <img [src]="item.picture">
+                    </ion-avatar>
+                    <ion-icon *ngIf="!item.picture || item.picture === ''" name="person" item-left></ion-icon>
+                    <span>
+                        <h2 [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.name}}</h2>
+                        <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.name}} {{item.action}}</p>
+                        </span>
+                    <span item-right>
+                  <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.created_at | servertimeformatpipe}}</p>
+                        </span>
+                </ion-item>
+
+            </ion-list>
+            <ion-item *ngIf="!activities.length && toggle_activity_card" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+                [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+                {{'GPSCOUPON.NOACTIVITY' | translate}}
+            </ion-item>
+
+        </ion-card>
+    </div>
+
+
+
+    <div *ngIf="itemData.is_advance == 1">
+        <ion-row *ngIf="socialMedia[userType]">
+            <ion-col>
+                <ion-avatar item-left>
+                    <img [src]="socialMedia[userType].picture" />
+                </ion-avatar>
+                <ion-icon *ngIf="!socialMedia[userType].picture || socialMedia[userType].picture === ''" name="person" item-left></ion-icon>
+            </ion-col>
+            <ion-col>
+                <h2>{{socialMedia[userType].name}}</h2>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col>{{itemData.stamp_count}} {{itemData.perk_unit}}</ion-col>
+            <ion-col (click)="onInfo()">
+                <ion-icon name="information-circle"></ion-icon>
+            </ion-col>
+        </ion-row>
+        <ion-row *ngIf="info">{{itemData.instruction}}</ion-row>
+        <ion-row>
+            <ion-col>
+                <button *ngIf="!stamp" (click)="onAdvStampClick()" ion-button [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+                    [style.color]="globalService.initData.globalStyleSettings.features.button_text">
+                        {{'GPSCOUPON.STAMP' | translate}}
+      </button>
+                <button *ngIf="stamp" (click)="onShowLogin()" ion-button [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+                    [style.color]="globalService.initData.globalStyleSettings.features.button_text">
+                    {{'GPSCOUPON.LOGIN' | translate}}
+      </button>
+            </ion-col>
+        </ion-row>
+        <div class="comment-cards-wrapper">
+            <ion-card *ngFor="let item of perks" class="comment-card" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                <ion-item class="card-header" (click)="toggleperkOpeningCard(item.id)">
+                    <ion-icon *ngIf="!toggle_perk_card[item.id]" name="arrow-dropdown-circle"></ion-icon>
+                    <ion-icon *ngIf="toggle_perk_card[item.id]" name="arrow-dropup-circle"></ion-icon>
+                    <ion-avatar *ngIf="item.perk_thumbnail && item.perk_thumbnail !== ''" item-left>
+                        <img [src]="item.perk_thumbnail">
+                    </ion-avatar>
+                    <ion-icon *ngIf="!item.perk_thumbnail || item.perk_thumbnail === ''" name="image" item-left></ion-icon>
+                    <ion-avatar *ngIf="item.gauge_icon && item.gauge_icon !== ''" item-left>
+                        <img [src]="item.gauge_icon">
+                    </ion-avatar>
+                    <ion-icon *ngIf="!item.gauge_icon || item.gauge_icon === ''" name="person" item-left></ion-icon>
+                    <h2>{{item.title}}</h2>
+                </ion-item>
+
+                <ion-card-content class="fan-wall-comment" *ngIf="toggle_perk_card[item.id]">
+                    <p>{{item.description}}</p>
+                    <p>{{item.points}},{{itemData.perk_unit}}</p>
+                    <button (click)="onPerkRedeem(item.points,item.title)" ion-button clear icon-left item-right primary [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+                        [style.color]="globalService.initData.globalStyleSettings.features.button_text">
+                           {{'GPSCOUPON.REDEEM' | translate}}       
+                    </button>
+                </ion-card-content>
+            </ion-card>
+        </div>
+
+
+        <ion-card class="comments-card around-us-wrap">
+            <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+                [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar) | hex2rgba"
+                (click)="toggleOpeningCard()">
+               {{'GPSCOUPON.ACTIVITY' | translate}}  
+                <ion-icon *ngIf="!toggle_activity_card" name="arrow-dropdown-circle"></ion-icon>
+                <ion-icon *ngIf="toggle_activity_card" name="arrow-dropup-circle"></ion-icon>
+            </ion-card-header>
+            <ion-list *ngIf="advActivities.length && toggle_activity_card">
+                <ion-item *ngFor="let item of advActivities; let i = index;" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar))| hex2rgba">
+                    <ion-avatar *ngIf="item.picture && item.picture !== ''" item-left>
+                        <img [src]="item.picture">
+                    </ion-avatar>
+                    <ion-icon *ngIf="!item.picture || item.picture === ''" name="person" item-left></ion-icon>
+                    <span>
+                        <h2 [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.name}}</h2>
+                        <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.name}} {{item.action}} </p>
+                        </span>
+                    <span item-right>
+                  <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.created_at | servertimeformatpipe}}</p>
+                        </span>
+                </ion-item>
+
+            </ion-list>
+            <ion-item *ngIf="!advActivities.length && toggle_activity_card" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+                [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+                {{'GPSCOUPON.NOACTIVITY' | translate}}  
+            </ion-item>
+
+        </ion-card>
+    </div>
+
+</ion-content>

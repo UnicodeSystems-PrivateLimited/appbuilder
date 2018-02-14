@@ -1,0 +1,24 @@
+page-food-ordering-location-list {
+
+    ion-content {
+        
+        button[ion-item] {
+            div.pin-div {
+                display: flex;
+                justify-content: center;
+            }
+        }
+        .loc-distance{
+            .pin-div{
+                ion-icon {
+                    &.item-icon{
+                         margin-right: 0;                        
+                    }
+                }
+            } 
+        }
+        
+
+    }
+
+}

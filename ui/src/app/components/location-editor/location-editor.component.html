@@ -1,0 +1,24 @@
+<div class="map-wrap">
+<div class="layout-row layout-align-space-between add-app">
+    <label class="layout-row">Address
+        <i class="fa fa-info-circle l" tooltip="Enter the address here" tooltipPlacement="right" aria-hidden="true"></i>
+    </label>
+    <input id="address-input" [(ngModel)]="address" class="input-class flex-85" type="text" placeholder="Enter the address here">
+</div>
+<div id="map" class="layout-row" [style.width]="'100%'" [style.height.px]="'200'">
+</div>
+<div class="layout-row add-app layout-align-space-between">
+    <div class="layout-column flex-49 add-app">
+        <label>Latitude
+                <!--<i class="fa fa-info-circle l" tooltip="Enter latitude to fine tune location" tooltipPlacement="right" aria-hidden="true"></i>-->
+            </label>
+        <input class="input-class" type="text" [value]="lat" readonly="readonly" >
+    </div>
+    <div class="layout-column flex-49 add-app">
+        <label>Longitude
+                <!--<i class="fa fa-info-circle l" tooltip="Enter longitude to fine tune location" tooltipPlacement="right" aria-hidden="true"></i>-->
+            </label>
+        <input class="input-class" type="text" [value]="long" readonly="readonly">
+    </div>
+</div>
+</div>

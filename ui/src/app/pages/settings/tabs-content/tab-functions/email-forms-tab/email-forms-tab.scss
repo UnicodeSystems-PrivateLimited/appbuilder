@@ -1,0 +1,17 @@
+@import '../../../../../theme/sass/flex';
+.green-btn-a {
+    padding: 7px 16px;
+    color: #91999e;
+    border: 1px solid #b4b4b4;
+    border-radius: 3px;
+    background: transparent;
+    background: #1bbd5c;
+    color: #fff !important;
+    font-size: 15px;
+    vertical-align: inherit;
+    border: 1px solid #1bbd5c !important;
+    cursor:pointer;
+}
+.statistics-dialog.add-app .ui-dialog {
+    width: 866px !important ;
+    }

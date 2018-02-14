@@ -1,0 +1,164 @@
+<div class="sub-tabs tabinner-space">
+    <div class="layout-column">
+        <div class="layout-row">
+            <label>Subtab Options:</label>
+        </div>
+    </div>
+    <div class="layout-column flex-100">
+        <div class="layout-row flex-50 layout-align-start-start title-of-subtabs">
+            <i class="fa fa-info-circle m-r-10"></i> <label>Subtabs are home screen shortcuts. Available for traditional single row bottom layouts as well as both Modern Slider layout options.</label>
+        </div>
+    </div>
+    <div class="layout-column flex-100 title-of-subtabs">
+        <div class="layout-row">
+
+            <label class="checkbox-inline custom-checkbox nowrap flex-20 layout-row layout-align-start-center">
+                <input type="checkbox" [(ngModel)]="service.homeScreenSettings.subtabs.show_on_tablet"/>
+                <span>Show on Tablet only </span>
+            </label>
+            <!--<div class="layout-row layout-align-end-center flex-80"> <button  class="blue-btn">Update Settings</button></div>-->
+
+        </div>
+    </div>
+
+    <div class="flex-100 phone sub-tabs-setting">
+        <div class="border-b tabs-sub-appearence">
+            <div class="layout-row layout-wrap">
+                <div pDroppable="subtab" *ngFor="let subtab of service.subTabList; let i=index" class="dotted-bootom-div flex-33 somespace-top box layout-align-start-center sub-div"
+                    (onDrop)="onDrop(subtab, i)">
+                    <div pDraggable="subtab" *ngIf="subtab.id" class="layout-column draggable-area layout-align-start-center" (onDragStart)="onDragStart(subtab, i)"
+                        (onDragEnd)="onDragEnd()">
+                        <div class="edit-del-drag  layout-row layout-align-start-center">
+                        <span class=" top-right"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+                        <div class="top-left layout-row">                            
+                        <span (click)="onEditClick(subtab.id)" class="edit_iconc"><img src="assets/img/editicon.png"></span>
+                        <span (click)="onDeleteClick(subtab.id)" class="delete_icon"><img src="assets/img/closeicon.png"></span>
+                        </div>
+                        </div>
+                        <div class="layout-column menu-tb-span">
+                            <span>{{subtab.title | trimmer:12}}</span>
+                        </div>
+                        
+                    </div>
+                    <button *ngIf="!subtab.id"class="add-icon" type="button" (click)="onAddHomeTabs(i)"><img src="assets/img/plus.png"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- on add Dialog START-->
+<p-dialog [draggable]="false"  [header]="dialogHeader" [(visible)]="newHomeSubTabsDisplay" modal="modal" class="app-dialog add-app s-tab-add sub-tab-dia"
+    (onAfterHide)="onDialogHide()">
+
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form class="white-bg web-bg border-all">
+        <div class="layout-column">
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-100">
+                    <label>Tab Title</label>
+                    <input class="input-class" type="text" [(ngModel)]="subtab.title">
+                </div>
+            </div>
+        </div>
+        <div class="layout-column flex-100 button-tab-wrapper">
+            <div class="layout-row m-b-15">
+                <div class="layout-row layout-align-start-center flex-45">
+                    <label class="flex-50">Tab Label Text Color</label>
+                    <input class="input-class" [(colorPicker)]="subtab.text_color" [style.background]="subtab.text_color" [value]="subtab.text_color"
+                        [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                </div>
+
+                <div class="layout-row layout-align-start-center flex-45">
+                    <label class="flex-50">Text Color Shadow</label>
+                    <input class="input-class" [(colorPicker)]="subtab.text_color_shadow" [style.background]="subtab.text_color_shadow" [value]="subtab.text_color_shadow"
+                        [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                </div>
+            </div>
+        </div>
+        <div class="layout-column flex-100 button-tab-wrapper">
+            <div class="layout-row m-b-15">
+                <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                    <input type="checkbox" [(ngModel)]="isExternalLink">
+                    <span class="layout-row layout-align-start-center">Link to external URL ?</span>
+                </label>
+            </div>
+        </div>
+        <div class="layout-column flex-100">
+            <div class="layout-row m-b-15 layout-align-space-between-center">
+                <div class="layout-column flex-50 layout-align-space-between  ">
+                    <div class="layout-row layout-align-space-between  ">
+                        <template [ngIf]="!isExternalLink">
+                            <label class="layout-row flex-50 layout-align-start-center">Select a Tab<i class="fa fa-info-circle l m-l-10" tooltip="Link your subtab to tab function within the app." tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <span class="layout-row flex-70">
+                                <p-dropdown [options]="categories" [(ngModel)]="subtab.tab_id" class="cat-drop flex-70"></p-dropdown>
+                            </span>
+                        </template>
+                        <template [ngIf]="isExternalLink">
+                            <label class="layout-row flex-50 layout-align-start-center">Enter URL</label>
+                            <span class="layout-row flex-70">
+                                <input class="input-class" type="text" [(ngModel)]="subtab.external_url">
+                            </span>
+                        </template>
+                    </div>
+                </div>
+                <div class="layout-column ">
+                    <div class="layout-row">
+                        <!--                        <span> <input type="checkbox">
+                   <label>Active<i class="fa fa-info-circle l" tooltip="Activate this subtab." tooltipPlacement="right" aria-hidden="true"></i></label></span>-->
+                        <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                    <input type="checkbox" [(ngModel)]="subtab.active">
+                    <span class="layout-row layout-align-start-center">Active <i class="fa fa-info-circle l m-l-10" tooltip="Activate this subtab." tooltipPlacement="right" aria-hidden="true"></i></span>
+                </label>
+                    </div>
+                </div>
+                <div class="layout-column ">
+                    <div class="layout-row">
+                        <!--                        <span> <input type="checkbox">
+                   <label>Homescreen Only<i class="fa fa-info-circle l" tooltip="Activate this subtab." tooltipPlacement="right" aria-hidden="true"></i></label></span>-->
+                        <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                    <input type="checkbox" [(ngModel)]="subtab.homescreen_only">
+                    <span class="layout-row layout-align-start-center">Homescreen Only<i class="fa fa-info-circle l  m-l-10" tooltip="Activate this subtab." tooltipPlacement="left" aria-hidden="true"></i></span>
+                </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="editMode" class="layout-row layout-align-start-center m-b-15">
+            <label class="s-tool-label m-r-10">Current Icon &nbsp; </label>
+            <img style="width: 50px; height: 50px" [src]="iconThumbnailSrc">
+        </div>
+        <div class="layout-column">
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-35">
+                    <label>Upload Custom Icon:<i class="fa fa-info-circle l  m-l-10" tooltip="Activate this subtab." tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <input type="file" (change)="onCustomIconChange($event)">
+                </div>
+            </div>
+        </div>
+        <div class="layout-column">
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-100">
+                    <div class="layout-row layout-align-center-center layout-wrap  p-t-3">
+                        <div *ngFor="let icon of service.subTabIcons" class="flex-15 layout-row layout-align-center-center m-t-10" [class.selected]="selectedIconId === icon.id"
+                            (click)="onIconClick(icon)">
+                            <img class="img-scrc" [src]="icon.src" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="">
+                <div class="save-btn">
+                    <button class="green-btn" type="button" (click)="onSaveClick()">SAVE CHANGES</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+</p-dialog>

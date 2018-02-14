@@ -1,0 +1,67 @@
+<!--
+  Generated template for the SocialAccount component.
+
+  See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
+  for more info on Angular 2 Components.
+-->
+<ion-card class="comment-card">
+	<ion-list-header>
+		<ion-item *ngIf="socialMedia[userType] && !savingUser">
+			<ion-avatar item-left>
+				<img [src]="socialMedia[userType].picture" />
+			</ion-avatar>
+			<h2>{{socialMedia[userType].name}}</h2>
+			<p>{{'CONNECTEDTO' | translate}} {{mediaName[type]}}</p>
+			<button ion-button item-right color="danger" (click)="onLogoutClick()" outline>{{'LOGOUT' | translate}}</button>
+		</ion-item>
+		<ion-item *ngIf="!socialMedia[userType] || savingUser">
+			<ion-icon *ngIf="type == FACEBOOK" name="logo-facebook" [style.color]="'#4867aa'" [style.font-size]="'45px'"></ion-icon>
+			<ion-icon *ngIf="type == TWITTER" name="logo-twitter" [style.color]="'#1da1f2'" [style.font-size]="'45px'"></ion-icon>
+			<button ion-button item-right color="secondary" (click)="onConnectClick()">{{'CONNECT' | translate}}</button>
+		</ion-item>
+		<ion-row *ngIf="socialMedia[userType] && !savingUser">
+			<ion-col>
+				<button ion-button (click)="onUpdateStatusClick()">{{'UPDATESTATUS' | translate}}</button>
+			</ion-col>
+			<ion-col class="item-right">
+				<button ion-button (click)="onShareClick()">{{'SHARESOCIAL' | translate}}</button>
+			</ion-col>
+		</ion-row>
+		<ion-row wrap>
+			<ion-col  class="layout-justify">
+				<ion-row>0</ion-row>
+				<ion-row>{{'MESSAGES' | translate}}</ion-row>
+			</ion-col>
+			<ion-col  class="layout-justify">
+				<ion-row>{{service[userType + 'Data'] ? service[userType + 'Data'].totalFanWallPosts : 0}}</ion-row>
+				<ion-row>{{service[userType + 'Data'] && service[userType + 'Data'].totalFanWallPosts === 1 ? "Fan Wall Post" : "Fan Wall Posts"}}</ion-row>
+			</ion-col>
+			<ion-col  class="layout-justify">
+				<ion-row>{{service[userType + 'Data'] ? service[userType + 'Data'].user.share_count : 0}}</ion-row>
+				<ion-row>{{service[userType + 'Data'] && service[userType + 'Data'].user.share_count === 1 ? "Share" : "Shares"}}</ion-row>
+			</ion-col>
+		</ion-row>
+	</ion-list-header>
+</ion-card>
+<ion-card>
+	<ion-list-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+		[style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar) | hex2rgba">
+		{{'COMMENTSSOCIAL' | translate}} {{service[userType + 'Data'] && service[userType + 'Data'].comments ? "(" + service[userType + 'Data'].comments.length
+		+ " comments)" : ""}}
+	</ion-list-header>
+	<md-spinner [state]="(service[userType + 'Data'] && service[userType + 'Data'].comments) || !socialMedia[userType] ? false : true"></md-spinner>
+	<div *ngIf="service[userType + 'Data'] && service[userType + 'Data'].comments">
+		<ion-item *ngFor="let comment of (service[userType + 'Data'].comments) ; let i = index;" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+			<ion-avatar item-left>
+				<img [src]="comment.picture">
+			</ion-avatar>
+			<h2 [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{comment.name}}</h2>
+			<p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{comment.comment}}</p>
+			<ion-note item-right [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{comment.created_at | servertimeformatpipe}}</ion-note>
+		</ion-item>
+	</div>
+	<ion-item [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+		[style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba"
+		*ngIf="(service[userType + 'Data'] && service[userType + 'Data'].comments.length === 0) || !socialMedia[userType]">{{'NOCOMMENTSTEXT' | translate}}</ion-item>
+
+</ion-card>

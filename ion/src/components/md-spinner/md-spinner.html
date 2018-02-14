@@ -1,0 +1,25 @@
+<!--
+  Generated template for the MyHeader component.
+
+  See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
+  for more info on Angular 2 Components.
+-->
+<ion-grid *ngIf="state" [class.md-fixed-spin]="type == 'fixed'" [style.color]="'#387ef5'">
+	<ion-row>
+		<ion-col center text-center width-100>
+			<div class="preloader-wrapper small active">
+				<div class="spinner-layer spinner-green-only">
+					<div class="circle-clipper left">
+						<div class="circle"></div>
+					</div>
+					<div class="gap-patch">
+						<div class="circle"></div>
+					</div>
+					<div class="circle-clipper right">
+						<div class="circle"></div>
+					</div>
+				</div>
+			</div>
+		</ion-col>
+	</ion-row>
+</ion-grid>

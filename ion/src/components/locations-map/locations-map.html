@@ -1,0 +1,20 @@
+<div id="map" [style.height]="getMapHeight()"></div>
+<div #footer>
+    <ion-item no-lines>
+        <div item-left>
+            <div class="pin-div">
+                <ion-icon name="pin" item-left></ion-icon>
+            </div>
+            <div *ngIf="selectedLocation">
+                {{service.getDistance(selectedLocation.latitude, selectedLocation.longitude, selectedLocation.distance_type)}}
+            </div>
+        </div>
+        <p>{{selectedLocation ? selectedLocation.address_section_1 : '-'}}</p>
+        <p>{{selectedLocation ? selectedLocation.address_section_2 : '-'}}</p>
+        <button *ngIf="selectedLocation" ion-button icon-only clear item-right (click)="onNavigateClick()">
+            <ion-icon name="navigate" color="black"></ion-icon>
+        </button>
+    </ion-item>
+    <button ion-button block (click)="onSelectLocationClick()" [style.background-color]="(globalService.initData.globalStyleSettings?.features?.button_image)"
+        [style.color]="globalService.initData.globalStyleSettings?.features?.button_text">Select this location</button>
+</div>

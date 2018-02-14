@@ -1,0 +1,52 @@
+<div class="buttons tabinner-space button-tab-wrapper">
+    <div class="layout-column  m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-20">Background Tint</label>
+            <input class="input-class" [(colorPicker)]="service.homeScreenSettings.buttons.background_tint" [style.background]="service.homeScreenSettings.buttons.background_tint"
+                [value]="service.homeScreenSettings.buttons.background_tint" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly
+            />
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="m-r-10 flex-30">Background Opacity</label>
+            <p-slider [style]="{'width':'200px'}" [(ngModel)]="service.homeScreenSettings.buttons.background_opacity"></p-slider>
+        </div>
+    </div>
+    <div class="layout-column  m-t-10">
+        <div class="layout-row">
+            <!--            <label></label>
+            <input type="checkbox">-->
+            <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                    <input type="checkbox" [(ngModel)]="service.homeScreenSettings.buttons.show_text">
+                    <span>Show Text </span>
+                </label>
+        </div>
+    </div>
+    <div class="layout-column  m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-20">Text Color</label>
+            <input class="input-class" [(colorPicker)]="service.homeScreenSettings.buttons.text_color" [style.background]="service.homeScreenSettings.buttons.text_color"
+                [value]="service.homeScreenSettings.buttons.text_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+        </div>
+    </div>
+    <div class="layout-column  m-t-10">
+        <div class="layout-row">
+            <input type="file" (change)="onBackgroundImageChange($event)">
+            <button class="green-btn" (click)="onBackgroundImgUploadClick()">UPLOAD</button>
+        </div>
+    </div>
+    <div class="layout-column  m-t-10 asset-bor">
+       <div class="layout-row layout-wrap layout-align-start p-t-10 m-t-10">
+    <div class="flex-20 pics-close layout-align-center-center layout-row m-t-10 imag-up">
+        <img alt="" src="{{'../../../../../../assets/img/no_btn.png'}}" (click)="onNoImage()">
+        <span *ngIf="noImage || !service.homeScreenSettings.buttons.background_img" class="right-tick"> <i aria-hidden="true" class="fa fa-check"></i></span>
+    </div>
+            <div class="flex-20 pics-close layout-align-center-center layout-row m-t-10 imag-up" *ngFor='let item of service.buttonBackgroundImages' (click)="onBackgroundImgClick(item.id)">
+                <img alt="" src="{{item.name}}">
+                <i class="fa fa-close" *ngIf="item.type==2" (click)="onDeleteBgImageClick($event, item.id)"></i>
+                <span *ngIf="item.id == service.homeScreenSettings.buttons.background_img" class="right-tick"> <i aria-hidden="true" class="fa fa-check"></i></span>
+            </div>
+        </div>
+    </div>
+</div>

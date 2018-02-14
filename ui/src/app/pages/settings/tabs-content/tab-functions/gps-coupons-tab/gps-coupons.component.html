@@ -1,0 +1,258 @@
+<div *ngIf="!ready || showMainLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">You have {{itemData.length}} coupon(s):</li>-->
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="dotted-bootom-div layout-column layout-align-end">
+                <div class=" layout-row layout-align-space-between-center pdf-box ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">                       
+                        <li class="title-sbhead">You have {{itemData.length}} coupon(s)</li>
+                    </ul>
+                    <button class="green-btn" (click)="showAddDialog()">
+                        <i class="fa fa-plus ion-right" aria-hidden="true"></i> ADD NEW COUPON
+                    </button>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>                
+            </div>
+            <div [dragula]='"website-bag"' [dragulaModel]="itemData">
+                <div *ngFor="let item of itemData" class="dotted-bootom-div layout-row somespace-top layout-align-start-center">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedItem[item.id]" (click)="onCheckTabChange(selectedItem[item.id], item.id)">
+                            <span></span>
+                        </label>                        
+                        <span class="layout-align-center-center layout-row"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+                        <div class="layout-column menu-tb-span">
+                            <span>{{item.coupon_name}}</span>
+                            <span class="">{{item.check_in_target}} Checkin(s)</span>
+                            <div class="layout-row timestamp-wrapper">
+                                <span><span class="time-date-wrap" *ngIf="!item.start_date">ongoing</span><span class="time-date-wrap" *ngIf="item.start_date">{{item.start_date | date:"MM/dd/yyyy"}}</span><i class="fa fa-caret-right" aria-hidden="true"></i></span>
+                                <span> <i class="fa fa-caret-left" aria-hidden="true"></i><span class="time-date-wrap" *ngIf="!item.end_date">ongoing</span><span class="time-date-wrap" *ngIf="item.end_date">{{item.end_date | date:"MM/dd/yyyy"}}</span></span>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="flex-50 layout-row layout-align-end  remove-r-padding  pad-r-15">
+                        <span><button class="edit-btn m-r-0" (click)="showEditDialog(item.id)">Edit</button></span>
+                        <!--<span class="red"><button class="red" (click)="onDeleteClick(item.id)">Delete</button></span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+</div>
+
+<!--Add/Edit dialog start-->
+
+<p-dialog [draggable]="false"  [header]="couponHeader" [(visible)]="dialogDisplay" [class.tab-design-class]="tabwrap" modal="modal" (onAfterHide)="onDialogHide()"
+    class="app-dialog add-app gps-coupeon-wrapper info-2 evnt-wrap info-wrap">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <tabset class="container-tab-detail">
+        <tab heading="GENERAL INFORMATION">
+            <div class="tabinner-space contact-us">
+                <form class="contact-us-formr">
+                    <div class="">
+                        <div class="event-cal-wrap">
+                            <div class="flex-100 layout-row layout-align-space-between">
+                                <div class="layout-column flex-100 add-app">
+                                    <div class="phone layout-row layout-align-start-center" *ngIf="imageShow">
+                                        <label class="checkbox-inline custom-checkbox nowrap">
+                                    <input id="inlineCheckbox01" type="checkbox" [(ngModel)]="couponData.is_header_required">
+                                    <span>&nbsp;</span>
+                                </label>
+                                     
+                                                <label class="layout-row layout-align-start-center">Phone Header Image
+                                            <i class="fa fa-info-circle layout-row setinput-icon" tooltip='Upload a Phone Header Image 640x264px.' tooltipPlacement="right" aria-hidden="true"></i>
+                                        </label>
+                                        <thumbnail-file-reader class=" layout-row layout-align-start-center" [btnText]="'Browse'" [imageTypeHeader]="true" (delete)="deleteImage('phone_header',couponData.id)"
+                                                               [defaultPicture]="couponData.phone_header_image" (complete)="onPhoneHeaderImageChange($event)">
+                                        </thumbnail-file-reader>
+                                    </div>
+                                    <div *ngIf="imageShow" class="phone layout-row m-l-25">
+                                        <label class="layout-row layout-align-start-center">Tablet Header Image
+                                            <i class="fa fa-info-circle layout-row setinput-icon" tooltip='Upload a Tablet Header Image 1536x634px.' tooltipPlacement="right" aria-hidden="true"></i>
+                                        </label>
+                                        <thumbnail-file-reader [btnText]="'Browse'" (delete)="deleteImage('tablet_header',couponData.id)" [imageTypeHeader]="true"
+                                            [defaultPicture]="couponData.tablet_header_image" (complete)="onTabletHeaderImageChange($event)">
+                                        </thumbnail-file-reader>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-row">
+                                <div class="layout-column flex-100">
+                                    <div class="layout-row flex-45 layout-align-start-center m-b-15">
+                                        <label class="flex-25">Coupon Name 
+                                            <i class="fa fa-info-circle l m-r-10" tooltip="Enter a title for the coupon. Will be viewable by customers so they know what they are checking in for." tooltipPlacement="right" aria-hidden="true"></i>
+                                        </label>
+                                        <input id="name" type="text" [(ngModel)]="couponData.coupon_name" class=" flex-50" >
+
+                                    </div>
+                                    <div class="layout-row flex-45 layout-align-start-center">
+                                        <label class="flex-25">
+                                            Location <i class="fa fa-info-circle l" tooltip="Choose the location." tooltipPlacement="right" aria-hidden="true"></i>
+                                        </label>
+                                        <p-dropdown class="category-dropdown flex-50 imp-data drop-li-width"  [options]="locationSelect" [(ngModel)]="couponData.location_id"></p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-row">
+                                <div class="layout-column flex-100">
+                                    <div class="layout-row flex-45 layout-align-start-center m-b-15">
+                                        <label class="flex-20">Radius
+                                            <i class="fa fa-info-circle l m-r-10" tooltip="This is the radius." tooltipPlacement="right" aria-hidden="true"></i>
+                                        </label>
+
+
+                                        <input id="name" type="text" [(ngModel)]="couponData.radius" class=" flex-50" >
+
+                                    </div>
+                                    <div class="layout-row flex-45 layout-align-start-center">
+                                        <label class="flex-20">
+                                            Radius Unit  <i class="fa fa-info-circle l" tooltip="Choose radius unit." tooltipPlacement="right" aria-hidden="true"></i>
+                                        </label>
+
+                                        <p-dropdown class="category-dropdown flex-50 imp-data drop-li-width" [options]="unitSelect" [style]="{'width':'170px'}" [(ngModel)]="couponData.radius_unit"></p-dropdown>
+
+
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-column  m-b-15 layout-align-space-between event-cal-wrap">
+                                <div class="layout-row m-b-15 layout-align-start-center">
+                                    <label class="layout-row layout-align-start-center flex-25">
+                                        Start Date<i class="fa fa-info-circle layout-row setinput-icon" tooltip='Set the start date when the coupon becomes active.' tooltipPlacement="right" aria-hidden="true"></i>
+                                    </label>
+                                    <div class="layout-column flex-30 layout-align-center-center ">
+                                        <p-calendar [minDate]="currentDate" [(ngModel)]="coupon_start_date"></p-calendar>
+                                    </div>
+                                    <label class="layout-row layout-align-center-center flex-25">
+                                        End Date<i class="fa fa-info-circle layout-row setinput-icon" tooltip='Set the date when the coupon becomes inactive.' tooltipPlacement="right" aria-hidden="true"></i>
+                                    </label>
+                                    <div class="layout-column flex-40 layout-align-center-center">
+                                        <p-calendar [minDate]="currentDate" [(ngModel)]="coupon_end_date"></p-calendar>
+
+                                    </div>
+
+                                </div>
+                                <div class="layout-row  layout-align-start-center flex-100">
+                                    <label class="checkbox-inline custom-checkbox nowrap flex-100">
+                                        <input type="checkbox" id=checkbox1 [(ngModel)]="couponData.coupon_reuse">
+                                        <span>Can be used again <i class="fa fa-info-circle layout-row setinput-icon" tooltip='Mark to make the coupon re-usable.' tooltipPlacement="right" aria-hidden="true"></i></span>
+                                    </label>
+                                </div>
+                                <div class="layout-row m-b-15 layout-align-start-center tm-zn">
+                                    <label class="layout-row layout-align-start-center flex-25">Timezone
+                                        <i class="fa fa-info-circle l" tooltip="Select the timezone for your coupon." tooltipPlacement="right" aria-hidden="true"></i>
+                                    </label>
+                                    <p-dropdown class="category-dropdown m-l-10 imp-data drop-li-width" [options]="timezoneSelect" [style]="{'width':'170px'}" [(ngModel)]="couponData.timezone_id"
+                                                *ngIf="timezone"></p-dropdown>
+                                </div>
+                            </div>
+                            <div class="layout-row p-t-1">
+                                <div class="layout-column flex-100">
+                                    <div class="layout-row layout-align-start-center m-b-10 p-b-1">
+                                        <label class="flex-35">Check-In Target Amount
+                                            <i class="fa fa-info-circle l m-r-10" tooltip="Amount of check-ins needed for the coupon to become unlocked" tooltipPlacement="right" aria-hidden="true"></i>
+                                        </label>
+                                        <input id="name" type="text" [(ngModel)]="couponData.check_in_target">
+                                    </div>
+                                    <div class="layout-row layout-align-start-center m-b-10 p-b-1">
+                                        <label class="flex-35">
+                                            Hours Before Next Check-In  <i class="fa fa-info-circle l" tooltip="Amount of time before customer can check-in coupon again. (Specify amount in hours)" tooltipPlacement="right" aria-hidden="true"></i>
+                                        </label>
+                                        <input id="name" type="text" [(ngModel)]="couponData.hours_before_checkin">
+                                    </div>
+                                    <div class="layout-row layout-align-start-center m-b-10 flex-100">
+                                        <label class="checkbox-inline custom-checkbox nowrap flex-100">
+                                            <input type="checkbox" id="checkbox02" [(ngModel)]="couponData.coupon_status">
+                                            <span>Is This Coupon Active <i class="fa fa-info-circle l" tooltip="Select this to make the coupon active in the app." tooltipPlacement="right" aria-hidden="true"></i></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-row m-b-15 flex-100 ">
+                                <div class="layout-row   flex-100 layout-align-start-center">
+                                    <label class="layout-row layout-align-start-center flex-25">Coupon Description  
+                                        <i class="fa fa-info-circle l m-r-10" tooltip="Enter a description that will be available when the coupon is unlocked." tooltipPlacement="right" aria-hidden="true"></i>
+                                    </label>
+                                    <textarea  class="flex-70" rows="5" cols="30" pInputTextarea autoResize="autoResize" [(ngModel)]="couponData.description"></textarea>
+                                </div>
+                            </div>
+                            <div class="layout-align-start save-btn">
+                                <button class="green-btn btn btn-lg" type="submit" [disabled]="addSaveButtonHide" (click)="onSaveCoupon()">Save Changes</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </tab>
+      <tab heading="ACTIVITIES">
+            <div class="tabinner-space comment-sec">
+                <span>Showing {{activities.length}} Activity(s):</span>
+                <div class="coment-conct-wrap">
+                    <table class="flex-100 layout-column opening-time-wrap ">
+                        <thead class="flex-100 layout-row">
+                            <th class="flex-25 layout-row layout-align-center-center">Date</th>
+                            <th class="flex-25 layout-row layout-align-center-center">User</th>
+                            <th class="flex-25 layout-row layout-align-center-center">Action</th>
+                            <th class="flex-25 layout-row layout-align-center-center"></th>
+                        </thead>
+                        <tbody class="height-tb">
+                <tr *ngFor="let item of activities ; let i=index" class="flex-100 layout-row">
+                    <td class="flex-25 layout-row layout-align-start-center">{{item.created_at}}</td>
+                    <td class="flex-25 layout-row layout-align-start-center">{{item.name}}</td>
+                    <td class="flex-25 layout-row layout-align-start-center">{{item.action}}</td>
+                    <td class="flex-25 layout-row layout-align-center-center">
+                        <button class="red" type="button" (click)="deleteActivity(item.id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+                    </table>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+</p-dialog>
+<!-- End of Add/Edit dialog-->
+
+<!-- Delete Coupon Dialog START -->
+<p-dialog  [draggable]="false" header="Delete Coupon ?" [(visible)]="showDeleteDialog" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected Coupon ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteCoupon()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteDialog=false">No</a>
+        </div>
+    </footer>
+</p-dialog>
+<!-- Delete Coupon Dialog END -->

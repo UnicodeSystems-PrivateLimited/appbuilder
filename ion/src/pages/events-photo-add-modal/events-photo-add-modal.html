@@ -1,0 +1,52 @@
+<!--
+  Generated template for the EventsPhotoAddModal page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+    [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+    [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+    <ion-buttons start>
+      <button ion-button (click)="dismiss()">
+        <span  showWhen="ios">{{'CANCEL' | translate}}</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+    </ion-buttons>
+    <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+      [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{'PHOTOUPLOAD' | translate}}</ion-title>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+  <template [ngIf]="!loader">
+    <ion-buttons right>
+      <button ion-button (click)="onAddPhoto()" [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+        [style.color]="globalService.initData.globalStyleSettings.features.button_text">
+       {{'UPLOAD' | translate}}
+      </button>
+    </ion-buttons>
+    <div>
+      <ion-row>
+        <ion-col width-20>
+          <ion-label>{{'CAPTION' | translate}}</ion-label>
+        </ion-col>
+        <ion-col width-80>
+          <ion-input type="text" value="" [(ngModel)]="eventGallery.caption"></ion-input>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngIf="type==2">
+        <ion-col>
+          <button ion-button (click)="selectPhoto()" [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+            [style.color]="globalService.initData.globalStyleSettings.features.button_text">Select Photos</button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </template>
+</ion-content>

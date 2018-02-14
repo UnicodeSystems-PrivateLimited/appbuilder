@@ -1,0 +1,270 @@
+<div *ngIf="!ready || showMainLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready" class="around-us-wrap">
+    <div class="flex-100 spaceborder">
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">You have {{arounds.length}} POI(s)</li>-->
+            </ul>
+        </div>
+    </div>
+
+    <!--category modal-->
+    <div class="flex-100 layout-column  updatecolor-box  block-1 arnd-us-blk">
+        <div class="layout-row flex-100 layout-align-start-center">
+            <div class="flex-10">Categories</div>
+            <div class="flex-25 layout-column layout-align-center-center">
+                <button class="blue-btn" (click)="saveSettings()">Update Settings</button>
+            </div>
+        </div>
+        <div class="m-t-10 layout-row">
+            <div class="flex-10"></div>
+            <div class="layout-column flex-25 ">
+                <div class="layout-row add-app layout-align-center-center " *ngFor="let category of categoryData">
+                    <input *ngIf="category" class="input-class flex-20" [(colorPicker)]="category.color" [style.background]="category.color"
+                        [value]="category.color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                    <input type="text" name="categoryname" [(ngModel)]="category.category_name">
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- End of category-->
+
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="dotted-bootom-div layout-column layout-align-end">
+                <div class=" layout-row layout-align-space-between-center pdf-box ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                        <!--<li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>-->
+                        <li class="title-sbhead">You have {{arounds.length}} POI(s)</li>
+                    </ul>
+                    <button class="green-btn" (click)="showAddDialog()">
+                        <i class="fa fa-plus ion-right" aria-hidden="true"></i> ADD POI
+                    </button>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onItemDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>
+            </div>
+
+            <div [dragula]='"website-bag"' [dragulaModel]="arounds">
+                <div *ngFor="let around of arounds" class="dotted-bootom-div layout-row somespace-top layout-align-start-center">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox02"  [(ngModel)]="selectedItem[around.id]" (click)="onCheckTabChange(selectedItem[around.id], around.id)">
+                            <span></span>
+                        </label>
+                        <span class="layout-align-center-center layout-row "><i class="fa fa-arrows" aria-hidden="true"></i></span>
+                        <span [style.background]="around.color" class="around-us-color">
+
+                        </span>
+                        <div class="layout-column menu-tb-span">
+                            <span>{{around.name}}</span>
+                        </div>
+                    </div>
+                    <div class="flex-50 layout-row layout-align-end  remove-r-padding  pad-r-15">
+                        <span><button class="edit-btn m-r-0" (click)="showEditDialog(around.id)">edit</button></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+</div>
+
+
+<!--SAve/Edit model of Item-->
+<p-dialog [draggable]="false"  [header]="poiHeader" [(visible)]="dialogDisplay" modal="modal" class="app-dialog add-app  info-wrap info-2" (onAfterHide)="onDialogHide()"
+   >
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="">
+        <div class="againtab-container-box ">
+            <div class="header-background">
+                <tabset class="container-tab-detail">
+                    <tab heading="General Information">
+                        <div class="contact-us">
+                            <form class="contact-us-formr">
+                                <div class="">
+                                    <div class="tb-1 web-bg">
+                                        <div class=" flex-100 layout-row layout-align-space-between">
+                                            <div class="layout-column flex-50 add-app">
+                                                <label>Name
+                                                    <i class="fa fa-info-circle l" tooltip="Enter a name for this POI" tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                                <input class="input-class" type="text" [(ngModel)]="aroundUsData.name" (keypress)="inputFieldEvent($event)">
+                                            </div>
+                                            <div class="layout-column flex-49 add-app">
+                                                <label>Color
+                                                    <i class="fa fa-info-circle l" tooltip="Select from the list of categories for this POI" tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                                <p-dropdown class="category-dropdown drop-li-width" [options]="categorySelect" [(ngModel)]="aroundUsData.around_us_id" [style]="{'width':'170px'}"
+                                                    *ngIf="categoryData"></p-dropdown>
+                                            </div>
+                                        </div>
+                                        <div class="layout-column block-2 m-t-10">
+                                            <label>Information
+                                                <i class="fa fa-info-circle l" tooltip="Enter content here. You can also use images, links and more" tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                            <!--<ckeditor *ngIf="showEditor" [config]="ckEditorConfig" [(ngModel)]="aroundUsData.information"></ckeditor>-->
+                                            <div id="description-editor"></div>
+                                        </div>
+                                    </div>
+                                    <div class="tb-3 web-bg">
+                                        <div class="layout-column add-app">
+                                            <label>Website
+                                                <i class="fa fa-info-circle l" tooltip="Enter your websites URL here" tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                            <input class="input-class flex-100" type="text" [(ngModel)]="aroundUsData.website" (keypress)="inputFieldEvent($event)">
+                                        </div>
+                                    </div>
+                                    <div class="address-wrapper tb-2 web-bg layout-row layout-align-center-center">
+                                        <div *ngIf="!editFormlocationEditorDisplay" (click)="showLocationEditor()" class="loctn-up cursor-p"> <i class="fa fa-map-marker m-r-10" aria-hidden="true"></i>Click to edit your location.</div>
+                                        <div *ngIf="editFormlocationEditorDisplay" class="flex-100">
+                                            <location-editor [lat]="aroundUsData.m_lat" [long]="aroundUsData.m_long" (latLongChange)="onLatLongChange($event)"></location-editor>
+                                            <div class="layout-column dis-wrap">
+                                                <label class="layout-row">Distance Type
+                                                    <i class="fa fa-info-circle l" tooltip="Distance Type" tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                                <div class="layout-row">
+                                                    <div class="flex-10 layout-row layout-align-space-between-center">
+                                                        <p-radioButton class="m-r-5" name="distanceType" [value]="DISTANCE_TYPE_MILE" [(ngModel)]="aroundUsData.distance_type"></p-radioButton>Mile</div>
+                                                    <div class="flex-20 layout-row layout-align-start-center m-l-10">
+                                                        <p-radioButton class="flex-20 m-r-5" name="distanceType" [value]="DISTANCE_TYPE_KILOMETER" [(ngModel)]="aroundUsData.distance_type"></p-radioButton>Kilometer</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tb-3 web-bg">
+                                        <div class="layout-row layout-align-space-between">
+                                            <div class="layout-column flex-49 add-app">
+                                                <label>Email
+                                                    <i class="fa fa-info-circle l" tooltip="Enter your email here" tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                                <input class="input-class" type="text" [(ngModel)]="aroundUsData.email_id" (keypress)="inputFieldEvent($event)">
+                                            </div>
+                                            <div class="layout-column flex-49 add-app">
+                                                <label>Telephone
+                                                    <i class="fa fa-info-circle l" tooltip="Enter your phone number here" tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                                <input class="input-class" type="text" [(ngModel)]="aroundUsData.telephone" minlength="10" maxlength="12" (keypress)="inputFieldEvent($event)">
+                                            </div>
+                                        </div>
+                                        <div class="layout-row m-t-10 layout-align-start-center" *ngIf="imageShow">
+                                            <label>Image
+                                                <i class="fa fa-info-circle l" tooltip="Upload a Thumbnail Image 140x140px." tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                            <thumbnail-file-reader (delete)="deleteThumbnailImage(event,aroundUsData.id)" [btnText]="'Browse'" [imageTypeHeader]="true"
+                                                [defaultPicture]="aroundUsData.image" (complete)="onImageChange($event)">
+                                            </thumbnail-file-reader>
+                                        </div>
+                                    </div>
+                                    <div class="layout-align-start save-btn m-b-20">
+                                        <button class="blue-btn btn btn-lg" type="submit" [disabled]="addSaveButtonHide" (click)="onSaveAroundUsItem()">Save Changes</button>
+                                    </div>
+                                </div>
+                                <!--                                <div class="layout-row save-btn">
+                                    <button type="button" class="blue-btn" (click)="onSaveAroundUsItem()">Save Changes</button>
+                                </div>-->
+                            </form>
+                        </div>
+                    </tab>
+                    <tab heading="Comments">
+                        <div class="tabinner-space comment-sec height-base" *ngIf="comments">
+                            <span>Showing {{comments.length}} Comment(s):</span>
+                            <div class="coment-conct-wrap">
+                                <table class="flex-100 layout-column">
+                                    <tbody class="comment-box-wrap">
+                                        <tr class="layout-row flex-100">
+                                            <td class="flex-30 layout-row layout-align-center-center cl-up">Date</td>
+                                            <td class="flex-70 layout-row">
+                                                <table class="layout-row flex-100">
+                                                    <tbody class="layout-row flex-100">
+                                                        <tr class="layout-row flex-100">
+                                                            <td class="flex-80 layout-align-center-center cl-up">Name/Comment</td>
+                                                            <td class="flex-80 layout-align-center-center cl-up"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tbody class="comment-box-wrap ">
+
+                                        <tr class="layout-row flex-100" *ngFor="let comment of comments">
+                                            <td class="flex-30 layout-row layout-align-center-center cl-up-1  b-l-r">{{comment.created_at}}</td>
+                                            <td class="flex-70 layout-row">
+                                                <table class="layout-row flex-100">
+                                                    <tbody class="layout-column flex-100">
+                                                        <tr class="layout-row flex-100 ">
+                                                            <td class="flex-80 layout-align-center-center cl-up-1 border-r "> {{comment.name}}</td>
+                                                            <td class="flex-20 layout-align-center-center layout-row cl-up-1 "><button class="red" type="button" (click)="onCommentDeleteClick(comment.id)">Delete</button></td>
+                                                        </tr>
+                                                        <tr class="cl-up-1 layout-row flex-100 layout-align-start-center ">
+                                                            {{comment.description}}
+                                                        </tr>
+
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <!--<input type="button" value="Save Changes">-->
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
+<!--end of save/edit model-->
+
+<!-- Delete Comment Dialog START -->
+<p-dialog [draggable]="false"  header="Delete Comment ?" [(visible)]="showDeleteDialog" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected Comment ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteComment()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteDialog=false">No</a>
+        </div>
+    </footer>
+</p-dialog>
+<!-- Delete Comment Dialog END -->
+
+<!-- Delete Item Dialog START 
+<p-dialog header="Delete Item ?" [(visible)]="showDeleteItemDialog" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected Item ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteItem()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteItemDialog=false">No</a>
+        </div>
+    </footer>
+</p-dialog>
+ Delete Item Dialog END -->

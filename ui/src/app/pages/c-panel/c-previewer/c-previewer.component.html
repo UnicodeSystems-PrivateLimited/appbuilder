@@ -1,0 +1,63 @@
+<div class="flex-100 layout-row main-social-tab-container">
+    <div class="flex-50 layout-column">
+        <div class="layout-column flex-20 border-all white-bg m-t-20">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Language</div>
+            <div class="layout-row flex-100 layout-align-space-between-center pad-15">
+                <span>Select the language you would like your previewer to display.</span>
+                <div class="layout-row layout-align-start-center">
+                    <div class="drp-da  layout-align-end-center layout-row">
+                        <p-dropdown [options]="staticCPanel.clientLanguage" [(ngModel)]="staticCPanel.cPreViewerData.prev_language" class="cat-drop layout-align-center-center layout-row"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layout-column  border-all white-bg m-t-20">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Images</div>
+            <div class="layout-row  layout-align-start-center pad-15">
+                <div class="layout-column layout-align-start-center flex-50">
+                    <div class="layout-row flex-100 m-b-10" [class.active]="imageType==2" (click)="clickOnImageTab(2)">Background Image</div>
+                    <div class="layout-row flex-100 m-b-10" [class.active]="imageType==3" (click)="clickOnImageTab(3)">Play Image</div>
+                    <div class="layout-row flex-100 m-b-10" [class.active]="imageType==4" (click)="clickOnImageTab(4)">Loading Image</div>
+                </div>
+                <div class=" layout-column">
+                    <div *ngIf="imageType==2" class="layout-column layout-align-end-center " style="height: 300px;width: 228px ;padding: 10px;border: 1px dashed #ccc;">
+                        <img  src="{{staticCPanel.cPreViewerData.prev_bg_image}}" style="width: 100%;height: 100%;">
+                    </div>
+                    <div *ngIf="imageType==3" class="layout-column layout-align-end-center " style="height: 220px;width: 220px ;padding: 10px;border: 1px dashed #ccc;">
+                        <img src="{{staticCPanel.cPreViewerData.prev_play_image}}" style="max-width: 100%;height: 100%;">
+                    </div>
+                    <div *ngIf="imageType==4" class="layout-column layout-align-end-center " style="height: 220px;width: 220px ;padding: 10px;border: 1px dashed #ccc;">
+                        <img src="{{staticCPanel.cPreViewerData.prev_load_image}}" style="max-width: 100%;height: 100%;">
+                    </div>
+                </div>
+            </div>
+            <div class="layout-column flex-100 layout-align-start-center pad-15">
+                <span class="layout-row flex-30 m-b-10">Recommended size is 139 x 145 in PNG format.</span>
+                <div class="layout-row flex-30 ">
+                    <button type="button" class="green-btn m-r-10" (click)="openReplaceImageDialog()">Replace</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-50 p-l-10 m-l-10 layout-column bg-white-less pad-15">            
+        <div class="layout-row layout-align-center-center">
+            <span class="p-l-10 m-t-10 m-l-20 m-b-10"> This is how your previewer will appear within your partner CMS</span>            
+        </div>
+        <div class="layout-row layout-align-space-between c-smiltor">
+            <div class="layout-row flex-100">
+                <div class=" layout-row flex-100">
+                    <i class="fa  layout-align-start-center layout-row flex-30" aria-hidden="true"></i>
+                    <div class="layout-align-start-center layout-row flex-100 simultor">
+                        <img src="assets/img/simulatorC.png" />
+                        <div class=" cpanel-previewer layout-row layout-align-center-center">
+                            <img src="{{staticCPanel.cPreViewerData.prev_bg_image}}" class="img-pro" />
+                            <img class=" cpanel-previewer-small layout-row layout-align-center-center" *ngIf="imageType==3" src="{{staticCPanel.cPreViewerData.prev_play_image}}"  />
+                            <img class=" cpanel-previewer-small layout-row layout-align-center-center" *ngIf="imageType==4" src="{{staticCPanel.cPreViewerData.prev_load_image}}" />
+                        </div>
+                    </div>
+                </div>                   
+            </div>
+        </div>
+    </div>
+    <ba-cpanel-image-uploader *ngIf="showReplaceImageDialog" [headerTitle]="replaceImageHeader" [imageType]="imageType" (complete)="onReplaceDialogDismiss($event)"></ba-cpanel-image-uploader>
+</div>

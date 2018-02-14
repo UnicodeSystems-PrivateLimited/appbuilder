@@ -1,0 +1,157 @@
+<div *ngIf="showMainLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="!showMainLoader" class=" flex-100  c-overview-wrapper">
+    <!--<h1>c-overview component</h1>-->
+    <div class="layout-row layout-wrap layout-align-space-between-start pad-15 m-t-10">
+        <div class="col-sm-6">
+            <div class="panel panel-default panel-recent panel-no-act is_scroll loaded border-all">
+                <div class="panel-heading">Recent Activity</div>
+                <div class="pbody-recent-wrp relative hidden_sign_text revnt-act" style="position: relative;">
+                    <div class="inner-container-content">
+                        <div class="container-content-box">
+                            <ul class="list-content">
+                                <!--<li>
+                            <ul class="list-small-item">
+                                <li><strong>Today</strong></li>
+                                <li class="absolute-li circle-li"><span><i class="fa fa-circle-o " aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>-->
+
+                                <li *ngFor="let activity of acivities">
+                                    <ul class="list-small-item">
+                                        <li><strong>{{activity.created_at | dateTimeFormatPipe:dateformat}}</strong></li>
+                                        <li>{{activity.activity}}
+                                            <span *ngIf="activity.activity_type == activityType.LOGIN">{{activity.created_at | dateTimeFormatPipe:dateformat}} at
+                                            {{activity.created_at | dateTimeFormatPipe:timeformat}}</span>
+                                        </li>
+                                        <li><i class="fa fa-clock-o" aria-hidden="true"></i> {{activity.created_at | timeDifferenceFormatPipe}}</li>
+                                        <li class="absolute-li">
+                                            <span *ngIf="activity.activity_type == activityType.LOGIN"><i class="fa fa-sign-in" aria-hidden="true"></i></span>
+                                            <span *ngIf="activity.activity_type == activityType.NOTIFICATION"><i class="fa fa-bell" aria-hidden="true"></i></span>
+                                            <span *ngIf="activity.activity_type == activityType.APP_PUBLISH"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!--<li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 23th, 2016</strong></li>
+                                <li><span>Global Outeach Charter</span>logged in on Friday, June 24, 2016 at 01:46 AM </li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> 16 Minute and 28 seconds ago</li>
+                                <li class="absolute-li"><span><i class="fa fa-sign-in" aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 23th, 2016</strong></li>
+                                <li><span>Deerpark Middle School</span> Successfully published for iphone and ipad and android</li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> 1 Hours and 05 minute ago</li>
+                                <li class="absolute-li"><span><i class="fa fa-paper-plane" aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>-->
+
+                                <!--<li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 23th, 2016</strong></li>
+                                <li class="absolute-li circle-li"><span><i class="fa fa-circle-o " aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>-->
+
+                                <!--<li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 22th, 2016</strong></li>
+                                <li><span>Global Outeach Charter</span> Logged in on Friday, June 24, 2016 at 01:46 Am </li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> 1 Hour 20 minutes ago</li>
+                                <li class="absolute-li"><span><i class="fa fa-sign-in" aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 22th, 2016</strong></li>
+                                <li><span>Global high School</span> Successfully published for iphone and ipad and android. </li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> Less than a minute ago</li>
+                                <li class="absolute-li"><span><i class="fa fa-paper-plane" aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 22th, 2016</strong></li>
+                                <li><span>Deerpark Middle School</span> Logged in on Friday June 24, 2016 at 10:16 am</li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> 1 Hours and 05 minute ago</li>
+                                <li class="absolute-li"><span><i class="fa fa-sign-in" aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>-->
+                            </ul>
+                            <div *ngIf="acivities.length" class="page-block flex-45 layout-row layout-align-end-center flex-sm-50">
+                                <div class="cate-block  layout-row layout-align-center-center">
+                                    <span>Total: {{totalItems}}</span>
+                                    <p-dropdown [options]="count" [(ngModel)]="selectedCount" (onChange)="setItemsPerPage(selectedCount)" class="cat-drop count-drop m-l-10 m-r-10 c-overview layout-align-end layout-row"></p-dropdown>
+                                </div>
+                                <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"
+                                    [maxSize]="maxSize" class="pagination-sm layout-row layout-align-center-center" previousText="&lsaquo;"
+                                    nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                                </pagination>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="absolute vert-bar"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="panel panel-default panel-recent panel-no-act is_scroll loaded border-all session-wrapr">
+                <div class="panel-heading clearfix">
+                    Sessions<a (click)="navigateToPage('CAnalytics')" class=" btn-info">Go to Analytics</a></div>
+                <div class="pbody-recent-wrp relative hidden_sign_text" style="position: relative;">
+                    <div class="panel-body-wrapper relative">
+                        <div class="panel-body pbody-recent overview text-center ">
+                            <div class="col-lg-12 chart-box" *ngIf="!showNotingFoundAnalytics">
+                                <div class="col-lg-12">
+                                    <div class="col-md-4"><span class="ios-legend chart-legend"></span>iOS</div>
+                                    <div class="col-md-4"><span class="android-legend chart-legend"></span>Android</div>
+                                    <div class="col-md-4"><span class="html5-legend chart-legend"></span>HTML5</div>
+                                </div>
+                                <div *ngIf="showChart">
+                                    <div *ngIf="showChartLoader" class="fm-spinner">
+                                        <div class="fm-double-bounce1"></div>
+                                        <div class="fm-double-bounce2"></div>
+                                    </div>
+                                    <chartist [data]="chartData" [chartType]="'line'"></chartist>
+                                </div>
+                            </div>
+                            <div *ngIf="showNotingFoundAnalytics" class="layout-column text-center no-data-found layout-align-start-center white-bg">
+                                <h2>Nothing to see here !</h2>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="absolute vert-bar"></div>
+                </div>
+            </div>
+            <div class="panel panel-default panel-top-users is_scroll loaded border-all">
+                <div class="panel-heading clearfix">Top Users<a (click)="navigateToPage('CPromote')" class=" btn-info">Go to Promote</a></div>
+                <div class="panel-body overview pbody-recent-wrp relative hidden_sign_text" style="position: static;">
+                    <div class="demo-note-container alert alert-demo" style="display:none"><span></span>
+                        <p>This is example data. Once 10 app users have logged in with their email, Facebook or Twitter account(s),
+                            real user data will begin appearing here.</p>
+                    </div>
+                    <ul class="users" *ngIf="topUserList.length">
+                        <li class="user-item" *ngFor="let user of topUserList;">
+                            <img width="32" height="32" src="{{user.picture}}">
+                            <i *ngIf="user.platform==1" class="fa fa-android m-r-10" aria-hidden="true"></i><i *ngIf="user.platform==2"
+                                class="fa fa-mobile" aria-hidden="true"></i>{{user.name}}
+                        </li>
+                    </ul>
+                    <div *ngIf="!topUserList.length" class="layout-column text-center no-data-found layout-align-start-center white-bg">
+                        <h2>Nothing to see here !</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

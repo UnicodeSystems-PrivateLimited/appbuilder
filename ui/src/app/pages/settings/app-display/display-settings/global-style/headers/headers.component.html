@@ -1,0 +1,48 @@
+<div class="header tabinner-space button-tab-wrapper">
+    <div class="layout-column">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-30">Bar Background Color</label>
+            <input class="input-class" [(colorPicker)]="service.globalStyleSettings.header.background_color" [style.background]="service.globalStyleSettings.header.background_color"
+                [value]="service.globalStyleSettings.header.background_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly
+            />
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="m-r-10 flex-30">Background Opacity</label>
+            <p-slider [style]="{'width':'200px'}" [(ngModel)]="service.globalStyleSettings.header.background_opacity"></p-slider>
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-30">Bar Item & Text Color</label>
+            <input class="input-class" [(colorPicker)]="service.globalStyleSettings.header.text_color" [style.background]="service.globalStyleSettings.header.text_color"
+                [value]="service.globalStyleSettings.header.text_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-30">Shadow</label>
+            <input class="input-class" [(colorPicker)]="service.globalStyleSettings.header.shadow" [style.background]="service.globalStyleSettings.header.shadow"
+                [value]="service.globalStyleSettings.header.shadow" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <input type="file" (change)="onGlobalHeaderBgImageChange($event)">
+            <button class="green-btn" (click)="onGlobalHeaderBgImgUploadClick()">UPLOAD</button>
+        </div>
+    </div>
+    <div class="layout-column  m-t-10 asset-bor imag-up img-up-img">
+        <div class="pics-close layout-align-start-center layout-row ">
+        <img alt="" src="{{'../../../../../../assets/img/no header sign.png'}}" (click)="onNoImage()">
+            <span *ngIf="noImage || !service.globalStyleSettings.header.background_img" class="right-tick"> <i aria-hidden="true" class="fa fa-check"></i></span>
+       
+        </div>
+        <div class="pics-close layout-align-start-center layout-row " *ngFor='let item of service.headerBackgroundImages' (click)="onBackgroundImgClick(item.id)">
+            <img alt="" src="{{item.name}}">
+            <i class="fa fa-close" *ngIf="item.type==2" (click)="onDeleteHeaderBgImageClick($event, item.id)"></i>
+            <span *ngIf="item.id == service.globalStyleSettings.header.background_img" class="right-tick"> <i aria-hidden="true" class="fa fa-check"></i></span>
+        </div>
+    </div>
+</div>

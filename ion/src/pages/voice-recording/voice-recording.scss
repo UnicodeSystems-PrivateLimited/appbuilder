@@ -1,0 +1,44 @@
+page-voice-recording {
+    .btn-update{
+    opacity: .7;
+}
+    .recorder {
+        ion-row {
+            justify-content: center;
+            align-items: center;
+            min-height: 40px;
+        }
+
+        ion-icon.recording-icon {
+            font-size: 70px;
+        }
+
+        div.recording-icon {
+            width: 70px;
+            height: 70px;
+            background: #f56060;
+            border-radius: 3px;
+            box-shadow: 0 2px 2px 0px rgba(0,0 ,0,0.5);
+            margin: 5px;
+        }
+    }
+
+    ion-list {
+        ion-icon[item-right].delete-icon {
+            margin-right: 20px;
+        }
+
+        ion-icon[item-left].player-icon {
+            padding-left: 14px;
+        }
+
+        ion-list-header.recordings-header {
+            color: #fff;
+            background: #387ef5 !important;
+        }
+
+        ion-item {
+            margin-left: 19px;
+        }
+    }
+}

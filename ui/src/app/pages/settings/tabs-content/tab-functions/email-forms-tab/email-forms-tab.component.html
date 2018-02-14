@@ -1,0 +1,465 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">You have {{forms.length}} form(s)</li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="flex-100 layout-row main-social-tab-container pdf">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="dotted-bootom-div layout-column layout-align-end">
+                <div class=" layout-row layout-align-space-between-center pdf-box">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                        <li class="title-sbhead">You have {{forms.length}} form(s)</li>
+                    </ul>
+                    <button class="green-btn" (click)="onAddCustomFormClick()">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Add New Custom Form
+                    </button>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedForm.length > 0 && selectedForm.indexOf(true) !== -1" (click)="onFormDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>
+            </div>
+            <div [dragula]="FORMS_BAG" [dragulaModel]="forms">
+                <div *ngFor="let form of forms" class="dotted-bootom-div layout-row somespace-top layout-align-start-center">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">                            
+                        <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedForm[form.id]" (click)="onCheckTabChange(selectedForm[form.id], form.id)">
+                        <span></span>
+                        </label>
+                        <span class="layout-row layout-align-center-center "><i class="fa fa-arrows cursor-move" aria-hidden="true"></i></span>
+                        <div class="layout-column menu-tb-span">
+                            <span>{{form.title}}</span>
+                            <span><button (click)="onEntryClick(form.id)" class="edit-btn">Entries</button>
+                            <button (click)="onPreviewClick(form.id)" class="edit-btn"><i class="fa fa-search" title="preview form"></i></button>
+                            <button (click)="onStatisticsClick(form.id)" class="edit-btn"><i class="fa fa-line-chart" title="Statistics"></i></button>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="flex-50 layout-row layout-align-end-center pad-r-15">
+                        <span class=""><button class="edit-btn" (click)="onEditFormClick(form.id)">Edit</button></span>
+                        <!--<span class="wrap-address "><button class="red" (click)="onDeleteFormClick(form.id)">Delete</button></span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+</div>
+<p-dialog [draggable]="false"  [header]="formDialogHeader" [(visible)]="formDialogDisplay" (onAfterHide)="onAfterDialogHide()" modal="modal" class="app-dialog add-app s-tab-add menu-tb-ad email-tab-wrap dialog-height add-new-customer-form"
+    width="1000">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="layout-row email-wrap-data  border-all white-bg web-bg">
+        <div class="layout-column flex-50">
+            <div class="layout-column flex-100 email-wrap-3">
+                <div class="save-btn"><button *ngIf="fields.length !== 0" type="button" class="blue-btn" (click)="onSaveFormClick()">Save Form</button></div>
+                <div class="dotted-bootom-div" (click)="onTitleAndDescClick()">
+                    <h2><span class="c-p" tooltip="Click here to edit" tooltipPlacement="right">{{form.title}}</span></h2>
+                    <p>{{form.description}}</p>
+                </div>
+                <div *ngIf="fields.length === 0" class="layout-column wrap-email-col" (click)="onAddAnotherFieldClick()">
+                    <h2>You have no fields yet!</h2>
+                    <p>Click the buttons on the right to add fields to your form.</p>
+                </div>
+                <form-fields [fields]="fields" (fieldDelete)="onFieldDelete($event)" (fieldClick)="onFieldClick($event)"></form-fields>
+                <div class="save-btn"><button class="btn btn-lg" *ngIf="fields.length !== 0" type="button" [disabled]="addSaveButtonHide" (click)="onSaveFormClick()"
+                        class="blue-btn">Save Form</button>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="layout-column flex-50 email-up-wrap-2" ng2-sticky>
+            <tabset class="container-tab-detail email-wrap-tab border-all" #emailFormTab>
+                <tab heading="ADD A FIELD" [active]="addFieldTabActive" class="email-wrap-tab-tabset-wrap">
+                    <div class="layout-row layout-align-center-center">
+                        <p>Click To Add A Field.</p>
+                    </div>
+                    <div class="layout-row layout-wrap layout-align-center-center">
+                        <div *ngFor="let fieldType of fieldTypes" class="flex-45 email-wrap-tab-tabset-1 cursor-p tabs-active" (click)="onAddFieldClick(fieldType)">
+                            <i class="fa {{fieldTypeIcons[fieldType.id]}}"></i> &nbsp;{{fieldType.name}}
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="FIELD PROPERTIES" [active]="fieldPropsTabActive " class="email-wrap-tab-tabset-2">
+                    <field-props *ngIf="selectedField" [field]="selectedField"></field-props>
+                    <div *ngIf="!selectedField" class="layout-column flex-100 m-t-2 border-all pad-12-12">
+                        <h2>Please select a field</h2>
+                        <p [style.color]="'#000'">Click on a field on the left to change its properties.</p>
+                        <button type="button" (click)="onAddAnotherFieldClick()" class="green-btn">Add Another Field</button>
+                    </div>
+                </tab>
+                <tab heading="FORM PROPERTIES" [active]="formPropsTabActive" class="email-wrap-tab-tabset-3">
+                    <div class="layout-row">
+                        <div class="layout-column flex-100">
+                            <label>
+                                Send To
+                                <i class="fa fa-info-circle l" tooltip="Enter an email address to receive submitted forms" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="form.email">
+                        </div>
+                    </div>
+                    <div class="layout-row">
+                        <div class="layout-column flex-100">
+                            <label>
+                                Email Subject
+                                <i class="fa fa-info-circle l" tooltip="Enter an email subject to receive submitted forms" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="form.subject">
+                        </div>
+                    </div>
+                    <div class="layout-row">
+                        <div class="layout-column flex-100">
+                            <label>
+                                Form Title
+                                <i class="fa fa-info-circle l" tooltip="Specify form title, which will be displayed for users when they open your form" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="form.title">
+                        </div>
+                    </div>
+                    <div class="layout-row">
+                        <div class="layout-column flex-100">
+                            <label>
+                                Description
+                                <i class="fa fa-info-circle l" tooltip="Description will appear below the form name. Enter any instructions, notes etc. as needed" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <textarea class="input-class" type="text" [(ngModel)]="form.description"></textarea>
+                        </div>
+                    </div>
+                    <div class="layout-row">
+                        <div class="layout-column flex-100">
+                            <label>
+                                Success Message
+                                <i class="fa fa-info-circle l" tooltip="Specify the message which should be displayed after user submits the form" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <textarea class="input-class" type="text" [(ngModel)]="form.success_msg"></textarea>
+                        </div>
+                    </div>
+                    <div class="layout-row">
+                        <div class="layout-column flex-100">
+                            <label>
+                                Error Message
+                                <i class="fa fa-info-circle l" tooltip="Specify the message which should be displayed when an error occurs" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <textarea class="input-class" type="text" [(ngModel)]="form.error_msg"></textarea>
+                        </div>
+                    </div>
+                    <div class="layout-row">
+                        <div class="layout-column flex-100">
+                            <label>
+                                Submit Button Label
+                                <i class="fa fa-info-circle l" tooltip="This label will be used for submit button." tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="form.submit_button_label">
+                        </div>
+                    </div>
+                    <div class="layout-row">
+                        <div class="layout-column flex-100">
+                            <label>
+                                Back Button Label
+                                <i class="fa fa-info-circle l" tooltip="This label will be used for back button." tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="form.back_button_label">
+                        </div>
+                    </div>
+                    <div class="layout-row">
+                        <div class="layout-column flex-100">
+                            <label class="checkbox-inline custom-checkbox  flex-20 layout-row layout-align-start-center">
+                                <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="form.status">
+                                <span>Active</span>
+                            </label>
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+</p-dialog>
+
+<p-dialog [draggable]="false"  header="LIST SUBMITTED DATA" [(visible)]="entryDialog" modal="modal" class="app-dialog add-app s-tab-add menu-tb  info-2 entry-list-submited"
+    >
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="layout-column border-all white-bg web-bg ">
+        <div class="layout-row layout-align-space-between mn-tb-1 flex-100">
+            <a href="../api/ws/function/email-forms-fields/downloadCsv/{{id}}" class="green-btn-a">Download</a>
+        </div>
+        <div class="table-updates">
+            <table class="opening-time-wrap ">
+                <thead class="">
+                    <th class=""></th>
+                    <!--                <tr class="flex-100 layout-row">-->
+                    <th class="" *ngFor="let header of headers">{{header.properties.label}}</th>
+                    <!--</tr>-->
+                    <th class="">Action</th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of entries ; let i=index" class="">
+                        <td class="">{{i+1}}</td>
+                        <td *ngFor="let headerId of headerIds" class="f" [innerHTML]="item.data[headerId] ? (item.data[headerId].value | formfieldTypeCheck:fieldType[headerId]) : ''"></td>
+                        <td class="">
+                            <button class="red" type="button" (click)="onEntryDeleteClick(item._id)">Delete</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</p-dialog>
+<p-dialog [draggable]="false"  header="PREVIEW FORM" [(visible)]="previewDialog" modal="modal"  class="app-dialog add-app s-tab-add menu-tb  info-2 entry-list-submited">
+    <div class="layout-column prev-wrap-eml border-all white-bg ">
+        <div *ngIf="formSubmitLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="layout-column pad-20">
+            <label>{{form.title}}</label>
+            <label>{{form.description}}</label>
+        </div>
+        <div *ngFor="let field of formFields; let i = index" class="layout-row m-b-10 cursor-p" [ngSwitch]="field.field_type_id">
+
+            <div *ngSwitchCase="fieldsTypes.SINGLE_LINE_TEXT" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <input type="text" [(ngModel)]="formValue[field.id]" [style.width]="fieldSize[field.properties.size]">
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.NUMBER" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <input type="number" [(ngModel)]="formValue[field.id]" value="0123456789" [style.width]="fieldSize[field.properties.size]">
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.PARAGRAPH_TEXT" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <textarea [(ngModel)]="formValue[field.id]"></textarea>
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.CHECKBOXES" class="layout-column flex-100">
+
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <label class="checkbox-inline custom-checkbox  flex-20 layout-row layout-align-start-center m-b-10" *ngFor="let choice of field.properties.choices">
+                <input type="checkbox" id="inlineCheckbox02" [(ngModel)]="formValue[field.id]">
+                <span>{{choice.name}}</span>
+            </label>
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.MULTIPLE_CHOICES" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <div *ngFor="let choice of field.properties.choices" class="layout-row layout-align-start-center m-b-10">
+                    <p-radioButton value="{{choice.name}}" [(ngModel)]="formValue[field.id]" name="radio{{i}}" class="m-r-5"></p-radioButton>&nbsp;{{choice.name}}
+                </div>
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.DROPDOWN" class="layout-column flex-100 drop-eml">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <select [style.width]="fieldSize[field.properties.size]" [(ngModel)]="formValue[field.id]">
+                <option *ngFor="let choice of field.properties.choices">{{choice.name}}</option>
+            </select>
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.NAME" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <div class="layout-row">
+                    <input type="text" [style.width]="'25%'" [(ngModel)]="formValue[field.id].first" placeholder="First">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="text" [style.width]="'25%'" [(ngModel)]="formValue[field.id].last" placeholder="Last">
+                </div>
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.DATE" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <div class="layout-row layout-align-start-center wrap-email-date">
+                    <p-calendar [(ngModel)]="formValue[field.id]" class="flex-70" [minDate]="currentDate"></p-calendar>
+                </div>
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.TIME" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <div class="layout-row layout-align-start-center">
+                    <div *ngIf="field.properties.format === TIME_FORMAT_12_HOURS">
+                        <!--<p-calendar [(ngModel)]="formValue[field.id]" [timeOnly]="true"></p-calendar>-->
+
+                        <timepicker *ngIf="formValue[field.id]" [hourStep]="hstep" [minuteStep]="mstep" [(ngModel)]="formValue[field.id]" [showMeridian]="true"
+                            class="m-l-10"></timepicker>
+                    </div>
+                    <div *ngIf="field.properties.format === TIME_FORMAT_24_HOURS">
+                        <timepicker *ngIf="formValue[field.id]" [hourStep]="hstep" [minuteStep]="mstep" [(ngModel)]="formValue[field.id]" [showMeridian]="false"
+                            class="m-l-10"></timepicker>
+                        <!--<p-calendar [(ngModel)]="formValue[field.id]" [timeOnly]="true"></p-calendar>-->
+
+                    </div>
+                </div>
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.PHONE" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <div *ngIf="field.properties.phone_format === PHONE_FORMAT_NORMAL" class="layout-row layout-align-start-center">
+                    <input type="text" [style.width]="'10%'" placeholder="(###)" [(ngModel)]="formValue[field.id].fieldOne">-
+                    <input type="text" [style.width]="'10%'" placeholder="###" [(ngModel)]="formValue[field.id].fieldTwo">-
+                    <input type="text" [style.width]="'15%'" placeholder="####" [(ngModel)]="formValue[field.id].fieldThree">
+                </div>
+                <div *ngIf="field.properties.phone_format === PHONE_FORMAT_INTERNATIONAL">
+                    <input type="text" [style.width]="'50%'" [(ngModel)]="formValue[field.id]">
+                </div>
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.WEBSITE" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <input type="text" value="http://" [(ngModel)]="formValue[field.id]" [style.width]="fieldSize[field.properties.size]">
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.PRICE" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <div class="layout-row layout-align-start-center">$ &nbsp;&nbsp;<input type="text" [(ngModel)]="formValue[field.id]" [style.width]="'25%'"></div>
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.EMAIL" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <input type="email" value="@" [(ngModel)]="formValue[field.id]" [style.width]="fieldSize[field.properties.size]">
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.SECTION_BREAK" class="layout-column flex-100 sectns">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.FILE_UPLOAD" class="layout-column flex-100">
+                <label>{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <input type="file" (change)="onFileUploadChange($event, field.id)">
+            </div>
+
+            <div *ngSwitchCase="fieldsTypes.ADDRESS" class="layout-column flex-100 wrap-email-add">
+                <label class="m-b-10">{{field.properties.label}}</label>
+                <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                <span *ngIf="field.properties.guidelines"><i class="fa fa-info-circle l" tooltip="{{field.properties.guidelines}}" tooltipPlacement="right" aria-hidden="true"></i> </span>
+                <div class="layout-row m-b-10">
+                    <div class="layout-column flex-100">
+                        <label>Street Address</label>
+                        <input type="text" [(ngModel)]="formValue[field.id].street_address">
+
+                    </div>
+                </div>
+                <div class="layout-row m-b-10">
+                    <div class="layout-column flex-100">
+                        <label>Address Line 2</label>
+                        <input type="text" [(ngModel)]="formValue[field.id].address_line_two">
+
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between-center m-b-10">
+                    <div class="layout-column flex-45">
+                        <label>City</label>
+                        <input type="text" [(ngModel)]="formValue[field.id].city">
+
+                    </div>
+                    <div class="layout-column flex-45">
+                        <label>State / Province / Region</label>
+                        <input type="text" [(ngModel)]="formValue[field.id].state">
+
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between-center m-b-10">
+                    <div class="layout-column flex-45">
+                        <label>Zip / Postal Code</label>
+                        <input type="text" [(ngModel)]="formValue[field.id].zip">
+
+                    </div>
+                    <div class="layout-column flex-45">
+                        <label>Country</label>
+                        <select [(ngModel)]="formValue[field.id].country">
+                        <option *ngFor="let country of countries">{{country}}</option>
+                    </select>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="layout-align-center-center layout-row m-b-10 m-t-10">
+            <button class="green-btn btn btn-lg" type="submit" (click)="onPreviewSubmit()">SUBMIT</button>
+        </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog [draggable]="false"  header="STATISTICS" [(visible)]="statisticsDialog" modal="modal"  class="statistics-dialog app-dialog add-app s-tab-add menu-tb list-graph info-2 entry-list-submited">
+    <div class="layout-column flex-100 form-field-wrap">
+        <div class="layout-row flex-100 layout-align-start-center m-b-10">
+            <div class="layout-column flex-50 m-r-10">
+                <label>Usability Statistics</label>
+            </div>
+            <div class="layout-column flex-50 m-r-10" *ngIf="enable == 3 || enable == 2 || enable == 1">
+                <p-dropdown class="border-all" [options]="years" (onChange)="onYearChange($event)" [style]="{'width':'60px'}"></p-dropdown>
+            </div>
+            <div class="layout-column flex-50" *ngIf="enable == 2 || enable == 1">
+                <p-dropdown class="border-all" [options]="months" (onChange)="onMonthChange($event)" [style]="{'width':'60px'}"></p-dropdown>
+            </div>
+            <div class="layout-column flex-50 m-l-10" *ngIf="enable == 1">
+                <p-dropdown class="border-all" class="border-all" [options]="days" (onChange)="onDayChange($event)" [style]="{'width':'60px'}"></p-dropdown>
+            </div>
+            <div class="layout-column flex-50">
+                <button class="blue-btn ion-left ion-right " (click)="onRefreshClick()" type="submit">Refresh</button>
+            </div>
+            <div class="layout-column flex-50">
+                <button class="blue-btn  ion-right " (click)="onDayClick(1)" type="submit">Day</button>
+            </div>
+            <div class="layout-column flex-50">
+                <button class="blue-btn ion-right " (click)="onDayClick(2)" type="submit">Month</button>
+            </div>
+            <div class="layout-column flex-50">
+                <button class="blue-btn ion-right " (click)="onDayClick(3)" type="submit">Year</button>
+            </div>
+            <div class="layout-column flex-50">
+                <button class="blue-btn " (click)="onDayClick(0)" type="submit">Last 12</button>
+            </div>
+        </div>
+        <div class="layout-column m-r-10 m-t-10">
+            <chartist *ngIf="showChart" [data]="chartData" [chartType]="'bar'"></chartist>
+        </div>
+    </div>
+</p-dialog>

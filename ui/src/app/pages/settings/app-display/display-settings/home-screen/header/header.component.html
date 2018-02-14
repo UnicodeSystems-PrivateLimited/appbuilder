@@ -1,0 +1,33 @@
+<div class="header tabinner-space button-tab-wrapper">
+    <div class="layout-column">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-30">Background Tint</label>
+            <input class="input-class" [(colorPicker)]="service.homeScreenSettings.header.background_tint" [style.background]="service.homeScreenSettings.header.background_tint"
+                [value]="service.homeScreenSettings.header.background_tint" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+        </div>
+        </div>
+        
+    <div class="layout-column m-t-10">
+             <div class="layout-row layout-align-start-center">
+            <label class="m-r-10 flex-30">Background Opacity</label>
+             <p-slider [style]="{'width':'200px'}" [(ngModel)]="service.homeScreenSettings.header.background_opacity"></p-slider>
+        </div>
+    </div>
+    <div class="layout-column  m-t-10">
+        <div class="layout-row">
+            <input type="file" (change)="onHeaderBgImageChange($event)">
+            <button class="green-btn" (click)="onHeaderBgImgUploadClick()">UPLOAD</button>
+        </div>
+    </div>
+    <div class="layout-column  m-t-10 asset-bor  imag-up img-up-img">
+         <div class="pics-close layout-align-start-center layout-row ">
+               <img alt="" src="{{'../../../../../../assets/img/no header sign.png'}}"  (click)="onNoImage()">
+                     <span *ngIf="noImage || !service.homeScreenSettings.header.background_img" class="right-tick"> <i aria-hidden="true" class="fa fa-check"></i></span>
+        </div>
+        <div class="pics-close layout-align-start-center layout-row " *ngFor='let item of service.homeHeaderBackgroundImages' (click)="onBackgroundImgClick(item.id)">
+            <img alt="" src="{{item.name}}">
+            <i class="fa fa-close" *ngIf="item.type==2" (click)="onDeleteHeaderBgImageClick($event, item.id)"></i>
+            <span *ngIf="item.id == service.homeScreenSettings.header.background_img" class="right-tick"> <i aria-hidden="true" class="fa fa-check"></i></span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready" class="shopping-cart">
+    <div class="flex-100 spaceborder">
+    </div>
+    <div class="flex-100 layout-row secondtab-block layout-align-space-between-center m-b-10">
+        <div class="">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="calender-event-div1 m-t-10">
+        <div class="flex-100 layout-row  calender-event block-1 layout-align-space-between-center">
+            <label class="label-with-switch layout-row layout-align-start-center">
+                <label class="switch  m-r-10  m-b-0">
+                    <input type="checkbox" [(ngModel)]="settings.go_back_prompt">
+                    <div class="slider round"></div>
+
+                </label> Go Back Prompt
+            </label>
+            <label class="label-with-switch layout-row layout-align-start-center">
+                <label class="switch  m-r-10  m-b-0">
+                    <input type="checkbox" [(ngModel)]="settings.shipping_instruction">
+                    <div class="slider round"></div>
+
+
+                </label>
+                Shipping Instruction
+                <i class="fa fa-info-circle l"
+                   tooltip='Enable special delivery instructions for cart page.'
+                   tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+            <div class="layout-column layout-align-center-center ">
+                <button class="blue-btn" (click)="onUpdateSettingsClick()">Update Settings</button>
+            </div>
+        </div>
+    </div>
+    <div class="layout-row flex-100">
+        <p-tabView orientation="left" class="mon-left-wrap flex-100">
+            <p-tabPanel header="Payment" [selected]="true">
+                <shopping-cart-payment
+                        [payment]="data.payment"
+                        [currencyOptions]="data.currencyOptions"
+                        [paymentGatewayOptions]="data.paymentGatewayOptions"
+                        [taxMethodOptions]="data.taxMethodOptions"
+                        [taxAmountList]="data.taxAmountList">
+                </shopping-cart-payment>
+            </p-tabPanel>
+            <p-tabPanel header="Delivery">
+                <shopping-cart-delivery
+                        [delivery]="data.delivery"
+                        [currency]="data.payment.currency"
+                        [shippingCharges]="data.shippingCharges"
+                        [blockedCountries]="data.blockedCountries"
+                        [countryList]="data.countryList">
+                </shopping-cart-delivery>
+            </p-tabPanel>
+            <p-tabPanel header="Inventory">
+                <shopping-cart-inventory
+                        [categoryList]="data.categoryList"
+                        [itemList]="data.itemList"
+                        [settings]="settings"
+                        [currency]="data.payment.currency">
+                </shopping-cart-inventory>
+            </p-tabPanel>
+            <p-tabPanel header="Emails">
+                <shopping-cart-email
+                    [emailCustomerConfirmation]="data.cartConfirmation"
+                    [emailAdminReceipt]="data.cartAdminreceipt"
+                    [emailCustomGuides]="data.cartCustomGuides">
+                </shopping-cart-email>
+            </p-tabPanel>
+            <p-tabPanel header="Extras">
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+</div>

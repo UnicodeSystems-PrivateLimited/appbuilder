@@ -1,0 +1,65 @@
+page-find-where-i-parked {
+    .ion-content{
+        height: 100vh
+    }
+    .fx-fixed-container {
+        padding: 0;
+    }
+    .fx-header{
+        height: 50px
+    }
+    .fx-tog-header{
+        height: 50px;
+            background-color: rgba(41, 39, 39, 0.85);
+    color: #fff;
+    }
+    .fx-body{
+        height: calc(100vh - 106px);
+        #map {
+            width: 100%;
+        }
+        &.is-pin-row-showing {
+            height: calc(100vh - 156px);
+        }
+    }
+    .datetime-md {
+    padding: 13px 8px 13px 16px;
+    position: absolute;
+    top: 0px;
+}
+timer {
+    position: relative;
+}
+ion-col.m-l-20 {
+    margin-left: 8px;
+}
+.switch-tag{
+        justify-content: center;
+    align-items: center;
+}
+.fx-header{
+      background-color: rgba(41, 39, 39, 0.85);
+    color: #fff;
+    button{
+    color: #fff;
+}
+
+}
+.switch-tag .toggle-md {
+    position: relative;
+    margin: 0 5px;
+}
+.flex-design {
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    align-content: center;
+}
+.switch-tag .toggle-ios {
+    margin: 0 5px;
+}
+.fx-tog-header ion-icon {
+    padding: 5px;
+    
+}
+}

@@ -1,0 +1,61 @@
+page-food-ordering-cart {
+
+    ion-content {
+
+        ion-card.cart-card {
+            width: 100%;
+            margin: 0 0 10px 0;
+            
+            ion-item.top-border {
+                border-top: 1px solid #dedede;
+            }
+
+            ion-item-options.danger-bg {
+                background-color: #f53d3d;
+                ion-icon.trash-icon {
+                    padding: 0 1em;
+                }
+            }
+
+            button.tip-btn {
+                box-shadow: none;
+            }
+            
+            .address-overlay {
+                position: absolute;
+                min-height: 4.4rem;
+                width: 100%;
+                margin-top: -4.4rem;
+            }
+        }
+
+        .bold {
+            font-weight: bold;
+        }
+        .cart-qty{
+            display: flex; align-items: center;
+            .cart-qty-value{ 
+                border: 1px solid #d8d8d8;
+                background: #f4f4f4;
+                min-width: 36px;
+                text-align: center;
+                color: #666;
+                padding: 1px 2px;
+                margin: 0px 3px;
+            }
+        }
+        ion-item{
+            &.cart-item-detail{align-items: start;
+                ion-label{margin-top: 2px;
+                p{font-size: 1.5rem !important;}
+                }
+            .cart-item-price{font-weight: 600;}
+            }
+        }
+    }
+
+    .item-right {
+        float: right;
+    }
+
+}

@@ -1,0 +1,53 @@
+page-around-us {
+  .invisible {
+        display: none;
+    }
+  #map {
+    width: 100%;
+    height: calc(100vh - 150px);
+    }
+    .around-us-foot-wrapper{
+        background: #fff;
+               
+    }
+    .active .overlay {
+    display: none;
+}
+ .overlay {
+        display: block;
+    background: rgba(34, 34, 34, 0.14);
+    width: 100%;
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: 0;
+}
+ion-col{
+    
+    position: relative;
+}
+ ion-header > ion-navbar .toolbar-content-md {
+    display: flex;
+}
+.searchbar-md .searchbar-search-icon {
+    left: 25px;
+    top: 5px;
+}
+
+.searchbar-md .searchbar-input {
+    padding: 0px 55px;
+        float: right;
+         color: inherit;
+    background-color: transparent;
+}
+
+.list-md {
+    margin: 0;
+}
+
+.noImage {
+    min-width: 4rem;
+    min-height: 4rem;
+    border-radius: 2rem;
+}
+}

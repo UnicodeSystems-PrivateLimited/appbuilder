@@ -1,0 +1,139 @@
+<!--
+  Generated template for the NewsTab page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+    [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+    [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+    <ion-title *ngIf="tab_nav_type=='tab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+      [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]:title:title}}</ion-title>
+    <ion-title *ngIf="tab_nav_type=='subtab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+      [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.sub_tab_translation?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]:title:title}}</ion-title>
+    <ion-buttons end *ngIf="searchIcon">
+      <button (click)="search()" ion-button icon-only clear [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="search"></ion-icon>
+            </button>
+    </ion-buttons>
+    <template [ngIf]="state">
+      <ion-row>
+        <ion-searchbar placeholder="Search" [(ngModel)]="searching" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"></ion-searchbar>
+        <ion-buttons end>
+          <button ion-button icon-only clear (click)="onCancel()" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                    <ion-icon name="close"></ion-icon>
+                </button>
+        </ion-buttons>
+      </ion-row>
+    </template>
+  </ion-navbar>
+  <!--<ion-toolbar no-border-top>
+    <div padding showWhen="ios,core">
+      <ion-segment [(ngModel)]="tabs">
+        <ion-segment-button value="google">
+          Google
+        </ion-segment-button>
+        <ion-segment-button value="twitter">
+          Twitter
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <div showWhen="android">
+      <ion-segment [(ngModel)]="tabs">
+        <ion-segment-button value="google">
+          Google
+        </ion-segment-button>
+        <ion-segment-button value="twitter">
+          Twitter
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </ion-toolbar>-->
+</ion-header>
+
+<ion-content [style.background]="'url(' + bgImage + ')'" [style.height]="'100%'">
+  <!--<div>
+    <ion-segment [(ngModel)]="tabs">
+      <ion-segment-button value="google">
+        Google
+      </ion-segment-button>
+      <ion-segment-button value="twitter">
+        Twitter
+      </ion-segment-button>
+    </ion-segment>
+  </div>-->
+  <div padding showWhen="ios,core">
+    <ion-segment [(ngModel)]="tabs">
+      <ion-segment-button value="google">
+        {{'GOOGLE' | translate}}
+      </ion-segment-button>
+      <ion-segment-button value="twitter">
+        {{'TWITTER' | translate}}
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <div showWhen="android">
+    <ion-segment [(ngModel)]="tabs">
+      <ion-segment-button value="google">
+        {{'GOOGLE' | translate}}
+      </ion-segment-button>
+      <ion-segment-button value="twitter">
+        {{'TWITTER' | translate}}
+      </ion-segment-button>
+    </ion-segment>
+  </div>
+  <ion-scroll scrollY="true">
+    <div [ngSwitch]="tabs">
+      <div *ngSwitchCase="'google'">
+        <md-spinner [state]="globalService.isObjectEmpty(service.newsTabData)"></md-spinner>
+        <template [ngIf]="!globalService.isObjectEmpty(service.newsTabData)">
+          <ion-list>
+            <ion-item class="news-tab-section" tappable text-wrap *ngFor="let item of (service.newsTabData[tabId].google_feeds | newsfilterpipe:searching); let i = index;"
+              (click)="onNewsClick(item.link)" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar))| hex2rgba">
+              <button ion-button icon-only clear item-left class="news-share-btn" (click)="onShareClick($event)"><ion-icon name="ios-share-outline"></ion-icon></button>
+              <ion-thumbnail item-left *ngIf="item.image && item.image !== ''">
+                <img [src]="item.image">
+              </ion-thumbnail>
+              <h2 [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{show[i]?item.title:(item.title | newstrimmer: 30)}}</h2>
+              <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.pubDate | amTimeAgo}}</p>
+              <button ion-button icon-only clear item-right (click)="onShowClick($event,i)" class="show-and-down">
+                <ion-icon *ngIf="show[i]" name="ios-arrow-up"></ion-icon>
+                <ion-icon *ngIf="!show[i]" name="ios-arrow-down"></ion-icon>
+            </button>
+            </ion-item>
+          </ion-list>
+          <ion-item *ngIf="!service.newsTabData[tabId].google_feeds.length" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+            [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+            {{'NOTHINGTEXT' | translate}}
+          </ion-item>
+        </template>
+      </div>
+      <div *ngSwitchCase="'twitter'">
+        <md-spinner [state]="globalService.isObjectEmpty(service.newsTabData)"></md-spinner>
+        <template [ngIf]="!globalService.isObjectEmpty(service.newsTabData)">
+          <ion-list>
+            <ion-item class="news-tab-section" text-wrap *ngFor="let item of (service.newsTabData[tabId].twitter_feeds | newsfilterpipe:searching); let k = index;"
+               (click)="onNewsClick(item.link)" [style.background-color]="((k % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar))| hex2rgba">
+              <button class="news-share-btn" ion-button icon-only clear item-left (click)="onShareClick($event)"><ion-icon name="ios-share-outline"></ion-icon></button>
+              <ion-thumbnail item-left *ngIf="item.image && item.image !== ''">
+                <img [src]="item.image">
+              </ion-thumbnail>
+              <h2 [style.color]="(k % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{showTweet[k]?item.title:(item.title | newstrimmer: 30)}}</h2>
+              <p [style.color]="(k % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.pubDate | amTimeAgo}}</p>
+              <button ion-button icon-only clear item-right (click)="onShowTwitterClick($event,k)" class="show-and-down">
+              <span *ngIf="showTweet[k]"><ion-icon name="ios-arrow-up"></ion-icon></span>
+              <span *ngIf="!showTweet[k]"><ion-icon name="ios-arrow-down"></ion-icon></span>
+            </button>
+            </ion-item>
+          </ion-list>
+          <ion-item *ngIf="!service.newsTabData[tabId].twitter_feeds.length" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+            [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+            {{'NOTHINGTEXT' | translate}}
+          </ion-item>
+        </template>
+      </div>
+    </div>
+  </ion-scroll>
+</ion-content>

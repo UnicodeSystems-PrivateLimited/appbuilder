@@ -1,0 +1,61 @@
+<!--
+  Generated template for the SettingsModal page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.globalStyleSettings.header.background_color" [style.opacity]="globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-buttons start>
+            <button ion-button [style.color]="globalService.initData.globalStyleSettings.header.text_color" (click)="dismiss()">
+                <ion-icon name="md-arrow-back"></ion-icon>
+            </button>
+        </ion-buttons>
+        <ion-title [style.color]="globalService.initData.globalStyleSettings.header.text_color" [style.text-shadow]="'0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">Settings</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+    <ion-card>
+        <ion-list>
+            <ion-list-header [style.color]="globalService.initData.globalStyleSettings.lists.section_text" [style.background-color]="globalService.initData.globalStyleSettings.lists.section_bar | hex2rgba">Accounts</ion-list-header>
+
+            <button ion-item *ngIf="!globalService.appScreenConfigData || globalService.appScreenConfigData.user_profile" [style.background-color]="globalService.initData.globalStyleSettings.lists.even_row_bar | hex2rgba"
+                (click)="onProfileClick()">
+                <ion-icon name="person" item-left></ion-icon>
+                <h2 [style.color]="globalService.initData.globalStyleSettings.lists.even_row_text">Profile</h2>
+                <p [style.color]="globalService.initData.globalStyleSettings.lists.even_row_text">{{service.userProfileData.name || "Name"}}</p>
+            </button>
+
+            <template [ngIf]="!globalService.appScreenConfigData || globalService.appScreenConfigData.social_login">
+                <button ion-item (click)="onSocialMediaItemClick(1)" [style.background-color]="globalService.initData.globalStyleSettings.lists.row_bar | hex2rgba">
+                    <ion-icon name="logo-facebook" [style.color]="'#4867aa'" item-left></ion-icon>
+                    <h2 [style.color]="globalService.initData.globalStyleSettings.lists.row_text">Facebook</h2>
+                    <p [style.color]="globalService.initData.globalStyleSettings.lists.row_text">{{fbLogin ? fbUser : "Connect"}}</p>
+                </button>
+                <button ion-item (click)="onSocialMediaItemClick(2)" [style.background-color]="globalService.initData.globalStyleSettings.lists.even_row_bar | hex2rgba">
+                    <ion-icon name="logo-twitter" [style.color]="'#1da1f2'" item-left></ion-icon>
+                    <h2 [style.color]="globalService.initData.globalStyleSettings.lists.even_row_text">Twitter</h2>
+                    <p [style.color]="globalService.initData.globalStyleSettings.lists.even_row_text">{{twitterLogin ? twitterUser : "Connect"}}</p>
+                </button>
+            </template>
+        </ion-list>
+    </ion-card>
+
+    <ion-card>
+        <ion-list>
+            <ion-list-header [style.color]="globalService.initData.globalStyleSettings.lists.section_text" [style.background-color]="globalService.initData.globalStyleSettings.lists.section_bar | hex2rgba">About</ion-list-header>
+            <button ion-item [style.background-color]="globalService.initData.globalStyleSettings.lists.even_row_bar | hex2rgba" (click)="onPrivacyClick()">
+                <h2 [style.color]="globalService.initData.globalStyleSettings.lists.even_row_text">Privacy</h2>
+            </button>
+            <button ion-item [style.background-color]="globalService.initData.globalStyleSettings.lists.row_bar | hex2rgba" *ngIf="globalService.appScreenConfigData && globalService.appScreenConfigData.terms_of_service"
+                (click)="onTermsClick()">
+                <h2 [style.color]="globalService.initData.globalStyleSettings.lists.row_text">Terms</h2>
+            </button>
+        </ion-list>
+    </ion-card>
+
+</ion-content>

@@ -1,0 +1,11 @@
+<button tappable icon-only clear ion-button (click)="onTimerClick()" [style.color]="service.timerStatus ? '#f00' : '#fff'">
+    <ion-icon name="timer"></ion-icon>
+</button>
+<ion-datetime *ngIf="!service.timerRunning" pickerFormat="HH:mm" [(ngModel)]="timer" (ionChange)="onTimeChange()" (click)="onDateTimeClicked()" (ionCancel)="onDateTimeCancelled()"></ion-datetime>
+{{service.timerRunning ? "" : "Set Timer"}}
+<template [ngIf]="service.timerRunning">
+    <span *ngIf="service.timerStatus" style="color:#f00"> - </span>
+    <span [style.color]="service.timerStatus ? '#f00' : '#fff'">
+        {{service.timerTime.hours | number: '2.0-0'}}:{{service.timerTime.minutes | number: '2.0-0'}}:{{service.timerTime.seconds | number: '2.0-0'}}
+    </span>
+</template>

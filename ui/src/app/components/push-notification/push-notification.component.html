@@ -1,0 +1,237 @@
+<p-dialog [draggable]="false" header="PUSH NOTIFICATIONS" [(visible)]="state" style="width:5000px" modal="modal" class="app-dialog add-app s-tab-add"
+    (onAfterHide)="onDialogHide()" width="1000">
+    <div *ngIf="loader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <tabset>
+        <tab heading="MESSAGE" [active]="firstTabActive" [class.hide]="showHistory">
+            <form>
+                <div class="layout-row flex-100">
+                    <div class="web-bg flex-100">
+                        <label>Message Target Audience</label>
+                        <div class="layout-row flex-100 ">
+                            <div class="layout-row push-pad-50 layout-align-space-between flex-100">
+                                <div class="web-bg flex-33 border-all white-bg ">
+                                    <div class="layout-column">
+                                        <div class="flex-30">
+                                            <h3>Device and Social Media</h3>
+                                            <label>Click to enable targeting of your users' Mobile Devices and post your message to Social Media.</label>
+                                            <span>
+                                                <label class="checkbox-inline custom-checkbox nowrap">
+                                                <input type="checkbox" id="check-all" [(ngModel)]="pushNotiData.iphone_type">
+                                                <span><i class="fa fa-apple" aria-hidden="true"></i></span>
+                                            </label>
+                                            </span>
+                                            <span>
+                                                <label class="checkbox-inline custom-checkbox nowrap">
+                                                <input type="checkbox" id="check-all" [(ngModel)]="pushNotiData.android_type">
+                                                <span><i class="fa fa-android"  aria-hidden="true"></i></span>
+                                            </label>
+                                            </span>
+                                            <span class="facebook-sapn">
+                                                <label class="checkbox-inline custom-checkbox nowrap">
+                                                    <input type="checkbox" id="check-all" [(ngModel)]="pushNotiData.facebook_type" (click)="onFacebookTargetClick()">
+                                                    <span><i class="fa fa-facebook"  aria-hidden="true"></i></span>
+                                                </label>
+                                                <span class="title" *ngIf="isFacebookTokenAvailable" (click)="onFacebookDisconnect()">Disconnect</span>
+                                            </span>
+                                            <span class="twitter-span">
+                                                <label class="checkbox-inline custom-checkbox nowrap">
+                                                    <input type="checkbox" id="check-all" [(ngModel)]="pushNotiData.twitter_type" (click)="onTwitterTargetClick()">
+                                                    <span><i class="fa fa-twitter"  aria-hidden="true"></i></span>
+                                                </label>
+                                                <span class="title" *ngIf="isTwitterTokenAvailable" (click)="onTwitterDisconnect()">Disconnect</span>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>&nbsp;&nbsp;
+                                <div class="web-bg flex-33 border-all white-bg ">
+                                    <div class="layout-column">
+                                        <div class="flex-30" *ngIf="!dataService.subscription">
+                                            <h3>Subscriptions</h3>
+                                            <label>Your Subscriptions option is currently deactivated. Learn more about using Subscriptions in your app.</label>
+                                        </div>
+                                        <div class="flex-30" *ngIf="dataService.subscription">
+                                            <h3>Subscriptions</h3>
+                                            <label>Select the subscriptions topic(s) you wish to send a mesage to.</label>
+                                            <p-multiSelect [options]="dataService.subscriptionSelect" [(ngModel)]="pushNotiData.subscription_id" defaultLabel="Select Subscriptions"
+                                                class="mul-sel flex-100 layout-row"></p-multiSelect>
+                                        </div>
+                                    </div>
+                                </div>&nbsp;&nbsp;
+
+                                <div class="web-bg flex-33 border-all white-bg ">
+                                    <div class="layout-column">
+                                        <div class="flex-30" *ngIf="dataService.membershipLogin">
+                                            <h2>User Groups</h2>
+                                            <label>Select your user group(s) and/or individuals you wish to send a mesage to.</label>
+                                            <p-multiSelect [options]="dataService.userGroupSelect" (onChange)="onGroupSelect($event , pushNotiData.user_group_id)" [(ngModel)]="pushNotiData.user_group_id"
+                                                defaultLabel="Select User Group" class="mul-sel layout-row flex-100 m-b-10"></p-multiSelect>
+                                            <p-multiSelect [options]="dataService.users" defaultLabel="Select Users" [(ngModel)]="pushNotiData.user_id" class="mul-sel layout-row flex-100"></p-multiSelect>
+                                        </div>
+                                        <div class="flex-30" *ngIf="!dataService.membershipLogin">
+                                            <h2>User Groups</h2>
+                                            <label>This option is currently deactivated. Learn more about using Members & Groups in your app</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-row flex-100">
+                    <div class="web-bg flex-100">
+                        <div class="layout-row flex-100">
+                            <div class="layout-row flex-100">
+                                <div class="layout-column flex-60">
+                                    <div class="flex-50">
+                                        <label >Message</label>
+                                        <div class="layout-column m-r-20 ttxt">
+                                            <textarea maxlength="1500" (keypress)="onCharCount()" [(ngModel)]="pushNotiData.message"></textarea>
+                                            <label class="m-t-10">{{charCount}} Characters Left</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layout-column flex-40">
+                                    <label class="m-l-30">Preview</label>
+                                    <div class="flex-50" style="max-height:100%">
+
+                                        <div class="web-bg flex-80 layout-column push-prev"><label class="m-r-10 text-center">Push Notification</label>
+                                            <span class="layout-row layout-align-center relative">{{pushNotiData.message}}</span></div>
+                                        <div class="layout-row push-prev-2">
+                                            <div class="web-bg flex-40"><label>View</label></div>&nbsp;
+                                            <div class="web-bg flex-40"><label>Close</label></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </tab>
+        <tab heading="LOCATION" class="content-wrap" [class.hide]="showHistory">
+            <form>
+                <div class="layout-row flex-100 web-bg layout-align-start-center">
+                    <span>Notification Audience   </span> &nbsp; &nbsp;<i class="fa fa-info-circle l" tooltip="Send your message to users in all areas or target a specific location."
+                        tooltipPlacement="right" aria-hidden="true"></i> &nbsp; &nbsp; &nbsp;
+                    <p-dropdown class="border-all m-l-10 m-r-10 flex-30" [options]="notiAudience" [style]="{'width':'170px'}" [(ngModel)]="pushNotiData.audience"></p-dropdown>
+                    <p-dropdown class="border-all flex-30" [options]="circle" [style]="{'width':'170px'}" *ngIf="pushNotiData.audience == 2"
+                        [(ngModel)]="pushNotiData.location_type"></p-dropdown><i class="fa fa-info-circle l m-l-10" *ngIf="pushNotiData.audience == 2" tooltip="Point: Point will send a push note to all located users currently in the selected region.Geo-fence: Geo-Fence will actively alert users as they enter this area. It will run during the allotted time selected."
+                        tooltipPlacement="right" aria-hidden="true"></i> &nbsp; &nbsp; &nbsp; <span>Located App Users &nbsp; &nbsp; <i class="fa fa-apple" aria-hidden="true"></i>&nbsp; {{iphoneCount}} &nbsp; &nbsp;<i class="fa fa-android" aria-hidden="true"></i>&nbsp; {{androidCount}}  </span>
+                </div>
+                <div class="layout-row flex-100" *ngIf="pushNotiData.audience == 2">
+                    <push-noti-location-editor class="layout-column flex-100  pad-5" (areaChanged)="onAreaChanged($event)" (spanTypeChanged)="onSpanTypeChanged($event)" [typeSelected]="pushNotiData.span_type"
+                        [span]="pushNotiData.span" [lat]="pushNotiData.m_lat" [long]="pushNotiData.m_long"></push-noti-location-editor>
+                </div>
+            </form>
+        </tab>
+        <tab heading="CONTENT" class="content-wrap " [class.hide]="showHistory">
+            <form>
+                <div class="layout-row flex-100 web-bg layout-align-start-center">
+                    <span>Content Type  </span> &nbsp; &nbsp;<i class="fa fa-info-circle l" tooltip="Select the click-through content for your push notification."
+                        tooltipPlacement="right" aria-hidden="true"></i> &nbsp; &nbsp; &nbsp;
+                    <p-dropdown class="border-all flex-50" [options]="contentType" [(ngModel)]="pushNotiData.content_type" (onChange)="onContentClick($event)"
+                        [style]="{'width':'170px'}"></p-dropdown>
+                </div>
+                <div class="layout-row flex-100 web-bg layout-align-start-center" *ngIf="webUrl">
+                    <span>URL:</span> &nbsp;<i class="fa fa-info-circle l" tooltip="When users open the Push Notification, this URL will be visited. The URL should point to a publicly accessible page (there should be no necessary authentication, cookies, etc."
+                        tooltipPlacement="right" aria-hidden="true"></i>&nbsp;
+                    <input type="text" [(ngModel)]="pushNotiData.website_url">&nbsp;
+                    <button class="green-btn" (click)="onClickPreview()">Preview</button>
+                </div>
+                <div class="layout-row flex-100 web-bg layout-align-start-center" *ngIf="tab">
+                    <span>Tab:</span> &nbsp;<i class="fa fa-info-circle l" tooltip="Select a tab to link to this message"
+                        tooltipPlacement="right" aria-hidden="true"></i>&nbsp;; &nbsp; &nbsp;
+                    <p-dropdown class="border-all flex-50" [options]="tabs" [(ngModel)]="pushNotiData.tab_id" [style]="{'width':'170px'}"></p-dropdown>
+                </div>
+            </form>
+        </tab>
+        <tab heading="SEND" class="content-wrap publish-wrap" (select)="alertTab()" [class.hide]="showHistory">
+            <div *ngIf="success">
+                <div class="layout-row flex-100 web-bg  layout-align-start-center active-unit">
+                    <i class="fa fa-info-circle l" tooltip="Server date & time value will be used. Please refer Server Time Clock. Indicate when current push notification will be inactive."
+                        tooltipPlacement="right" aria-hidden="true"></i> &nbsp; <span class="flex-10"> Active Until: </span>
+                    <p-calendar class="flex-25" [minDate]="currentDate" [(ngModel)]="activeDate"></p-calendar>
+                    <p-dropdown [options]="startTimeHour" [(ngModel)]="activeUntilHour" class="m-l-10 border-all white-bg flex-7 r-w-p layout-row layout-align-start-center"></p-dropdown>
+                    <p-dropdown [options]="startTimeMin" [(ngModel)]="activeUntilMin" class="m-l-10 border-all white-bg flex-7 r-w-p layout-row layout-align-start-center"></p-dropdown>
+                    <p-dropdown [options]="meridians" [(ngModel)]="activeUntilMeridian" class="m-l-10 border-all white-bg  flex-7 r-w-p layout-row layout-align-start-center"></p-dropdown>
+
+                </div>
+                <div class="layout-row flex-100 web-bg  layout-align-start-center">
+                    <label class="layout-row layout-align-start-center nowrap m-r-10">
+             <p-radioButton class="m-r-10" name="group" [value]="SEND_NOW" [(ngModel)]="pushNotiData.send_now"></p-radioButton>
+            <span>Send now <i class="fa fa-info-circle l m-l-10" tooltip="Server date & time value will be used. Please refer Server Time Clock." tooltipPlacement="right"
+                    aria-hidden="true"></i></span>
+        </label>
+                    <label class="layout-row layout-align-start-center nowrap">
+               <p-radioButton class="m-r-10" name="group" [value]="SEND_ON" [(ngModel)]="pushNotiData.send_now"></p-radioButton>
+            <span>Send on</span>
+        </label>
+                    <p-calendar class="flex-70" [minDate]="currentDate" [(ngModel)]="send_date"></p-calendar>
+                    <p-dropdown [options]="startTimeHour" [(ngModel)]="sendOnHour" class=" m-l-10 border-all white-bg flex-7 r-w-p layout-row layout-align-start-center"></p-dropdown>
+                    <p-dropdown [options]="startTimeMin" [(ngModel)]="sendOnMin" class="m-l-10 border-all white-bg flex-7 r-w-p layout-row layout-align-start-center"></p-dropdown>
+                    <p-dropdown [options]="meridians" [(ngModel)]="sendOnMeridian" class="m-l-10 border-all white-bg flex-7 r-w-p layout-row layout-align-start-center"></p-dropdown>
+                    <p-dropdown class="border-all m-l-10" [options]="timezoneSelect" [(ngModel)]="pushNotiData.timezone_id" [style]="{'width':'300px'}"></p-dropdown>
+                </div>
+                <button class="green-btn m-t-10 m-l-10" (click)="onSave()">PUBLISH MESSAGE</button>
+            </div>
+            <div *ngIf="error" class="error-publis">
+                <label>Whoops! Your message is not ready for publish just yet.</label><br>
+                <label *ngIf="pushNotiData.message == null || pushNotiData.message == '' "> &nbsp; . &nbsp; Please compose your message in Step 1 before you publish.</label><br>
+                <label *ngIf="pushNotiData.android_type == 0 && pushNotiData.iphone_type == 0 && pushNotiData.facebook_type == 0 && pushNotiData.twitter_type == 0"> &nbsp; . &nbsp; Please select a target in Step 1.</label>
+            </div>
+        </tab>
+
+        <div class="layout-row flex-100 web-bg  layout-align-start-center m-t-20">
+            <label class="m-b-0">Scheduled message: {{scheduleMsg}} &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sent message: {{sentMsg}}  </label>
+            <button class="green-btn  m-l-10" (click)="onUpClick()">  <i class="fa fa-arrow-up"></i></button>
+            <button class="green-btn  m-l-10" (click)="onDownClick()">  <i class="fa fa-arrow-down"></i></button>
+        </div>
+        <div class="layout-column flex-100 web-bg" *ngIf="showHistory">
+            <div class="layout-row flex-100">
+                <div class="web-bg flex-100">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-100">
+                            <h3>Scheduled</h3>
+                            <div class="web-bg flex-100">
+                                <div class="layout-column" *ngFor="let item of scheduledMsg">
+                                    <div class="flex-100 layout-row push-message layout-align-space-between">
+                                        <label class="flex-25"> {{item.send_on_date}}</label>
+                                        <label class="flex-60 relative layout-row layout-align-space-between-center">
+                                            <span> {{item.message}}</span>
+                                             <span class="btn layout-row layout-align-end" (click)="onDeleteNoti(item.id)"><i class="fa fa-close"></i></span>
+                                             </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-row flex-100">
+                <div class="web-bg flex-100">
+                    <div class="layout-row flex-100">
+                        <div class="layout-row flex-100">
+                            <div class="web-bg flex-100 layout-column">
+                                <h3>History</h3>
+                                <div style="height: 300px;overflow: auto;">
+                                    <div class="layout-column flex-100 " *ngFor="let item of sentMessage">
+                                    <div class="flex-100 layout-row push-message layout-align-space-between">
+                                        <label class="flex-25"> {{item.created_at}}</label>
+                                        <label class="flex-60 relative layout-row layout-align-space-between-center">
+                                            <span> {{item.message}}</span>
+                                             <span class="btn layout-row layout-align-end" (click)="onDeleteNoti(item.id)"><i class="fa fa-close"></i></span>
+                                             </label>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </tabset>
+</p-dialog>

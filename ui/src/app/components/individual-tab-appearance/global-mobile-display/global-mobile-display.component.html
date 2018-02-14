@@ -1,0 +1,95 @@
+<div class="layout-row layout-align-center-start global-block">
+    <form class="layout-column flex-75  ">
+        <div class="layout-column mobile-view-wrapper ">
+            <img src="assets/img/mobile-view.png" />
+            <div class="layout-row mobile-view-wrapp-1 layout-wrap layout-align-start-start">
+                <div class="mob-scr-1">
+                    <div class="satus-bar" [style.background-color]="homeData.header.background_color" [style.opacity]="homeData.header.background_opacity / 100"
+                        [style.background-image]="'url(' + globalStyleService.headerBgImageSrcs[homeData.header.background_img] + ')'">
+                        <div class="part-1 layout-row flex-100 layout-align-space-between">
+                            <div class="flex-10 layout-align-space-between-center layout-row">
+                                <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                            </div>
+
+                            <div class="flex-60 layout-align-end-center layout-row">
+                                <i class="fa fa-wifi m-r-10" aria-hidden="true"></i>
+                                <i class="fa fa-signal m-r-10" aria-hidden="true"></i>
+                                <div>100% <i class="fa fa-battery-full" aria-hidden="true"></i></div>
+                                <div class="m-l-10">21:40</div>
+                            </div>
+
+                        </div>
+                        <div class="p-t-10 f-18 flex-100 layout-align-start-center layout-row p-b-10 p-l-10"> <i class="fa fa-arrow-left m-r-2" aria-hidden="true"></i><label class="m-b-0" [style.color]="homeData.header.text_color"
+                                [style.text-shadow]="'0px 0px 5px ' + homeData.header.shadow">{{globalStyleService.tabData.title}}</label></div>
+                    </div>
+                    <div class="layout-column">
+                        <!--  LIST -->
+                        <div class="pad-5  head-secton flex-100 layout-align-start-center  layout-row " [style.background-color]="homeData.color.section_bar"
+                            [style.color]="homeData.color.section_text"> Menu</div>
+                        <div class="image-wrap-dp layout-align-start-center flex-45 layout-row" [style.background-color]="homeData.color.even_row_bar">
+                            <div class="flex-20 layout-align-center-center layout-row"> <i class="fa fa-camera" aria-hidden="true"></i></div>
+                            <label class="image-wrap-data flex-80 layout-row layout-align-start-center"><span class="flex-80" [style.color]="homeData.color.even_row_text" >Photo</span>
+                                                                <label class="image-wrap-data flex-20 layout-align-end layout-row"><i class="fa fa-angle-right" aria-hidden="true"></i></label>
+                            </label>
+                        </div>
+                        <div class="image-wrap-dp layout-align-start-center flex-45 layout-row" [style.background-color]="homeData.color.row_bar">
+                            <div class="flex-20 layout-align-center-center layout-row"><i class="fa fa-futbol-o" aria-hidden="true"></i></div>
+                            <label class="image-wrap-data flex-80 layout-row layout-align-start-center"><span class="flex-80" [style.color]="homeData.color.row_text">Sports</span>
+                                                                <label class="image-wrap-data flex-20 layout-align-end layout-row"><i class="fa fa-angle-right" aria-hidden="true"></i></label>
+                            </label>
+                        </div>
+                        <div class="image-wrap-dp layout-align-start-center flex-45 layout-row" [style.background-color]="homeData.color.even_row_bar">
+                            <div class="flex-20 layout-align-center-center layout-row"> <i class="fa fa-music" aria-hidden="true"></i></div>
+                            <label class="image-wrap-data flex-80 layout-row layout-align-start-center"><span class="flex-80" [style.color]="homeData.color.even_row_text">Music</span>
+                                                                <label class="image-wrap-data flex-20 layout-align-end layout-row"><i class="fa fa-angle-right" aria-hidden="true"></i></label>
+                            </label>
+                        </div>
+                        <div class="image-wrap-dp layout-align-start-center flex-45 layout-row" [style.background-color]="homeData.color.row_bar">
+                            <div class="flex-20 layout-align-center-center layout-row"> <i class="fa fa-video-camera" aria-hidden="true"></i></div>
+                            <label class="image-wrap-data flex-80 layout-row layout-align-start-center"><span class="flex-80" [style.color]="homeData.color.row_text">Movie</span>
+                                                                <label class="image-wrap-data flex-20 layout-align-end layout-row"><i class="fa fa-angle-right" aria-hidden="true"></i></label>
+                            </label>
+                        </div>
+                        <div class="image-wrap-dp layout-align-start-center flex-45 layout-row" [style.background-color]="homeData.color.even_row_bar">
+                            <div class="flex-20 layout-align-center-center layout-row"> <i class="fa fa-leaf" aria-hidden="true"></i></div>
+                            <label class="image-wrap-data flex-80 layout-row layout-align-start-center"><span class="flex-80" [style.color]="homeData.color.even_row_text">Plants</span>
+                                                                <label class="image-wrap-data flex-20 layout-align-end layout-row"><i class="fa fa-angle-right" aria-hidden="true"></i></label>
+                            </label>
+                        </div>
+                        <div class="image-wrap-dp layout-align-start-center flex-45 layout-row " [style.background-color]="homeData.color.row_bar">
+                            <div class="flex-20 layout-align-center-center layout-row"><i class="fa fa-shopping-cart" aria-hidden="true"></i></div>
+                            <label class="image-wrap-data flex-80 layout-row layout-align-start-center"><span class="flex-80" [style.color]="homeData.color.row_text">Shop</span>
+                                                                <label class="image-wrap-data flex-20 layout-align-end layout-row"><i class="fa fa-angle-right" aria-hidden="true"></i></label>
+                            </label>
+                        </div>
+                        <div class="image-wrap-dp layout-align-start-center flex-45 layout-row" [style.background-color]="homeData.color.even_row_bar">
+                            <div class="flex-20 layout-align-center-center layout-row"> <i class="fa fa-music" aria-hidden="true"></i></div>
+                            <label class="image-wrap-data flex-80 layout-row layout-align-start-center"><span class="flex-80" [style.color]="homeData.color.even_row_text">Music</span>
+                                                                <label class="image-wrap-data flex-20 layout-align-end layout-row"><i class="fa fa-angle-right" aria-hidden="true"></i></label>
+                            </label>
+                        </div>
+                        <div class="image-wrap-dp layout-align-start-center flex-45 layout-row" [style.background-color]="homeData.color.row_bar">
+                            <div class="flex-20 layout-align-center-center layout-row"> <i class="fa fa-video-camera" aria-hidden="true"></i></div>
+                            <label class="image-wrap-data flex-80 layout-row layout-align-start-center"><span class="flex-80" [style.color]="homeData.color.row_text">Movie</span>
+                                                                <label class="image-wrap-data flex-20 layout-align-end layout-row"><i class="fa fa-angle-right" aria-hidden="true"></i></label>
+                            </label>
+                        </div>
+                        <div class="image-wrap-dp layout-align-start-center flex-45 layout-row" [style.background-color]="homeData.color.even_row_bar">
+                            <div class="flex-20 layout-align-center-center layout-row"> <i class="fa fa-leaf" aria-hidden="true"></i></div>
+                            <label class="image-wrap-data flex-80 layout-row layout-align-start-center"><span class="flex-80" [style.color]="homeData.color.even_row_text">Plants</span>
+                                                                <label class="image-wrap-data flex-20 layout-align-end layout-row"><i class="fa fa-angle-right" aria-hidden="true"></i></label>
+                            </label>
+                        </div>
+                        <div class="image-wrap-dp layout-align-start-center flex-45 layout-row border-b" [style.background-color]="homeData.color.row_bar">
+                            <div class="flex-20 layout-align-center-center layout-row"> <i class="fa fa-video-camera" aria-hidden="true"></i></div>
+                            <label class="image-wrap-data flex-80 layout-row layout-align-start-center"><span class="flex-80" [style.color]="homeData.color.row_text">Movie</span>
+                                                                <label class="image-wrap-data flex-20 layout-align-end layout-row"><i class="fa fa-angle-right" aria-hidden="true"></i></label>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>

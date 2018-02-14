@@ -1,0 +1,31 @@
+page-notepad {
+    .notepad-wrap {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: center;
+    align-items: baseline;
+}
+.searchbar-md .searchbar-search-icon {
+    left: 30px;
+    top: 5px;
+}
+
+.searchbar-md .searchbar-input {
+    padding: 0px 55px;
+        float: right;
+         color: inherit;
+    background-color: transparent;
+}
+ion-header ion-navbar .bar-buttons-md {
+    -webkit-order: 5;
+    -ms-flex-order: 5;
+    order: 5;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+    display: flex;
+}
+
+}

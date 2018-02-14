@@ -1,0 +1,73 @@
+<div class="layout-column flex-100 border-all white-bg ">
+    <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Preview</div>
+    <div class="layout-column flex-100 layout-align-start pad-15">
+        <div class="layout-column flex-100  white-bg ">
+            <div class="layout-column flex-50">
+            <div class="layout-row  white-bg pad-15" [style.height]="'50px'" [style.background]="cPanelData.cThemeData.theme_header_bg_color1">
+                <span *ngIf="cPanelData.cHeaderData.header_start_over">(Start Over)</span>
+            </div>
+            <div class="layout-row layout-wrap header-data-tappit" style="height: 80px;" [style.background]="cPanelData.cThemeData.theme_header_bg_color2">
+                <a class="al-logo clearfix flex-30">
+                    <div style="height: 40px; margin: 0 auto">
+                        <img *ngIf="cPanelData.cThemeData.theme_logo && !cPanelData.cThemeData.theme_default_settings" src="{{cPanelData.cThemeData.theme_logo}}"
+                        />
+                        <img *ngIf="!cPanelData.cThemeData.theme_logo || cPanelData.cThemeData.theme_default_settings" src="{{'../../assets/img/logo.png'}}"
+                        />
+                    </div>
+                </a>
+                <div class="flex-70 layout-row layout-align-space-around-center">
+                    <a class="flex-15 layout-align-start-center" *ngFor="let nav of cPanelData.cHeaderData.navigation">
+                        <span [style.color]="cPanelData.cHeaderData.header_link_color">{{nav.label}}</span>
+                    </a>
+                </div>
+            </div>
+            </div>
+            <div [style.height]="'50px'" [style.background]="cPanelData.cThemeData.theme_header_bg_color3">
+            </div>
+            <div class="app-settings flex-100 setting-pge relative" >
+                <div class="setting-tab-wrap main-header-tabs" >
+                    <!--<div class="tab-set tabs-data">-->
+                    <div class="layout-row  layout-align-start border-b" tooltipPlacement="top">
+                        <div class="layout-column pad-15 flex-30 " *ngIf="cPanelData.cStepsData.steps_functionality">
+                            <span> TABS</span>
+                        </div>
+                        <div class="layout-column pad-15 flex-30 b-l-r" *ngIf="cPanelData.cStepsData.steps_content">
+                            <span> TABS CONTENT</span>
+                        </div>
+                        <div class="layout-column pad-15 flex-30 b-l-r" *ngIf="cPanelData.cStepsData.steps_appearance">
+                            <span>APP DISPLAY</span>
+                        </div>
+                        <div class="layout-column pad-15 flex-30 b-l-r" *ngIf="cPanelData.cStepsData.steps_publish">
+                            <span> MAKE APP LIVE</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layout-column layout-align-start app-code-wid" *ngIf="cPanelData.cStepsData.steps_app_code_widget" >
+                    <img src="../../assets/img/appcode_widget_preview.png" />
+                </div>
+                <div class="layout-column layout-align-end app-code-wid-prev" *ngIf="cPanelData.cStepsData.steps_preview_tool">
+                    <img src="../../assets/img/slide_preview.png" />
+                </div>
+            </div>
+            <div class="layout-row border-all white-bg pad-15 flex-40" [style.background]="cPanelData.cFooterData.footer_bg_color" >
+                <div class="layout-column flex-30" *ngIf="cPanelData?.cFooterData?.navigationCol1 && cPanelData?.cFooterData?.navigationCol1.length">
+                    <div class="layout-column" [style.color]="cPanelData.cFooterData.footer_menu_header_color">
+                        <span>{{ cPanelData.cFooterData.navigationCol1[0].label}}</span>
+                    </div>
+                    <div class="layout-column c-p" [style.color]="cPanelData.cFooterData.footer_menu_link_color" *ngFor="let col1 of cPanelData.cFooterData.navigationCol1 | slice:1">
+                        <span>{{col1.label}}</span>
+                    </div>
+                </div>
+                <div class="layout-column flex-30" *ngIf="cPanelData?.cFooterData?.navigationCol1 && cPanelData?.cFooterData?.navigationCol2.length">
+                    <div class="layout-column" [style.color]="cPanelData.cFooterData.footer_menu_header_color">
+                        <span>{{cPanelData.cFooterData.navigationCol2[0].label}}</span>
+                    </div>
+                    <div class="layout-column c-p" [style.color]="cPanelData.cFooterData.footer_menu_link_color" *ngFor="let col2 of cPanelData.cFooterData.navigationCol2 | slice:1">
+                        <span>{{col2.label}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

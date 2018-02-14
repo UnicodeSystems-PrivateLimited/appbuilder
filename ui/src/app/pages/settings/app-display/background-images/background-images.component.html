@@ -1,0 +1,608 @@
+<div class="layout-row bg-image-wrapper">
+    <div class="layout-row flex-100 bg-img-wrapper">
+
+        <p-tabView class="layout-row flex-100 bg-img-wrap" (onChange)="handleChange($event)">
+            <p-tabPanel header="PHONE" class="layout-row bg-img-wrap-phone  ">
+                <div class="phone layout-row flex-100">
+                    <form class="phone layout-column flex-30 pad-10">
+
+                        <div class="layout-column">
+                            <div class="layout-row">
+                                <label>HOME SCREEN</label>
+                            </div>
+                        </div>
+                        <div class="layout-column border-b">
+                            <div class="layout-row">
+                                <label><i class="fa fa-info-circle l  m-r-10"></i>Assign your Home Screen background image here</label>
+                            </div>
+                            <div class="layout-row">
+                                <label class="box layout-row layout-align-start-center  attach-div" [class.unassi-attach]="!homeScreenService.appData.home_screen_background_image">
+                                      <span class="layout-row attach-class bg-up-attch ">
+                                    <span  class="attach-class1" (click)="onClickAttachMent('home',-1)" ><i class=" fa fa-paperclip cursor_p" ></i></span>
+                                   <span class="attach-class2" *ngIf="homeScreenService.appData.home_screen_background_image"><i class="fa fa-trash cursor_p" (click)="removeHomeBackgroundImage()"></i></span>
+                                    </span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10"> Background</span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.appData.home_screen_background_image">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.appData.home_screen_background_image">Unassigned</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="layout-column border-b">
+                            <div class="layout-row">
+                                <label>HOME SCREEN SLIDERS</label>
+                            </div>
+                            <div class="layout-row">
+                                <label><i class="fa fa-info-circle l m-r-10"></i>Select and assign your slider option and images here</label>
+                            </div>
+                            <div class="layout-row m-b-10">
+                                <!--                        <input type="checkbox">
+                        <label></label>-->
+                                <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                                    <input type="checkbox" [(ngModel)]="homeScreenService.backgroundSetting.isModernSliding" (click)="checkModernSliding()" >
+                                    <span>Modern Sliding</span>
+                                </label>
+                            </div>
+                            <div class="layout-row">
+                                <label class="box {{selectedSlide}}"><p-dropdown [options]="sliding" [(ngModel)]="selectedSlide"  (onChange)="selectedSlideChange($event)" class="flex-100 layout-row"></p-dropdown></label>
+                            </div>
+                            <div class="layout-column">
+                                <label [class.unassi-attach]="!homeScreenService.sliderDIsplaySettings.slider[1]" class="box layout-row layout-align-start-center attach-div"
+                                    [class.bg-selected]="homeScreenService.backgroundSetting.sliderNo.indexOf(1)>=0">
+                                    <span class="layout-row attach-class ">
+                                       
+                                 <span class="flex-33" (click)="onClickAttachMent('slide',1)" ><i class="fa fa-picture-o cursor_p" aria-hidden="true"></i></span>
+                                 <span (click)="onLinkAttachClick(1)" class="flex-33 border-l" *ngIf="homeScreenService.sliderDIsplaySettings.slider[1]" ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33 border-l" *ngIf="homeScreenService.sliderDIsplaySettings.slider[1]"><i class="fa fa-trash cursor_p" (click)="removeSliderImage(1)"></i></span>
+                                    </span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 1</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.sliderDIsplaySettings.slider[1]">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.sliderDIsplaySettings.slider[1]">Unassigned</span>
+                                </label>
+                                <label [class.unassi-attach]="!homeScreenService.sliderDIsplaySettings.slider[2]" class="box layout-row layout-align-start-center  attach-div"
+                                    [class.bg-selected]="homeScreenService.backgroundSetting.sliderNo.indexOf(2)>=0">
+                                    <span class="layout-row attach-class ">
+                                       
+                                 <span class="flex-33" (click)="onClickAttachMent('slide',2)" ><i class="fa fa-picture-o cursor_p" aria-hidden="true"></i></span>
+                                 <span (click)="onLinkAttachClick(2)" class="flex-33" *ngIf="homeScreenService.sliderDIsplaySettings.slider[2]" ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33" *ngIf="homeScreenService.sliderDIsplaySettings.slider[2]"><i class="fa fa-trash cursor_p" (click)="removeSliderImage(2)"></i></span>
+                                    </span>
+                                     <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 2</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.sliderDIsplaySettings.slider[2]">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.sliderDIsplaySettings.slider[2]">Unassigned</span>
+                                </label>
+                                <label [class.unassi-attach]="!homeScreenService.sliderDIsplaySettings.slider[3]" class="box layout-row layout-align-start-center  attach-div"
+                                    [class.bg-selected]="homeScreenService.backgroundSetting.sliderNo.indexOf(3)>=0">
+                                     <span class="layout-row attach-class ">
+                                       
+                                 <span class="flex-33" (click)="onClickAttachMent('slide',3)" ><i class="fa fa-picture-o cursor_p" aria-hidden="true"></i></span>
+                                 <span (click)="onLinkAttachClick(3)" class="flex-33" *ngIf="homeScreenService.sliderDIsplaySettings.slider[3]" ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33" *ngIf="homeScreenService.sliderDIsplaySettings.slider[3]"><i class="fa fa-trash cursor_p" (click)="removeSliderImage(3)"></i></span>
+                                    </span> <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 3</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.sliderDIsplaySettings.slider[3]">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.sliderDIsplaySettings.slider[3]">Unassigned</span>
+                                </label>
+
+                                <label [class.unassi-attach]="!homeScreenService.sliderDIsplaySettings.slider[4]" class="box layout-row layout-align-start-center attach-div"
+                                    [class.bg-selected]="homeScreenService.backgroundSetting.sliderNo.indexOf(4)>=0">
+                                     <span class="layout-row attach-class ">
+                                       
+                                 <span class="flex-33" (click)="onClickAttachMent('slide',4)" ><i class="fa fa-picture-o cursor_p" aria-hidden="true"></i></span>
+                                 <span (click)="onLinkAttachClick(4)" class="flex-33" *ngIf="homeScreenService.sliderDIsplaySettings.slider[4]" ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33" *ngIf="homeScreenService.sliderDIsplaySettings.slider[4]"><i class="fa fa-trash cursor_p" (click)="removeSliderImage(4)"></i></span>
+                                    </span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 4</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.sliderDIsplaySettings.slider[4]">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.sliderDIsplaySettings.slider[4]">Unassigned</span>
+                                </label>
+                                <label [class.unassi-attach]="!homeScreenService.sliderDIsplaySettings.slider[5]" class="box layout-row layout-align-start-center attach-div"
+                                    [class.bg-selected]="homeScreenService.backgroundSetting.sliderNo.indexOf(5)>=0">
+                                     <span class="layout-row attach-class ">
+                                       
+                                 <span class="flex-33" (click)="onClickAttachMent('slide',5)" ><i class="fa fa-picture-o cursor_p" aria-hidden="true"></i></span>
+                                 <span (click)="onLinkAttachClick(5)" class="flex-33" *ngIf="homeScreenService.sliderDIsplaySettings.slider[5]" ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33" *ngIf="homeScreenService.sliderDIsplaySettings.slider[5]"><i class="fa fa-trash cursor_p" (click)="removeSliderImage(5)"></i></span>
+                                    </span>
+                                     <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 5</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.sliderDIsplaySettings.slider[5]">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.sliderDIsplaySettings.slider[5]">Unassigned</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="layout-column border-b ">
+                            <div class="layout-row">
+                                <label>TABS</label>
+                            </div>
+                            <div class="layout-row">
+                                <label><i class="fa fa-info-circle l  m-r-10"></i>Assign background images for all your tabs here</label>
+                            </div>
+                            <div class="layout-column">
+                                <label [class.unassi-attach]="!tab.background_image" class="box layout-row layout-align-start-center attach-div" *ngFor="let tab of homeScreenService.appTabs"
+                                    [class.bg-selected]="homeScreenService.backgroundSetting.setTabBackgroundButtonStatusActive.indexOf(tab.id)!=-1">
+                                   
+                                     <span class="layout-row attach-class bg-up-attch ">
+                                    <span  class="attach-class1" (click)="onClickAttachMent('tab',tab.id)" ><i class=" fa fa-paperclip cursor_p" ></i></span>
+                                   <span class="attach-class2" *ngIf="tab.background_image"><i class="fa fa-trash cursor_p" (click)="removeTabBackgroundImage(tab.id)"></i></span>
+                                    </span>
+                                        <span><img *ngIf="tab.type == 1" src="{{tab.icon_src}}" alt="{{tab.title}}" style="width:23px; height:23px">
+                                        <i *ngIf="tab.type == 2" class="Glyphter icon-{{tab.icon_name}}" [style.color]="tab.icon_type == 1 ? '#000' : '#fff'" aria-hidden="true"></i>
+                                    </span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">{{tab.title}}</span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="tab.background_image">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!tab.background_image">Unassigned</span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+
+                    <div class="phone-image-wrap layout-column flex-70 pad-10">
+                        <div class="layout-row layout-wrap layout-wrap">
+
+                            <div class="flex-25 layout-row layout-align-center-center related-to imag-up" *ngFor="let image of homeScreenService.userImages">
+                                <span *ngIf="homeScreenService.userImageInfo[image.id] && homeScreenService.userImageInfo[image.id].length">
+                                    <template ngFor let-info [ngForOf]="homeScreenService.userImageInfo[image.id]" let-i="index">
+                                          <template [ngIf]="i<5">
+                                            {{info}}<br>
+                                        </template> 
+                                    </template> 
+                                    <template [ngIf]="homeScreenService.userImageInfo[image.id] && homeScreenService.userImageInfo[image.id].length>5">
+                                        {{homeScreenService.userImageInfo[image.id].length-5}} More
+                                </template> 
+                            </span>
+                                <span *ngIf="homeScreenService.backgroundSetting.userImageId==image.id" class="right-tick"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                                <img src="{{image.name}}" (click)="setBackgroundImage(image.id)" [class.right-img]="homeScreenService.backgroundSetting.userImageId==image.id"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </p-tabPanel>
+            <p-tabPanel header="TABLET" class="layout-row bg-img-wrap-phone tablet-attch-wrap ">
+                <div class="layout-column m-b-20 m-t-10">
+                    <!--<label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center m-l-10">
+                    <input type="checkbox" >
+                    <span>Use images and Settings from the Phone Section</span>
+                </label>-->
+                    <div class="phone layout-row flex-100">
+
+                        <form class="phone layout-column flex-30 pad-10">
+
+                            <div class="layout-column">
+                                <div class="layout-row">
+                                    <label>HOME SCREEN</label>
+                                </div>
+                            </div>
+                            <div class="layout-column border-b">
+                                <div class="layout-row">
+                                    <label><i class="fa fa-info-circle l  m-r-10"></i>Assign your Home Screen background image here</label>
+                                </div>
+                                <div class="layout-row">
+                                    <label [class.unassi-attach]="!homeScreenService.appData.home_screen_tab_background_image" class="box layout-row layout-align-start-center attach-div"
+                                        [class.bg-selected]="homeScreenService.backgroundSetting.setBackgroundButtonStatusActive">
+                                  <span class="layout-row attach-class ">
+                                 <span  class="flex-33"  (click)="onClickAttachMent('home',-1)"   ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33 border-l" *ngIf="homeScreenService.appData.home_screen_tab_background_image"><i class="fa fa-trash cursor_p" (click)="removeHomeBackgroundImage()"></i></span>
+                                    </span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10"> Background</span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.appData.home_screen_tab_background_image">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.appData.home_screen_tab_background_image">Unassigned</span>
+                                </label>
+                                </div>
+                            </div>
+
+                            <!--<div class="layout-column border-b">
+                                <div class="layout-row">
+                                    <label>HOME SCREEN SLIDERS</label>
+                                </div>
+                                <div class="layout-row">
+                                    <label><i class="fa fa-info-circle l m-r-10"></i>Select and assign your slider option and images here</label>
+                                </div>
+                                <div class="layout-row m-b-10">-->
+                            <!--                        <input type="checkbox">
+                <label></label>-->
+                            <!--<label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                                    <input type="checkbox" >
+                                    <span>Modern Sliding</span>
+                                </label>
+                                </div>
+                                <div class="layout-row">
+                                    <label class="box {{selectedSlide}}"><p-dropdown [options]="sliding" [(ngModel)]="selectedSlide"  (onChange)="selectedSlideChange($event)" class="flex-100 layout-row"></p-dropdown></label>
+                                </div>
+                                <div class="layout-column">
+                                    <label class="box layout-row layout-align-start-center attach-div">
+                                        <span class="attach-class" (click)="onClickAttachMent('slide',1)" ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    
+
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 1</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row">assigned</span>
+                                </label>
+                                    <label class="box layout-row layout-align-start-center attach-div">
+                                         <span class="attach-class" (click)="onClickAttachMent('slide',2)" ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                                                      
+
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 2</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row">Unassigned</span>
+                                </label>
+                                    <label class="box layout-row layout-align-start-center attach-div">
+                                          <span class="attach-class" (click)="onClickAttachMent('slide',3)" ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                                                     
+
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 3</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row">assigned</span>
+                                </label>
+                                    <label class="box layout-row layout-align-start-center attach-div">
+                                             <span class="attach-class" (click)="onClickAttachMent('slide',4)" ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                                                 
+
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 4</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row">Unassigned</span>
+                                </label>
+                                    <label class="box layout-row layout-align-start-center attach-div">
+                                        <span class="attach-class" (click)="onClickAttachMent('slide',5)" ><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                                                      
+
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 5</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row">assigned</span>
+                                </label>
+                                </div>
+                            </div>-->
+                            <div class="layout-column border-b">
+                                <div class="layout-row">
+                                    <label>HOME SCREEN SLIDERS</label>
+                                </div>
+                                <div class="layout-row">
+                                    <label><i class="fa fa-info-circle l m-r-10"></i>Select and assign your slider option and images here</label>
+                                </div>
+                                <div class="layout-row m-b-10">
+                                    <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                                    <input type="checkbox" [(ngModel)]="homeScreenService.backgroundSetting.isTabModernSliding" (click)="checkTabModernSliding()" >
+                                    <span>Modern Sliding</span>
+                                </label>
+                                </div>
+                                <div class="layout-row">
+                                    <label class="box {{selectedTabSlide}}"><p-dropdown [options]="sliding" [(ngModel)]="selectedTabSlide"  (onChange)="selectedTabSlideChange($event)" class="flex-100 layout-row"></p-dropdown></label>
+                                </div>
+                                <div class="layout-column">
+                                    <label [class.unassi-attach]="!homeScreenService.sliderTabDIsplaySettings.slider[1]" class="box layout-row layout-align-start-center attach-div"
+                                        [class.bg-selected]="homeScreenService.backgroundSetting.sliderNo.indexOf(1)>=0">
+                                     <span class="layout-row attach-class ">
+                                 <span  class="flex-33"  (click)="onClickAttachMent('slide',1)"><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33 border-l" *ngIf="homeScreenService.sliderTabDIsplaySettings.slider[1]"><i class="fa fa-trash cursor_p" (click)="removeSliderImage(1)"></i></span>
+                                    </span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 1</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.sliderTabDIsplaySettings.slider[1]">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.sliderTabDIsplaySettings.slider[1]">Unassigned</span>
+                                </label>
+                                    <label [class.unassi-attach]="!homeScreenService.sliderTabDIsplaySettings.slider[2]" class="box layout-row layout-align-start-center  attach-div"
+                                        [class.bg-selected]="homeScreenService.backgroundSetting.sliderNo.indexOf(2)>=0">
+                                   
+                                    <span class="layout-row attach-class ">
+                                 <span  class="flex-33"  (click)="onClickAttachMent('slide',2)"><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33 border-l" *ngIf="homeScreenService.sliderTabDIsplaySettings.slider[2]"><i class="fa fa-trash cursor_p" (click)="removeSliderImage(2)"></i></span>
+                                    </span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 2</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.sliderTabDIsplaySettings.slider[2]">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.sliderTabDIsplaySettings.slider[2]">Unassigned</span>
+                                </label>
+                                    <label [class.unassi-attach]="!homeScreenService.sliderTabDIsplaySettings.slider[3]" class="box layout-row layout-align-start-center  attach-div"
+                                        [class.bg-selected]="homeScreenService.backgroundSetting.sliderNo.indexOf(3)>=0">
+                                    <span class="layout-row attach-class ">
+                                 <span  class="flex-33"  (click)="onClickAttachMent('slide',3)"><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33 border-l" *ngIf="homeScreenService.sliderTabDIsplaySettings.slider[3]"><i class="fa fa-trash cursor_p" (click)="removeSliderImage(3)"></i></span>
+                                    </span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 3</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.sliderTabDIsplaySettings.slider[3]">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.sliderTabDIsplaySettings.slider[3]">Unassigned</span>
+                                </label>
+
+                                    <label [class.unassi-attach]="!homeScreenService.sliderTabDIsplaySettings.slider[4]" class="box layout-row layout-align-start-center attach-div"
+                                        [class.bg-selected]="homeScreenService.backgroundSetting.sliderNo.indexOf(4)>=0">
+                                    <span class="layout-row attach-class ">
+                                 <span  class="flex-33"  (click)="onClickAttachMent('slide',4)"><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33 border-l" *ngIf="homeScreenService.sliderTabDIsplaySettings.slider[4]"><i class="fa fa-trash cursor_p" (click)="removeSliderImage(4)"></i></span>
+                                    </span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 4</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.sliderTabDIsplaySettings.slider[4]">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.sliderTabDIsplaySettings.slider[4]">Unassigned</span>
+                                </label>
+                                    <label [class.unassi-attach]="!homeScreenService.sliderTabDIsplaySettings.slider[5]" class="box layout-row layout-align-start-center attach-div"
+                                        [class.bg-selected]="homeScreenService.backgroundSetting.sliderNo.indexOf(5)>=0">
+                                    <span class="layout-row attach-class ">
+                                 <span  class="flex-33"  (click)="onClickAttachMent('slide',5)"><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33 border-l" *ngIf="homeScreenService.sliderTabDIsplaySettings.slider[5]"><i class="fa fa-trash cursor_p" (click)="removeSliderImage(5)"></i></span>
+                                    </span>
+                                    <span> <img src="assets/img/bg_images//bg-img.jpg" style="height: 21px;width: 21px"/></span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">
+                                        <span>Slide 5</span>
+                                        <span class=" layout-row layout-align-end flex-60"><i class="fa fa-paperclip" aria-hidden="true"></i></span>
+                                    </span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="homeScreenService.sliderTabDIsplaySettings.slider[5]">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!homeScreenService.sliderTabDIsplaySettings.slider[5]">Unassigned</span>
+                                </label>
+                                </div>
+                            </div>
+
+                            <div class="layout-column border-b ">
+                                <div class="layout-row">
+                                    <label>TABS</label>
+                                </div>
+                                <div class="layout-row">
+                                    <label><i class="fa fa-info-circle l  m-r-10"></i>Assign background images for all your tabs here</label>
+                                </div>
+                                <div class="layout-column">
+                                    <label [class.unassi-attach]="!tab.tablet_bg_img" class="box layout-row layout-align-start-center  attach-div" *ngFor="let tab of homeScreenService.appTabs"
+                                        [class.bg-selected]="homeScreenService.backgroundSetting.setTabBackgroundButtonStatusActive.indexOf(tab.id)!=-1">
+                                  <span class="layout-row attach-class ">
+                                 <span  class="flex-33" (click)="onClickAttachMent('tab',tab.id)"><i class="fa fa-paperclip cursor_p" aria-hidden="true"></i></span>
+                                    <span  class="flex-33 border-l" *ngIf="tab.tablet_bg_img"><i class="fa fa-trash cursor_p" (click)="removeTabBackgroundImage(tab.id)"></i></span>
+                                    </span>
+                                    <span>	<img *ngIf="tab.type == 1" src="{{tab.icon_src}}" alt="{{tab.title}}" style="width:23px; height:23px">
+                                        <i *ngIf="tab.type == 2" class="Glyphter icon-{{tab.icon_name}}" [style.color]="tab.icon_type == 1 ? '#000' : '#fff'" aria-hidden="true"></i>
+                                    </span>
+                                    <span class="layout-align-start-center flex-70 layout-row m-l-10">{{tab.title}}</span>
+                                    <span class="status-asgn layout-align-center-center flex-35 layout-row" *ngIf="tab.tablet_bg_img">assigned</span>
+                                    <span class="status-unasgn layout-align-center-center flex-35 layout-row" *ngIf="!tab.tablet_bg_img">Unassigned</span>
+                                </label>
+                                </div>
+                            </div>
+                        </form>
+
+                        <!--<div class="phone-image-wrap layout-column flex-70 pad-10">
+                            <div class="layout-row layout-wrap layout-wrap">
+                                <div class="flex-25 layout-row layout-align-center-center related-to imag-up" *ngFor="let image of homeScreenService.userImages">
+                                    <span *ngIf="homeScreenService.backgroundSetting.userImageId==image.id" class="right-tick"> <i class="fa fa-check" aria-hidden="true"></i></span>
+
+                                    <span *ngIf="homeScreenService.appData.home_screen_background_image==image.id">Home Screen</span>
+
+
+                                    <img src="{{image.name}}" (click)="setBackgroundImage(image.id)" [class.right-img]="homeScreenService.backgroundSetting.userImageId==image.id"
+                                    />
+                                </div>
+                            </div>
+                        </div>-->
+                        <div class="phone-image-wrap layout-column flex-70 pad-10">
+                            <div class="layout-row layout-wrap layout-wrap">
+
+                                <div class="flex-25 layout-row layout-align-center-center related-to imag-up" *ngFor="let image of homeScreenService.userImages">
+                                    <span *ngIf="homeScreenService.userImageTabInfo[image.id] && homeScreenService.userImageTabInfo[image.id].length">
+                                    <template ngFor let-info [ngForOf]="homeScreenService.userImageTabInfo[image.id]" let-i="index">
+                                          <template [ngIf]="i<5">
+                                            {{info}}<br>
+                                        </template> 
+                                    </template> 
+                                    <template [ngIf]="homeScreenService.userImageTabInfo[image.id] && homeScreenService.userImageTabInfo[image.id].length>5">
+                                        {{homeScreenService.userImageTabInfo[image.id].length-5}} More
+                                </template> 
+                            </span>
+                                    <span *ngIf="homeScreenService.backgroundSetting.userImageId==image.id" class="right-tick"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                                    <img src="{{image.name}}" (click)="setBackgroundImage(image.id)" [class.right-img]="homeScreenService.backgroundSetting.userImageId==image.id"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </p-tabPanel>
+            <p-tabPanel header="Device Classification" [disabled]="true" leftIcon="fa-info-circle" class="layout-row ">
+            </p-tabPanel>
+        </p-tabView>
+
+        <!--<button class="green-btn abo-imbg-wrap " (click)="onClickAttachMent()">ATTACHMENT</button>-->
+        <!--<button class="green-btn abo-imbg-wrap attch-add font-12" (click)="onAddImageClick()">ADD/REMOVE IMAGES</button>-->
+
+
+    </div>
+</div>
+
+
+<!--<p-dialog header="BACKGROUND INFORMATION" [(visible)]="addImages" modal="modal" class=" backg-inf-dia app-dialog add-app s-tab-add bg-dialog-1">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="header-background ">
+        <tabset class="container-tab-detail">
+            <tab heading="LIBRARY">
+                <form>
+                    <div class="layout-column flex-100 web-bg">
+                        <div class="layout-row layout-align-space-between-center">-->
+<!--<span class="layout-column">-->
+<!--<label class="font-weight-bold">Tablet</label>
+                            <button class="green-btn m-b-20" *ngIf="importImageIds.length" (click)="importLibraryImagesToYourImages()">Import Images</button>-->
+<!--<div class="layout-row layout-align-start-center"><label>Select your app's industry here-->
+<!--to use preset background images.</label>-->
+<!--<p-dropdown [options]="categoryList" [(ngModel)]="categoryList[0]"  (onChange)="selectedChange($event)"></p-dropdown></div>-->
+<!--</span>-->
+<!--</div>
+                    </div>
+                </form>
+                <div class="">
+                    <div class="layout-row layout-wrap layout-wrap phone-image-wrap no-bg m-t-10">
+
+                        <div class="flex-25 layout-row layout-align-center-center related-to" *ngFor="let image of libraryImages" (click)="importImage(image.id)">
+                            <span *ngIf="importImageIds.indexOf(image.id)>=0"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <img src="{{image.name}}" [class.right-img]="importImageIds.indexOf(image.id)>=0" />
+                        </div>
+                    </div>
+                </div>-->
+<!--</tab>
+            <tab heading="YOUR IMAGES">
+
+                <form>
+                    <div class="layout-column flex-100 pad-5">
+                        <div class="layout-column">
+                            <div class="layout-row layout-align-space-between-center">
+                                <label class="font-weight-bold">Tablet</label>
+                                <button class="green-btn m-b-20" *ngIf="targetedImageIds.length" (click)="deleteTargetedImage()">Delete Image</button>
+                            </div>
+                            <div class="layout-row layout-align-space-between-center"><label><i class="fa fa-info-circle l"></i> Homescreen Image : 1536x2048px.</label>
+                                <!--<input type="file" (change)="onImageSelect($event)" name="image" accept="image/*">-->
+<!--<thumbnail-file-reader (change)="onImageSelect($event)" [btnText]="'Choose File'">
+                                </thumbnail-file-reader>
+                            </div>
+                        </div>
+                        <div class="layout-row">
+                            <label><i class="fa fa-info-circle l"></i>Tablet Background Image : 1536x1920px</label>
+                        </div>-->
+<!--</div>
+                </form>
+                <div class="">
+                    <div class="layout-row layout-wrap layout-wrap phone-image-wrap no-bg m-t-10">
+                        <div class="flex-25 layout-row layout-align-center-center related-to" *ngFor="let image of homeScreenService.userImages"
+                            (click)="targetImage(image.id)">
+                            <span *ngIf="targetedImageIds.indexOf(image.id)!=-1"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <img src="{{image.name}}" [class.right-img]="targetedImageIds.indexOf(image.id)!=-1" />
+                        </div>
+                    </div>-->
+<!--</div>-->
+<!--            <button class="green-btn m-b-20" *ngIf="targetedImageIds.length" (click)="deleteTargetedImage()">Delete Image</button>-->
+<!--</tab>
+        </tabset>
+    </div>
+
+</p-dialog>-->
+<p-dialog [draggable]="false"  header="BACKGROUND INFORMATION" [(visible)]="addAttachMent" modal="modal" class=" backg-inf-dia app-dialog add-app s-tab-add bg-dialog-1"
+    (onAfterHide)="onaddAttachMentDialogHide()">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="header-background ">
+        <tabset class="container-tab-detail">
+            <tab heading="LIBRARY">
+                <form>
+                    <div class="layout-column flex-100 web-bg">
+                        <div class="layout-row layout-align-space-between-center">
+                            <label class="font-weight-bold">Tablet</label>
+                            <button class="green-btn m-b-20" *ngIf="importImageIds.length" (click)="importLibraryImagesToYourImages()">Import Images</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="">
+                    <div class="layout-row layout-wrap layout-wrap phone-image-wrap no-bg m-t-10">
+
+                        <div class="flex-25 layout-row layout-align-center-center related-to" *ngFor="let image of libraryImages" (click)="importImage(image.id)">
+                            <span *ngIf="importImageIds.indexOf(image.id)>=0"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <img src="{{image.name}}" [class.right-img]="importImageIds.indexOf(image.id)>=0" />
+                        </div>
+                    </div>
+                </div>
+            </tab>
+            <tab heading="YOUR IMAGES">
+
+                <form>
+                    <div class="layout-column flex-100 pad-5">
+                        <div class="layout-column">
+                            <div class="layout-row layout-align-space-between-center">
+                                <label class="font-weight-bold">Tablet</label>
+                                <button class="green-btn m-b-20" *ngIf="homeScreenService.backgroundSetting.userImageId" (click)="saveChoices()">Save Choices</button>
+                            </div>
+                            <div class="layout-row layout-align-space-between-center"><label><i class="fa fa-info-circle l"></i> Homescreen Image : 1536x2048px.</label>
+                                <thumbnail-file-reader (change)="onImageSelect($event)" [btnText]="'Choose File'">
+                                </thumbnail-file-reader>
+                            </div>
+                        </div>
+                        <div class="layout-row">
+                            <label><i class="fa fa-info-circle l"></i>Tablet Background Image : 1536x1920px</label>
+                        </div>
+                    </div>
+                </form>
+                <div class="">
+                    <div class="layout-row layout-wrap layout-wrap phone-image-wrap no-bg m-t-10">
+                        <div class="flex-25 layout-row layout-align-center-center related-to app-dis-del" *ngFor="let image of homeScreenService.userImages"
+                            (click)="setBackgroundImage(image.id)">
+                            <span (click)="deleteImages(image.id)" class="del"> <i class="fa fa-times" aria-hidden="true"></i></span>
+                            <span *ngIf="homeScreenService.backgroundSetting.userImageId==image.id" class="right-tick"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <img src="{{image.name}}" [class.right-img]="homeScreenService.backgroundSetting.userImageId==image.id" />
+                        </div>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+
+</p-dialog>
+
+<p-dialog  [draggable]="false" header="LINK EDITOR" [(visible)]="showLinkEditorDialog" modal="modal" class="link-editor-wrapper app-dialog add-app  bg-dialog-1">
+    <form (ngSubmit)="onLinkAttachSubmit()">
+        <div class="layout-row flex-100 web-bg layout-align-start-start">
+            <div class="layout-row flex-100 web-bg layout-align-start-center">
+            <span class="flex-10 layout-row">
+        Tab
+        <i class="fa fa-info-circle l m-l-10" tooltip='Select a tab to which slider image will be linked.' tooltipPlacement="right" aria-hidden="true"></i>
+    </span>
+            <!--<label class="flex-20">Tab
+                <i aria-hidden="true" class="fa fa-info-circle l m-l-10" tooltip="Select a tab to which slider image will be linked." tooltipplacement="right" aria-hidden="true"></i>
+            </label>-->
+            <p-dropdown [options]="tabLinkOptions" [(ngModel)]="sliderLinkTabID" class="flex-80 border-all"></p-dropdown>
+        </div>
+        </div>
+        <footer>
+            <div class="">
+                <div class="save-btn">
+                    <button class="green-btn" type="submit" [disabled]="linkSettingSaveDisable">SAVE LINK SETTINGS</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+</p-dialog>

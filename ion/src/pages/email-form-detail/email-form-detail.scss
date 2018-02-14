@@ -1,0 +1,101 @@
+page-email-form-detail {
+    .section-brk {
+    border-top: 3px dotted #ccc;
+    padding-top: 15px;
+}
+.text-input {
+      border: 1px solid rgba(66, 66, 66, 0.54);
+    margin: 10px 0 !important;
+    padding-bottom: 10px;
+    background: #fff;
+    padding: 10px;
+    border-radius: 2px;
+}
+.scroll-content {
+   
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.span-data{
+    vertical-align: middle;
+    display: flex;
+    align-items: center;
+    margin-right: 2px;
+        color: #656161;
+}
+
+.checkbox-md  {
+    padding-top: 13px;
+    padding-right: 10px;
+}
+.checkbox-ios {
+    padding-top: 11px;
+    padding-right: 10px;
+}
+
+.radio-md .radio-icon{
+    margin-top: 12px;
+    margin-right: 10px;
+}
+.radio-ios .radio-icon {
+    margin-top: 8px;
+    margin-right: 10px;
+}
+
+span ion-input.input-md ,span ion-input.input-ios {
+    display: inline-block;
+    width: 30%;
+}
+.select-md , .select-ios{
+    border: 1px solid rgba(66, 66, 66, 0.54);
+    border-radius: 3px;
+        margin: 10px 15px 10px -2px !important;
+        padding: 7px 8px 0px 16px;
+}
+span.dash {
+    padding-right: 5px;
+    margin-left: -5px;
+        color: #656161;
+}
+.label-md {
+    margin: 13px 8px 0px 0;
+    //   color: #656161;
+}
+
+.zip-wrap ion-select {
+    max-width: 100%;
+    width: 45%;
+}
+.item-cover {
+    width: auto;
+    height: auto;
+}
+.datetime-md , .datetime-ios{
+    border-bottom: 1px solid rgba(66, 66, 66, 0.54);
+}
+.error {
+    border: 1px dotted rgba(255, 0, 0, 0.61);
+    margin-bottom: 6px;
+  
+}
+ ion-col ion-label .required {
+    color: rgba(255, 0, 0, 0.61);
+}
+ion-col div .required {
+    color: rgba(255, 0, 0, 0.61);
+}
+.drop-box .select-md {
+    padding: 8px 8px 8px 16px !important;
+}
+.input-length input ,.input-length textarea {
+    width: 100%;
+}
+.relative{
+    position: relative;
+}
+.relative > span {
+    position: absolute;
+    top: 16px;
+    right: 0;
+}
+}

@@ -1,0 +1,1 @@
+export * from './fan-wall-tab.component';

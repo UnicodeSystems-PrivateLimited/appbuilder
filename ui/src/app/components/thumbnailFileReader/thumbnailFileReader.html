@@ -1,0 +1,9 @@
+<div class="thumbnail-group layout-row layout-align-start-center">
+    <div class="thumbnail-upload-btn " (click)="bringThumbFileSelector()"><button class="green-btn">{{btnText}}</button></div>
+    <input #fileUpload type="file" hidden="true" (change)="changeListener($event)" />
+    <div class="thumbnail-picture-wrapper" [class.fr-header-image]="imageTypeHeader">
+        <img class="target-picture" src="{{ picture }}" *ngIf="picture">
+        <img src="{{ defaultPicture }}" *ngIf="!picture && defaultPicture">
+        <i class="ion-ios-close-outline {{defaultPicture}} {{canDelete && (defaultPicture != null) }}" (click)="removePicture();" *ngIf="canDelete &&  (defaultPicture != null)"></i>
+    </div>
+</div>

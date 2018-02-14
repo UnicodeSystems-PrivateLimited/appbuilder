@@ -1,0 +1,10 @@
+<ion-header>
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <iframe [src]="iframeSrc" #iframe (load)="onIframeLoad()"></iframe>
+</ion-content>

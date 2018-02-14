@@ -1,0 +1,42 @@
+<div class="header tabinner-space button-tab-wrapper">
+    <div class="layout-column">
+        <div class="layout-row layout-from-wrap layout-align-start-center">
+            <label class="flex-20">Color Theme</label>
+            <p-dropdown *ngIf='service.color_theme' [options]="service.color_theme" [(ngModel)]="service.globalStyleSettings.lists.color_theme_id" (onChange)="onThemeClick(service.globalStyleSettings.lists.color_theme_id)"></p-dropdown>
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row">
+            <label class="flex-20"></label>
+            <span class="layout-row flex-40">   <label class="flex-30 layout-row layout-align-center-center">Bar</label>
+                <label class="flex-30 layout-row m-l-10 layout-align-center-center">Text</label></span>
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-20">Section</label>
+            <input class="input-class" *ngIf='service.globalStyleSettings.lists.section_bar' [(colorPicker)]="service.globalStyleSettings.lists.section_bar" [style.background]="service.globalStyleSettings.lists.section_bar"
+                [value]="service.globalStyleSettings.lists.section_bar" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+            <input class="input-class m-l-10" *ngIf='service.globalStyleSettings.lists.section_text' [(colorPicker)]="service.globalStyleSettings.lists.section_text" [style.background]="service.globalStyleSettings.lists.section_text"
+                [value]="service.globalStyleSettings.lists.section_text" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-20">Odd Row</label>
+            <input class="input-class" *ngIf='service.globalStyleSettings.lists.row_bar'  [(colorPicker)]="service.globalStyleSettings.lists.row_bar" [style.background]="service.globalStyleSettings.lists.row_bar"
+                [value]="service.globalStyleSettings.lists.row_bar" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+            <input class="input-class m-l-10" *ngIf='service.globalStyleSettings.lists.row_text' [(colorPicker)]="service.globalStyleSettings.lists.row_text" [style.background]="service.globalStyleSettings.lists.row_text"
+                [value]="service.globalStyleSettings.lists.row_text" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+        </div>
+    </div>
+      <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-20">Even Row</label>
+            <input class="input-class" *ngIf='service.globalStyleSettings.lists.even_row_bar'  [(colorPicker)]="service.globalStyleSettings.lists.even_row_bar" [style.background]="service.globalStyleSettings.lists.even_row_bar"
+                [value]="service.globalStyleSettings.lists.even_row_bar" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+            <input class="input-class m-l-10" *ngIf='service.globalStyleSettings.lists.even_row_text' [(colorPicker)]="service.globalStyleSettings.lists.even_row_text" [style.background]="service.globalStyleSettings.lists.even_row_text"
+                [value]="service.globalStyleSettings.lists.even_row_text" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+        </div>
+    </div>
+</div>

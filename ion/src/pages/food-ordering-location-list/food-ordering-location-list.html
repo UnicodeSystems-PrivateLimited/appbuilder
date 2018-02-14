@@ -1,0 +1,25 @@
+<ion-header>
+
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+
+        <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">Locations</ion-title>
+
+        <ion-buttons end>
+            <button ion-button icon-only (click)="onMapOrListClick()" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon [name]="viewType === 'list' ? 'map' : 'list'"></ion-icon>
+            </button>
+        </ion-buttons>
+
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content>
+
+    <locations-list *ngIf="viewType === 'list'" [tabId]="tabId" [locationList]="locationList" (locationClick)="openLocationPage($event)"></locations-list>
+    <locations-map *ngIf="viewType === 'map'" [tabId]="tabId" [locationList]="locationList" (locationSelect)="openLocationPage($event)"></locations-map>
+
+</ion-content>

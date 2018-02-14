@@ -1,0 +1,112 @@
+<ion-header>
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">Details</ion-title>
+
+        <ion-buttons end *ngIf="showCartButton">
+            <button ion-button icon-only (click)="service.openCart(navCtrl, tabId)" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="cart"></ion-icon>
+                <ion-badge *ngIf="service.cartTotal" color="danger">{{service.cartTotal}}</ion-badge>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+
+<ion-content>
+    <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+
+    <template [ngIf]="!loader">
+        <ion-card class="product-card">
+            <div class="image-wrapper">
+                <img [src]="item.image">
+            </div>
+            <ion-card-content>
+                <ion-card-title>{{item.name}}</ion-card-title>
+                <h2>
+                    <span [innerHTML]="service.currencySymbolList[service.payment['currency']] || currency"></span>
+                    {{((item.price + optionCharges) * previousQuantity) | number: '1.2-2'}}
+                </h2>
+                <p *ngIf="item.description">
+                    {{showMore ? item.description : (item.description | trimmer:120)}}
+                    <a *ngIf="item.description.length > 120" (click)="onShowMoreToggle()">{{showMore ? 'show less' : 'show more'}}</a>
+                </p>
+            </ion-card-content>
+        </ion-card>
+        <ion-card>
+            <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+                [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar)| hex2rgba">
+                Quantity
+            </ion-card-header>
+            <ion-item>
+                <ion-select [(ngModel)]="cartItem.quantity" [selectOptions]="{title: 'Select Quantity'}" (ionChange)="onQuantityChange()">
+                    <ion-option *ngFor="let quantity of quantityOptions">{{quantity}}</ion-option>
+                    <ion-option [value]="-1">More</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-card>
+
+        <ion-card *ngIf="sizes.length">
+            <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+                [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar)| hex2rgba">
+                Size
+            </ion-card-header>
+            <ion-item>
+                <ion-select [(ngModel)]="selectedSize" [selectOptions]="{title: 'Select Size'}" (ionChange)="onSizeChange()">
+                    <ion-option *ngFor="let size of sizes" [value]="size">{{size.title}}</ion-option>
+                </ion-select>
+            </ion-item>
+        </ion-card>
+
+        <template ngFor let-type [ngForOf]="optionTypes">
+
+            <ion-card *ngIf="options[type.id] && options[type.id].length">
+
+                <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+                    [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar)| hex2rgba">
+                    {{type.title}}
+                    <span *ngIf="type.is_required" class="item-right">Please select {{type.amount}}</span>
+                </ion-card-header>
+
+                <ion-list>
+                    <ion-item *ngFor="let option of options[type.id]; let i = index">
+                        <button ion-button icon-only clear *ngIf="optionButtonPairs[option.id]" (click)="onOptionsChange(false, option, type)" item-left
+                            color="black" [style.margin-left.px]="minusButtonMargin.left" [style.margin-right.px]="minusButtonMargin.right">
+                            <ion-icon name="remove"></ion-icon>
+                        </button>
+
+                        <ion-label>{{option.title}}</ion-label>
+
+                        <ion-checkbox *ngIf="!optionButtonPairs[option.id]" (ionChange)="onOptionsChange($event.checked, option, type, $event)" color="black"></ion-checkbox>
+
+                        <span item-right>
+                            <span *ngIf="optionQuantities[option.id]">{{optionQuantities[option.id]}} x</span>
+                            <span [innerHTML]="currencySymbol"></span>
+                            {{option.charges}}
+                        </span>
+
+                        <button ion-button icon-only clear *ngIf="optionButtonPairs[option.id]" (click)="onOptionsChange(true, option, type)" item-right
+                            color="black" [disabled]="disabledPlusButtons[option.id]">
+                            <ion-icon name="add"></ion-icon>
+                        </button>
+                    </ion-item>
+                </ion-list>
+
+            </ion-card>
+
+        </template>
+
+        <ion-card>
+            <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+                [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar)| hex2rgba">
+                Additional Notes
+            </ion-card-header>
+            <ion-textarea [(ngModel)]="cartItem.notes" placeholder="Enter text here" class="notes"></ion-textarea>
+        </ion-card>
+
+        <button ion-button block (click)="onAddToCartClick()" class="add-to-cart-button" [style.background-color]="(globalService.initData.globalStyleSettings?.features?.button_image)| hex2rgba"
+            [style.color]="globalService.initData.globalStyleSettings?.features?.button_text">Add To Cart</button>
+    </template>
+</ion-content>

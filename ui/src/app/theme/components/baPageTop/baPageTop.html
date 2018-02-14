@@ -1,0 +1,44 @@
+<div [style.background]="_state.isCustomerLogin && !_state.isAllAppPage ?staticSettingService.appSettingData.theme?.theme_header_bg_color2:'#FFF'" class="page-top clearfix layout-row flex-100 header-data-tappit" baScrollPosition maxHeight="50" (scrollChange)="scrolledChanged($event)"
+    [ngClass]="{scrolled: isScrolled}">
+    <a href="#/pages/dashboard" *ngIf="_state.isAllAppPage" class="al-logo clearfix flex-15">
+        <div style="height: 40px; margin: 0 auto"> <img src="../../assets/img/logo.png" /></div>
+    </a>
+
+    <a *ngIf="dataService.account.role == 4 && _state?.isCustomerLogin && !_state.isAllAppPage" class=" clearfix flex-15 layout-row customer-portal-img layout-align-start-center">
+        <div style="height: 48px; margin: 0 12px"> <img src="{{staticSettingService.appSettingData?.theme?.theme_logo}}" /></div>
+    </a>
+    <div class="search flex-30" *ngIf="!_state.isDeveloperLogin">
+        <ba-sidebar *ngIf="isProfileRetrieved"></ba-sidebar>
+    </div>
+    <div class="bg-class layout-align-end-center layout-row " [class.devlog]="_state.isDeveloperLogin">
+
+        <div class="user-profile clearfix layout-row layout-align-end-center flex-100 pad-right">
+            <ba-msg-center></ba-msg-center>
+            <div class="flex-90 layout-row layout-align-end-center c-p" *ngIf="(_state?.isCustomerLogin && !_state.isAllAppPage ) && staticSettingService.appSettingData.header?.navigation">
+                <a class=" layout-align-start-center layout-row m-r-10" (click)="openLink(nav)" *ngFor="let nav of staticSettingService.appSettingData.header?.navigation">
+                    <span class="layout-row layout-align-start-center" [style.color]="staticSettingService.appSettingData.header?.header_link_color"><i class=" m-r-5 {{nav.class}}"></i>{{nav.label}}</span>
+
+                </a>
+            </div>
+            <a *ngIf="!_state?.isCustomerLogin " href="#/pages/ipaRequest">IPA-REQUEST</a>
+            <a *ngIf="!_state?.isCustomerLogin && !_state.isDeveloperLogin" href="#/pages/cPanel">C-PANEL</a>
+            <img src="{{dataService.account.avatar ? ('../api/storage/app/user/image/' + dataService.account.avatar) : '../../assets/img/tappit-logo-icon512.png'}}">
+            <div class="dropdown al-user-profile layout-column layout-align-center-center">
+                <a class="profile-toggle-link dropdown-toggle" id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+                    {{dataService.account.first_name}}&nbsp;{{dataService.account.last_name}} <i class="fa fa-chevron-down" aria-hidden="true"></i>
+
+                </a>
+                <div class="dropdown-menu top-dropdown-menu profile-dropdown li-profile-upates" aria-labelledby="user-profile-dd">
+                    <li class="dropdown-item" *ngIf="!_state?.isCustomerLogin"><i class="dropdown-arr"></i></li>
+                    <li *ngIf="dataService.account.role == 1" class="dropdown-item" *ngIf="!_state?.isCustomerLogin"><a href="#/pages/addUser"><i class="fa fa-user"></i>Manage Users</a></li>
+                    <li *ngIf="dataService.account.role == 1 || dataService.account.role == 7" class="dropdown-item" *ngIf="!_state?.isCustomerLogin"><a href="#/pages/add-color-icons"><i class="fa fa-user"></i>Add Color Icons</a></li>
+                    <li *ngIf="dataService.account.role == 1 || dataService.account.role == 7" class="dropdown-item" *ngIf="!_state?.isCustomerLogin"><a href="#/pages/add-photos-icons"><i class="fa fa-user"></i>Add Photo Icons</a></li>
+                    <li class="dropdown-item" *ngIf="!_state?.isCustomerLogin"><a href="#/pages/profile"><i class="fa fa-user"></i>Profile</a></li>
+
+                    <li *ngIf="dataService.account.role == 1 || dataService.account.role == 5 || dataService.account.role == 7" class="dropdown-item"><a class="signout" href="../api/account/logout"><i class="fa fa-power-off"></i>Sign out</a></li>
+                    <li *ngIf="dataService.account.role == 4" class="dropdown-item"><a class="signout" href="../api/account/client/logout"><i class="fa fa-power-off"></i>Sign out</a></li>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="main-container add-photos-icon-data">
+    <div class="access-denied" *ngIf="dataService.account.role != 1 && dataService.account.role != 7">
+        <h2>ACCESS DENIED</h2>
+    </div>
+    <template [ngIf]="dataService.account.role == 1 || dataService.account.role == 7">
+        <div>
+            <div *ngIf="showGridLoader" class="fm-spinner">
+                <div class="fm-double-bounce1"></div>
+                <div class="fm-double-bounce2"></div>
+            </div>
+            <div class="layout-row flex-100">
+          <div class="layout-align-start-center flex-42">  <button class="green-btn m-l-10" (click)="showAddPhotosIconDialog()">
+                <i class="fa fa-plus ion-right" aria-hidden="true"></i>
+                Add New Photo Icon
+            </button></div>
+            <div class="layout-align-end-center flex-50 pagination-data">
+            <pagination [totalItems]="photosIconsPager.total" [itemsPerPage]="photosIconsPager.itemsPerPage" [(ngModel)]="photosIconsPager.currentPage" (pageChanged)="photosIconsPageChanged($event)" [maxSize]="0"></pagination>
+            </div>
+            </div>
+            <div class="data layout-wrap layout-row flex-100 layout-align-start-center">
+                <div *ngFor="let icon of photosIcons" class="flex-15 s-add-tab-mt-icon icon-with-cancel">
+                    <div class="icon">
+                        <img src="{{icon.src}}" style="max-width:100%;height:100%">
+                        <div class="cancel-button">
+                        <button class="" (click)="deletePhotosIcon(icon.id)">
+                            <i class="fa fa-trash-o" aria-hidden="true"></i>
+                        </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Add/Edit Picture Gallery Dialog START-->
+    <p-dialog [draggable]="false"  [header]="photosIconHeader" [(visible)]="photosIconDialogDisplay" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onPhotosIconSubmit()">
+            <div class="layout-column ">
+                <div class="web-bg">
+                    <div class="layout-column">
+                        <div class="layout-row flex-100  layout-align-start-center image-wrap-gallery">
+                            <label class="m-r-10">Images</label>
+                            <input type="file" (change)="onGalleryImagesChange($event)" multiple>
+                            <span *ngIf="isValidImagesError" style="color:red">Too Much Files</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" [disabled]="isValidImages" type="submit">SAVE</button>
+                </div>
+            </div>
+        </form>
+    </p-dialog>
+</template>
+</div>

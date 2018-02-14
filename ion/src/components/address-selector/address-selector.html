@@ -1,0 +1,30 @@
+<ion-header>
+
+    <ion-navbar  [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+    [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color">
+        <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+        [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">Address Selector</ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">
+                <span ion-text color="primary" showWhen="ios">Cancel</span>
+                <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+    <ion-searchbar  [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+    [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar)| hex2rgba" [(ngModel)]="address" (search)="searchAddress($event)" [showCancelButton]="shouldShowCancel">
+    </ion-searchbar>
+</ion-header>
+
+
+<ion-content>
+    <div id="address-selector-map" [style.height]="getMapHeight()"></div>
+    <div #footer>
+        <ion-item no-lines>
+            <span *ngIf="!selectedLocation">Tap on a pin to select</span>
+            <span *ngIf="selectedLocation">{{selectedLocation.formatted_address}}</span>
+        </ion-item>
+        <button ion-button block (click)="onSelectLocationClick()" [style.background-color]="(globalService.initData.globalStyleSettings?.features?.button_image)"
+            [style.color]="globalService.initData.globalStyleSettings?.features?.button_text">Select this location</button>
+    </div>
+</ion-content>

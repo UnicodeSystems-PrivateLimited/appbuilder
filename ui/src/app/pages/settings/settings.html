@@ -1,0 +1,187 @@
+<div class="c-panelSetting">
+    <a [routerLink]="['COverview']">OVERVIEW</a>
+    <a [routerLink]="['CPromote']">PROMOTE</a>
+    <a *ngIf="!appState.isCustomerLogin" [routerLink]="['CSettings']">SETTINGS</a>
+    <a [routerLink]="['CSubmittedData']">SUBMITTED DATA</a>
+    <a [routerLink]="['CAnalytics']">ANALYTICS</a>
+    <a [routerLink]="['Transactions']"  class="c-p">TRANSACTIONS</a>
+    <a (click)="onNotiClick()" class="c-p">PUSH NOTIFICATION</a>
+</div>
+<div class="app-settings flex-100 setting-pge">
+    <div class="setting-tab-wrap main-header-tabs">
+        <div *ngIf="!appState.isCustomerLogin || staticSettingService.appSettingData?.steps?.steps_functionality" [routerLink]="['AppTabs']"
+            class="tab-set tabs-data">
+            <div class="layout-row tab-head layout-align-center-center" tooltipPlacement="top">
+                <i class="fa fa-cog" aria-hidden="true"></i>
+
+                <div class="layout-column">
+                    <span> TABS</span>
+                    <!--<span class="small-font">Customize App Tabs</span>-->
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!appState.isCustomerLogin || staticSettingService.appSettingData?.steps?.steps_content" [routerLink]="['TabsContent']"
+            class="tab-set">
+            <div class="layout-row tab-head layout-align-center-center" tooltipPlacement="top">
+                <i class="fa fa-file-text-o" aria-hidden="true"></i>
+
+                <div class="layout-column">
+                    <span>  TABS CONTENT</span>
+                    <!--<span class="small-font">Customize App Content</span>-->
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!appState.isCustomerLogin || staticSettingService.appSettingData?.steps?.steps_appearance" [routerLink]="['AppDisplay']"
+            class="tab-set">
+            <div class="layout-row tab-head layout-align-center-center" tooltipPlacement="top">
+                <i class="fa fa-paint-brush" aria-hidden="true"></i>
+
+                <div class="layout-column">
+                    <span> APP DISPLAY</span>
+                    <!--<span class="small-font">Customize App Appearance</span>-->
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!appState.isCustomerLogin || staticSettingService.appSettingData?.steps?.steps_publish" [routerLink]="['AppLive']"
+            class="tab-set make-app-tab">
+            <div class="layout-row tab-head layout-align-center-center" tooltipPlacement="top">
+                <i class="fa fa-hand-pointer-o" aria-hidden="true"></i>
+
+                <div class="layout-column">
+                    <span> MAKE APP LIVE</span>
+                    <!--<span class="small-font">Publish To App Store</span>-->
+                </div>
+            </div>
+        </div>
+        <!--<div  class="tab m-t-10 m-b-10 m-r-10">
+            <div class="layout-row tab-head layout-align-end-center">
+                <div class="layout-column">
+                  <button class="green-btn" (click)="onNotiClick()">Push Notification</button>
+                </div>
+            </div>
+        </div>-->
+
+
+    </div>
+    <router-outlet></router-outlet>
+    <push-notification [state]="staticPageService.notiDialog"></push-notification>
+</div>
+<!--<div class="simulator-design" [class.togle-times]="simulatorDisplay">
+    <div class="layout-column flex-100">
+        <div class="device-typ layout-row">
+
+           
+
+        </div>
+        <div class="preview-img layout-row flex-100">
+            <i class="fa  layout-align-start-center layout-row flex-10" aria-hidden="true" (click)="toggleSimulator()" [class.fa-chevron-left]="!simulatorDisplay"
+                [class.fa-chevron-right]="simulatorDisplay"></i>
+            <div class="img-device layout-align-start-center layout-row flex-100">
+                <button (click)="onClickHome()">&nbsp;</button>
+                <iframe *ngIf="showIframe" class="abo-img" [src]="appSimulatorURL"></iframe>
+            </div>
+        </div>
+        <div class="layout-column btn-detail layout-align-center-center">
+            <span>Click the home button to restart the previewer</span>
+            <div class="test-btn" (click)="showTestAppDialog()"><button class="">Test Your App</button></div>
+        </div>
+
+    </div>
+</div>-->
+<div *ngIf="!appState.isCustomerLogin || staticSettingService.appSettingData?.steps?.steps_app_code_widget" class="appCode-design"
+    [class.togle-times]="appCodeDisplay">
+    <a class="button-trigger"></a>
+    <div id="preview_slide_wrp" class="appcode-preview-img ui-tabs ui-widget ui-widget-content ui-corner-all">
+        <i class="fa  layout-align-start-center layout-row flex-10" aria-hidden="true" (click)="toggleAppCode()" [class.fa-arrow-left]="appCodeDisplay"
+            [class.fa-arrow-right]="!appCodeDisplay"></i>
+        <div class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide">
+            <div>
+                <div class="left-simlutor-prew">
+                    <img *ngIf="appDetails?.icon_name" alt="../../../assets/app-image/app-6.jpg" src="{{appDetails?.icon_name}}">
+                    <img *ngIf="!appDetails?.icon_name" src="../../../assets/app-image/app-6.jpg" alt="">
+                </div>
+                <div>
+                    <span> <label>App Code: </label>"{{appDetails?.app_code}}"</span>
+                    <p> <i aria-hidden="true" class="fa fa-info-circle ion-right"></i>A Unique identifier, used to load your
+                        app profile using our preview tools.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf="!appState.isCustomerLogin || staticSettingService.appSettingData?.steps?.steps_preview_tool" class="simulator-design preview_slide"
+    [class.togle-times]="simulatorDisplay">
+    <a class="button-trigger"></a>
+    <div id="preview_slide_wrp" class="preview-img ui-tabs ui-widget ui-widget-content ui-corner-all">
+        <i class="fa  layout-align-start-center layout-row flex-10" aria-hidden="true" (click)="toggleSimulator()" [class.fa-arrow-left]="!simulatorDisplay"
+            [class.fa-arrow-right]="simulatorDisplay"></i>
+        <div id="mobile_app_preview" class="ui-tabs-panel ui-widget-content ui-corner-bottom ui-tabs-hide">
+            <div class="img-device">
+                <button (click)="onClickHome()">&nbsp;</button>
+                <iframe *ngIf="showIframe" class="abo-img" [src]="appSimulatorURL"></iframe>
+                <a href="javascript:void(0)" id="refresh_ios_app">&nbsp;</a>
+            </div>
+            <div class="clear"></div>
+        </div>
+
+        <div class="button_wrp m-l-20">
+            <span class="tip">Click the home button to restart the previewer</span>
+            <div class="test-btn green-btn" (click)="showTestAppDialog()"><button class="">Test Your App</button></div>
+        </div>
+    </div>
+</div>
+<p-dialog  [draggable]="false" header="Test Your App" [(visible)]="showTestAppDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add"
+    >
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form>
+        <div class="layout-column">
+            <div class="web-bg">
+                <div class="layout-row m-b-15">
+                    <div class="layout-row flex-100 test-app-wrap">
+                        <div class="flex-50 test-app-wrapper layout-column">
+                            <div class="test-app-title">
+                                <p><i class="fa fa-apple m-r-10" aria-hidden="true"></i><b>iPhone App Preview</b></p>
+                            </div>
+                            <div class="box_grey smooth center layout-column">
+
+                                <p>Your App Code is: <b>{{appCode}}</b></p>
+                                <div><img src="{{iosAppQr}}" /></div>
+                                <div>First download our iPhone App and Enter your App Code for preview.</div>
+                            </div>
+                        </div>
+                        <div class="flex-50 layout-column test-app-wrapper">
+                            <div class="test-app-title">
+                                <p><i class="fa fa-android m-r-10" aria-hidden="true"></i> <b>Android App Preview</b></p>
+                            </div>
+                            <div class="box_grey smooth center layout-column">
+                                <p>Your App Code is: <b>{{appCode}}</b></p>
+
+                                <div><img src="{{androidAppQr}}" /></div>
+
+                                <div>First download our Android App and Enter your App Code for preview.</div>
+                                <!--<button class="green-btn" (click)="downloadApk()"> <i class="fa fa-download" aria-hidden="true"></i>  &nbsp;Download APK</button>-->
+                            </div>
+                        </div>
+
+                        <div class="flex-50 layout-column test-app-wrapper">
+                            <div class="test-app-title">
+                                <p><i class="fa fa-mobile m-r-10" aria-hidden="true"></i> <b>Mobile Website Preview</b></p>
+                            </div>
+                            <div class="box_grey smooth center layout-column">
+                                <p> &nbsp;</p>
+                                <div><img src="{{mobWebsiteQr}}" /></div>
+                                <div class="url-box">{{mobWebsiteUrl}}</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer>
+        </footer>
+    </form>
+</p-dialog>

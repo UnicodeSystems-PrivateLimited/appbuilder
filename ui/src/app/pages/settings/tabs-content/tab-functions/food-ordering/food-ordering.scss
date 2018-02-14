@@ -1,0 +1,300 @@
+.mon-left-wrap {
+    margin: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    ul.ui-tabview-nav {
+        background: #e2e2e2 !important;
+        border-bottom: none;
+        min-height: 633px;
+        border-right: 1px solid #ccc;
+        li {
+            width: 100% !important;
+            a {
+                padding: 0 !important;
+            }
+        }
+    }
+    .ui-tabview-panels {
+        padding: 20px 20px 10px 0px;
+    }
+}
+
+.Cart-payment,
+.cart-inventory-tab {
+    .heading-title {
+        font-size: 18px;
+        margin: 20px 0px 10px;
+    }
+    .Taxamount-list {
+        &.border-with-padding {
+            padding: 15px;
+            border-radius: 3px;
+            margin-top: 20px;
+            border: 1px solid #cecece;
+        }
+        .padding-and-margin {
+            padding-left: 25px;
+            margin-right: 28px;
+        }
+        .button-edit {
+            margin-left: 26px;
+            margin-top: 0px;
+            max-height: 32px;
+            i {
+                margin-left: -5px;
+                padding-right: 5px;
+            }
+        }
+    }
+    .btn {
+        &:hover {
+            transform: scale(1);
+        }
+    }
+    .input-class {
+        padding: 6px 10px;
+        box-shadow: none;
+        border: 1px solid #ccc;
+        border: 2px solid #ffffff;
+        border-radius: 3px;
+        box-shadow: 0 0 0 1px #c0c0c0;
+        color: rgba(0, 0, 0, 0.65);
+        background: rgb(251, 249, 249);
+        height: 36px;
+    }
+    .invertory-item-dropdown {
+        &.down {
+            &:after {
+                transform: rotate(0deg);
+            }
+        }
+    }
+    .ui-dropdown-panel {
+        .ui-dropdown-filter-container {
+            width: 98%;
+            input {
+                &.ui-dropdown-filter {
+                    border: 1px solid #ccc;
+                    background: rgba(255, 255, 255, 0.78);
+                }
+            }
+        }
+    }
+    .full-width {
+        width: 100%;
+    }
+    .border-b-padding {
+        padding-bottom: 30px;
+        border-bottom: 1px solid rgba(204, 204, 204, 0.53);
+        margin-bottom: 20px;
+    }
+    .currency-symbol {
+        position: relative;
+        margin-left: -10px;
+        right: 10px;
+    }
+    .tab-detail-child {
+        float: right;
+        width: 100%;
+        .tab-detail {
+            max-width: 100% !important;
+            float: right;
+            margin: 1px 0px;
+        }
+    }
+}
+
+.required {
+    color: #e71d1d;
+}
+
+.dialog-box-height {
+    min-height: 220px;
+    .ui-dropdown-panel {
+        .ui-dropdown-items-wrapper {
+            ul {
+                max-height: 160px;
+            }
+        }
+    }
+}
+
+.Cart-payment {
+    input:focus {
+        box-shadow: none !important;
+    }
+}
+
+.emails-confirmation .input-price {
+    border: 1px solid #ccc;
+    height: 38px;
+    width: auto;
+    border-left: 0px;
+    padding: 10px;
+    background: #cccccc82;
+}
+
+.extras-compt {
+    .main-heading-class {
+        font-size: 16px;
+        font-weight: 500;
+    }
+    .span-data {
+        vertical-align: top;
+        margin-top: 4px;
+        display: inline-block;
+    }
+    .setup-url {
+        padding: 0px;
+        margin-bottom: 12px;
+    }
+    .input-side-box {
+        border: 1px solid #ccc;
+        padding: 10px;
+        display: inline-block;
+    }
+    .hef-link {
+        color: #093257;
+        line-height: 14px;
+    }
+}
+
+.food-ordering {
+    .food-ordering-location {
+        button.green-btn {
+            padding: 12px 16px;
+            margin-left: .5rem
+        }
+    }
+    .tab-wrapper {
+        width: 100%;
+        max-width: 72%;
+    }
+    .tab-detail.layout-row {
+        max-height: 100%;
+        min-height: 44px;
+    }
+    .add-app {
+        .ui-dialog {
+            width: 920px
+        }
+    }
+    .loctn-up {
+        border: 1px solid #fc8f44;
+        padding: 9px 18px;
+        border-radius: 3px;
+        background: rgba(239, 115, 93, 0.17);
+        color: #fc8f44;
+        width: 100%;
+        text-align: center;
+        font-size: 14px;
+        text-transform: capitalize;
+    }
+    .available-hours {
+        position: relative;
+        button {
+            &.add-hours {
+                padding: 7px 10px;
+            }
+            &.minus-hours {
+                padding: 7px 10px;
+                color: #91999e;
+                border: 1px solid #b4b4b4;
+                position: absolute;
+                right: -20px;
+            }
+        }
+    }
+    .hours-timing {
+        .hours-mins {
+            margin-right: 6px;
+            .cat-drop {
+                margin-right: 4px;
+                &:last-child {
+                    margin-right: 0;
+                }
+            }
+            &:last-child {
+                margin-right: 0;
+            }
+        }
+    }
+    .ui-dropdown {
+        .ui-dropdown-trigger .fa {
+            margin-left: -4px;
+        }
+    }
+    .map-wrap {
+        .layout-row {
+            &.add-app {
+                flex-direction: column;
+                .input-class {
+                    max-width: 100%;
+                }
+            }
+        }
+    }
+}
+
+.menu-item-options-dialog {
+    .ui-dialog.ui-widget {
+        width: 990px !important;
+    }
+}
+.set-div{
+    background: #f2f2f2;
+    border-bottom:1px solid #cccccc;
+
+    p{ margin-bottom: 0; font-size: 16px;}
+
+    .blue-btn{background: #fff; color:#292929;}
+}
+.inputarea-bg{
+    background: rgba(229, 228, 228, 0.75);
+}
+.gallery-img-wrap{
+    padding: 20px 10px;
+
+    .order-icon-name{
+        &:hover{
+            .icon-circle{border-color:#8d929e;background: rgba(242, 242, 242, 0.38); }
+        }
+        .icon-circle {
+            width: 80px;
+            height: 80px;
+            border: 2px solid #E1E1E1;
+            padding: 2px;
+            border-radius: 9px;
+
+          
+
+            img{ margin: 0;}
+        }
+
+        &.active{
+            .icon-circle{border-color:#8d929e;background: rgba(242, 242, 242, 0.38); }
+        }
+    }
+
+}
+.full-width{width:100%;}
+.p-15{padding: 15px;}
+.emails-confirmation {
+    label {margin-bottom: 0;}
+    input{ min-width: 320px; background: rgba(255, 255, 255, 0.75) !important;  padding: 6px;}
+}
+.account-create{
+    a{
+        color: #807f7f;
+        &:hover {    text-decoration: underline !important; }
+    }
+}
+.main-tab-container{margin-bottom: 0;}
+.disable {
+    pointer-events: none;
+    cursor: not-allowed;
+
+    button{
+        &.blue-btn{background: #ececf5; color:#959595;}
+    }
+}

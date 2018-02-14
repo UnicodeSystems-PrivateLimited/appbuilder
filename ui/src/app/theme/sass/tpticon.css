@@ -1,0 +1,143 @@
+@font-face {
+  font-family: 'Tappit-Icons';
+  src:  url('../../../assets/fonts/Tappit-Icons.eot?lfs39i');
+  src:  url('../../../assets/fonts/Tappit-Icons.eot?lfs39i#iefix') format('embedded-opentype'),
+    url('../../../assets/fonts/Tappit-Icons.ttf?lfs39i') format('truetype'),
+    url('../../../assets/fonts/Tappit-Icons.woff?lfs39i') format('woff'),
+    url('../../../assets/fonts/Tappit-Icons.svg?lfs39i#Tappit-Icons') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+[class^="icon-tpt-"], [class*=" icon-tpt-"] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+  font-family: 'Tappit-Icons' !important;
+  speak: none;
+  font-style: normal;
+  font-weight: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 1;
+
+  /* Better Font Rendering =========== */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+[class*='icon-tpt']:before {
+    display: inline-block;
+    font-family: 'Tappit-Icons' !important;
+    font-style: normal;
+    font-weight: normal;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.icon-tpt-AlertNotification:before {
+  content: "\e900";
+}
+.icon-tpt-AthleticEvents:before {
+  content: "\e901";
+}
+.icon-tpt-AthleticSchedules:before {
+  content: "\e902";
+}
+.icon-tpt-BlogForum:before {
+  content: "\e903";
+}
+.icon-tpt-BoardDirectors:before {
+  content: "\e904";
+}
+.icon-tpt-BreakfastLunchMenus:before {
+  content: "\e905";
+}
+.icon-tpt-Class:before {
+  content: "\e906";
+}
+.icon-tpt-CollectMoney:before {
+  content: "\e907";
+}
+.icon-tpt-CollectTuition:before {
+  content: "\e908";
+}
+.icon-tpt-ContactUs-AskAQuestion:before {
+  content: "\e909";
+}
+.icon-tpt-DailyTipsNutritionHealthWellness:before {
+  content: "\e90a";
+}
+.icon-tpt-Directions:before {
+  content: "\e90b";
+}
+.icon-tpt-EarlyReleaseNotification:before {
+  content: "\e90c";
+}
+.icon-tpt-Events:before {
+  content: "\e90d";
+}
+.icon-tpt-Grades:before {
+  content: "\e90e";
+}
+.icon-tpt-Lunch-Account:before {
+  content: "\e90f";
+}
+.icon-tpt-Messages:before {
+  content: "\e910";
+}
+.icon-tpt-News:before {
+  content: "\e911";
+}
+.icon-tpt-Opportunities:before {
+  content: "\e912";
+}
+.icon-tpt-PartnersEducation-BusinessDirectory:before {
+  content: "\e913";
+}
+.icon-tpt-PicturesGallery:before {
+  content: "\e914";
+}
+.icon-tpt-PrincipalsCorner:before {
+  content: "\e915";
+}
+.icon-tpt-PTA-PTO:before {
+  content: "\e916";
+}
+.icon-tpt-Reminder:before {
+  content: "\e917";
+}
+.icon-tpt-ReportAbsence-RequestEarlyRelease:before {
+  content: "\e918";
+}
+.icon-tpt-ReportBullying:before {
+  content: "\e919";
+}
+.icon-tpt-ReportCardNotification:before {
+  content: "\e91a";
+}
+.icon-tpt-SchoolInformationSystem:before {
+  content: "\e91b";
+}
+.icon-tpt-ShoppingCart:before {
+  content: "\e91c";
+}
+.icon-tpt-SocialMediaMuchMore:before {
+  content: "\e91d";
+}
+.icon-tpt-StaffDirectoriesONE-CLICK:before {
+  content: "\e91e";
+}
+.icon-tpt-Teacher:before {
+  content: "\e91f";
+}
+.icon-tpt-TestingSchedulesAssignmentDetails:before {
+  content: "\e920";
+}
+.icon-tpt-UpdateAddress:before {
+  content: "\e921";
+}
+.icon-tpt-Up-to-weather-forecast:before {
+  content: "\e922";
+}
+.icon-tpt-Video:before {
+  content: "\e923";
+}

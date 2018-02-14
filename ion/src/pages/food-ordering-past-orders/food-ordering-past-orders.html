@@ -1,0 +1,40 @@
+<ion-header>
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">Past Orders</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+
+    <template [ngIf]="!loader">
+        <ion-list>
+            <button ion-item *ngFor="let order of service.pastOrders; let i = index;" (click)="orderDetails(i)" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                <ion-thumbnail item-left>
+                    <img src="{{(order.items | jsonParser)[0].item_image}}">
+                </ion-thumbnail>
+                <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)"
+                    [class.ios-p]="osType=='ios'" [class.android-p]="osType=='android'" [style.float]="'right'">
+                    <span [innerHTML]="service.currencySymbolList[service.payment['currency']] || currency"></span>
+                    {{order.total_charges}}
+                </p>
+                <h4 [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{order.address_section_1}}</h4>
+                <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)"
+                    [class.ios-p]="osType=='ios'" [class.android-p]="osType=='android'">
+                    {{order.type==service.orderType.DINE_IN ? 'Dine-In' : order.type==service.orderType.TAKEOUT ? 'Takeout' : 'Delivery'}}: {{order.datetime
+                    | date:"dd MMM y, h:mm a"}}
+                </p>
+                <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)"
+                    [class.ios-p]="osType=='ios'" [class.android-p]="osType=='android'">Items:
+                    <span *ngFor="let item of order.items | jsonParser; let j = index;">
+                        <template [ngIf]="j!==0">, </template>{{item.item_name}}
+                    </span>
+                </p>
+            </button>
+            <ion-item *ngIf="!service.pastOrders.length">{{'NOTHINGTEXT' | translate}}</ion-item> 
+        </ion-list>
+    </template>
+</ion-content>

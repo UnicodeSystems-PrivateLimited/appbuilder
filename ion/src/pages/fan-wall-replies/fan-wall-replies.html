@@ -1,0 +1,65 @@
+<!--
+  Generated template for the FanWallReplies page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow"> {{'REPLIES' | translate}}</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="fan-wall-content">
+    <md-spinner [state]="loader || commentLoader" [type]="'fixed'"></md-spinner>
+    <template [ngIf]="!loader || !commentLoader">
+        <div class="parent-container" scroll="false">
+            <ion-item>
+                <ion-avatar *ngIf="parent.picture && parent.picture !== ''" item-left>
+                    <img [src]="parent.picture">
+                </ion-avatar>
+                <ion-icon *ngIf="!parent.picture || parent.picture === ''" name="person" item-left></ion-icon>
+                <h2>{{parent.name}}</h2>
+                <p>{{parent.created_at | servertimeformatpipe}}</p>
+            </ion-item>
+            <p class="parent-comment">{{parent.description}}</p>
+        </div>
+
+        <div class="comment-cards-wrapper">
+            <ion-card *ngFor="let reply of replies" class="comment-card">
+                <ion-item class="card-header">
+                    <ion-avatar *ngIf="reply.picture && reply.picture !== ''" item-left>
+                        <img [src]="reply.picture">
+                    </ion-avatar>
+                    <ion-icon *ngIf="!reply.picture || reply.picture === ''" name="person" item-left></ion-icon>
+                    <h2>{{reply.name}}</h2>
+                    <p>{{reply.created_at | servertimeformatpipe}}</p>
+                </ion-item>
+
+                <ion-card-content class="fan-wall-comment">
+                    <p>{{reply.description}}</p>
+                </ion-card-content>
+            </ion-card>
+        </div>
+
+    </template>
+    <ion-fab right bottom>
+        <button ion-fab color="primary">
+            <ion-icon name="text"></ion-icon>
+        </button>
+        <ion-fab-list side="left">
+            <button ion-fab (click)="onFacebookCommentClick()">
+                <ion-icon name="logo-facebook"></ion-icon>
+            </button>
+            <button ion-fab (click)="onTwitterCommentClick()">
+                <ion-icon name="logo-twitter"></ion-icon>
+            </button>
+        </ion-fab-list>
+    </ion-fab>
+</ion-content>

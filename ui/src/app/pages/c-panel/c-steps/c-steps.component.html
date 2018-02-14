@@ -1,0 +1,50 @@
+<div class="flex-100 layout-row main-social-tab-container">
+    <div class="flex-35 layout-column cust_step">
+        <div class="layout-column border-all white-bg m-t-20">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Steps</div>
+            <div class="layout-row dotted-bootom-div">
+                <span class="layout-column layout-align-start-center flex-50 pad-15">Tabs</span>
+                <div class="layout-column stau-switch layout-align-start-center flex-50">
+                    <input id="cmn-toggle-func" class="cmn-toggle cmn-toggle-round {{stepData.cStepsData.steps_functionality}}" type="checkbox" [(ngModel)]="stepData.cStepsData.steps_functionality">
+                    <label [attr.for]="'cmn-toggle-func'"></label>
+                </div>
+            </div>
+            <div class="layout-row dotted-bootom-div">
+                <span class="layout-column layout-align-start-center flex-50 pad-15">Tabs Content</span>
+                <div class="layout-column stau-switch layout-align-start-center flex-50">
+                    <input id="cmn-toggle-cont" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="stepData.cStepsData.steps_content">
+                    <label [attr.for]="'cmn-toggle-cont'"></label>
+                </div>
+            </div>
+            <div class="layout-row dotted-bootom-div">
+                <span class="layout-column layout-align-start-center flex-50 pad-15">App Display</span>
+                <div class="layout-column stau-switch layout-align-start-center flex-50">
+                    <input id="cmn-toggle-appear" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="stepData.cStepsData.steps_appearance">
+                    <label [attr.for]="'cmn-toggle-appear'"></label>
+                </div>
+            </div>
+            <div class="layout-row dotted-bootom-div">
+                <span class="layout-column layout-align-start-center flex-50 pad-15">Make App Live</span>
+                <div class="layout-column stau-switch layout-align-start-center flex-50">
+                    <input id="cmn-toggle-pub" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="stepData.cStepsData.steps_publish">
+                    <label [attr.for]="'cmn-toggle-pub'"></label>
+                </div>
+            </div>
+            <div class="layout-row dotted-bootom-div">
+                <span class="layout-column layout-align-start-center flex-50 pad-15">Preview Tool</span>
+                <div class="layout-column stau-switch layout-align-start-center flex-50">
+                    <input id="cmn-toggle-preview" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="stepData.cStepsData.steps_preview_tool">
+                    <label [attr.for]="'cmn-toggle-preview'"></label>
+                </div>
+            </div>
+            <div class="layout-row">
+                <span class="layout-column layout-align-start-center flex-50 pad-15">App Code Widget</span>
+                <div class="layout-column stau-switch layout-align-start-center flex-50">
+                    <input id="cmn-toggle-appcode" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="stepData.cStepsData.steps_app_code_widget">
+                    <label [attr.for]="'cmn-toggle-appcode'"></label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ba-cpanel-preview class="flex-65 p-l-10 m-l-10 layout-column"></ba-cpanel-preview>
+</div>

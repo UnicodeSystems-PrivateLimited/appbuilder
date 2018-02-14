@@ -1,0 +1,34 @@
+page-inbox-tab {
+ ion-footer {
+        ion-toolbar {
+            color: #fff;
+
+            ion-col {
+                > span {
+                    width: 100%;
+                    display: block;
+                }
+            }
+        }
+    }
+    .inbox-wrap ion-icon:last-child {
+    display: flex;
+    font-size: 1.2em;
+    align-items: center;
+    align-content: flex-end;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex: 0%;
+
+  
+}
+.comment-cards-wrapper ion-row ion-icon:first-child{
+    font-size: 31px;
+    margin-right: 11px;
+}
+
+.comment-card p {
+    color: inherit;
+}
+  
+}

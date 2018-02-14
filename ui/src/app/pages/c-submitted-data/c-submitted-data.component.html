@@ -1,0 +1,592 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready" class="flex-100 c-submitted-wraper mar-15 border-all c-submitd-wrapper">
+    <tabset class="container-tab-detail">
+        <tab heading="Email Form" *ngIf="isEmailFormTabAdded">
+            <div *ngIf="!noformAdded" class="pad-15">
+                <div class="row">
+                    <div class="col-sm-3 form-elements">
+                        <div class="form-element active" *ngFor="let form of formList;let i=index;" [class.active]="selectedForm==form.id" (click)="getEntries(form.id)">
+                            <div class="subtitle layout-row layout-align-center-center">
+                                <span>{{form.title}}</span>
+                                <p></p>
+                            </div>
+                            <div class="row two-columns">
+                                <div class="col-sm-6">
+                                    <span>{{form.recent_entries}}</span>Recent Entries
+                                </div>
+                                <div class="col-sm-6">
+                                    <span>{{form.total_entries}}</span>Total Entries
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-9 form-entries">
+                        <div class="search-row search-keywords-field" style="width: 640px; margin-bottom: 10px;">
+                            <form (ngSubmit)="searchInFormValue()" class="form-search-app">
+                                <div class="nav-search">
+                                    <div class="search-box">
+                                        <i class="fa fa-search ion-right"></i>
+                                        <input [(ngModel)]="valueSearch.title" type="text" class="search-key-container form-control" placeholder="Search"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="submitted-data-list">
+                            <div *ngIf="!showNoFormEntryFound" class="row actionbar">
+                                <div class="col-md-12 layout-row layout-align-space-between-center">
+                                    <div class="pull-left">
+                                        <div class="select-all">
+                                            <label class="checkbox-inline custom-checkbox nowrap m-l-10">
+                                                      <input type="checkbox" id="check-all" [(ngModel)]="checkAll" (change)="onCheckAllChange()" />
+                                                      <span>Select All</span>
+                                                </label>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right membershp-login-wrp-1">
+                                        <div class="btn-group btn-group-download">
+                                            <button type="button" class="btn btn-info btn-custom btn-hyper dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
+                                                aria-expanded="false">
+                                                       Export&nbsp;&nbsp;
+                                                </button>
+                                            <ul class="dropdown-menu">
+                                                <li><a href="../api/ws/function/email-forms-fields/downloadCsv/{{selectedForm}}"
+                                                        data-type="csv">CSV</a></li>
+                                                <li><a href="../api/ws/function/CustomerPortal/email-forms-fields/downloadPdf/{{selectedForm}}"
+                                                        data-type="pdf">PDF</a></li>
+                                            </ul>
+                                        </div>
+                                        <label class=" list m-b-0" disabled="disabled">
+                                                <i class="fa fa-trash" [class.checkTrue]="checkedForm.length > 0 && checkedForm.indexOf(true) !== -1" (click)="deleteFormEntries()"></i>
+                                            </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix">
+                            </div>
+                            <div class="data-table">
+                                <div *ngIf="showEmailFormLoader" class="fm-spinner">
+                                    <div class="fm-double-bounce1"></div>
+                                    <div class="fm-double-bounce2"></div>
+                                </div>
+                                <div *ngIf="!showNoFormEntryFound">
+                                    <div *ngFor="let entry of entries;let i=index;">
+                                        <div class="data-table-title">{{entry[0].created_at|date:'mediumDate'}}</div>
+                                        <div class="data-table-list">
+                                            <div class="data-table-row row " *ngFor="let row of entry;let j=index;" [class.selected]="row._id==selectedRow" (click)="selecteRow(row._id)">
+                                                <div>
+                                                    <div class="data-cell col-xs-2">
+                                                        <div class="checker">
+                                                            <label class="checkbox-inline custom-checkbox nowrap m-l-10">
+                                                          <input type="checkbox" id="check-all" [(ngModel)]="checkedForm[row._id]" (change)="onCheckChange(checkedForm[row._id], row._id)"/>
+                                                          <span>{{j+1}}</span>
+                                                    </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="data-cell col-xs-2 data-cell-date">
+                                                        {{row.created_at|date:'shortDate'}}
+                                                    </div>
+                                                    <div class="data-cell col-xs-2 data-cell-time">
+                                                        {{row.created_at|date:'mediumTime'}}
+                                                    </div>
+                                                    <div class="data-cell col-xs-6 data-cell-data">
+                                                        <span class="data-tble-i pull-right" data-form-data-id="1476467">
+                                                      <i class="fa fa-angle-down dropdown-toggler" (click)="showFormValueTable(row._id)"></i>
+                                                </span>
+                                                    </div>
+                                                </div>
+                                                <div *ngIf="showFormValue[row._id]">
+                                                    <div class="data-sub-table fixer-fix" *ngFor="let header of headers;let k=index;">
+                                                        <div class="">
+                                                            <div class="col-xs-5 data-field-label">{{header.properties.label}}</div>
+                                                            <div class="col-xs-7 data-field-value" style="height: 38px;" [innerHTML]="row.data[header.id] ? (row.data[header.id].value | formfieldTypeCheck:fieldType[header.id]) : ''"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div *ngIf="showNoFormEntryFound" class="layout-column text-center no-data-found layout-align-start-center white-bg border-all">
+                                    <h2>Nothing to see here !</h2>
+                                    <span>It's seems you are lacking some email form submission.Try sending to push notification to get your users more engaged and involved.</span>
+                                </div>
+                                <div *ngIf="!showNoFormEntryFound" class="chart-wrappper-submit">
+                                    <div class="chart-head layout-row layout-align-space-between-center pad-5 border-b">
+                                        <span>Usability Statistics</span>
+                                        <span>{{startDate}}~{{endDate}}</span>
+                                        <p-dropdown [options]="chartCategory" [(ngModel)]="selectedChartCategory" class="cat-drop app-drop layout-align-center-center layout-row"
+                                            (onChange)="onChangeCategory($event)"></p-dropdown>
+                                    </div>
+                                    <div *ngIf="showChart && !showNoDataFound">
+                                        <div *ngIf="showChartLoader" class="fm-spinner">
+                                            <div class="fm-double-bounce1"></div>
+                                            <div class="fm-double-bounce2"></div>
+                                        </div>
+                                        <chartist [data]="chartData" [chartType]="'line'"></chartist>
+                                    </div>
+                                    <div *ngIf="showNoDataFound" class="layout-column text-center no-data-found layout-align-start-center white-bg">
+                                        <h2>Nothing to see here !</h2>
+                                        <span>It's seems you are lacking some email form submission.Try sending to push notification to get your users more engaged and involved.</span>
+
+                                    </div>
+                                </div>
+                                <div *ngIf="!showNoFormEntryFound" class="page-block layout-row layout-align-end-center ">
+
+                                    <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"
+                                        [maxSize]="maxSize" class="pagination-sm layout-row m-r-10 layout-align-end-center flex-100 pagi-tabsub"
+                                        previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                                    </pagination>
+                                    <div class="flex-20 layout-row layout-align-space-between-center dis-wrap">
+                                        <span class="flex-100 layout-row">Total: {{totalItems}}</span>
+                                        <p-dropdown [options]="count" [(ngModel)]="selectedCount" (onChange)="setItemsPerPage(selectedCount)" class="layout-align-end layout-row  cat-drop flex-100"></p-dropdown>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="noformAdded" class="layout-column text-center no-data-found layout-align-start-center white-bg">
+                <h2>Nothing to see here !</h2>
+                <span>It's seems you are lacking some email form submission.Try sending to push notification to get your users more engaged and involved.</span>
+            </div>
+        </tab>
+        <tab heading="MAILING LIST" *ngIf="isMailingListTabAdded" id="tab_mailinglist">
+            <div class="pad-15"  *ngIf="totalEmailListItems!=0">
+                <div class="row">
+                    <div class="col-sm-6 form-entries">
+                        <div class="search-row search-keywords-field" style="width: 640px; margin-bottom: 10px;">
+                            <form (ngSubmit)="searchInMailingList()" class="form-search-app">
+                                <div class="nav-search">
+                                    <div class="search-box">
+                                        <i class="fa fa-search ion-right"></i>
+                                        <input [(ngModel)]="valueSearchEmailList.title" type="text" class="search-key-container form-control" placeholder="Search"></div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="submitted-data-list">
+                            <div class="row actionbar">
+                                <div class="col-md-12 layout-row layout-align-space-between-center">
+                                    <div class="pull-left">
+                                        <div class="select-all">
+                                            <label class="checkbox-inline custom-checkbox nowrap m-l-10">
+                                                      <input type="checkbox" id="check-all" [(ngModel)]="checkMailingListAll" (change)="onCheckMailingListAllChange()" />
+                                                      <span>Select All</span>
+                                                </label>
+                                        </div>
+                                    </div>
+                                    <div class="pull-right membershp-login-wrp-1">
+                                        <div class="btn-group btn-group-download">
+                                            <a href="../api/ws/function/CustomerPortal/SubmittedData/MailingList/downloadCsv/{{appId}}" data-type="csv">Export</a>
+                                        </div>
+                                        <label class=" list m-b-0" disabled="!checkMailingListTrue">
+                                                <i class="fa fa-trash" [class.checkTrue]="checkMailingListTrue" (click)="deleteMailingListEntries()"></i>
+                                            </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="clearfix">
+                            </div>
+                            <div class="data-table">
+                                <div class="data-table-list">
+                                    <div class="data-table-row row " *ngFor="let row of mailingListData;let j=index;" [class.selected]="row.id==selectedEmailListRow"
+                                        (click)="selecteEmailListRow(row.id)">
+                                        <div>
+                                            <div class="data-cell col-xs-2">
+                                                <div class="checker">
+                                                    <label class="checkbox-inline custom-checkbox nowrap m-l-10">
+                                                          <input type="checkbox" id="check-all" [(ngModel)]="checkedUser[row.id]" (change)="onEmailListCheckChange(checkedUser[row.id], row.id)"/>
+                                                          <span>{{j+1}}</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="data-cell col-xs-2 data-cell-date">
+                                                {{row.name}}
+                                            </div>
+                                            <div class="data-cell col-xs-2 data-cell-time">
+                                                {{row.email}}
+                                            </div>
+                                            <div class="data-cell col-xs-2 data-cell-time">
+                                                {{row.subscription.length}} Subscriptio...
+                                            </div>
+                                            <div class="data-cell col-xs-4 data-cell-data">
+                                                <span class="data-tble-i pull-right" data-form-data-id="1476467">
+                                                      <i class="fa fa-angle-down dropdown-toggler" (click)="showEmailListTable(row.id)"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div *ngIf="showEmailList[row.id]">
+                                            <div class="data-sub-table fixer-fix" *ngFor="let sub of row.subscription;let k=index;">
+                                                <div class="">
+                                                    <div class="col-xs-5 data-field-label">Subscription{{k+1}}</div>
+                                                    <div class="col-xs-7 data-field-value" style="height: 38px;">{{sub.name}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="data-sub-table fixer-fix">
+                                                <div class="">
+                                                    <div class="col-xs-5 data-field-label">Birthday</div>
+                                                    <div class="col-xs-7 data-field-value" style="height: 38px;">{{row.birthday}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="data-sub-table fixer-fix">
+                                                <div class="">
+                                                    <div class="col-xs-5 data-field-label">PostalCode</div>
+                                                    <div class="col-xs-7 data-field-value" style="height: 38px;">{{row.zip}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="data-sub-table fixer-fix">
+                                                <div class="">
+                                                    <div class="col-xs-5 data-field-label">Country</div>
+                                                    <div class="col-xs-7 data-field-value" style="height: 38px;">{{row.country}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="data-sub-table fixer-fix">
+                                                <div class="">
+                                                    <div class="col-xs-5 data-field-label">Comment</div>
+                                                    <div class="col-xs-7 data-field-value" style="height: 38px;">{{row.comments}}</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="page-block layout-row layout-align-end-center ">
+                                <pagination [boundaryLinks]="true" [totalItems]="totalEmailListItems" [itemsPerPage]="itemsPerEmailListPage" [(ngModel)]="currentEmailListPage"
+                                    (pageChanged)="emailListPageChanged($event)" [maxSize]="maxSizeEmailList" class="pagination-sm pagi-tabsub layout-row m-r-10 layout-align-end-center flex-100"
+                                    previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                                </pagination>
+                                <div class="flex-25 layout-row layout-align-space-between-center dis-wrap">
+                                    <span class="flex-100 layout-row">Total: {{totalEmailListItems}}</span>
+                                    <p-dropdown [options]="countEmailList" [(ngModel)]="selectedEmailListCount" (onChange)="setEmailListItemsPerPage(selectedEmailListCount)"
+                                        class="layout-align-end flex-100 layout-row cat-drop"></p-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="panel right-panel">
+                            <div class="mailing-service-title clearfix">
+                                <table>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <label class="switch  m-r-10 m-b-0">
+                                                    <input type="checkbox" [(ngModel)]="automaticUploadUsers" (change)="onAutomaticButtonChange()">
+                                                  <div class="slider round"></div>
+                                                </label>
+                                            </td>
+                                            <td style="padding-left: 10px;">
+                                                <span>Automatically upload all subscriber contacts to emailing service.</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+
+                            </div>
+                            <div class="mailing-service-list">
+                                <ul class="third-parties clearfix">
+                                    <li class="third-party-mc active" (click)="showMailchimpDialog()">
+                                        <a id="show_modal_mc" class="outerc modal-trigger-3rdparty" data-key="mc" data-modal-id="modal_mc">
+                                            <div class="innerc text-center">
+                                                <img src="assets/img/mc.png" width="96%" title="MailChimp">
+                                            </div>
+                                        </a>
+                                        <!--<button data-key="mc" type="button" class=" btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                    </li>
+                                    <li class="third-party-ic" (click)="showiContactDialog()">
+                                        <a id="show_modal_ic" class="outerc modal-trigger-3rdparty" data-key="ic" data-modal-id="modal_ic">
+                                            <div class="innerc text-center">
+                                                <img src="assets/img/ic.png" width="96%" title="iContact">
+                                            </div>
+                                        </a>
+                                        <!--<button data-key="ic" type="button" class=" btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                    </li>
+                                    <!--<li class="third-party-cc" (click)="showConstantContactDialog()">
+                                        <a id="show_modal_cc" class="outerc modal-trigger-3rdparty" data-key="cc" data-modal-id="modal_cc">
+                                            <div class="innerc text-center">
+                                                <img src="assets/img/cc.png" width="96%" title="Constant Contact">
+                                            </div>
+                                        </a>-->
+                                        <!--<button data-key="cc" type="button" class=" btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                    <!--</li>
+                                    <li class="third-party-cm" (click)="showCampaignMonitorDialog()">
+                                        <a id="show_modal_cm" class="outerc modal-trigger-3rdparty" data-key="cm" data-modal-id="modal_cm">
+                                            <div class="innerc text-center">
+                                                <img src="assets/img/cm.png" width="96%" title="Campaign Monitor">
+                                            </div>
+                                        </a>-->
+                                        <!--<button data-key="cm" type="button" class=" btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                    <!--</li>
+                                    <li class="third-party-gr" (click)="showGetResponseDialog()">
+                                        <a id="show_modal_gr" class="outerc modal-trigger-3rdparty" data-key="gr" data-modal-id="modal_gr">
+                                            <div class="innerc text-center">
+                                                <img src="assets/img/gr.png" width="96%" title="GetResponse">
+                                            </div>
+                                        </a>-->
+                                        <!--<button data-key="gr" type="button" class=" btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                    <!--</li>
+                                    <li class="third-party-em" (click)="showMyEmmaDialog()">
+                                        <a id="show_modal_em" class="outerc modal-trigger-3rdparty" data-key="em" data-modal-id="modal_em">
+                                            <div class="innerc text-center">
+                                                <img src="assets/img/em.png" width="96%" title="My Emma">
+                                            </div>
+                                        </a>-->
+                                        <!--<button data-key="em" type="button" class=" btn-info btn-legacy form-control btn-upload-contacts">Upload Contacts</button>-->
+                                    <!--</li>-->
+
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="totalEmailListItems==0" class="layout-column text-center no-data-found layout-align-start-center white-bg">
+                <h2>Nothing to see here !</h2>
+            </div>
+        </tab>
+
+    </tabset>
+    <div *ngIf="!isMailingListTabAdded && !isEmailFormTabAdded" class="layout-column text-center no-data-found layout-align-start-center white-bg">
+        <h2>Nothing to see here !</h2>
+    </div>
+</div>
+<!-- select  Date Dialog START -->
+<p-dialog [draggable]="false"  header="Select Custom Date Range" [(visible)]="showCustomDateRangeDialog" modal="modal" class="app-dialog submitted-tab">
+    <div class="layout-row layout-align-space-between-center">
+        <div class="layout-row flex-50 layout-align-center-center">
+            <label>From</label>
+            <p-calendar readonlyInput="true" [(ngModel)]="custom_start_date" [maxDate]="custom_end_date"></p-calendar>
+        </div>
+        <div class="layout-row flex-50 layout-align-center-center">
+            <label>To</label>
+            <p-calendar readonlyInput="true" [(ngModel)]="custom_end_date" [minDate]="custom_start_date"></p-calendar>
+        </div>
+    </div>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="OK" class=" login-btn cncle-btn cursor-p" (click)="onSubmitCustomDate()">OK</a>
+        </div>
+    </footer>
+</p-dialog>
+<!-- select  Date Dialog END -->
+
+<!--Mailchimp Integration Dialog START -->
+<p-dialog [draggable]="false"  header="Mailchimp Integration" [(visible)]="showMailchimpDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <form>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>API Key</label>
+                        <input class="input-class" type="text" [(ngModel)]="mailChimp.apiKey">
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>List Id</label>
+                        <input class="input-class" type="text" [(ngModel)]="mailChimp.listId">
+                    </div>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" [disabled]="disableAddButton" class="green-btn m-r-10" (click)="onMailChimp()">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showMailchimpDialogBox=false">Cancel</button>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<!-- Mailchimp Integration Dialog END -->
+
+<!--iContact Integration Dialog START -->
+<p-dialog [draggable]="false"  header="iContact Integration" [(visible)]="showiContactDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <p style="color: red" *ngIf="iContact.application_id == null">Please fill up the API AppID field.</p>
+        <div class="web-bg">
+            <div class="layout-row flex-100">
+                <div class="layout-column flex-100">
+                    <label>Application Id<i class="fa fa-info-circle l" tooltip="To get the Application ID you need to register you application in 'iContact'.Open https://application.icontact.com/lcp/core/registerapplication to register your application" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <input class="input-class" type="text" [(ngModel)]="iContact.application_id">
+                </div>
+            </div>
+            <div class="layout-row flex-100">
+                <div class="layout-column flex-50 m-r-10">
+                    <label>Username<i class="fa fa-info-circle l" tooltip="Specify your 'iContact' account ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <input class="input-class" type="text" [(ngModel)]="iContact.user_name">
+                </div>
+                <div class="layout-column flex-50">
+                    <label>APP Password<i class="fa fa-info-circle l" tooltip="Please enter application password. (You need to enable it after registration, in enable step you should create password for this application)" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <input class="input-class" type="text" [(ngModel)]="iContact.app_password">
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" [disabled]="disableAddButton" (click)="getIContactAcDetails()" class="blue-btn">Retrieve</button>
+            </div>
+        </div>
+        <div class="web-bg">
+            <div class="layout-row flex-100">
+                <div class="layout-column flex-50 m-r-10" *ngIf="account.length">
+                    <label>Account ID<i class="fa fa-info-circle l" tooltip="Select an account ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <p-dropdown class="border-all m-l-10 m-r-10 flex-30" [options]="account" [(ngModel)]="iContact.account_id" (onChange)="getIContactClientFolderId($event)"
+                        [style]="{'width':'140px'}"></p-dropdown>
+                </div>
+                <div class="layout-column flex-50 m-r-10" *ngIf="folder.length">
+                    <label>Client Folder ID<i class="fa fa-info-circle l" tooltip="Select an client folder ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <p-dropdown class="border-all m-l-10 m-r-10 flex-30" [options]="folder" [(ngModel)]="iContact.client_folder_id" (onChange)="getIContactClientList($event)"
+                        [style]="{'width':'140px'}"></p-dropdown>
+                </div>
+                <div class="layout-column flex-50 m-r-10" *ngIf="lists.length">
+                    <label>Lists<i class="fa fa-info-circle l" tooltip="Contacts will be subscribed to selected lists" tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <p-dropdown class="border-all m-l-10 m-r-10 flex-30" [options]="lists" [(ngModel)]="iContact.listId" [style]="{'width':'140px'}"></p-dropdown>
+                </div>
+            </div>
+        </div>
+        <div class="layout-row save-btn">
+            <button type="button" [disabled]="disableAddButton" class="green-btn m-r-10" (click)="uploadIContact()">UPLOAD CONTACTS</button>
+            <button type="button" class="blue-btn" (click)="showiContactDialogBox = false">Cancel</button>
+        </div>
+    </div>
+</p-dialog>
+<!-- iContact Integration Dialog END -->
+
+<!--ConstantContact Integration Dialog START -->
+<p-dialog [draggable]="false"  header="ConstantContact Integration" [(visible)]="showConstantContactDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <form>
+            <p style="color: red">Please fill up the API key field.</p>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-100">
+                        <label>API Key<i class="fa fa-info-circle l" tooltip="You should request API key for this application in 'ConstantContract'.After you register your application, you will get the key" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>Username<i class="fa fa-info-circle l" tooltip="Specify your 'Constant Contract' account ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>Password<i class="fa fa-info-circle l" tooltip="Specify your 'Constant Contract' account password" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="blue-btn">Retrieve</button>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" class="green-btn m-r-10">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showConstantContactDialogBox = false">Cancel</button>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<!-- ConstantContact Integration Dialog END -->
+<!--CampaignMonitor Integration Dialog START -->
+<p-dialog [draggable]="false"  header="CampaignMonitor Integration" [(visible)]="showCampaignMonitorDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <form>
+            <p style="color: red">Please fill up the API key field.</p>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-100">
+                        <label>API Key<i class="fa fa-info-circle l" tooltip="Specify API key. (You can find your API key by logging into your account</p> and licking on the 'Account Settings' link at the top left on the screen.If you don't have API key, click on 'Generate your API key' link on right side of the screen, then click 'Generate my API key button'" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="blue-btn">Retrieve</button>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" class="green-btn m-r-10">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showCampaignMonitorDialogBox = false">Cancel</button>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<!-- CampaignMonitor Integration Dialog END -->
+
+<!--GetResponse Integration Dialog START -->
+<p-dialog [draggable]="false"  header="GetResponse Integration" [(visible)]="showGetResponseDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <form>
+            <p style="color: red">Please fill up the API key field.</p>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-100">
+                        <label>API Key<i class="fa fa-info-circle l" tooltip="Specify API key. (The API key is assigned to every pro account.Open http://www.getresponse.com/my_api_key.html) to get the key" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="blue-btn">Retrieve</button>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" class="green-btn">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showGetResponseDialogBox = false">Cancel</button>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<!-- GetResponse Integration Dialog END -->
+
+<!--MyEmma Integration Dialog START -->
+<p-dialog [draggable]="false"  header="MyEmma Integration" [(visible)]="showMyEmmaDialogBox" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="border-all white-bg web-bg">
+        <form>
+            <p style="color: red">Please fill up the API key field.</p>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-100">
+                        <label>Public API key<i class="fa fa-info-circle l" tooltip="Specify public API key. ('API key' tab present under account settings)" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-50">
+                        <label>Private API Key<i class="fa fa-info-circle l" tooltip="Specify your 'My Emma' private api key." tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>Account ID<i class="fa fa-info-circle l" tooltip="Specify account ID. ('Account & Billing' link present in the upper right corner in 'MyEmma' account, next to 'Login' button)" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text">
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="blue-btn">Retrieve</button>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" class="green-btn">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showMyEmmaDialogBox = false">Cancel</button>
+            </div>
+        </form>
+    </div>
+</p-dialog>
+<!-- MyEmma Integration Dialog END -->

@@ -1,0 +1,25 @@
+page-fan-wall-replies {
+    ion-content.fan-wall-content {
+        background: #f4f4f7;
+        p.parent-comment {
+            padding: 14px;
+        }
+    }
+
+    // .parent-container {
+    //     position: fixed;
+    // }
+
+    .comment-cards-wrapper {
+        margin-bottom: 75px;
+        .comment-card {
+            .card-header {
+                background: #dddee8;
+            }
+
+            ion-card-content.fan-wall-comment {
+                padding-top: 13px;
+            }
+        }
+    }
+}

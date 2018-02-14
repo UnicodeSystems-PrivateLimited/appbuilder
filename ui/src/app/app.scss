@@ -1,0 +1,56 @@
+@import "theme/theme";
+.with-overlay p-multiselect{
+    pointer-events: none;
+}
+.promote-list .layout-row.flex-100.border-b:last-child {
+    border-bottom: none;
+}
+#tab_mailinglist .mul-sel .ui-multiselect-header .ui-multiselect-close {
+    position: absolute;
+    right: 0px;
+    top: 3px;
+    display: block;
+    font-size: 18px;
+    border: 0 none;
+}
+#tab_mailinglist .mul-sel .ui-multiselect-header .ui-inputtext {
+    padding: 1px 1px 1px 25px;
+    width: 100%;
+    margin: 0 4px;
+    height: 27px;
+    border: 1px solid #ccc;
+}
+#tab_mailinglist .mul-sel .ui-multiselect-header .ui-chkbox {
+    position: absolute;
+    top: 16px;
+    left: 5px;
+    cursor: pointer;
+}
+#tab_mailinglist .mul-sel .ui-multiselect-header .ui-multiselect-filter-container .fa {
+    position: absolute;
+    left: 7px;
+    top: 12px;
+}
+#tab_mailinglist .mul-sel .ui-multiselect .ui-multiselect-panel {
+    padding: .2em;
+    position: absolute;
+    min-width: 100%;
+    background: #fff;
+    box-shadow: 0px 0px 0px 1px #ccc;
+}
+#tab_mailinglist .mul-sel .ui-multiselect-panel .ui-multiselect-list {
+    max-height: 185px !important;
+}
+#tab_mailinglist .mul-sel  label.ui-multiselect-label.ui-corner-all {
+    text-overflow: ellipsis;
+    display: block;
+    width: 222px;
+    height: 34px;
+    white-space: nowrap;
+}
+.access-denied h2 {
+    font-size: 50px;
+    color: #000;
+    text-align: center;
+    margin-top: 16%;
+}

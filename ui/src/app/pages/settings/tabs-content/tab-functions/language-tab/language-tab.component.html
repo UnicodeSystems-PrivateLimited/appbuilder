@@ -1,0 +1,81 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class=" layout-column layout-align-end">
+                <div class=" layout-row layout-align-space-between-center pdf-box ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                        <li class="title-sbhead">You have {{addedLanguages.length}} language(s)</li>
+                    </ul>
+                    <button class="green-btn" (click)="showAddDialog()">
+                        <i class="fa fa-plus ion-right" aria-hidden="true"></i> ADD Language
+                    </button>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>
+            </div>
+            <div>
+                <div *ngFor="let lang of addedLanguages" class="dotted-bootom-div layout-row somespace-top layout-align-start-center" [class.defaultLanguage]="lang.code =='en'">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15" >
+                        <label *ngIf="lang.code!='en'" class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedItem[lang.id]" (click)="onCheckTabChange(selectedItem[lang.id], lang.id)">
+                            <span></span>
+                        </label>
+                        <div class="layout-column menu-tb-span">
+                            <span>{{lang.name}}</span>
+                        </div>
+                    </div>
+                    <div class="flex-50 layout-row layout-align-end  remove-r-padding  pad-r-15">
+                        <span *ngIf="lang.code!='en'" class="red"><button class="red" (click)="onSingleDeleteClick(lang.id)">Delete</button></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+</div>
+<p-dialog  [draggable]="false" header="Add Language" [(visible)]="dialogDisplay" modal="modal" class="app-dialog add-app" (onAfterHide)="onAddDialogHide()"
+    >
+    <div class="layout-row layout-align-space-between-center pad-al-15">
+        <label class="checkbox-inline custom-checkbox nowrap">
+          <input type="checkbox" id="inlineCheckbox05" [(ngModel)]="checkAllLanguage" (change)="onCheckAllLanguageChange()" >
+          <span>Select All</span>
+        </label>
+    </div>
+    <div class="layout-row  layout-wrap height-data-mem">
+        <div *ngFor="let lang of languages;" class="dotted-bootom-div flex-50 m-b-10 layout-row somespace-top layout-align-start-center">
+            <div class=" layout-row layout-align-start-center pad-l-15">
+                <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox06"  [(ngModel)]="selectedLanguage[lang.id]" (click)="onCheckTablanguageChange(selectedLanguage[lang.id], lang.id)">
+                            <span></span>
+                        </label>
+                <div class="layout-column menu-tb-span">
+                    <span>{{lang.name}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="save-btn">
+        <button class="blue-btn btn btn-lg" type="submit" (click)="save()">Save</button>
+    </div>
+</p-dialog>

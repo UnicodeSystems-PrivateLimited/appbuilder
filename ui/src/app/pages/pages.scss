@@ -1,0 +1,219 @@
+@import '../theme/sass/flex';
+@import '../theme/sass/ion';
+
+.fm-spinner {
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  margin: 0 auto;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%,-50%);
+}
+
+.fm-spinner.fm-page-fixed{
+ position: fixed;
+}
+
+.fm-double-bounce1, .fm-double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #333;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  -webkit-animation: fm-sk-bounce 2.0s infinite ease-in-out;
+  animation: fm-sk-bounce 2.0s infinite ease-in-out;
+}
+
+.fm-double-bounce2 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes fm-sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes fm-sk-bounce {
+  0%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% {
+      transform: scale(1.0);
+      -webkit-transform: scale(1.0);
+    }
+}
+
+.pac-container {
+  z-index: 10005;
+}
+.tab-set.portal-wrap.router-link-active:after {
+    content: "";
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 7px solid #fc8f44;
+    position: absolute;
+    top: 51px;
+    left: 50%;
+}
+.tab-set.portal-wrap {
+    display: inline-block;
+    width: 100%;
+    color: #828183;
+    padding: 16px 0px;
+    border-right: 1px solid #ccc;
+    border-bottom: 3px solid #dddddd;
+    margin-left: -4px;
+    position: relative;
+    cursor: pointer;
+    text-align: center;
+    font-size: 19px;
+}
+.portal-user-wrap{
+    //     margin: 12px;
+    // border: 1px solid #ccc;
+}
+input.form-control::-moz-placeholder { 
+color: #000 !important;
+}
+input.form-control:-ms-input-placeholder { 
+color: #000 !important;
+}
+input.form-control:-moz-placeholder {
+color: #000 !important;
+}
+
+input::-webkit-input-placeholder {
+    color: #000 !important;
+}
+
+.ui-dialog .ui-dialog-content { height: calc(100% - 38px); }
+select.option-c-panel {
+    height: 29px;
+    width: 123px;
+        border: 1px solid #ccc;
+    background: #f7f7f7;
+    color: #7d7777;
+    border-radius: 3px;
+    margin-right:10px;
+}
+select.option-c-panel option:focus {
+    outline:none;
+}
+#description-editor p {
+    color: inherit;
+}
+#description-editor > div:last-child {
+    display: none;
+}
+#description-editor .fr-wrapper .fr-element {
+    height: 384px;
+    overflow: auto;
+}
+#description-editor .fr-wrapper {
+    height: 384px;
+}
+.form-search-app p-dropdown span.fa {
+    right: auto;
+    top:-2px;
+}
+.c-seting-wrap-phone span{
+    color: #666;
+    width: 226px;
+    font-size: 22px;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 10px;
+    line-height: 24px;
+    text-align: center;
+}
+.attach-div:hover .attach-class.fa-trash {
+//    width: 50%;
+//     left: 50%;
+    border-left: 1px solid #ccc;
+    // top: 1px;
+}
+.attach-class {
+    display: none !important;
+}
+.attach-div:hover .attach-class {
+    display: block !important;
+    position: absolute;
+    margin: 0 auto;
+    width: 100%;
+    text-align: center;
+    background: #fff;
+     left: 0;
+    top: 0;
+    cursor: pointer;
+    text-shadow: 0px 0px 1px #000;
+}
+
+.attach-div{
+    position:relative;
+}
+.unassi-attach.attach-div:hover span.attach-class {
+    width: 100%;
+}
+.attach-class i.fa.fa-paperclip.cursor_p {
+    padding: 0;
+}
+.layout-column .attach-class .flex-33 {
+    width: 32%;
+    display: inline-block;
+    padding: 11px;
+}
+
+.border-r{
+    border-right: 1px solid #ccc;
+}
+.border-l{
+    border-left: 1px solid #ccc;
+}
+.attach-div:hover .bg-up-attch  .attach-class2.fa-trash{
+   width: 50%;
+    left: 50%;
+    border-left: 1px solid #ccc;
+    top: 1px;
+}
+.attach-div:hover .attach-class1.bg-up-attch {
+    display: block;
+    position: absolute;
+    margin: 0 auto;
+    width: 50%;
+    text-align: center;
+    background: #fff;
+    padding: 11px;
+    left: 0;
+    top: 0;
+    cursor: pointer;
+    text-shadow: 0px 0px 1px #000;
+}
+span.attach-class1 {
+    display: inline-block;
+    width: 48%;
+        padding: 11px;
+}
+span.attach-class2 {
+    width: 50%;
+    display: inline-block;
+
+}
+.link-editor-wrapper  .layout-row.flex-100.web-bg.layout-align-start-start {
+    height: 200px;
+    border: 1px solid #ccc;
+    background: #fff;
+    margin-bottom: 10px;
+}
+
+.cpromote-template textarea{
+    color: #333;
+    padding: 10px;
+}

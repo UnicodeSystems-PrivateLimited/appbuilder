@@ -1,0 +1,32 @@
+<!--
+  Generated template for the DirectionsTab page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+    [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+    [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+    <ion-title *ngIf=" tab_nav_type=='tab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+      [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]:title:title}}</ion-title>
+    <ion-title *ngIf="tab_nav_type=='subtab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+      [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.sub_tab_translation?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]:title:title}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+<ion-content [style.background]="'url(' + bgImage + ')'">
+  <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+  <template [ngIf]="!loader">
+    <ion-list>
+      <button ion-item *ngFor="let direction of directions; let i = index;" (click)="onDirectionClick(direction.m_lat, direction.m_long)"
+        [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+            <ion-icon name="compass" item-left></ion-icon>
+            <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{direction.title}}</p>
+        </button>
+        <ion-item *ngIf="!directions.length">{{'NOTHINGTEXT' | translate}}</ion-item>
+    </ion-list>
+  </template>
+</ion-content>

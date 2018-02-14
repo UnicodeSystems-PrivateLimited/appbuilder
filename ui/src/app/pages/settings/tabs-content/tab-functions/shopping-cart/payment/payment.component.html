@@ -1,0 +1,158 @@
+<div class="Cart-payment">
+    <div class="layout-row layout-align-space-between-center">
+        <span>Choose your business's payment options</span>
+        <button class="btn green-btn" (click)="onSaveClick()">SAVE PAYMENT OPTIONS</button>
+    </div>
+<div class="layout-column  m-t-10">
+    <div class="layout-row layout-align-start-center m-t-10">
+        <label class="flex-30">Currency</label>
+        <p-dropdown [options]="currencyOptions" [(ngModel)]="payment.currency" [filter]="true"
+                    class="cat-drop flex-30 m-l-10"></p-dropdown>
+    </div>
+
+    <div class="layout-column layout-align-start-start m-t-10">
+        <div class="layout-row layout-align-start-start flex-100 full-width">
+        <label class="flex-30">
+            Payment Gateway
+            <i class="fa fa-info-circle l"
+               tooltip='Allow user product payments available directly from your mobile app.'
+               tooltipPlacement="right" aria-hidden="true"></i>
+        </label>
+        <p-dropdown [options]="paymentGatewayOptions" [(ngModel)]="payment.payment_gateway" [filter]="true"
+                    class="cat-drop flex-30 m-l-10" (onChange)="onPaymentGatewayChange()"></p-dropdown>
+                </div>
+        <div *ngIf="payment.payment_gateway" class="layout-column layout-align-start-start flex-100 m-t-10 full-width">
+
+            <template [ngIf]="payment.payment_gateway === PAYMENT_GATEWAY.AUTHORIZE_NET && payment.payment_gateway_credentials">
+                <div class="layout-row layout-align-start-center m-t-10 full-width">
+                    <label class="flex-30">API Login ID <span class="required">*</span></label>
+                    <input class="input-class flex-30 m-l-10" type="text"
+                           [(ngModel)]="authorizeNetCredentials.api_login_id" required="required">
+                </div>
+                <div class="layout-row layout-align-start-center m-t-10 full-width">
+                    <label class="flex-30">Transaction Key <span class="required">*</span></label>
+                    <input class="input-class flex-30 m-l-10" type="text"
+                           [(ngModel)]="authorizeNetCredentials.transaction_key" required="required">
+                </div>
+            </template>
+
+            <template [ngIf]="payment.payment_gateway === PAYMENT_GATEWAY.PAYPAL && payment.payment_gateway_credentials">
+                <div class="layout-row layout-align-start-center m-t-10 full-width">
+                    <label class="flex-30">API Username <span class="required">*</span></label>
+                    <input class="input-class flex-30 m-l-10" type="text"
+                           [(ngModel)]="paypalCredentials.api_username" required="required">
+                </div >
+                <div class="layout-row layout-align-start-center m-t-10 full-width">
+                    <label class="flex-30">API Password <span class="required">*</span></label>
+                    <input class="input-class flex-30 m-l-10" type="text"
+                           [(ngModel)]="paypalCredentials.api_password" required="required">
+                </div>
+                <div class="layout-row layout-align-start-center m-t-10 full-width">
+                    <label class="flex-30">Signature <span class="required">*</span></label>
+                    <input class="input-class flex-30 m-l-10" type="text"
+                           [(ngModel)]="paypalCredentials.signature" required="required">
+                </div>
+            </template>
+
+            <template [ngIf]="payment.payment_gateway === PAYMENT_GATEWAY.STRIPE && payment.payment_gateway_credentials">
+                <div class="layout-row layout-align-start-center m-t-10 full-width">
+                    <label class="flex-30">API Secret Key <span class="required">*</span></label>
+                    <input class="input-class flex-30 m-l-10" type="text"
+                           [(ngModel)]="stripeCredentials.api_secret_key" required="required">
+                </div>
+            </template>
+
+        </div>
+    </div>
+
+    <div class="layout-row layout-align-start-center m-t-10">
+        <label class="layout-row layout-align-start-center">
+             <label class="switch flex-60  m-r-10  m-b-0">
+            <input type="checkbox" [(ngModel)]="payment.is_cash">
+            <div class="slider round"></div>
+           
+            </label>
+        Cash
+        </label>
+    </div>
+
+    <div class="layout-row layout-align-start-center m-t-10">
+        <span class="heading-title">Tax Details</span>
+    </div>
+
+    <div class="layout-row layout-align-space-between-center m-t-10">
+       
+    <div class="layout-row layout-align-start-center flex-30">    
+     <label class="checkbox-inline custom-checkbox nowrap flex-10 layout-row layout-align-center-center">
+            <input type="checkbox" [(ngModel)]="checkAllToggle" (click)="onSelectAllCheck()"><span>&nbsp;</span></label> 
+        Select All
+        </div>
+        <div class="layout-row layout-align-space-between-center">
+        <button class="green-btn" type="button" (click)="onAddNewTaxAmountClick()">Add New Tax Amount</button>
+
+        <span class="lastspan-out m-l-10"><button class="red"
+                                           [class.checkTrue]="selectedTaxAmounts.length > 0 && selectedTaxAmounts.indexOf(true) !== -1"
+                                           (click)="onTaxDeleteClick()"><i class="fa fa-trash"
+                                                                           title="delete"></i></button></span>
+        </div>
+    </div>
+
+    <div>
+        <div *ngFor="let tax of taxAmountList" class="layout-row flex-100 layout-space-between-center border-with-padding Taxamount-list">
+         <div class="layout-column  flex-75">
+            <div class="layout-row layout-align-start-center m-t-10">
+                <label class="checkbox-inline custom-checkbox nowrap  layout-row layout-align-center-center">
+                 <input type="checkbox" [(ngModel)]="selectedTaxAmounts[tax.id]" (click)="onTaxCheck()">  
+                 <span>&nbsp;</span>
+                 </label>
+
+                <span class="flex-30">Tax Name: </span>
+                <span>{{tax.tax_name}}</span>
+            </div>
+            <div class="layout-row layout-align-start-center m-t-10">
+                <span class="flex-30 padding-and-margin">Tax Method: </span>
+                <span>{{tax.tax_method === 1 ? "By Rate" : "By Method"}}</span>
+            </div>
+            <div class="layout-row layout-align-start-center m-t-10">
+                <span class="flex-30 padding-and-margin">Rate (%) or Flat Value: </span>
+                <span>{{tax.tax_value}}</span>
+            </div>
+          </div>   
+          <div class="flex-25 layout-align-end-start layout-row">
+             <button type="button" (click)="onTaxEditClick(tax)" style="width:90px;" class="button-edit"><i class="fa fa-pencil" aria-hidden="true"></i> Edit</button>
+            </div>
+        </div>
+    </div>
+
+    </div>
+</div>
+
+<p-dialog [draggable]="false" [header]="taxAmountFormHeader" [(visible)]="showTaxAmountFormDialog" modal="modal"
+          class="app-dialog add-app s-tab-add menu-tb-ad">
+    <form (ngSubmit)="onTaxAmountFormSubmit()" class="white-bg web-bg border-all">
+        <div class="layout-column m-b-20">
+            <div class="layout-column m-b-10">
+                <label>Tax Name <span class="required">*</span></label>
+                <input class="input-class flex-100" type="text" [(ngModel)]="taxAmount.tax_name" required="required">
+            </div>
+            <div class="layout-row layout-align-space-between ">
+                <div class="layout-column flex-45">
+                    <label>Tax Method</label>
+                    <p-dropdown [options]="taxMethodOptions" [(ngModel)]="taxAmount.tax_method"
+                                class="cat-drop"></p-dropdown>
+                </div>
+                <div class="layout-column flex-45">
+                    <label>Rate (%) or Flat Value <span class="required">*</span></label>
+                    <input class="input-class" type="text" [(ngModel)]="taxAmount.tax_value" required="required">
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="">
+                <div class="save-btn">
+                    <button class="blue-btn btn" type="submit">SAVE</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+</p-dialog>

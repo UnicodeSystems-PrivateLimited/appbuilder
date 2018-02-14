@@ -1,0 +1,409 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">You have {{menuCategories.length}} menu(s)</li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="dotted-bootom-div layout-column layout-align-end ">
+                <div class=" layout-row layout-align-space-between-center pdf-box ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">                       
+                        <li class="title-sbhead">You have {{menuCategories.length}} menu(s)</li>
+                    </ul>
+                    <button class="green-btn" (click)="showAddCategoryDialog()">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Add New Category
+                    </button>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedCategory.length > 0 && selectedCategory.indexOf(true) !== -1" (click)="onCategoryDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>                
+            </div>
+            <div [dragula]="MENU_CATEGORY_BAG_NAME" [dragulaModel]="menuCategories">
+                <div *ngFor="let category of menuCategories" class="dotted-bootom-div layout-row somespace-top layout-align-start-center">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">                            
+                        <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedCategory[category.id]" (click)="onCheckCategoryTabChange(selectedCategory[category.id], category.id)">
+                        <span></span>
+                        </label>                        
+                        <span class="layout-row layout-align-center-center"><i class="fa fa-arrows cursor-move" aria-hidden="true"></i></span>
+                        <div class="layout-column menu-tb-span">
+                            <span [class.disabled]="category.status === MENU_CATEGORY_STATUS_DISABLED">{{category.section}}</span>
+                            <span>{{category.name}}</span>
+                            <span *ngIf="category.status === MENU_CATEGORY_STATUS_DISABLED" class="menu-cat-disabled">INACTIVE</span>
+                        </div>
+                    </div>
+                    <div class="flex-50 layout-row layout-align-end pad-r-15">
+                        <span class=""><button class="green add" (click)="showItemListDialog(category.id)">Add Items</button></span>
+                        <span class=""><button class="edit-btn" (click)="showEditCategoryDialog(category.id)">Edit</button></span>
+                        <!--<span class="wrap-address "><button class="red" (click)="onDeleteCategoryClick(category.id)">Delete</button></span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+
+    <!-- Add Category Dialog START-->
+    <p-dialog [draggable]="false"  header="Add New Category" [(visible)]="addCategoryDialogDisplay" modal="modal" class="app-dialog add-app" >
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onAddCategorySubmit()">
+            <div class="layout-column border-all white-bg">
+                <div class="web-bg">
+                    <div class="layout-row  layout-align-space-between">
+                        <div class="layout-column flex-45">
+                            <label>Section
+                                <i class="fa fa-info-circle l" tooltip="Specify the section title. This can be used to categorize as well" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="addCategoryData.section">
+                        </div>
+                        <div class="layout-column flex-45">
+                            <label>Name
+                                <i class="fa fa-info-circle l" tooltip="Enter the name or title of the content" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="addCategoryData.name">
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-start-center m-t-10">
+                        
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                                <input  id="inlineCheckbox01" type="checkbox" [(ngModel)]="addCategoryData.status">
+                                <span class="m-l-10">Active
+                                    <i class="fa fa-info-circle l ion-left" tooltip="Check this box to have this category active in the app" tooltipPlacement="right" aria-hidden="true"></i>
+                                </span>
+                            </label>
+                            <!--                            <input >
+                            <label> </label>-->
+                   
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <div class="">
+                    <div class="save-btn">
+                        <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+                    </div>
+                </div>
+            </footer>
+        </form>
+    </p-dialog>
+    <!-- Add Category Dialog END-->
+
+    <!-- Edit Category Dialog START-->
+    <p-dialog  [draggable]="false" header="Edit Category" [(visible)]="editCategoryDialogDisplay" modal="modal" class="app-dialog add-app" >
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onEditCategorySubmit()" *ngIf="editCategoryData.id">
+            <div class="layout-column border-all white-bg">
+                <div class="web-bg">
+                    <div class="layout-row m-b-15 layout-align-space-between">
+                        <div class="layout-column flex-45">
+                            <label>Section
+                                <i class="fa fa-info-circle l" tooltip="Specify the section title. This can be used to categorize as well" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="editCategoryData.section">
+                        </div>
+                        <div class="layout-column flex-45">
+                            <label>Name
+                                <i class="fa fa-info-circle l" tooltip="Enter the name or title of the content" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="editCategoryData.name">
+                        </div>
+                    </div>
+                    <div class="layout-row  layout-align-start-center m-t-10">
+                        
+                            <input type="checkbox" [(ngModel)]="editCategoryData.status">
+                            <label class="m-l-10">Active
+                                <i class="fa fa-info-circle l ion-left" tooltip="Check this box to have this category active in the app" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                        
+                    </div>
+                </div>
+            </div>
+            <footer>
+                <div class="">
+                    <div class="save-btn">
+                        <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+                    </div>
+                </div>
+            </footer>
+        </form>
+    </p-dialog>
+    <!-- Category Number Dialog END-->
+
+    <!-- Delete Dialog START -->
+    <p-dialog  [draggable]="false" header="Delete Category ?" [(visible)]="showDeleteCategoryDialog" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <p style="color: #000">Are you sure you want to delete the selected menu category ?</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+                <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteCategory()">Yes</a>
+                <a type="" pButton icon="fa-check" label="No" class="login-btn cncle-btn cursor-p" (click)="showDeleteCategoryDialog=false">No</a>
+            </div>
+        </footer>
+    </p-dialog>
+    <!-- Delete Dialog END -->
+
+    <!-- List Item Dialog START -->
+    <p-dialog [draggable]="false"  header="Item List" [(visible)]="listItemDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add menu-tb">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="layout-column border-all white-bg web-bg" *ngIf="menuItems">
+            <div class="layout-column layout-align-space-between mn-tb-1">
+                <div class=" layout-row layout-align-space-between-center ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">                       
+                        <li class="title-sbhead">You have {{menuItems.length}} menu item(s)</li>
+                    </ul>
+                    <button class="green-btn" (click)="showAddItemDialog()">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Add New Item
+                    </button>
+                </div>                 
+                <div class="layout-row layout-align-space-between m-t-10">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox06" [(ngModel)]="checkAllItem" (change)="onCheckAllItemChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkItemTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onItemDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>
+            </div>
+            <div [dragula]="MENU_ITEM_BAG_NAME" [dragulaModel]="menuItems" >
+                <div *ngFor="let item of menuItems" class="dotted-bootom-div layout-row somespace-top mn-tb-2">
+                    <div class="flex-80 layout-row layout-align-start">
+                        <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox06"  [(ngModel)]="selectedItem[item.id]" (click)="onCheckItemTabChange(selectedItem[item.id], item.id)">
+                            <span></span>
+                        </label>                        
+                        <span><i class="fa fa-arrows cursor-moves" aria-hidden="true"></i></span>
+                        <div class="layout-column flex-70">
+                            <span>{{item.name}}</span>
+                        </div>
+                        <div class="layout-column flex-70 layout-align-center-end">
+                            <span *ngIf="item.status === MENU_ITEM_STATUS_DISABLED" class="menu-item-disabled">INACTIVE</span>
+                        </div>
+                    </div>
+                    <div class="flex-20 layout-row layout-align-end">
+                        <span class=""><button class="green" (click)="showEditItemDialog(item.id)"><i class="fa fa-pencil-square-o"></i></button></span>
+                        <!--<span class="lastspan-out main-social-tab-container"><button class="red" (click)="onDeleteItemClick(item.id)"><i class="fa fa-trash"></i></button></span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
+    <!-- List Item Dialog END -->
+
+    <!-- Add Item Dialog START -->
+    <p-dialog  [draggable]="false" header="Add New Item" [(visible)]="addItemDialogDisplay" modal="modal" class="app-dialog add-app  menu-tb-ad"  (onAfterHide)="onAddEditDialogHide()">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onAddItemSubmit()">
+            <div class="border-all white-bg web-bg">
+                <div class="layout-row">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input  id="inlineCheckbox01" type="checkbox" [(ngModel)]="addMenuItemData.use_global_colors" (click)="onAddItemUseGlobalClick()">
+                        <span>Use Global Background & Text Colors
+                            <i class="fa fa-info-circle l" tooltip="Use the Global Background & Text Colors instead of custom colors" tooltipPlacement="right" aria-hidden="true"></i>
+                        </span>
+                    </label>
+
+                    <!--                    <input >
+                    <label>Use Global Background & Text Colors
+                        <i class="fa fa-info-circle l" tooltip="Use the Global Background & Text Colors instead of custom colors" tooltipPlacement="right" aria-hidden="true"></i>
+                    </label>-->
+                </div>
+                <div class="layout-row block-1">
+                    <div class="overlay" [style.display]="addItemOverlayDisplay"></div>
+                    <div class="layout-row flex-40 layout-align-center-center m-r-10">
+                        <label class="">Background
+                            <i class="fa fa-info-circle l" tooltip='Select a custom background color for your text area. You must click "Update Colors" in order for the changes to reflect. The global color will be used if nothing is selected.' tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <input class="input-class flex-55" [(colorPicker)]="addMenuItemData.background_color" [style.background]="addMenuItemData.background_color"
+                               [value]="addMenuItemData.background_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                    </div>
+                    <div class="layout-row flex-40 layout-align-start-center">
+                        <label>Text
+                            <i class="fa fa-info-circle l" tooltip='Select a custom text color. You must click "Update Colors" in order for the changes to reflect. The global color will be used if nothing is selected.' tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <input class="input-class flex-50" [(colorPicker)]="addMenuItemData.text_color" [style.background]="addMenuItemData.text_color" [value]="addMenuItemData.text_color"
+                               [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                    </div>
+                    <div class="layout-row flex-20 layout-align-end-center"> <button class="m-l-0" type="button" (click)="onAddFormUpdateColorClick()">Update Colors</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="layout-row block-2">
+                        <div class="layout-column flex-70">
+                            <label>Name
+                                <i class="fa fa-info-circle l" tooltip="Type a name information." tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="addMenuItemData.name" required>
+                        </div>
+                        <div class="layout-column flex-30 layout-align-end-end">
+                            <div>
+                                <label class="checkbox-inline custom-checkbox nowrap">
+                                    <input  id="inlineCheckbox01"  type="checkbox" [(ngModel)]="addMenuItemData.status">
+                                    <span>Active
+                                        <i class="fa fa-info-circle l" tooltip="Inactive item would not be shown" tooltipPlacement="right" aria-hidden="true"></i>
+                                    </span>
+                                </label>
+                                <!--                                <input type="checkbox" [(ngModel)]="addMenuItemData.status"> Active
+                                <i class="fa fa-info-circle l" tooltip="Inactive item would not be shown" tooltipPlacement="right" aria-hidden="true"></i>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-column block-2">
+                        <label>Description
+                            <i class="fa fa-info-circle l" tooltip="Type a description in details. You can put image also." tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <!--<ckeditor *ngIf="showEditor" [config]="ckEditorConfig" [(ngModel)]="addMenuItemData.description"></ckeditor>-->
+                    <div *ngIf="showEditor=='add'" id="description-editor"></div>
+                    </div>
+                    <div class="layout-row block-4 layout-align-start-center">
+                        <label class="layout-align-center-center layout-row">Price
+                            <i class="fa fa-info-circle l" tooltip="The price of the item." tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <input class="input-class" type="number" step="0.01" [(ngModel)]="addMenuItemData.price">
+                    </div>
+                </div>
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+                </div>
+            </div>
+<!--            <footer>
+                <div class="">
+                </div>
+            </footer>-->
+        </form>
+    </p-dialog>
+    <!-- Add Item Dialog END -->
+
+    <!-- Edit Item Dialog START -->
+    <p-dialog [draggable]="false"  header="Edit Item" [(visible)]="editItemDialogDisplay" modal="modal" class="app-dialog add-app menu-tb-ad"  (onAfterHide)="onAddEditDialogHide()">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onEditItemSubmit()" *ngIf="editMenuItemData.id">
+            <div class="border-all white-bg web-bg">
+                <div class="layout-row">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input  id="inlineCheckbox01" type="checkbox" [(ngModel)]="editMenuItemData.use_global_colors" (click)="onEditItemUseGlobalClick()">
+                        <span>Use Global Background & Text Colors
+                            <i class="fa fa-info-circle l" tooltip="Use the Global Background & Text Colors instead of custom colors" tooltipPlacement="right" aria-hidden="true"></i>
+                        </span>
+                    </label>
+                    <!--                    <input type="checkbox" [(ngModel)]="editMenuItemData.use_global_colors" (click)="onEditItemUseGlobalClick()">
+                    <label> </label>-->
+                </div>
+                <div class="layout-row block-1">
+                    <div class="overlay" [style.display]="editItemOverlayDisplay"></div>
+                    <div class="layout-row flex-40 layout-align-center-center m-r-10">
+                        <label>Background
+                            <i class="fa fa-info-circle l" tooltip='Select a custom background color for your text area. You must click "Update Colors" in order for the changes to reflect. The global color will be used if nothing is selected.' tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <input *ngIf="editMenuItemData.background_color" class="input-class flex-55" [(colorPicker)]="editMenuItemData.background_color"
+                            [style.background]="editMenuItemData.background_color" [value]="editMenuItemData.background_color"
+                            [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                    </div>
+                    <div class="layout-row flex-40 layout-align-start-center">
+                        <label>Text
+                            <i class="fa fa-info-circle l" tooltip='Select a custom text color. You must click "Update Colors" in order for the changes to reflect. The global color will be used if nothing is selected.' tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <input *ngIf="editMenuItemData.text_color" class="input-class flex-55" [(colorPicker)]="editMenuItemData.text_color" [style.background]="editMenuItemData.text_color"
+                            [value]="editMenuItemData.text_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                    </div>
+                    <div class="layout-row flex-20 layout-align-end-center"> <button type="button" (click)="onEditFormUpdateColorClick()">Update Colors</button>
+                    </div>
+                </div>
+                <div>
+                    <div class="layout-row block-2">
+                        <div class="layout-column flex-70">
+                            <label>Name
+                                <i class="fa fa-info-circle l" tooltip="Type a name information." tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="editMenuItemData.name" required>
+                        </div>
+                        <div class="layout-column flex-30 layout-align-end-end">
+                            <div>
+                                <label class="checkbox-inline custom-checkbox nowrap">
+                                    <input  id="inlineCheckbox01"  type="checkbox" [(ngModel)]="editMenuItemData.status">
+                                    <span>Active
+                                        <i class="fa fa-info-circle l" tooltip="Inactive item would not be shown" tooltipPlacement="right" aria-hidden="true"></i>
+                                    </span>
+                                </label>
+                                <!--                                <input type="checkbox" [(ngModel)]="editMenuItemData.status"> Active
+                                <i class="fa fa-info-circle l" tooltip="Inactive item would not be shown" tooltipPlacement="right" aria-hidden="true"></i>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-column block-2">
+                        <label>Description
+                            <i class="fa fa-info-circle l" tooltip="Type a description in details. You can put image also." tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <!--<ckeditor *ngIf="showEditor" [config]="ckEditorConfig" [(ngModel)]="editMenuItemData.description"></ckeditor>-->
+                     <div *ngIf="showEditor=='edit'" id="description-editor"></div>
+                    </div>
+                    <div class="layout-row block-4 layout-align-start-center">
+                        <label class="layout-align-center-center layout-row">Price
+                            <i class="fa fa-info-circle l" tooltip="The price of the item." tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <input class="input-class" type="number" step="0.01" [(ngModel)]="editMenuItemData.price">
+                    </div>
+                </div>
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+                </div>
+            </div>
+<!--            <footer>
+                <div class="">
+                </div>
+            </footer>-->
+        </form>
+    </p-dialog>
+    <!-- Edit Item Dialog END -->
+
+    <!-- Delete Item Dialog START -->
+    <p-dialog [draggable]="false"  header="Delete Item ?" [(visible)]="showDeleteItemDialog" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <p style="color: #000">Are you sure you want to delete the selected menu item ?</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+                <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteItem()">Yes</a>
+                <a type="" pButton icon="fa-check" label="No" class="login-btn cncle-btn cursor-p" (click)="showDeleteItemDialog=false">No</a>
+            </div>
+        </footer>
+    </p-dialog>
+    <!-- Delete Item Dialog END -->
+</div>

@@ -1,0 +1,126 @@
+.mon-left-wrap{
+    margin: 20px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+    ul.ui-tabview-nav{
+        background: #e2e2e2 !important;
+        border-bottom: none;
+        min-height: 633px;
+        border-right: 1px solid #ccc;
+        li {
+            width:100% !important;
+            a{
+                 padding: 0 !important;
+            }
+        }
+    }
+
+    .ui-tabview-panels{
+        padding: 20px 20px 10px 0px;
+    }
+}
+
+.Cart-payment,.cart-inventory-tab{
+    .heading-title{
+        font-size: 18px;
+        margin: 20px 0px 10px;
+    }  
+.Taxamount-list{
+    &.border-with-padding{
+        padding: 15px;
+        border-radius: 3px;
+        margin-top: 20px;
+        border: 1px solid #cecece;
+    }
+  
+.padding-and-margin{
+    padding-left: 25px;
+    margin-right: 28px;
+}
+    .button-edit{
+        margin-left: 26px;
+        margin-top: 0px;
+        max-height: 32px;
+        i{
+            margin-left: -5px;
+            padding-right: 5px;
+        }
+    }
+}
+.btn{
+    &:hover{
+        transform: scale(1);
+    }
+}
+.input-class{
+    padding: 6px 10px;
+    box-shadow: none;
+    border: 1px solid #ccc;
+    border: 2px solid #ffffff;
+    border-radius: 3px;
+    box-shadow: 0 0 0 1px #c0c0c0;
+    color: rgba(0,0,0,0.65);
+    background: rgb(251, 249, 249);
+    height: 36px;
+}
+.invertory-item-dropdown {
+    &.down {
+      &:after {
+        transform: rotate(0deg);
+      }
+    }
+  }
+
+.ui-dropdown-panel{
+    .ui-dropdown-filter-container {
+        width: 98%;
+        input{
+            &.ui-dropdown-filter{
+                border: 1px solid #ccc;
+                background: rgba(255, 255, 255, 0.78);
+            }
+        }
+    }
+}
+
+.full-width{
+    width: 100%;
+}
+
+.border-b-padding{
+    padding-bottom: 30px;
+    border-bottom: 1px solid rgba(204, 204, 204, 0.53);
+    margin-bottom: 20px;
+}
+
+    .currency-symbol {
+    position: relative;
+    margin-left: -10px;
+    right: 10px;
+    }
+
+    .tab-detail-child{
+        float: right;
+       width:100%;
+        .tab-detail{
+            max-width: 100% !important;
+           float: right;
+           margin: 1px 0px;
+        }
+    }
+
+
+}
+.required{
+    color: #e71d1d;
+}
+
+.dialog-box-height{
+    min-height: 220px;
+    .ui-dropdown-panel{
+        .ui-dropdown-items-wrapper{ 
+            ul { max-height: 160px; }
+        }
+    } 
+}
+ 

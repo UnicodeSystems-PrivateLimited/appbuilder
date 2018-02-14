@@ -1,0 +1,107 @@
+<p-dialog [draggable]="false" header="INDIVIDUAL TAB DETAILS" [(visible)]="globalStyleService.editDialog" modal="modal" (onAfterHide)="onDialogHide()"
+    class=" layout-row s-tab-add-tab tab-container app-dialog add-app s-tab-add bb info-wrap indivial-dialog-tab" width="1000"
+    >
+    <div class="layout-row individual-tab">
+        <tabset class="container-tab-detail">
+            <tab heading="GENERAL" class="gen-tab-indi pad-5">
+                <button class="green-btn" (click)="saveIndividualTab()">Save</button>
+                <div>
+                    <form>
+                        <input type="hidden" [(ngModel)]="globalStyleService.tabData.id">
+                        <input type="hidden" [(ngModel)]="globalStyleService.tabData.tab_func_id">
+                        <input type="hidden" [(ngModel)]="globalStyleService.tabData.app_id">
+
+                        <div class="flex-100 layout-row layout-wrap block-1 s-tab-block-1">
+                            <div class="flex-100">
+                                <div class="layout-row layout-align-space-between m-b-10">
+                                    <div class="flex-40 layout-row layout-align-start-center">
+                                        <span class="s-tool-label m-r-10 flex-30">Tab Title &nbsp; <i class="fa fa-info-circle " tooltip="Add a title to this tab" aria-hidden="true">
+                                            </i></span>
+                                        <span class="layout-row"><input class="input-class" type="text" [(ngModel)]="globalStyleService.tabData.title" >
+                                        </span>
+                                    </div>
+                                    <div class="flex-60 layout-column layout-align-start">
+
+                                        <label class="checkbox-inline custom-checkbox nowrap flex-100 layout-row layout-align-start-center m-r-10">
+                                            <input type="checkbox" checked="checked" value="1" [(ngModel)]="globalStyleService.tabData.status">
+                                            <span class="flex-20 layout-row" >Active Tab</span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div *ngIf="globalStyleService.appTabIconSrc">
+                                    <span class="s-tool-label">Current Tab Icon &nbsp;<i class="fa fa-info-circle " tooltip="This shows current tab icon." aria-hidden="true"></i> </span>
+                                    <img *ngIf="globalStyleService.tabData.type == 1" src="{{globalStyleService.appTabIconSrc}}" alt="{{globalStyleService.tabData.title}}"
+                                        style="width: 30px; height: 30px">
+                                    <i *ngIf="globalStyleService.tabData.type == 2" class="Glyphter icon-{{globalStyleService.tabData.icon_name}}" aria-hidden="true"></i>
+                                </div>
+                                <div class="flex-100 block-2 m-t-10">
+                                    <span class="s-tool-label">Tab Icon &nbsp; <i class="fa fa-info-circle" tooltipPlacement="right" tooltip="Select an icon for your tab" aria-hidden="true">
+                                        </i></span>
+                                </div>
+                                <div class="block-3 m-t-10">
+                                    <span>Upload Custom Icon &nbsp; <i class="fa fa-info-circle " tooltipPlacement="right" tooltip="If you want to use a custom tab icon, upload an image here (64 x 64px)" aria-hidden="true"></i></span>
+                                    <input type="file" (change)="onEditTabImageChange($event)" />
+                                </div>
+
+                                <div class="block-4 height-tb border-all m-t-10">
+                                    <tabset class="layout-column s-tab-add-tab">
+                                        <tab heading="BLACK" class="black-data">
+                                            <div class="data layout-wrap layout-row flex-100 layout-align-center-center">
+                                                <div *ngFor="let icon of globalStyleService.blackIcons" class="flex-20 s-add-tab-mt-icon" [class.selected]="globalStyleService.iconSelect[icon.id]">
+                                                    <div class="icon" (click)="setIcon(icon.id, icon.name)">
+                                                        <!--<img src="{{icon.src}}" alt="Tab Icon" style="width:30px;height:30px">-->
+                                                        <i class="Glyphter icon-{{icon.name}}" style="color:#000;" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tab>
+
+                                        <tab heading="WHITE" class="white-data">
+                                            <div class="data layout-wrap layout-row flex-100 layout-align-center-center">
+                                                <div *ngFor="let icon of globalStyleService.whiteIcons" class="flex-20 s-add-tab-mt-icon" [class.selected]="globalStyleService.iconSelect[icon.id]">
+                                                    <div class="icon" (click)="setIcon(icon.id, icon.name)">
+                                                        <!--<img src="{{icon.src}}" alt="Tab Icon" style="width:30px;height:30px">-->
+                                                        <i class="Glyphter icon-{{icon.name}}" style="color:#fff;" aria-hidden="true"></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </tab>
+                                    </tabset>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </tab>
+            <tab heading="APPEARANCE" class="apper-tab-indi pad-5 flex-100 layout-column custom-appearance-popup">
+                <button class="green-btn" *ngIf='enableCustom == 2' (click)="onSaveIndividualAppearance()">Save</button>
+                <button class="green-btn" *ngIf='enableCustom == 1' (click)="deleteSettings()">Save</button>
+                <button class="red dis-btn" (click)="enableAppearance(1)" *ngIf='enableCustom == 2'>Disable Custom Appearance</button>
+                <button class="edit-btn enbl-btn" (click)="enableAppearance(2)" *ngIf='enableCustom == 1'>Enable Custom Appearance</button>
+                <div class="layout-row flex-100 indiviul-tab-dialog height-tb">
+                    <tabset class="container-tab-detail  flex-75 layout-column app-settings tab-container border-all " *ngIf='enableCustom == 2'>
+                        <tab heading="BUTTONS" (select)="onTabSelect(0)">
+                            <individual-tab-buttons></individual-tab-buttons>
+                        </tab>
+                        <tab heading="ICON COLOR" (select)="onTabSelect(1)">
+                            <individual-tab-icon-color></individual-tab-icon-color>
+                        </tab>
+                        <tab heading="HEADER" (select)="onTabSelect(2)">
+                            <individual-tab-header></individual-tab-header>
+                        </tab>
+                        <tab heading="COLOR" (select)="onTabSelect(3)">
+                            <individual-tab-color></individual-tab-color>
+                        </tab>
+                    </tabset>
+                    <div class="flex-35 layout-column m-l-10 mon-indi-dia">
+                        <home-mobile-display [tabId]="tabId" [homeData]="globalStyleService.individualTabSettings" *ngIf="(selectedTab==0 || selectedTab==1) && enableCustom == 2"></home-mobile-display>
+
+                        <global-mobile-display [tabId]="tabId" [homeData]="globalStyleService.individualTabSettings" *ngIf="(selectedTab == 2 || selectedTab == 3) && enableCustom == 2"></global-mobile-display>
+
+
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</p-dialog>

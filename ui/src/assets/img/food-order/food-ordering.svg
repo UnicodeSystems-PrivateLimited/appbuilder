@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="60px" height="60px" viewBox="0 0 60 60" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 44.1 (41455) - http://www.bohemiancoding.com/sketch -->
+    <title>food-ordering</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="-Assets" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Assets" transform="translate(-475.000000, -235.000000)"></g>
+        <g id="food-ordering" fill="#0EA0CD">
+            <path d="M12.5,39 C12.5,29.335 20.335,21.5 30,21.5 C39.665,21.5 47.5,29.335 47.5,39 L12.5,39 Z M31.25,19 L31.25,16.5 L33.75,16.5 C34.44125,16.5 35,15.94 35,15.25 C35,14.56 34.44125,14 33.75,14 L26.25,14 C25.55875,14 25,14.56 25,15.25 C25,15.94 25.55875,16.5 26.25,16.5 L28.75,16.5 C28.75,16.5 28.74125,19.1025 28.75,19 C18.29,19.64875 10,28.37625 10,39 L10,40.25 C10,40.94 10.55875,41.5 11.25,41.5 L48.75,41.5 C49.44125,41.5 50,40.94 50,40.25 L50,39 C50,28.37625 41.71,19.64875 31.25,19 L31.25,19 Z M48.75,44 L11.25,44 C10.55875,44 10,44.56 10,45.25 C10,45.94 10.55875,46.5 11.25,46.5 L48.75,46.5 C49.44125,46.5 50,45.94 50,45.25 C50,44.56 49.44125,44 48.75,44 L48.75,44 Z" id="Fill-1"></path>
+        </g>
+    </g>
+</svg>

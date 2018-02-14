@@ -1,0 +1,439 @@
+<div *ngIf="showLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<p-tabView *ngIf="!showLoader" class="last-app app-info-view-tabmenu">
+    <p-tabPanel header="General Information" class="app-info-app">
+        <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+            <div class="flex-100">
+                <div class="layout-row layout-align-center-center layout-align-space-between other-containers-gap">
+                    <div class="flex-30 layout-column">
+                        <span>App Name </span>
+                        <span class="layout-row detl-ipa-data">{{requestedAppData.app_name}}</span>
+                    </div>
+                    <div class="flex-30 layout-column">
+                        <span>App Code  </span>
+                        <span class="layout-row detl-ipa-data">{{requestedAppData.app_code}}</span>
+                    </div>
+                    <div class="flex-30 layout-column">
+                        <span>App Version </span>
+                        <span class="layout-row detl-ipa-data">{{requestedAppData.ios_app_version}}</span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-center-center layout-align-space-between other-containers-gap">
+                    <div class="flex-30 layout-column">
+                        <span>Apple User Name </span>
+                        <span class="layout-row detl-ipa-data">{{requestedAppData.apple_user_name}}</span>
+                    </div>
+                    <div class="flex-30 layout-column">
+                        <span>Apple Dev Name  </span>
+                        <span class="layout-row detl-ipa-data">{{requestedAppData.apple_dev_name}}</span>
+                    </div>
+                    <div class="flex-30 layout-column">
+                        <span>Apple password </span>
+                        <span class="layout-row detl-ipa-data">{{requestedAppData.apple_password}}</span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>Client Email</span>
+                        <span class="layout-row detl-ipa-data">{{requestedAppData.email}}</span>
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <span>Requested On </span>
+                        <span class="layout-row detl-ipa-data">{{requestedAppData.created_at|dateTimeFormatPipe:'MMMM Do YYYY, h:mm:ss a'}}</span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>Update Type</span>
+                        <span class="layout-row detl-ipa-data" *ngIf="requestedAppData.update_type">{{appUpdateTypes[requestedAppData.update_type].value}}</span>
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <span>Instruction </span>
+                        <span class="layout-row detl-ipa-data">{{requestedAppData.instruction}}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="App Information" class="app-info-app">
+        <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+            <div class="flex-15">
+                <div class="layout-column layout-align-center-center align-width">
+                    <img src="{{appData.icon_name}}" alt="" />
+                    <span class="layout-align-start-center layout-row align-widthimg detl-ipa-data">{{appData.app_icon_name}}</span>
+                </div>
+            </div>
+            <div class="flex-85">
+                <div class="layout-row layout-align-center-center layout-align-space-between other-containers-gap">
+                    <div class="flex-30 layout-column">
+                        <span>App Name <i class="fa fa-info-circle " tooltip="Enter your App Name. This is the title that shows up in the App Store and App Marketplace."   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row detl-ipa-data">{{appData.app_name}}</span>
+                    </div>
+                    <div class="flex-30 layout-column">
+                        <span>App Keywords  <i class="fa fa-info-circle " tooltip="Enter keywords that describe your specific app.  Each keyword must be separated with a comma.  Avoid generic terms like \'music\', characters limit is 100.  These will be used for your iTunes App Store listing."   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row detl-ipa-data">{{appData.keywords}}</span>
+                    </div>
+                    <div class="flex-30 layout-column">
+                        <span>App Icon Name(Title) <i class="fa fa-info-circle " tooltip="This will be displayed under your app icon on your users\' homescreen on their device.(12 characters or less)"   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row detl-ipa-data">{{appData.app_icon_name}}</span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>App Description  <i class="fa fa-info-circle" tooltip="This description will appear in the iTunes App Store/Google Play Store and must meet high standards.  Plain text only, no HTML."   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row detl-ipa-data">{{appData.description}}</span>
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <span>What's new in this version <span class="small-letter-color"><i class="fa fa-info-circle setinput-icon" tooltip="Use this field for app store update information."   tooltipPlacement="right" aria-hidden="true"></i></span></span>
+                        <span class="layout-row detl-ipa-data">{{appData.new_info}}</span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>Contact Email <i class="fa fa-info-circle " tooltip="The contact email through which customers can reach to you."   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row detl-ipa-data">{{appData.contact_email}}</span>
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <span>Phone Number <i class="fa fa-info-circle" tooltip="Enter the Phone Number."   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row detl-ipa-data">{{appData.contact_phone}}</span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>Official Website <i class="fa fa-info-circle " tooltip="Enter the URL for your organization’s website here."   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row detl-ipa-data">{{appData.html5_mobile_website_url}}</span>
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <span>Copyright<i class="fa fa-info-circle " tooltip="Enter Copyright Info"   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row detl-ipa-data">{{appData.copyright}}</span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>App Category<i class="fa fa-info-circle" tooltip="Choose an App category." tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row cat-drop detl-ipa-data">
+                            {{appData.category}}
+                        </span>
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <span>App Price <i class="fa fa-info-circle " tooltip="You can set any price you want for your app, or you can give it away for free. Most apps range from $0.99 - $4.99" tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row cat-drop detl-ipa-data">
+                            {{appData.price}}
+                        </span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>Choose Default Language</span>
+                        <span class="layout-row cat-drop detl-ipa-data">
+                            {{appData.language}}
+                            <i class="fa fa-info-circle layout-align-center-center layout-row setinput-icon" tooltip="Choose Default Language" tooltipPlacement="right"
+                                aria-hidden="true"></i></span>
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <label class=" checkbox-inline custom-checkbox n m-b-20">
+                                     <input id="inlineCheckbox01" type="checkbox" value="option1" [(ngModel)]="appData.disable_comment" disabled>
+                                        <span>Disable commenting for all tabs except Fan Wall and Youtube in the app.</span>
+                                    </label>
+
+                        <label class="checkbox-inline custom-checkbox layout-row">
+                                         <input id="inlineCheckbox02" type="checkbox" value="option2" [(ngModel)]="appData.audio_bg_play" disabled>
+                                        <span class="space-content">Auto Background Play</span>
+                                        <i class="fa fa-info-circle layout-align-center-center layout-row setinput-icon" aria-hidden="true">
+                                        </i>
+                                    </label>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between">
+                    <div class="flex-45 layout-column">
+                        <span class="layout-row layout-align-start-center">Your Google Plus client ID here. <i class="fa fa-info-circle layout-align-center-center layout-row setinput-icon lastboxicon ion-left" aria-hidden="true"> </i></span>
+                        <span class="layout-row flex-100 ">
+                            <div class="layout-row input-group flex-100 addon-ipa">
+                                            <span class="input-group-addon input-group-addon-primary addon-left border-all" id="basic-addon1"><i class="fa fa-google-plus" aria-hidden="true"></i></span>
+                        <span> {{appData.google_plus_id}}</span>
+                    </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Screen Shot" class="screen-shot-wraapper">
+        <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+            <tabset class="container-tab-detail  flex-100 app-disply-section">
+                <tab heading="IPHONE 4" class="tab-height">
+                    <div class="layout-row layout-align-start-start pad-15">
+                        <div class="layout-column flex-30">
+                            <span class="m-l-10 m-t-10 layout-row m-b-20">  
+                                    <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>    
+                                    Use our inovative screen shot tool to generate and upload high resolution screen shots for your devices using predefined logic.</span>
+                            <span class="m-l-10">Predefined screen shot locations:</span>
+                            <ul class="m-l-10 list-style-none">
+                                <li>Homescreen</li>
+                                <li>More Menu</li>
+                                <li>First App Tab</li>
+                            </ul>
+                        </div>
+                        <div class="layout-column in-betw-line layout-align-start-center flex-20"><span class="one"></span><span>OR</span><span class="one"></span></div>
+                        <div *ngIf="appIphoneFourScreenShot.screen_shot_1 || appIphoneFourScreenShot.screen_shot_2 || appIphoneFourScreenShot.screen_shot_3 || appIphoneFourScreenShot.screen_shot_4 || appIphoneFourScreenShot.screen_shot_5" class="layout-column flex-50">
+                            <span class="m-l-10 m-t-10 layout-row font-size-18">  <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>DownLoad App ScreenShots</span>
+                            <ul  class="m-l-10 list-style-none">
+
+                                <li> <a href="../api/ws/function/IpaRequest/download/screenShot/{{appId}}">Click here</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="layout-row flex-100 pad-10 layout-align-space-around up-info-tab">
+
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>1</span></div>
+                            <img *ngIf="appIphoneFourScreenShot.screen_shot_1" src="{{appIphoneFourScreenShot.screen_shot_1}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>2</span></div>
+                            <img *ngIf="appIphoneFourScreenShot.screen_shot_2" src="{{appIphoneFourScreenShot.screen_shot_2}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>3</span></div>
+                            <img *ngIf="appIphoneFourScreenShot.screen_shot_3" src="{{appIphoneFourScreenShot.screen_shot_3}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>4</span></div>
+                            <img *ngIf="appIphoneFourScreenShot.screen_shot_4" src="{{appIphoneFourScreenShot.screen_shot_4}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>5</span></div>
+                            <img *ngIf="appIphoneFourScreenShot.screen_shot_5" src="{{appIphoneFourScreenShot.screen_shot_5}}" height="300px">
+                        </div>
+                    </div>
+                </tab>
+
+                <tab heading="iPHONE 5" class="tab-height-2">
+                    <div class="layout-row layout-align-start-start pad-15">
+                        <div class="layout-column flex-30">
+                            <span class="m-l-10 m-t-10 layout-row m-b-20">  
+                                    <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>                          
+                                    Use our inovative screen shot tool to generate and upload high resolution screen shots for your devices using
+                    predefined logic.</span>
+                            <span class="m-l-10">Predefined screen shot locations:</span>
+                            <ul class="m-l-10 list-style-none">
+                                <li>Homescreen</li>
+                                <li>More Menu</li>
+                                <li>First App Tab</li>
+                            </ul>
+                        </div>
+                        <div class="layout-column in-betw-line layout-align-start-center flex-20"><span class="one"></span><span>OR</span><span class="one"></span></div>
+                        <div *ngIf="appIphoneFiveScreenShot.screen_shot_1 || appIphoneFiveScreenShot.screen_shot_2 || appIphoneFiveScreenShot.screen_shot_3 || appIphoneFiveScreenShot.screen_shot_4 || appIphoneFiveScreenShot.screen_shot_5" class="layout-column flex-50">
+                            <span class="m-l-10 m-t-10 layout-row font-size-18">  <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>DownLoad App ScreenShots</span>
+                            <ul class="m-l-10 list-style-none">
+
+                                <li> <a href="../api/ws/function/IpaRequest/download/screenShot/{{appId}}">Click here</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="layout-row flex-100 pad-10 layout-align-space-around up-info-tab">
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>1</span></div>
+                            <img *ngIf="appIphoneFiveScreenShot.screen_shot_1" src="{{appIphoneFiveScreenShot.screen_shot_1}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>2</span></div>
+                            <img *ngIf="appIphoneFiveScreenShot.screen_shot_2" src="{{appIphoneFiveScreenShot.screen_shot_2}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>3</span></div>
+                            <img *ngIf="appIphoneFiveScreenShot.screen_shot_3" src="{{appIphoneFiveScreenShot.screen_shot_3}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>4</span></div>
+                            <img *ngIf="appIphoneFiveScreenShot.screen_shot_4" src="{{appIphoneFiveScreenShot.screen_shot_4}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>5</span></div>
+                            <img *ngIf="appIphoneFiveScreenShot.screen_shot_5" src="{{appIphoneFiveScreenShot.screen_shot_5}}" height="300px">
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="IPHONE 6" class="tab-height-3">
+                    <div class="layout-row layout-align-start-start pad-15">
+                        <div class="layout-column flex-30">
+                            <span class="m-l-10 m-t-10 layout-row m-b-20">  
+                                    <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>     
+                                    Use our inovative screen shot tool to generate and upload high resolution screen shots for your devices using
+                    predefined logic.</span>
+                            <span class="m-l-10">Predefined screen shot locations:</span>
+                            <ul class="m-l-10 list-style-none">
+                                <li>Homescreen</li>
+                                <li>More Menu</li>
+                                <li>First App Tab</li>
+                            </ul>
+                        </div>
+                        <div class="layout-column in-betw-line layout-align-start-center flex-20"><span class="one"></span><span>OR</span><span class="one"></span></div>
+                        <div class="layout-column flex-50" *ngIf="appIphoneSixScreenShot.screen_shot_1 || appIphoneSixScreenShot.screen_shot_2 || appIphoneSixScreenShot.screen_shot_3 || appIphoneSixScreenShot.screen_shot_4 || appIphoneSixScreenShot.screen_shot_5">
+                            <span class="m-l-10 m-t-10 layout-row font-size-18">  <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>DownLoad App ScreenShots</span>
+                            <ul class="m-l-10 list-style-none">
+
+                                <li> <a href="../api/ws/function/IpaRequest/download/screenShot/{{appId}}">Click here</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="layout-row flex-100 pad-10 layout-align-space-around up-info-tab">
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>1</span></div>
+                            <img *ngIf="appIphoneSixScreenShot.screen_shot_1" src="{{appIphoneSixScreenShot.screen_shot_1}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>2</span></div>
+                            <img *ngIf="appIphoneSixScreenShot.screen_shot_2" src="{{appIphoneSixScreenShot.screen_shot_2}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>3</span></div>
+                            <img *ngIf="appIphoneSixScreenShot.screen_shot_3" src="{{appIphoneSixScreenShot.screen_shot_3}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>4</span></div>
+                            <img *ngIf="appIphoneSixScreenShot.screen_shot_4" src="{{appIphoneSixScreenShot.screen_shot_4}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>5</span></div>
+                            <img *ngIf="appIphoneSixScreenShot.screen_shot_5" src="{{appIphoneSixScreenShot.screen_shot_5}}" height="300px">
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="IPHONE 6 PLUS" class="tab-height-3">
+                    <div class="layout-row layout-align-start-start pad-15">
+                        <div class="layout-column flex-30">
+                            <span class="m-l-10 m-t-10 layout-row m-b-20">  
+                                    <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>
+                                    
+                                    Use our inovative screen shot tool to generate and upload high resolution screen shots for your devices using
+                    predefined logic.</span>
+                            <span class="m-l-10">Predefined screen shot locations:</span>
+                            <ul class="m-l-10 list-style-none">
+                                <li>Homescreen</li>
+                                <li>More Menu</li>
+                                <li>First App Tab</li>
+                            </ul>
+                        </div>
+                        <div class="layout-column in-betw-line layout-align-start-center flex-20"><span class="one"></span><span>OR</span><span class="one"></span></div>
+                        <div class="layout-column flex-50" *ngIf="appIphoneSixPlusScreenShot.screen_shot_1 || appIphoneSixPlusScreenShot.screen_shot_2 || appIphoneSixPlusScreenShot.screen_shot_3 || appIphoneSixPlusScreenShot.screen_shot_4 || appIphoneSixPlusScreenShot.screen_shot_5">
+                            <span class="m-l-10 m-t-10 layout-row font-size-18">  <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>DownLoad App ScreenShots</span>
+                            <ul class="m-l-10 list-style-none">
+
+                                <li> <a href="../api/ws/function/IpaRequest/download/screenShot/{{appId}}">Click here</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="layout-row flex-100 pad-10 layout-align-space-around up-info-tab">
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>1</span></div>
+                            <img *ngIf="appIphoneSixPlusScreenShot.screen_shot_1" src="{{appIphoneSixPlusScreenShot.screen_shot_1}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>2</span></div>
+                            <img *ngIf="appIphoneSixPlusScreenShot.screen_shot_2" src="{{appIphoneSixPlusScreenShot.screen_shot_2}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>3</span></div>
+                            <img *ngIf="appIphoneSixPlusScreenShot.screen_shot_3" src="{{appIphoneSixPlusScreenShot.screen_shot_3}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>4</span></div>
+                            <img *ngIf="appIphoneSixPlusScreenShot.screen_shot_4" src="{{appIphoneSixPlusScreenShot.screen_shot_4}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>5</span></div>
+                            <img *ngIf="appIphoneSixPlusScreenShot.screen_shot_5" src="{{appIphoneSixPlusScreenShot.screen_shot_5}}" height="300px">
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="TABLET" class="tab-height">
+                    <div class="layout-row layout-align-start-start pad-15">
+                        <div class="layout-column flex-30">
+                            <span class="m-l-10 m-t-10 layout-row m-b-20">  
+                                    <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>
+                                    
+                                    Use our inovative screen shot tool to generate and upload high resolution screen shots for your devices using
+                    predefined logic.</span>
+                            <span class="m-l-10">Predefined screen shot locations:</span>
+                            <ul class="m-l-10 list-style-none">
+                                <li>Homescreen</li>
+                                <li>More Menu</li>
+                                <li>First App Tab</li>
+                            </ul>
+                        </div>
+                        <div class="layout-column in-betw-line layout-align-start-center flex-20"><span class="one"></span><span>OR</span><span class="one"></span></div>
+                        <div class="layout-column flex-50" *ngIf="appTabletScreenShot.screen_shot_1 || appTabletScreenShot.screen_shot_2 || appTabletScreenShot.screen_shot_3 || appTabletScreenShot.screen_shot_4 || appTabletScreenShot.screen_shot_5">
+                            <span class="m-l-10 m-t-10 layout-row font-size-18">  <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>DownLoad App ScreenShots</span>
+                            <ul class="m-l-10 list-style-none">
+
+                                <li> <a href="../api/ws/function/IpaRequest/download/screenShot/{{appId}}">Click here</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="layout-row flex-100 pad-10 layout-align-space-around up-info-tab">
+
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>1</span></div>
+                            <img *ngIf="appTabletScreenShot.screen_shot_1" src="{{appTabletScreenShot.screen_shot_1}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>2</span></div>
+                            <img *ngIf="appTabletScreenShot.screen_shot_2" src="{{appTabletScreenShot.screen_shot_2}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>3</span></div>
+                            <img *ngIf="appTabletScreenShot.screen_shot_3" src="{{appTabletScreenShot.screen_shot_3}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>4</span></div>
+                            <img *ngIf="appTabletScreenShot.screen_shot_4" src="{{appTabletScreenShot.screen_shot_4}}" height="300px">
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>5</span></div>
+                            <img *ngIf="appTabletScreenShot.screen_shot_5" src="{{appTabletScreenShot.screen_shot_5}}" height="300px">
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Push Notification" class="push-noti-cred">
+        <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+            <div class="flex-100">
+                <div class="layout-column layout-align-space-between other-containers-gap">
+                    <div class="layout-column m-b-20">
+                            <span>Sender Id</span>
+                            <div class="flex-50 layout-row layout-align-start-center"> 
+                                <input style="max-width: 360px" list="senderid" name="senderid" [(ngModel)]="serverKeyId.sender_id" (ngModelChange)="selectSenderId()">
+                                <datalist id="senderid">
+                                    <option *ngFor="let r of keyData" value="{{r}}">{{r}}</option>
+                                </datalist>
+                            </div>
+                    </div>
+                    <div class="layout-column m-b-10">
+                        <span>Server Key</span>
+                        <div class="flex-50 layout-row layout-align-start-center"> 
+                            <input style="max-width: 360px" list="serverKey" name="serverKey" [(ngModel)]="serverKeyId.server_key" (ngModelChange)="selectServerKey()">
+                            <datalist id="serverKey">
+                                <option *ngFor="let r of serialkeyData" value="{{r}}">{{r}}</option>
+                            </datalist>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <button class="green-btn" [disabled]="!serverKeyId.server_key" (click)="saveServerKeyData()">Save</button>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Prepare App" class="app-info-app">
+        <div class="setting4-maincontainer">
+            <button class="green-btn" (click)="onPrepareAppClick()">CLICK HERE TO PREPARE APP</button>
+            <p *ngIf="isPrepared">{{preparedMessage}}</p>
+        </div>
+    </p-tabPanel>
+</p-tabView>

@@ -1,0 +1,253 @@
+<div *ngIf="!ready || showMainLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">You have {{websites.length}} websites(s)</li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="flex-100 layout-row set-div layout-align-start-center web-bk">
+        <div class="flex-85 layout-row">
+            <label class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="settings.show_nav_bar">
+                <span>Show navigation bar</span>
+            </label>
+            <i class="fa fa-info-circle l mar-l-10" tooltip="Select this to show the navigation bar inside the app." tooltipPlacement="right"
+               aria-hidden="true"></i>
+        </div>
+
+        <div class="flex-10 layout-column">
+            <button class="btn-update" (click)="saveSettings()">Update Settings</button>
+        </div>
+    </div>
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="dotted-bootom-div layout-column layout-align-end">
+                <div class=" layout-row layout-align-space-between-center pdf-box ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">                       
+                        <li class="title-sbhead">You have {{websites.length}} websites(s)</li>
+                    </ul>
+                    <button class="green-btn" (click)="showAddDialog()">
+                        <i class="fa fa-plus ion-right" aria-hidden="true"></i> Add New Web
+                    </button>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedWeb.length > 0 && selectedWeb.indexOf(true) !== -1" (click)="onWebDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>                
+            </div>
+            <div [dragula]='"website-bag"' [dragulaModel]="websites">
+                <div *ngFor="let website of websites" class="dotted-bootom-div layout-row somespace-top layout-align-start-center">
+                    <div class="flex-70 layout-row layout-align-start-center brk-all pad-l-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedWeb[website.id]" (click)="onCheckTabChange(selectedWeb[website.id], website.id)">
+                            <span></span>
+                        </label>                        
+                        <span class="layout-align-center-center layout-row"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+                        <span><img src="{{website.thumbnail || '../../../../assets/img/no-image.png'}}"
+                                   class="website-thumbnail" alt="{{website.name + ' thumbnail'}}"></span>
+                        <div class="layout-column menu-tb-span">
+                            <span>{{website.name}}</span>
+                            <span>{{website.url}}</span>
+                            <span *ngIf="website.is_donation_request" class="donation">Donation</span>
+                        </div>
+                    </div>
+                    <div class="flex-30 layout-row layout-align-end-center pad-r-15">
+                        <span><button class="edit-btn" (click)="showEditDialog(website.id)">edit</button></span>
+                        <!--<span class="red"><button class="red" (click)="onDeleteClick(website.id)">delete</button></span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+
+    <!-- Add Web View Dialog START-->
+    <p-dialog  [draggable]="false" header="Add New Web View" [(visible)]="addDialogDisplay" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onAddWebsiteSubmit()">
+            <div class="layout-column">
+                <div class="web-bg">
+                    <div class="layout-row m-b-15">
+                        <div class="layout-column flex-100">
+                            <label>Name
+                                <i class="fa fa-info-circle l m-l-10" tooltip="Specify the website name" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text" [(ngModel)]="addWebsiteData.name">
+                        </div>
+                    </div>
+                    <div class="layout-row m-b-15">
+                        <div class="layout-column flex-100">
+                            <label>URL
+                                <i class="fa fa-info-circle l m-l-10" tooltip="Specify the website URL" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text" [(ngModel)]="addWebsiteData.url">
+                        </div>
+                    </div>
+                    <div>
+                        <!--                        <input type="checkbox" [(ngModel)]="addWebsiteData.is_donation_request" (click)="onAddWebsiteCheckboxClick()">
+                                                <span></span>-->
+                        <label class="custom-checkbox bg-white border-all border-r-5 pad-10-15 ">
+                            <input type="checkbox" [(ngModel)]="addWebsiteData.is_donation_request" (click)="onAddWebsiteCheckboxClick()">
+                            <span>Does this URL request donations?</span>
+                        </label>
+                    </div>
+
+                </div>
+                <div class="m-t-10 web-bg">
+                    <label class="custom-checkbox ">
+                        <input type="checkbox" [(ngModel)]="addWebsiteData.is_printing_allowed" (click)="onAddWebsiteCheckboxClick()">
+                        <span>Allow printing from within app <i style="position: relative;top: 2px;" class="fa fa-info-circle l m-l-10" tooltip="This feature works for version 44.0 Cherry and newer." tooltipPlacement="right" aria-hidden="true"></i></span>
+                    </label>
+                    <!--                    <input >
+                                        <span>Allow printing from within app <i class="fa fa-info-circle l" tooltip="This feature works for version 44.0 Cherry and newer." tooltipPlacement="right" aria-hidden="true"></i></span>
+                    -->
+                </div>
+                <div class="m-t-10 web-bg">
+                    <label class="custom-checkbox">
+                        <input type="checkbox" [(ngModel)]="addWebsiteData.use_safari_webview" (click)="onAddWebsiteCheckboxClick()">
+                        <span>Best of both worlds? Use Safari webview for improved browsing with the ability to use passwords saved in Safari and more.
+                            <i class="fa fa-info-circle l m-l-10" tooltip="You can only pick one of these settings or none. Selecting one of them will disable the other that is selected." tooltipPlacement="right" aria-hidden="true"></i>
+                        </span>
+                    </label>
+                    <!--                    <input >
+                                        <span>
+                                         </span>-->
+                </div>
+                <div class=" block-3 m-t-10 web-bg layout-align-start-center">
+                    <span>Thumbnail <i class="fa fa-info-circle " tooltipPlacement="right" tooltip="Upload an image. Image will appear as a thumbnail next to your web site in the list view. Image size is 140 x 140px" aria-hidden="true"></i></span>
+                    <input type="file" (change)="onAddWebsiteThumbnailChange($event)" />
+                </div>
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+                </div>
+            </div>
+<!--            <footer>
+                <div class="">
+                </div>
+            </footer>-->
+        </form>
+    </p-dialog>
+    <!-- Add Web View Dialog END-->
+
+    <!-- Edit Web View Dialog START-->
+    <p-dialog  [draggable]="false" header="Edit Web View" [(visible)]="editDialogDisplay" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onEditWebsiteSubmit()" *ngIf="editWebsiteData.id">
+            <div class="layout-column">
+                <div class=" web-bg">
+                    <div class="layout-row m-b-15">
+                        <div class="layout-column flex-100">
+                            <label>Name
+                                <i class="fa fa-info-circle l m-l-10" tooltip="Specify the website name" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text" [(ngModel)]="editWebsiteData.name">
+                        </div>
+                    </div>
+                    <div class="layout-row m-b-15">
+                        <div class="layout-column flex-100">
+                            <label>URL
+                                <i class="fa fa-info-circle l m-l-10" tooltip="Specify the website URL" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text" [(ngModel)]="editWebsiteData.url">
+                        </div>
+                    </div>
+                    <div class="m-b-10">
+                        <label class="custom-checkbox border-r-5 pad-10-15 bg-white border-all">
+                            <input id="inlineCheckbox01" type="checkbox" [(ngModel)]="editWebsiteData.is_donation_request" (click)="onEditWebsiteCheckboxClick()">
+                            <span>Does this URL request donations?</span>
+                        </label>
+                        <!--                        <input type="checkbox" [(ngModel)]="editWebsiteData.is_donation_request" (click)="onEditWebsiteCheckboxClick()">
+                                                <span></span>-->
+                    </div>
+                </div>
+                <div class="m-t-10 web-bg">
+                    <label class="custom-checkbox ">
+                        <input type="checkbox" [(ngModel)]="editWebsiteData.is_printing_allowed" (click)="onEditWebsiteCheckboxClick()">
+                        <span>Allow printing from within app <i style="position: relative;top: 2px;" class="fa fa-info-circle l m-l-10"  tooltip="This feature works for version 44.0 Cherry and newer." tooltipPlacement="right" aria-hidden="true"></i></span>
+                    </label>
+                    <!--
+                                        <input type="checkbox" >
+                                        <span></span>-->
+                </div>
+                <div class="m-t-10 web-bg">
+                    <label class="custom-checkbox ">
+                        <input type="checkbox" [(ngModel)]="editWebsiteData.use_safari_webview" (click)="onEditWebsiteCheckboxClick()">
+                        <span> Best of both worlds? Use Safari webview for improved browsing with the ability to use passwords saved in Safari and more.
+                            <i class="fa fa-info-circle l m-l-10" tooltip="You can only pick one of these settings or none. Selecting one of them will disable the other that is selected." tooltipPlacement="right" aria-hidden="true"></i>
+                        </span>
+                    </label>
+                    <!--                    <input type="checkbox">
+                                        <span>
+                                       </span>-->
+                </div>
+                <div class=" block-3m-t-10 web-bg layout-align-start-center">
+                    <div class="layout-row">
+                        <span class="flex-20">Thumbnail <i class="fa fa-info-circle " tooltipPlacement="right" tooltip="Upload an image. Image will appear as a thumbnail next to your web site in the list view. Image size is 140 x 140px" aria-hidden="true"></i></span>
+                        <input type="file" (change)="onEditWebsiteThumbnailChange($event)" />
+                    </div>
+                    <div *ngIf="editDialogThumbnail" class="thumb-img m-t-10 m-b-10">
+                        <i class="fa fa-close" (click)="onDeleteThumbnailClick(editWebsiteData.id)"></i>
+                        <img style="max-height:64px; max-width: 64px" src="{{editDialogThumbnail}}">
+                    </div>
+                </div>
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+                </div>
+            </div>
+<!--            <footer>
+                <div class="">
+                </div>
+            </footer>-->
+        </form>
+    </p-dialog>
+    <!-- Edit Web View Dialog END-->
+
+    <!-- Delete Web View Dialog START -->
+    <p-dialog [draggable]="false"  header="Delete Web View ?" [(visible)]="showDeleteDialog" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <p style="color: #000">Are you sure you want to delete the selected Web View ?</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+                <a type="" pButton icon="fa-check" label="Yes" class="login-btn cursor-p" (click)="deleteWebView()">Yes</a>
+                <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteDialog=false">No</a>
+            </div>
+        </footer>
+    </p-dialog>
+    <!-- Delete Web View Dialog END -->
+
+<!--     Delete Thumnail Dialog START 
+    <p-dialog header="Delete Thumbnail ?" [(visible)]="showThumbnailDeleteDialog" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <p style="color: #000">Are you sure you want to delete this thumbnail ?</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end-center pad-5">
+                <a type="" pButton icon="fa-check" label="Yes" class="login-btn cursor-p" (click)="deleteThumbnail()">Yes</a>
+                <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showThumbnailDeleteDialog=false">No</a>
+            </div>
+        </footer>
+    </p-dialog>
+     Delete Thumnail Dialog END -->
+</div>

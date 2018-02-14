@@ -1,0 +1,20 @@
+page-fan-wall-tab {
+
+  ion-content.fan-wall-content {
+    background: #f4f4f7;
+
+    .comment-cards-wrapper {
+        margin-bottom: 75px;
+        .comment-card {
+            .card-header {
+                background: #dddee8;
+            }
+
+            ion-card-content.fan-wall-comment {
+                padding-top: 13px;
+            }
+        }
+    }
+  }
+
+}

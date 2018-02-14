@@ -1,0 +1,247 @@
+<ion-header>
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">
+            Cart
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content *ngIf="service.cartData.length">
+    <ion-card class="cart-card">
+        <ion-list>
+            <ion-item-sliding *ngFor="let item of service.cartData; let i = index">
+                <ion-item class="cart-item-detail" text-wrap [class.top-border]="i !== 0" (click)="onItemClick(item.item_id)">
+                    <ion-thumbnail item-left>
+                        <img [src]="item.item_image">
+                    </ion-thumbnail>
+                    <h2>{{item.item_name}}</h2>
+                    <p *ngIf="item.size"><strong>Size:</strong> {{item.size.title}}</p>
+                    <p>
+                        <strong>Item Price:</strong>
+                        <span [innerHTML]="currencySymbol"></span>
+                        {{item.item_price | number: '1.2-2'}}
+                    </p>
+                    <p *ngIf="item.options && item.options.length">
+                            <strong>Options:</strong>
+                        <span *ngFor="let option of item.options; let j = index">
+                            <span *ngIf="j !== 0">,</span>
+                            {{option.option.title}}
+                            <span *ngIf="option.quantity > 1">({{option.quantity}})</span>
+                        </span>
+                    </p>
+                    <h3 class="cart-qty">
+                        <button ion-button icon-only clear (click)="onQuantityMinusClick(i, $event)" color="black">
+                            <ion-icon name="remove"></ion-icon>
+                        </button>
+                        <span class="cart-qty-value">{{item.quantity}}</span>
+                        <button ion-button icon-only clear (click)="onQuantityAddClick(i, $event)" color="black">
+                            <ion-icon name="add"></ion-icon>
+                        </button>
+                    </h3>
+                    <h3 item-right class="cart-item-price">
+                        <span [innerHTML]="currencySymbol"></span>
+                        {{(item.total_price * item.quantity) | number: '1.2-2'}}
+                    </h3>
+                </ion-item>
+
+                <ion-item-options side="left" class="danger-bg">
+                    <button ion-button icon-only expandable (click)="onItemDelete(i)" color="danger">
+                        <ion-icon name="md-trash" class="trash-icon"></ion-icon>
+                    </button>
+                </ion-item-options>
+
+                <ion-item-options side="right" class="danger-bg">
+                    <button ion-button icon-only expandable (click)="onItemDelete(i)" color="danger">
+                        <ion-icon name="md-trash" class="trash-icon"></ion-icon>
+                    </button>
+                </ion-item-options>
+            </ion-item-sliding>
+        </ion-list>
+    </ion-card>
+
+    <ion-card *ngIf="service.payment.is_tips" class="cart-card">
+        <ion-card-header>
+            Tip?
+            <span *ngIf="order.tip.amount" class="item-right">
+                <span [innerHTML]="currencySymbol"></span>
+                {{order.tip.amount | number: '1.2-2'}}
+            </span>
+        </ion-card-header>
+        <ion-row>
+            <ion-col width-33>
+                <button mode="md" class="tip-btn" ion-button block round (click)="setTipValue(10)" [style.background-color]="order.tip.percent === 10 ? globalService.initData.globalStyleSettings?.features?.button_image : '#f4f4f4'"
+                    [style.color]="order.tip.percent === 10 ? globalService.initData.globalStyleSettings?.features?.button_text : '#000'">10%</button>
+            </ion-col>
+            <ion-col width-33>
+                <button mode="md" class="tip-btn" ion-button block round (click)="setTipValue(15)" [style.background-color]="order.tip.percent === 15 ? globalService.initData.globalStyleSettings?.features?.button_image : '#f4f4f4'"
+                    [style.color]="order.tip.percent === 15 ? globalService.initData.globalStyleSettings?.features?.button_text : '#000'">15%</button>
+            </ion-col>
+            <ion-col width-33>
+                <button mode="md" class="tip-btn" ion-button block round (click)="setTipValue(20)" [style.background-color]="order.tip.percent === 20 ? globalService.initData.globalStyleSettings?.features?.button_image : '#f4f4f4'"
+                    [style.color]="order.tip.percent === 20 ? globalService.initData.globalStyleSettings?.features?.button_text : '#000'">20%</button>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+
+    <ion-card class="cart-card">
+        <ion-list>
+
+            <ion-item *ngIf="service.services.convenience_fee">
+                <p color="black">Convenience Fee</p>
+                <h2 item-right>
+                    <span [innerHTML]="currencySymbol"></span>
+                    {{service.services.convenience_fee | number: '1.2-2'}}
+                </h2>
+            </ion-item>
+
+            <ion-item *ngIf="service.orderSettings.type === this.service.orderType.DELIVERY
+                && this.order.total_price < this.service.services.free_delivery_amount
+                && service.services.delivery_price_fee">
+                <p color="black">Delivery Fee</p>
+                <h2 item-right>
+                    <span [innerHTML]="currencySymbol"></span>
+                    {{service.services.delivery_price_fee | number: '1.2-2'}}
+                </h2>
+            </ion-item>
+
+            <ion-item *ngFor="let tax of order.tax_list">
+                <p color="black">{{tax.tax.tax_name}}</p>
+                <h2 item-right>
+                    <span [innerHTML]="currencySymbol"></span>
+                    {{tax.amount | number: '1.2-2'}}
+                </h2>
+            </ion-item>
+
+            <ion-item *ngIf="service.services.delivery_price_fee">
+                <p color="black" class="bold">Total charges({{this.service.payment.currency}})</p>
+                <h2 class="bold" item-right>
+                    <span [innerHTML]="currencySymbol"></span>
+                    {{order.total_charges | number: '1.2-2'}}
+                </h2>
+            </ion-item>
+
+        </ion-list>
+
+        <ion-row>
+            <ion-col text-center>
+                <h2>
+                    <strong>{{orderInfo}}</strong>
+                </h2>
+            </ion-col>
+        </ion-row>
+    </ion-card>
+
+    <ion-card class="cart-card">
+        <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+            [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar)| hex2rgba">
+            Payment
+        </ion-card-header>
+        <ion-segment padding mode-ios [(ngModel)]="order.payment_method" color="black">
+            <ion-segment-button *ngIf="service.payment.is_cash" [value]="paymentMethod.CASH">
+                Cash
+            </ion-segment-button>
+            <ion-segment-button *ngIf="service.payment.is_card" [value]="paymentMethod.CARD">
+                Card
+            </ion-segment-button>
+        </ion-segment>
+    </ion-card>
+
+    <ion-card class="cart-card" *ngIf="service.orderSettings.type === service.orderType.DELIVERY && platform.is('cordova')">
+        <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+            [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar)| hex2rgba">
+            Address
+        </ion-card-header>
+        <ion-slides [options]="addressSlideOptions" [style.height.px]="62">
+            <ion-slide *ngFor="let address of addressList" [style.width]="'auto'">
+                <button mode="md" class="tip-btn" ion-button round color="light" (click)="onAddressButtonClick(address)">{{address.locationName}}</button>
+            </ion-slide>
+            <ion-slide [style.width]="'auto'">
+                <button mode="md" class="tip-btn" ion-button round color="light" (click)="onAddressAddClick()">
+                    <ion-icon name="add"></ion-icon>
+                </button>
+            </ion-slide>
+        </ion-slides>
+    </ion-card>
+
+    <ion-card class="cart-card">
+        <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+            [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar)| hex2rgba">
+            Contact
+        </ion-card-header>
+
+        <ion-list>
+            <template [ngIf]="service.orderSettings.type === service.orderType.DELIVERY">
+                <ion-item class="address-input">
+                    <ion-label floating color="black">Address
+                        <span color="danger">*</span>
+                    </ion-label>
+                    <ion-input type="text" [(ngModel)]="order.contact.addressLine"  readonly="true" [ngModelOptions]="{standalone: true}"
+                        required>
+                    </ion-input>
+                </ion-item>
+                <div tappable class="address-overlay" (click)="openAddressSelector()"></div>
+
+                <ion-item class="top-border">
+                    <ion-label floating color="black">Zip</ion-label>
+                    <ion-input type="text" [(ngModel)]="order.contact.zip" [ngModelOptions]="{standalone: true}" required></ion-input>
+                </ion-item>
+
+                <ion-item class="top-border">
+                    <ion-label floating color="black">Apt, Suit, Floor</ion-label>
+                    <ion-input type="text" [(ngModel)]="order.contact.apartment" [ngModelOptions]="{standalone: true}"></ion-input>
+                </ion-item>
+            </template>
+
+            <ion-item [class.top-border]="service.orderSettings.type === service.orderType.DELIVERY">
+                <ion-label floating color="black">First Name
+                    <span color="danger">*</span>
+                </ion-label>
+                <ion-input type="text" [(ngModel)]="order.contact.firstName" [ngModelOptions]="{standalone: true}" required></ion-input>
+            </ion-item>
+
+            <ion-item class="top-border">
+                <ion-label floating color="black">Last Name
+                    <span color="danger">*</span>
+                </ion-label>
+                <ion-input type="Text" [(ngModel)]="order.contact.lastName" [ngModelOptions]="{standalone: true}" required></ion-input>
+            </ion-item>
+
+            <ion-item class="top-border">
+                <ion-label floating color="black">Phone
+                    <span color="danger">*</span>
+                </ion-label>
+                <ion-input type="number" [(ngModel)]="order.contact.phone" [ngModelOptions]="{standalone: true}" required></ion-input>
+            </ion-item>
+
+            <ion-item class="top-border" *ngIf="service.orderSettings.type === service.orderType.DELIVERY">
+                <ion-label floating color="black">Email
+                    <span color="danger">*</span>
+                </ion-label>
+                <ion-input type="email" [(ngModel)]="order.contact.email" [ngModelOptions]="{standalone: true}" required></ion-input>
+            </ion-item>
+        </ion-list>
+    </ion-card>
+
+    <ion-card class="cart-card" *ngIf="!isDeliveryOrder">
+        <ion-card-header [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+            [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar)| hex2rgba">
+            Email Receipt
+            <ion-toggle class="item-right" [(ngModel)]="order.is_email_receipt" color="black"></ion-toggle>
+        </ion-card-header>
+        <ion-item *ngIf="order.is_email_receipt">
+            <ion-label floating color="black">Email
+                <span color="danger">*</span>
+            </ion-label>
+            <ion-input type="email" [(ngModel)]="order.contact.email" [ngModelOptions]="{standalone: true}" required></ion-input>
+        </ion-item>
+    </ion-card>
+
+    <ion-row padding>
+        <button ion-button block (click)="onCheckoutClick()" [style.background-color]="(globalService.initData.globalStyleSettings?.features?.button_image)| hex2rgba"
+            [style.color]="globalService.initData.globalStyleSettings?.features?.button_text">Check Out</button>
+    </ion-row>
+
+</ion-content>

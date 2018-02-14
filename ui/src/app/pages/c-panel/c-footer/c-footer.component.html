@@ -1,0 +1,160 @@
+<div class="flex-100 layout-row main-social-tab-container">
+    <div class="flex-35 layout-column">
+        <div class="layout-column flex-100 border-all white-bg m-t-20">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Copyright Section </div>
+            <div class="layout-column flex-100 layout-align-start pad-15">
+                <span>You can use HTML code</span>
+                <div class="layout-row layout-align-start">
+                    <div class="drp-da  layout-align-end-center layout-row">
+                        <textarea rows="8" cols="50" placeholder="Copyright. TappITtechnology Platform 2016. All Rights Reserved." [(ngModel)]="footerData.cFooterData.footer_copyright_html"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layout-column border-all white-bg m-t-20 flex-100">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Colors</div>
+            <div class="layout-row pre-wraaper m-b-10 m-t-10 m-l-10 m-r-10">
+                <span class=" ">Footer Background Color</span>
+                <div class=" ">
+                    <input class="input-class" [(colorPicker)]="footerData.cFooterData.footer_bg_color" [style.background]="footerData.cFooterData.footer_bg_color"
+                        [value]="footerData.cFooterData.footer_bg_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                </div>
+            </div>
+            <div class="layout-row pre-wraaper m-b-10 m-t-10 m-l-10 m-r-10">
+                <span class=" ">Footer Menu Header Color</span>
+                <div class=" ">
+                    <input class="input-class" [(colorPicker)]="footerData.cFooterData.footer_menu_header_color" [style.background]="footerData.cFooterData.footer_menu_header_color"
+                        [value]="footerData.cFooterData.footer_menu_header_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'"
+                        readonly/>
+                </div>
+            </div>
+            <div class="layout-row pre-wraaper m-b-10 m-t-10 m-l-10 m-r-10">
+                <span class=" ">Footer Menu Link Color</span>
+                <div class=" ">
+                    <input class="input-class" [(colorPicker)]="footerData.cFooterData.footer_menu_link_color" [style.background]="footerData.cFooterData.footer_menu_link_color"
+                        [value]="footerData.cFooterData.footer_menu_link_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'"
+                        readonly/>
+                </div>
+            </div>
+        </div>
+        <div class="layout-column border-all white-bg m-t-20" style="height:100%;">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">
+                <div class="layout-row">
+                    <div class="layout-column layout-align-start flex-50">
+                        Navigation
+                    </div>
+                    <div class="layout-row layout-align-start flex-50">
+                        <span class="layout-row flex-50 c-p" (click)="onClickNavCols(1)">Col1</span>
+                        <span class="layout-row flex-50 c-p" (click)="onClickNavCols(2)">Col2</span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="navColType==1" class="layout-column pad-5">
+                <div class="mob-add-wrap m-t-10" [dragula]="'cpanel-footer-navigation-col1-bag'" [dragulaModel]="footerData.cFooterData.navigationCol1">
+                    <div class="layout-row layout-align-space-between-center wrap-address" *ngFor="let col of footerData.cFooterData.navigationCol1;let i=index;">
+                        <div class="layout-row">
+                            <span class="layout-row layout-align-center-center"><i class="fa fa-arrows cursor-move ion-right" aria-hidden="true"></i></span>
+                            <span class="layout-column">
+                                <span>{{col.label}}</span>
+                            </span>
+                        </div>
+                        <div>
+                            <div class="dropdown layout-align-end-center layout-row  drop-wrap">
+                                <a id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
+                                    <ul>
+                                        <!--<li class=""><i class="dropdown-arr"></i></li>-->
+                                        <li class="" (click)="showEditDialog(col,2,i)"><a class="signout"><i class="fa fa-pencil-square-o"></i>Edit</a></li>
+                                        <li class="" (click)="onDeleteClick(i)"><a class="signout"><i class="fa fa-trash"></i>Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="navColType==2" class="layout-column pad-5">
+                <div class="mob-add-wrap m-t-10" [dragula]="'cpanel-footer-navigation-col2-bag'" [dragulaModel]="footerData.cFooterData.navigationCol2">
+                    <div class="layout-row layout-align-space-between-center wrap-address" *ngFor="let col of footerData.cFooterData.navigationCol2;let i=index;">
+                        <div class="layout-row">
+                            <span class="layout-row layout-align-center-center"><i class="fa fa-arrows cursor-move ion-right" aria-hidden="true"></i></span>
+                            <span class="layout-column">
+                                <span>{{col.label}}</span>
+                            </span>
+                        </div>
+                        <div>
+                            <div class="dropdown layout-align-end-center layout-row">
+                                <a id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
+                                    <ul>
+                                        <li class="dropdown-item"><i class="dropdown-arr"></i></li>
+                                        <li class="dropdown-item" (click)="showEditDialog(col,2,i)"><a class="signout"><i class="fa fa-pencil-square-o"></i>Edit</a></li>
+                                        <li class="dropdown-item" (click)="onDeleteClick(i)"><a class="signout"><i class="fa fa-trash"></i>Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-column pad-5">
+                <button type="button" class="green-btn m-r-10" (click)="showAddDialog(1)">Add Link</button>
+            </div>
+        </div>
+    </div>
+    <ba-cpanel-preview class="flex-65 p-l-10 m-l-10 layout-column"></ba-cpanel-preview>
+</div>
+
+<!--add/edit dialog start-->
+<p-dialog [draggable]="false" [(visible)]="addEditModal" modal="modal" class="app-dialog add-app" >
+    <div>
+        <form class="border-all white-bg">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">
+                <div class="layout-row layout-align-start flex-100">
+                    <span class="layout-row flex-25 c-p">{{openDialogType==1?"Add Footer Link":"Edit Footer Link"}}</span>
+                </div>
+            </div>
+            <div class="layout-column pad-15">
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>Label</label>
+                        <div class="layout-row flex-100">
+                            <input class="flex-100 ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="cNavigationData.label">
+                        </div>
+                    </div>
+                    <div class="layout-column flex-50 m-l-10">
+                        <label>Link</label>
+                        <div class="layout-row flex-100">
+                            <input class="flex-100 ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="cNavigationData.link">
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>Action</label>
+                        <div class="layout-row flex-100">
+                            <div class="flex-100  layout-align-end-center layout-row">
+                                <p-dropdown [options]="footerAction" class=" flex-100 border-all layout-align-center-center layout-row" [(ngModel)]="cNavigationData.action"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-column flex-50 m-l-10">
+                        <label>Class</label>
+                        <div class="layout-row flex-100">
+                            <input class="flex-100 ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="cNavigationData.class">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="pad-15">
+                <button type="button" class="blue-btn m-r-10" (click)="hideAddEditDialog()">Cancel</button>
+                <button type="button" class="green-btn m-l-10" (click)="saveNavigation()">Save</button>
+            </footer>
+        </form>
+    </div>
+</p-dialog>

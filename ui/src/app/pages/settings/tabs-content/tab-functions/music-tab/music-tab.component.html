@@ -1,0 +1,501 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<!--settings modal-->
+<div>
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="flex-100 spaceborder">
+
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">You have {{musicList.length}} items(s):</li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="flex-100 layout-column  calender-event">
+        <div class="bg-white pad-5 ">
+            <div class="flex-100 layout-row  calender-event  layout-align-start-center">
+                <label class="checkbox-inline custom-checkbox nowrap flex-20 layout-row layout-align-start-center">
+                    <input type="checkbox" id="inlineCheckbox02" [checked]="settingsData['home_screen_widget']" [(ngModel)]="settingsData.home_screen_widget">
+                    <span>Homescreen Widget<i class="fa fa-info-circle l" tooltip="Check this box to enable our music tab widget. This will also serve as a short cut to your music tab and will be shown on your apps homescreen." tooltipPlacement="right" aria-hidden="true"></i>
+                    </span>
+                </label>
+            </div>
+            <div class="flex-100 layout-row  layout-align-start-center border-all p-l-10 m-b-10">
+                <div class="flex-25 layout-column layout-align-start-start border-r-white">
+                    <span class="m-b-10">Widget Location<i class="fa fa-info-circle l" tooltip="Select the location of your widget icon placement." tooltipPlacement="right" aria-hidden="true"></i></span>
+                    <div class="flex-100 layout-row  layout-align-start-center">
+                        <div class="layout-row flex-50 layout-align-start-center m-r-10">
+                            <p-radioButton name="left" [value]="WIDGET_LOCATION_LEFT" [(ngModel)]="settingsData.widget_location"></p-radioButton><span class="m-l-10">Left</span>
+                        </div>
+                        <div class="layout-row flex-50 layout-align-start-center m-r-10">
+                            <p-radioButton name="right" [value]="WIDGET_LOCATION_RIGHT" [(ngModel)]="settingsData.widget_location"></p-radioButton><span class="m-l-10">Right</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex-100 layout-row layout-align-start-center pad-5">
+                    <div class="layout-column">
+                        <label class="flex-30 layout-row layout-align-start-center m-b-10">
+                        Icon Opacity<i class="fa fa-info-circle l m-l-10" tooltip="You can change the opacity of your icon." tooltipPlacement="right" aria-hidden="true"></i>
+                    </label>
+                        <div class="flex-25 layout-row">
+                            <p-slider [(ngModel)]="settingsData.icon_opacity" [style]="{'width':'200px'}"></p-slider>
+                            <span class="m-l-10">{{settingsData.icon_opacity}}%</span>
+                        </div>
+                    </div>
+                    <div class="flex-70 layout-row layout-align-start-center">
+
+                        <div class="data-inbox-wrap">
+                            <div [style.opacity]="settingsData.icon_opacity / 100">
+                                <img *ngIf="tabData.type==1" src="{{tabData.src}}">
+                                <i *ngIf="tabData.type==2" class="Glyphter icon-{{tabData.icon_name}}" [style.color]="tabData.icon_type==1?'#000':'#fff'"
+                                    aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="m-l-10 m-r-10 p-b-10">
+            <div class="flex-15 layout-row float-right">
+                <button class="blue-btn" (click)="saveSettings()">Update Settings</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- End of settings-->
+
+<div *ngIf="ready">
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="dotted-bootom-div layout-column layout-align-end">
+                <div class="layout-row layout-align-space-between-center pdf-box  ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                        <li class="title-sbhead">You have {{musicList.length}} items(s)</li>
+                    </ul>
+                    <div class=" layout-row layout-align-end ">
+                        <button class="green-btn m-r-10" (click)="showImportItunesDialog()">
+                            Import from iTunes
+                        </button>
+                        <button class="green-btn m-r-10" (click)="showImport7DigitalDialog()">
+                            Import from 7Digital
+                        </button>
+                        <button class="green-btn" (click)="showAddDialog()">
+                            Add Track
+                        </button>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()">
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>
+            </div>
+            <div [dragula]="'content-tab-two-items-bag'" [dragulaModel]="musicList">
+                <div class="dotted-bootom-div layout-row somespace-top layout-align-start-center" *ngFor="let item of musicList;let i=index;">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedItem[item.id]" (click)="onCheckTabChange(selectedItem[item.id], item.id)">
+                            <span></span>
+                        </label>
+                        <span>
+                            <img [class.off]="(item.is_active_iphone==1)?false:true" src="../../../../assets/img/logo_apple.png" alt="iPhone, iPad" width="16">
+                            <img [class.off]="(item.is_for_android==1)?false:true" src="../../../../assets/img/logo_android.png" alt="Android" width="16">
+                        </span>
+                        <span class="layout-align-center-center layout-row"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+                        <div class="layout-column menu-tb-span">
+                            <span *ngIf="item.title">{{item.title}}</span>
+                            <span *ngIf="item.album">{{item.album}}</span>
+                        </div>
+                    </div>
+                    <div class="flex-50 layout-row layout-align-end  remove-r-padding  pad-r-15">
+                        <span><button class="edit-btn m-r-0" (click)="showEditDialog(item)">edit</button></span>
+                        <!--<span class="lastspan-out"><button class="red" (click)="onDeleteClick(item.id,i)">delete</button></span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column layout-align-start">
+            <div class="">
+                <div class="layout-column  layout-align-center-center border-left">
+                    <div>
+                        <span class="change-bottom m-b-10">Header Image<i class="fa fa-info-circle l m-l-10" tooltip="Phone Header Image 640x264px.Tablet Header Image 1536x634px." tooltipPlacement="right" aria-hidden="true"></i>
+                        </span>
+                    </div>
+                    <div class="border-all music-tab-wraaper layout-column flex-100 sid-mob-updates m-t-10 m-b-10">
+                        <tabset class="container-tab-detail">
+                            <tab heading="Phone">
+                                <div class="m-l-10 m-t-10 m-r-10">
+                                    <div class="layout-column flex-100">
+                                        <div class="layout-column">
+                                            <span *ngIf="!phoneHeaderImage"><label class="font-weight-bold">No header image uploaded.</label></span>
+                                            <span *ngIf="phoneHeaderImage" class="phoneHeaderImage m-b-10 border-all">
+                                                <img src="{{phoneHeaderImage}}"/>
+                                                <i class="fa fa-close" (click)="deleteHeaderImageDialog('phone')"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <form>
+                                        <input type="file" value="Browse" class="file-button" (change)="phoneHeaderChangeEvent($event)" /><br><br>
+                                    </form>
+                                </div>
+                            </tab>
+                            <tab heading="Tablet">
+                                <div class="m-l-10 m-t-10 m-r-10">
+                                    <div class="layout-column flex-100">
+                                        <div class="layout-column">
+                                            <span *ngIf="!tabletHeaderImage"> <label class="font-weight-bold">No header image uploaded.</label></span>
+                                            <span *ngIf="tabletHeaderImage" class="phoneHeaderImage m-b-10 border-all">
+                                                <img src="{{tabletHeaderImage}}"/>
+                                                <i class="fa fa-close" (click)="deleteHeaderImageDialog('tablet')"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <form>
+                                        <input type="file" value="Browse" class="file-button" (change)="tabletHeaderChangeEvent($event)" /><br><br>
+                                    </form>
+                                </div>
+                            </tab>
+                            <div class="flex-100 layout-align-center-center layout-row"> <button class="green-btn m-b-20" (click)="uploadHeaderImage()">Upload</button></div>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+
+    <!-- Add/Edit New Music Dialog START-->
+    <p-dialog [draggable]="false"  [header]="musicHeader" [(visible)]="addEditDialogDisplay" modal="modal" class="app-dialog add-app music-edit-tab"
+        (onAfterHide)="onDialogHide()" >
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form class="border-all web-bg white-bg locality-tab">
+            <div>
+                <div class="layout-row flex-100 pdf-box border-all">
+                    <label>Track<i class="fa fa-info-circle l ion-left" tooltip="Upload the track or type the URL. If you want
+                                       to remove the track uploaded, just leave the URL box blank and submit." tooltipPlacement="right" aria-hidden="true"></i></label>
+                    <span class="m-l-10" *ngIf="singleMusicData.id && singleMusicData.track_file"><a href="{{singleMusicData.track_file}}" target="_blank">{{singleMusicData.track_url}}</a></span>
+                    <span class="m-l-10" *ngIf="singleMusicData.id && !singleMusicData.track_file && singleMusicData.track_url"><a href="{{singleMusicData.track_url}}" target="_blank">{{track_file_name}}</a></span>
+                </div>
+                <div class="web-bg">
+
+                    <div class="layout-row flex-100 layout-align-start-center m-t-10 m-b-10">
+                        <div class=" layout-column flex-45">
+                            <span>UPLOAD A FILE: </span><br>
+                            <input type="file" accept="audio/*" (change)="fileChangeEvent($event)">
+                        </div>
+                        <div class="layout-column flex-10">
+                            <p>OR</p>
+                        </div>
+                        <div class=" layout-column flex-45">
+                            <span>TYPE THE URL: </span><br>
+                            <input [(ngModel)]="singleMusicData.track_url" class="input-class" type="text">
+                        </div>
+                    </div>
+                </div>
+                <div class="m-t-10 web-bg">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-50 m-r-10 pad-r-15">
+                            <label>Artist
+                                <i class="fa fa-info-circle l" tooltip="Artist of the track." tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text" [(ngModel)]="singleMusicData.artist">
+                        </div>
+                        <div class="layout-column flex-50">
+                            <label>Title
+                                <i class="fa fa-info-circle l" tooltip="Title of the track." tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text" [(ngModel)]="singleMusicData.title">
+                        </div>
+                    </div>
+                    <div class="layout-row flex-100 m-t-10 m-b-10">
+                        <div class="layout-column flex-50 m-r-10 pad-r-15">
+                            <label>Album<i class="fa fa-info-circle l" tooltip="Album of the track." tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text" [(ngModel)]="singleMusicData.album">
+                        </div>
+                        <div class="flex-25 layout-align-end-end layout-row">
+                            <div class="layout-row layout-align-end-center">
+                                <label class="custom-checkbox m-b-10">
+                                    <input type="checkbox" [checked]="singleMusicData[ 'is_for_android']" [(ngModel)]="singleMusicData.is_for_android">
+                                    <span>Android
+                                        <i class="fa fa-info-circle l ion-left" tooltip="This dictates whether or not the track
+                                           is for android." tooltipPlacement="right" aria-hidden="true"></i>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="flex-25 layout-align-end-end layout-row">
+                            <div class="layout-row layout-align-end-center">
+                                <label class="custom-checkbox m-b-10">
+                                    <input type="checkbox" [checked]="singleMusicData[ 'is_active_iphone']" [(ngModel)]="singleMusicData.is_active_iphone">
+                                    <span>Active
+                                        <i class="fa fa-info-circle l ion-left" tooltip="This dictates whether or not the track
+                                           is active on the iPhone app." tooltipPlacement="right" aria-hidden="true"></i>
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-column flex-100">
+                        <label>Purchase URL
+                            <i class="fa fa-info-circle l ion-left" tooltip="The track URL on iTune or any other online store so
+                               that users can visit to purchase the track." tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text" [(ngModel)]="singleMusicData.purchase_url">
+                    </div>
+                </div>
+                <div class="web-bg">
+                    <div class="layout-column flex-100">
+                        <label class="m-b-10">Description
+                            <i class="fa fa-info-circle l" tooltip="Description of the track." tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <div id="description-editor"></div>
+                        <!--<ckeditor *ngIf="showEditor" [config]="ckEditorConfig" [(ngModel)]="singleMusicData.description"></ckeditor>-->
+                    </div>
+                </div>
+                <div class="web-bg">
+                    <div class="layout-row flex-100">
+                        <label>Album Art<i class="fa fa-info-circle l ion-left" tooltip="Upload the album art or type the URL.
+                                           If you want to remove the album art uploaded, just leave the URL box blank and
+                                           submit. Art should be 200x200px for all versions." tooltipPlacement="right" aria-hidden="true"></i></label>
+                    </div>
+                    <div class="layout-row flex-100">
+                        <div class="m-r-10">
+                            <span *ngIf="singleMusicData.id && singleMusicData.art_file"><img src="{{singleMusicData.art_file}}" height="50" width="50"></span>
+                            <span *ngIf="singleMusicData.id && !singleMusicData.art_file && singleMusicData.art_url"><img src="{{singleMusicData.art_url}}" height="50" width="50"></span>
+                        </div>
+                        <div class="layout-row flex-100 layout-align-start-center">
+                            <div class=" layout-column flex-45">
+                                <span>UPLOAD A FILE: </span><br>
+                                <input type="file" (change)="photoChangeEvent($event)" accept="image/*" />
+                            </div>
+                            <div class="layout-column flex-10">
+                                <p>OR</p>
+                            </div>
+                            <div class="layout-column flex-45">
+                                <span>TYPE THE URL: </span><br>
+                                <input class="input-class" type="text" [(ngModel)]="singleMusicData.art_url">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="save-btn">
+                    <button class="green-btn" type="submit" [disabled]="addSaveButtonHide" (click)="onSaveSingleMusic()">SAVE</button>
+                </div>
+            </div>
+            <!--            <footer>
+                <div class="">
+                </div>
+            </footer>-->
+        </form>
+    </p-dialog>
+    <!-- Add/Edit New Music Dialog END-->
+
+    <!-- IMPORT MUSIC from itunes Dialog START-->
+    <p-dialog [draggable]="false"  header="IMPORT MUSIC" [(visible)]="importItunesDialogDisplay" modal="modal" class="app-dialog add-app  music tab"
+        (onAfterHide)="onImportItueDialogHide()" >
+        <div>
+            <form class="border-all white-bg web-bg">
+                <div>
+                    <div class="web-bg">
+                        <div class="layout-row flex-100 layout-align-start-center">
+                            <label>Search Method<i class="fa fa-info-circle l m-r-10 m-l-10" tooltip="Specify search method" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <label class="layout-row layout-align-start-center nowrap m-r-10">                           
+                                <p-radioButton type="radio" name="inlineRadioOptions"  value="BYKEYWORD" (click)="onCheckBySearch()" [(ngModel)]="importFromItune.search_by"></p-radioButton>
+                                <span class="m-l-10">By Search</span>
+                            </label>
+                            <label class="layout-row layout-align-start-center nowrap m-r-10">
+                                <p-radioButton type="radio" name="inlineRadioOptions"  value="BYURL" (click)="onCheckByURL()" [(ngModel)]="importFromItune.search_by"></p-radioButton>
+                                <span class="m-l-10">By Album URL</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div *ngIf="checkBySearch">
+                        <div class="m-t-10 web-bg">
+                            <div class="layout-row flex-100">
+                                <div class="layout-column flex-50 m-r-10 pad-r-15">
+                                    <label>Country
+                                        <i class="fa fa-info-circle l" tooltip="Select the country" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                    <p-dropdown [options]="countryForItunes" class="flex-70 border-all" [(ngModel)]="importFromItune.country_id"></p-dropdown>
+                                </div>
+                                <div class="layout-column flex-50">
+                                    <label>Keyword
+                                        <i class="fa fa-info-circle l" tooltip="Enter your artist name, album name, or track" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                    <input class="input-class" type="text" [(ngModel)]="importFromItune.keyword">
+                                </div>
+                            </div>
+                        </div>
+                        <button class="green-btn" type="submit" (click)="searchTrackFromItune()">Search Songs From App Store</button>
+                    </div>
+                    <div *ngIf="checkByURL">
+                        <div class="m-t-10 web-bg">
+                            <div class="layout-row flex-100 layout-align-start-center">
+                                <div class="layout-column flex-50 m-r-10 pad-r-15">
+                                    <label>Album URL
+                                        <i class="fa fa-info-circle l" tooltip="Enter the album URL which you like to importk" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                    <input class="input-class" type="text" [(ngModel)]="importFromItune.album_url">
+                                </div>
+                                <span>ex: http://itunes.apple.com/us/album/take-care-deluxe-version/id479760323</span>
+                            </div>
+                        </div>
+                        <button class="green-btn" type="submit" (click)="searchTrackFromItune()">Fetch Songs from an Album</button>
+                    </div>
+                </div>
+            </form>
+            <div *ngIf="ituneSongsList && ituneSongsList.length>0">
+                <div class="web-bg layout-row flex-100">
+                    <label>Please check some tracks from the below list and then click"Import" button.</label>
+                    <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit" (click)="importTrackOfItunes()">IMPORT TRACK(S)</button>
+                </div>
+                <div class="web-bg layout-row flex-100">
+                    <div class="layout-column flex-10">
+                        <label>&nbsp;</label>
+                    </div>
+                    <div class="layout-column flex-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">
+                            <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="checkAllItuneList" (change)="onCheckAllItuneListChange()">
+                            <span>Select All</span>
+                        </label>
+                    </div>
+                    <div class="layout-column flex-15">
+                        <label>Title</label>
+                    </div>
+                    <div class="layout-column flex-20">
+                        <label>Artist</label>
+                    </div>
+                    <div class="layout-column flex-40">
+                        <label>Album</label>
+                    </div>
+                </div>
+                <div class="layout-row flex-100" *ngFor="let item of ituneSongsList;let i=index;">
+                    <div class="layout-column flex-10">
+                        <label>{{i+1}}</label>
+                    </div>
+                    <div class="layout-column flex-15">
+                        <label>
+                            <input type="checkbox" id="inlineCheckbox03" [(ngModel)]="selectedItuneList[i]" (click)="onCheckDialogTabChange(selectedItuneList[i], i)">                        
+                        </label>
+                    </div>
+                    <div class="layout-column flex-15">
+                        <label>{{item.title}}</label>
+                    </div>
+                    <div class="layout-column flex-20">
+                        <label>{{item.artist}}</label>
+                    </div>
+                    <div class="layout-column flex-40">
+                        <label>{{item.album}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
+    <!-- IMPORT MUSIC from itunes Dialog END-->
+
+    <!-- IMPORT MUSIC from 7Digital Dialog START-->
+    <p-dialog [draggable]="false"  header="IMPORT MUSIC" [(visible)]="import7DigitalDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add"
+       >
+        <div class="white-bg border-all web-bg">
+            <form class=" m-b-15">
+                <div class="m-t-10 m-b-10">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-50 m-r-10 pad-r-15">
+                            <label>Country
+                                <i class="fa fa-info-circle l" tooltip="Select the country" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <p-dropdown [options]="country" class="flex-70 border-all"></p-dropdown>
+                        </div>
+                        <div class="layout-column flex-50">
+                            <label>Keyword
+                                <i class="fa fa-info-circle l" tooltip="Enter your artist name, album name, or track" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                    </div>
+                </div>
+                <button class="green-btn" type="submit">Search Songs From 7Digital</button>
+
+            </form>
+            <div>
+                <div class="m-b-10 layout-row flex-100 event-cal-wrap layout-align-start-center">
+                    <label>Please check some tracks from the below list and then click"Import" button.</label>
+                    <button class="green-btn m-l-10" type="submit">IMPORT TRACK(S)</button>
+                </div>
+                <div class="layout-column flex-100 border-all white-bg">
+                    <div class="web-bg layout-row flex-100 border-b">
+                        <div class="layout-column flex-10">
+                            <label>&nbsp;</label>
+                        </div>
+                        <div class="layout-row flex-15 layout-align-start-center">
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                            <input type="checkbox" id="inlineCheckbox01" >
+                            <span>Select All</span>
+                        </label>
+                        </div>
+                        <div class="layout-column flex-15">
+                            <label>Title</label>
+                        </div>
+                        <div class="layout-column flex-20">
+                            <label>Artist</label>
+                        </div>
+                        <div class="layout-column flex-40">
+                            <label>Album</label>
+                        </div>
+                    </div>
+                    <div class="web-bg layout-row flex-100 ">
+                        <div class="layout-column flex-10">
+                            <label>1</label>
+                        </div>
+                        <div class="layout-row flex-15 layout-align-start-center">
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                            <input type="checkbox" id="inlineCheckbox01" >
+                            <span></span>
+                        </label>
+                        </div>
+                        <div class="layout-column flex-15">
+                            <label>Second Chance</label>
+                        </div>
+                        <div class="layout-column flex-20">
+                            <label>Shine down</label>
+                        </div>
+                        <div class="layout-column flex-40">
+                            <label>The Sound of Madness (Deluxe Version)</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-dialog>
+    <!-- IMPORT MUSIC from 7Digital Dialog END-->
+
+    <!-- Delete Music Dialog START -->
+    <p-dialog [draggable]="false"  header="Delete Track ?" [(visible)]="showDeleteDialog" modal="modal" class="app-dialog add-app">
+        <p style="color: #000">Are you sure you want to delete this track ?</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+                <a type="" pButton icon="fa-check" label="Yes" class="login-btn cursor-p" (click)="deleteTrack()">Yes</a>
+                <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteDialog=false">No</a>
+            </div>
+        </footer>
+    </p-dialog>
+    <!-- Delete Music Dialog END -->
+
+    <!--     Delete Music Header Image Dialog START 
+    <p-dialog header="Remove Image ?" [(visible)]="showHeaderImageDeleteDialog" modal="modal" class="app-dialog add-app">
+        <p style="color: #000">Are you sure you want to remove this item ?</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+                <a type="" pButton icon="fa-check" label="Yes" class="login-btn cursor-p" (click)="deleteHeaderImage()">Yes</a>
+                <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteDialog=false">No</a>
+            </div>
+        </footer>
+    </p-dialog>
+     Delete Music Header Image Dialog END -->
+</div>

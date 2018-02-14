@@ -1,0 +1,334 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready" class="contact-us-wrap">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">You have {{phoneNumbers.length}} phone number(s)</li>-->
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-100 layout-row main-social-tab-container">
+        <div class="flex-50 layout-column">
+            <div class="againtab-container-box">
+                <div class="header-background">
+                    <tabset class="container-tab-detail">
+                        <tab heading="General Information">
+                            <div class="tabinner-space contact-us">
+                                <div class="layout-row  layout-align-space-between-center">
+                                    <span>Your Business Details:</span>
+                                    <button type="button" class="green add" (click)="onSetOpeningTimesClick()"><i class="fa fa-clock-o" aria-hidden="true"></i>Set Opening Times</button>
+                                </div>
+                                <form class="contact-us-formr">
+                                    <div class="tb-1 web-bg">
+                                        <div class="layout-column">
+                                            <label>Custom Location Name:</label>
+                                            <span class="layout-row">
+                                                <i class="fa fa-info-circle layout-row setinput-icon" aria-hidden="true"></i>
+                                                Use a custom location description instead of the default address format. If left blank, the default address format will be used.
+                                            </span>
+                                        </div>
+                                        <div class="layout-row layout-align-space-between">
+                                            <div class="layout-column flex-49 add-app">
+                                                <label>Address Section 1
+                                                    <i class="fa fa-info-circle l" tooltip="The first section (or top row on your mobile device) of the address description" tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                                <input class="input-class" type="text" [(ngModel)]="locationData.address_sec_1">
+                                            </div>
+                                            <div class="layout-column flex-49 add-app">
+                                                <label>Address Section 2
+                                                    <i class="fa fa-info-circle l" tooltip="The second section (or bottom row on your mobile device) of the address description" tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                                <input class="input-class" type="text" [(ngModel)]="locationData.address_sec_2">
+                                            </div>
+                                        </div>
+                                        <div class="layout-column add-app">
+                                            <label>Website
+                                                <i class="fa fa-info-circle l" tooltip="Enter your websites URL here" tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                            <input class="input-class flex-100" type="text" [(ngModel)]="locationData.website">
+                                        </div>
+                                        <div class="layout-row layout-align-space-between">
+                                            <div class="layout-column flex-49 add-app">
+                                                <label>Email
+                                                    <i class="fa fa-info-circle l" tooltip="Enter your email here" tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                                <input class="input-class" type="text" [(ngModel)]="locationData.email_id">
+                                            </div>
+                                            <div class="layout-column flex-49 add-app">
+                                                <label>Telephone
+                                                    <i class="fa fa-info-circle l" tooltip="Enter your phone number here" tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                                <input class="input-class" type="text" [(ngModel)]="locationData.telephone">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tb-2 web-bg  layout-row layout-align-center-center">
+                                        <div *ngIf="!locationEditorDisplay" (click)="showLocationEditor()" class="loctn-up"> <i class="fa fa-map-marker" aria-hidden="true"></i>Click to edit your location.</div>
+                                        <div *ngIf="locationEditorDisplay" class="flex-100">
+                                            <location-editor [lat]="locationData.m_lat" [long]="locationData.m_long" (latLongChange)="onLatLongChange($event)" (addressChange)="onAddressChange($event)"></location-editor>
+                                            <div class="layout-column dis-wrap">
+                                                <label class="layout-row">Distance Type
+                                                    <i class="fa fa-info-circle l" tooltip="Distance Type" tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                                <div class="layout-row">
+                                                    <div class="flex-10 layout-row layout-align-space-between-center">
+                                                        <p-radioButton class="m-r-5" name="distanceType" [value]="DISTANCE_TYPE_MILE" [(ngModel)]="locationData.m_distance_type"></p-radioButton>Mile</div>
+                                                    <div class="flex-20 layout-row layout-align-start-center m-l-10">
+                                                        <p-radioButton class="flex-20 m-r-5" name="distanceType" [value]="DISTANCE_TYPE_KILOMETER" [(ngModel)]="locationData.m_distance_type"></p-radioButton>Kilometer</div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tb-3 web-bg">
+                                        <div class="layout-row">
+                                            <div class="layout-row flex-100 layout-align-start-center ">
+                                                <label class="checkbox-inline custom-checkbox nowrap" >
+                                                       <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="locationData.is_left_right_image_enabled">
+                                            <span>Enable/Disable Images.</span>
+                                                        </label>
+                                            </div>
+                                        </div>
+                                        <div class="layout-column dis-app relative">
+                                             <div class="overlay" *ngIf="!locationData.is_left_right_image_enabled"></div>
+                                             <div class="layout-row">
+                                            <div class="layout-row flex-70 layout-align-start-center ">
+                                                <label class="layout-row">Left Image<i class="fa fa-info-circle  setinput-icon" tooltip='Upload an image that represents your business.Image should be 288x144px.' tooltipPlacement="right" aria-hidden="true"></i></label>
+                                                <input type="file" (change)="onLeftImageChange($event)">
+                                            </div>
+                                            <div class="layout-column flex-30 layout-align-center-end">
+                                                <span *ngIf="!leftImage">Default Image</span>
+                                                <div class="div-img layout-row layout-align-center-center">
+                                                    <div *ngIf="!leftImage"></div>
+                                                    <i class="fa fa-close" *ngIf="leftImage" (click)="deleteLeftImage(locationData.id)"></i>
+                                                    <img [src]="leftImage" *ngIf="leftImage">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="layout-row">
+                                            <div class="layout-row flex-70 layout-align-start-center">
+                                                <label class="layout-row">Right Image<i class="fa fa-info-circle setinput-icon" tooltip='Upload an image that represents your business.Image should be 288x144px.' tooltipPlacement="right" aria-hidden="true"></i></label>
+                                                <input type="file" (change)="onRightImageChange($event)">
+                                            </div>
+                                            <div class="layout-column flex-30 layout-align-center-end">
+                                                <span *ngIf="!rightImage">Default Image</span>
+                                                <div class="div-img layout-row layout-align-center-center">
+                                                    <div *ngIf="!rightImage"></div>
+                                                    <i class="fa fa-close" *ngIf="rightImage" (click)="deleteRightImage(locationData.id)"></i>
+                                                    <img [src]="rightImage" *ngIf="rightImage">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                    </div>
+                                    <div class="layout-row save-btn">
+                                        <button type="button" class="blue-btn btn " [disabled]="addSaveButtonHide" (click)="onLocationFormSubmit()">Save Changes</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </tab>
+                        <tab heading="Comments">
+                            <div class="tabinner-space comment-sec">
+                                <span>Showing {{comments.length}} Comment(s):</span>
+
+                                <div class="coment-conct-wrap">
+                                    <table class="flex-100 layout-column">
+                                        <tbody class="comment-box-wrap">
+                                            <tr class="layout-row flex-100">
+                                                <td class="flex-30 layout-row layout-align-center-center cl-up">Date</td>
+                                                <td class="flex-70 layout-row">
+                                                    <table class="layout-row flex-100">
+                                                        <tbody class="layout-row flex-100">
+                                                            <tr class="layout-row flex-100">
+                                                                <td class="flex-80 layout-align-center-center cl-up">Name/Comment</td>
+                                                                <td class="flex-20 layout-align-center-center cl-up opening-time-wrap-th "></td>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                        <tbody class="comment-box-wrap ">
+                                            <tr class="layout-row flex-100" *ngFor="let comment of comments">
+                                                <td class="flex-30 layout-row layout-align-center-center cl-up-1  b-l-r">{{staticDataService.getFormattedDate(comment.created_at)}}</td>
+                                                <td class="flex-70 layout-row">
+                                                    <table class="layout-row flex-100">
+                                                        <tbody class="layout-column flex-100">
+                                                            <tr class="layout-row flex-100 ">
+                                                                <td class="flex-80 layout-align-center-center cl-up-1 border-r "> {{comment.name}}</td>
+                                                                <td class="flex-20 layout-align-center-center layout-row cl-up-1 "><button class="red" type="button" (click)="onCommentDeleteClick(comment.id)">Delete</button></td>
+                                                            </tr>
+                                                            <tr class="cl-up-1 layout-row flex-100 layout-align-start-center ">
+                                                                {{comment.comment}}
+                                                            </tr>
+
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+
+
+                                    </table>
+                                </div>
+                                <!--                                <div class="layout-column coment-coment-us">
+                                                                    
+                                                                    <div class="flex-100 layout-row space-top comment-box-wrap">
+                                                                        <div ></div>
+                                                                        <div ></div>
+                                                                        <div></div>
+                                                                    </div>
+                                                                    <div class="flex-100 layout-row comment-box-wrap-1">
+                                                                        <div class="flex-30 "></div>
+                                                                        <div c>
+                                                                            <div class="layout-row">
+                                                                                <div class="flex-85">
+                                                                                   
+                                                                                </div>
+                                                                                <div class="flex-15 layout-align-center-center">
+                                                                                    
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="layout-column">
+                                                                                
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>-->
+                            </div>
+                        </tab>
+                    </tabset>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 mob-add-wrap">
+            <div class="layout-column for-space">
+                <div class="layout-row layout-align-space-between-center">
+                    <span>Locations:</span>
+                    <button type="button" class="green-btn" (click)="showAddItem()"><i class="fa fa-map-marker" aria-hidden="true"></i>Add New Location</button>
+                </div>
+                <div [dragula]="LOCATIONS_BAG" [dragulaModel]="locations" class="m-t-10">
+                    <div *ngFor="let location of locations" class="layout-row layout-align-space-between-center wrap-address" [class.active]="activeLocationId === location.id"
+                        (click)="onLocationItemClick(location.id)">
+                        <div class="layout-row">
+                            <span class="layout-row layout-align-center-center"><i class="fa fa-arrows cursor-move" aria-hidden="true"></i></span>
+                            <span class="layout-column">
+                                <span>{{location.address_sec_1}}</span>
+                            <span>{{location.address_sec_2}}</span>
+                            </span>
+                        </div>
+                        <div><button type="button" class="red" (click)="showLocationDeleteDialog($event, location.id)">Delete</button></div>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-end wrap-address wrp-1" *ngIf="addItemDisplay" [class.active]="activeLocationId === -1"
+                    (click)="onNewItemClick()">
+                    <div class="layout-row layout-align-end">
+                        <div><button type="button" class="red" (click)="removeAddItem()">Delete</button></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- BACKGROUND IMAGE START -->
+            <div class="flex-100 layout-column">
+                <mobile-view [tabId]='tabId'></mobile-view>
+            </div>
+            <!-- BACKGROUND IMAGE END -->
+
+        </div>
+    </div>
+
+</div>
+
+<!-- Delete Dialog START -->
+<!--<p-dialog header="Delete Location ?" [(visible)]="locationDeleteDialogDisplay" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected location ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="onLocationDeleteClick()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="locationDeleteDialogDisplay=false">No</a>
+        </div>
+    </footer>-->
+<!--</p-dialog>-->
+<!-- Delete Dialog END -->
+
+<!-- Opening Times List Dialog START -->
+<p-dialog [draggable]="false"  header="Set Opening Times" [(visible)]="openingTimesDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add menu-tb">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="layout-column border-all white-bg web-bg " *ngIf="openingTimes">
+        <div class="layout-row layout-align-space-between mn-tb-1 flex-100">
+            <span class="layout-row layout-align-start-center">You have {{openingTimes.length}} opening time(s)</span>
+            <button class="green-btn" (click)="onAddOpeningTimeClick()">Add Opening Time</button>
+        </div>
+        <table class="flex-100 layout-column opening-time-wrap ">
+            <thead class="flex-100 layout-row">
+                <tr class="flex-100 layout-row">
+                    <th class="flex-5 layout-row layout-align-center-center"></th>
+                    <th class="flex-25 layout-row layout-align-center-center">Day</th>
+                    <th class="flex-25 layout-row layout-align-center-center">Open From</th>
+                    <th class="flex-25 layout-row layout-align-center-center">Open To</th>
+                    <th class="flex-20 layout-row layout-align-center-center">Action</th>
+                </tr>
+            </thead>
+            <tbody [dragula]="OPENING_TIMES_BAG" [dragulaModel]="openingTimes" class="height-tb">
+                <tr *ngFor="let time of openingTimes" class="flex-100 layout-row">
+                    <td class="flex-5 layout-row layout-align-center-center"><span><i class="fa fa-arrows cursor-move" aria-hidden="true"></i></span></td>
+                    <td class="flex-25 layout-row layout-align-start-center">{{time.day_name}}</td>
+                    <td class="flex-25 layout-row layout-align-start-center">{{time.open_from}}</td>
+                    <td class="flex-25 layout-row layout-align-start-center">{{time.open_to}}</td>
+                    <td class="flex-20 layout-row layout-align-center-center ">
+                        <button class="edit-btn " type="button" (click)="onOpeningTimeEditClick(time.id)">Edit</button>
+                        <button class="red" type="button" (click)="onOpeningTimeDeleteClick(time.id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</p-dialog>
+<!-- Opening Times List Dialog END -->
+
+<!-- Opening Time Form Dialog START -->
+<p-dialog [draggable]="false"  [header]="openingTimeFormHeader" [(visible)]="openingTimeFormDisplay" modal="modal" class="app-dialog add-app s-tab-add menu-tb-ad">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form (ngSubmit)="onOpeningTimeFormSubmit()" class="white-bg web-bg border-all">
+        <div class="layout-column m-b-20">
+            <div class="layout-column m-b-10">
+                <label>Input Day</label>
+                <input class="input-class flex-100" type="text" [(ngModel)]="openingTime.day_name">
+            </div>
+            <div class="layout-row layout-align-space-between ">
+                <div class="layout-column flex-45">
+                    <label>Open From</label>
+                    <input class="input-class" type="text" [(ngModel)]="openingTime.open_from">
+                </div>
+                <div class="layout-column flex-45">
+                    <label>Open To</label>
+                    <input class="input-class" type="text" [(ngModel)]="openingTime.open_to">
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="">
+                <div class="save-btn">
+                    <button class="blue-btn btn" type="submit">SAVE</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+</p-dialog>

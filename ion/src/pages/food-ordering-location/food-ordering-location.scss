@@ -1,0 +1,34 @@
+page-food-ordering-location {
+
+    ion-content {
+
+        #map {
+            width: 100%;
+            height: 250px;
+        }
+
+        ion-item {
+            div.pin-div {
+                display: flex;
+                justify-content: center;
+            }
+           
+        }
+        .location-address{
+            background: rgba(222, 215, 215, 0.25);
+            border-bottom: 1px solid #ccc;
+            padding-left: 6px;
+        .item-inner{border-bottom: none !important;
+            ion-label{white-space: normal;}
+            p{
+            
+                &.address-location-1{font-weight: 600;}
+                &.address-location-2{ font-size: 1.5rem !important;}
+            }
+           
+        }
+        }
+
+    }
+
+}

@@ -1,0 +1,59 @@
+<div *ngIf="field.properties.label != undefined" class="layout-column flex-100">
+	<label>
+        Field Label
+        <i class="fa fa-info-circle l" tooltip="Field label is one or two words describing the field." tooltipPlacement="right" aria-hidden="true"></i>
+    </label>
+	<input type="text" [(ngModel)]="field.properties.label">
+</div>
+
+<div *ngIf="field.properties.size != undefined" class="layout-column flex-100">
+	<label>
+        Field Size
+        <i class="fa fa-info-circle l" tooltip="Select the visual appearance for the field in your form. (It does not limit or increase the amount of data that can be collected by the name field)" tooltipPlacement="right" aria-hidden="true"></i>
+    </label>
+	<p-dropdown type="text" [(ngModel)]="field.properties.size" [options]="sizeOptions"></p-dropdown>
+</div>
+
+<div *ngIf="field.properties.choices != undefined" class="layout-column flex-100">
+	<label>
+        Choices
+        <i class="fa fa-info-circle l" tooltip='USE "+"/"-"BUTTONS TO ADD OR DELETE CHOICES. CLICK ON "STAR" TO MAKE A CHOICE DEFAULT SELECTION' tooltipPlacement="right" aria-hidden="true"></i>
+    </label>
+	<div *ngFor="let choice of field.properties.choices; let i = index" class="layout-row">
+		<input type="text" [(ngModel)]="choice.name">
+            <button class="plus-wrap" (click)="onPlusClick(choice, i)"><i class="fa fa-plus"></i></button>
+		<button class="minus-wrap"(click)="onMinusClick(i)"><i class="fa fa-minus"></i></button>
+		<button class="star-wrap"(click)="onStarClick(choice, i)" [class.selected]="choice.selected"><i class="fa fa-star"></i></button>
+	</div>
+</div>
+
+<div *ngIf="field.properties.format != undefined" class="layout-column flex-100">
+	<label>Time Format</label>
+	<p-dropdown type="text" [(ngModel)]="field.properties.format" [options]="timeFormatOptions"></p-dropdown>
+</div>
+
+<div *ngIf="field.properties.rules != undefined" class="layout-row flex-100 layout-align-start-center">
+    <label class="p-r-1">Rules</label>
+    <label class="checkbox-inline custom-checkbox  flex-90 layout-row layout-align-start-center" >
+                <input type="checkbox" id="inlineCheckbox02" [(ngModel)]="field.properties.rules.required">
+                <span class="layout-row">Required <i class="fa fa-info-circle l" tooltip="Marking this rule will make this field required. Message will be displayed for user if he leave the field empty." tooltipPlacement="right" aria-hidden="true"></i></span>
+            </label>
+<!--	<input type="checkbox" > -->
+	
+</div>
+
+<div *ngIf="field.properties.phone_format != undefined" class="layout-column flex-100">
+	<label>
+        Phone Format
+        <i class="fa fa-info-circle l" tooltip="You can select American or international phone formats" tooltipPlacement="right" aria-hidden="true"></i>
+    </label>
+	<p-dropdown type="text" [(ngModel)]="field.properties.phone_format" [options]="phoneFormatOptions"></p-dropdown>
+</div>
+
+<div *ngIf="field.properties.guidelines != undefined" class="layout-column flex-100">
+	<label>
+        Guidelines for User
+        <i class="fa fa-info-circle l" tooltip="Specify the text which will be displayed for users while they are filling particular field." tooltipPlacement="right" aria-hidden="true"></i>
+    </label>
+	<textarea [(ngModel)]="field.properties.guidelines"></textarea>
+</div>

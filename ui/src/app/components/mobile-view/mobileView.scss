@@ -1,0 +1,42 @@
+@import '../../theme/sass/flex';
+
+.website-thumbnail {
+    max-height: 47px;
+    max-width: 47px;
+}
+
+/*.btn-update{
+    background: #fff;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+}*/
+.mobile-view-tabs li.nav-item {
+    width: 33.3%;
+        text-align: center;
+}
+mobile-view .backg-inf-dia .height-tb {
+    height: 310px;
+    overflow: auto;
+}
+.mobile-view-header .img-wrap-div {
+    border: 1px solid #ccc;
+    padding: 9px 0;
+    // border-bottom: none;
+}
+.mobile-view-header  .mob-s-d button.btn-update {
+    width: 100%;
+    border-radius: 0;
+    border-top:none;
+}
+.app-settings .mobile-view-header .nav.nav-tabs {
+    border: 1px solid #ccc;
+    border-radius: 0 !important;
+}
+.mobile-view-header .calender-event {
+    padding: 7px 10px;
+    background: transparent;
+    border: none;
+    border-radius: 3px;
+    margin: 9px 0px  0px  0px;
+    // border: 1px solid #dedede;
+}

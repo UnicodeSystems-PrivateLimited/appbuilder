@@ -1,0 +1,335 @@
+<div class="app-name-function layout-column">
+    <div class="layout-row border-b pad-12-12 bg-1">
+        <div class="app-name layout-row flex-50 layout-align-start-center ">
+            App Name: {{appDetails.app_name}}
+        </div>
+        <div class="layout-row flex-50 layout-align-end-center add-btn">
+            <button class="" (click)="showAppTabAddDialog()">+ Add New Tab</button>
+            <button (click)="showDeleteConfirmDialog()" class="red" [class.checkTrue]="(tabSelector.active.length > 0 && tabSelector.active.indexOf(true) !== -1) || (tabSelector.inactive.length > 0 && tabSelector.inactive.indexOf(true) !== -1) "><i class="fa fa-trash" aria-hidden="true"></i></button>
+
+        </div>
+    </div>
+    <div class="pad-12-12 layout-row layout-align-space-between bg-2">
+        <div class="layout-column active-tab flex-100 layout-align-space-between ">
+            <div class="layout-row active-tab layout-align-space-between ">
+                <div class="name m-b-20 flex-45 layout-row layout-align-space-between">
+                    <label class="checkbox-inline custom-checkbox nowrap flex-50">
+                        <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="checkAllActive" (click)="selectAllActive()">
+                        <span>ACTIVE TABS</span>
+                    </label>
+                    <label class="flex-50 layout-align-start-center layout-row m-l-20">( TYPE OF TAB )</label>
+                </div>
+                <div class="m-b-20 layout-row flex-45">
+                    <label class="checkbox-inline custom-checkbox nowrap flex-30 layout-align-start-center layout-row">
+                        <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="checkAllInactive" (click)="selectAllInactive()">
+                        <span>INACTIVE TABS</span>
+                    </label>
+                    <div class="flex-70 layout-align-end-center  layout-row">
+                        <button class="turn-all" (click)="allActiveDialogDisplay=true">Turn All On</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class='wrapper layout-row layout-align-space-between '>
+
+                <!-- List of Active Tabs start -->
+                <div class='flex-45 layout-column' [dragula]='"first-bag"' [dragulaModel]='tabs.activeTabs'>
+                    <div *ngFor="let tab of tabs.activeTabs" class="tab-detail layout-row m-b-10 cursor-move" data-id="{{tab.id}}">
+                        <div class="tab-name-cheak layout-row flex-50 layout-align-start-center">
+                            <div class="icon-cheak m-l-10 layout-align-center-center layout-row">
+                                <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                                    <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="tabSelector.active[tab.id]" (click)="onCheckActiveTabChange(tabSelector.active[tab.id], tab.id)">
+                                           <span></span>
+                                </label>
+                            </div>
+                            <div class="layout-row flex-90 layout-align-space-between-center">
+                                <div class="">{{tab.title}}</div>
+                                <div class="icon-app  layout-align-center-center layout-row m-r-10">
+                                    <img *ngIf="tab.type == 1" [class.icon-bg]="tab.type == 1" src="{{tab.icon_src}}" alt="{{tab.title}}" style="width:28px; height:28px">
+                                    <i *ngIf="tab.type == 2" class=" icon-bg Glyphter icon-{{tab.icon_name}}" [style.color]="tab.icon_type == 1 ? '#000' : '#fff'" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-stauts-cheak layout-row flex-50 layout-align-start-center">
+                            <div class="icon-name flex-65 layout-align-start-center layout-row">( {{tab.tab_func_name}} )</div>
+                            <div class="stau-switch flex-20 layout-align-end-center layout-row">
+                                <div class="switch layout-align-center-center layout-row">
+                                    <input id="cmn-toggle-{{tab.id}}" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="tabStatus[tab.id]" (change)="changeStatus(tab.id, APPS_TAB_STATUS_DISABLED)">
+                                    <label [attr.for]="'cmn-toggle-' + tab.id"></label>
+                                </div>
+                            </div>
+                            <div class="edit-app c-p flex-15 layout-align-center-center layout-row" (click)="showAppTabEditDialog(tab.id)">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- List of Active Tabs end -->
+
+                <!-- List of Inactive Tabs start -->
+                <div class='flex-45 layout-column' [dragula]='"first-bag"' [dragulaModel]='tabs.inactiveTabs'>
+                    <div *ngFor="let tab of tabs.inactiveTabs" class="tab-detail layout-row m-b-10 cursor-move" data-id="{{tab.id}}">
+                        <div class="tab-name-cheak layout-row flex-50 layout-align-start-center">
+                            <div class="icon-cheak m-l-10 layout-align-center-center layout-row">
+                                <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                                    <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="tabSelector.inactive[tab.id]" (click)="onCheckInactiveTabChange(tabSelector.inactive[tab.id], tab.id)">
+                                           <span></span>
+                                </label>
+                            </div>
+                            <div class="layout-row flex-90 layout-align-space-between-center">
+                                <div class="">{{tab.title}}</div>
+                                <div class="icon-app  layout-align-center-center layout-row m-r-10">
+                                    <img *ngIf="tab.type == 1" [class.icon-bg]="tab.type == 1" src="{{tab.icon_src}}" alt="{{tab.title}}" style="width:28px; height:28px">
+                                    <i *ngIf="tab.type == 2" class="icon-bg Glyphter icon-{{tab.icon_name}}" [style.color]="tab.icon_type == 1 ? '#000' : '#fff'" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-stauts-cheak layout-row flex-50 layout-align-start-center">
+                            <div class="icon-name flex-65 layout-align-start-center layout-row">( {{tab.tab_func_name}} )</div>
+                            <div class="stau-switch flex-20 layout-align-end-center layout-row">
+                                <div class="switch layout-align-center-center layout-row">
+                                    <input id="cmn-toggle-{{tab.id}}" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="tabStatus[tab.id]" (change)="changeStatus(tab.id, APPS_TAB_STATUS_ENABLED)">
+                                    <label [attr.for]="'cmn-toggle-' + tab.id"></label>
+                                </div>
+                            </div>
+                            <div class="edit-app c-p flex-15 layout-align-center-center layout-row" (click)="showAppTabEditDialog(tab.id)">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- List of Inactive Tabs end -->
+
+            </div>
+        </div>
+
+    </div>
+</div>
+<p-dialog [draggable]="false" header="New App Tab Detail" [(visible)]="appTabAddDisplay" (onAfterHide)="onAppTabDialogHide()" modal="modal" class="app-dialog add-app  bbv natd app-tab-dilog-wrapper">
+    <form (ngSubmit)="appTabSubmit()" class="new-tab-detail  web-bg white-bg">
+        <div class="flex-100 layout-row layout-wrap block-1 s-tab-block-1">
+
+            <div class="flex-100">
+                <div class="layout-row layout-align-space-between">
+                    <div class="flex-40 layout-column">
+                        <span class="s-tool-label">Tab Title &nbsp; <i class="fa fa-info-circle " tooltip="Add a title to this tab" aria-hidden="true">
+                            </i></span>
+                        <span class="layout-row"><input class="input-class" [(ngModel)]="appTabForm.title" type="text" >
+                        </span>
+                    </div>
+                    <div class="flex-40 layout-column" *ngIf="showTabFunctionDropDown">
+                        <span class="s-tool-label">Tab Function &nbsp;  <i class="fa fa-info-circle l" tooltip="Choose the tab functionality" aria-hidden="true"></i></span>
+                        <span class="layout-row"> <p-dropdown [options]="categories" [(ngModel)]="appTabForm.tab_func_id" [filter]="true" class="cat-drop"></p-dropdown>
+                        </span>
+                    </div>
+                    <div class="flex-20 layout-column margn-t" style="margin-left: 30px">
+                        <div>
+                            <span class="s-check-btn">
+                                <label class="checkbox-inline custom-checkbox nowrap">
+                                    <input type="checkbox" [(ngModel)]="appTabForm.active" checked="checked" value="1">
+                                    <span>Active Tab</span>
+                            </label>
+                            <!--                            <input type="checkbox" ><span> </span>-->
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-100 block-2">
+            <span class="s-tool-label">Tab Icon &nbsp; <i class="fa fa-info-circle" tooltipPlacement="right" tooltip="Select an icon for your tab" aria-hidden="true">
+                </i></span>
+        </div>
+        <div class="block-3">
+            <span>Upload Custom Icon &nbsp; <i class="fa fa-info-circle " tooltipPlacement="right" tooltip="If you want to use a custom tab icon, upload an image here (64 x 64px)" aria-hidden="true">
+                </i></span> <input type="file" (change)="onAddTabImageChange($event)" [(ngModel)]="addTabImageModel" />
+        </div>
+        <div class="block-4">
+            <p-tabView class=" layout-row s-tab-add-tab" (onChange)="onFormTabChange($event)">
+
+                <p-tabPanel header="BLACK" class="black-data">
+                    <pagination [totalItems]="blackIconsPager.total" [itemsPerPage]="blackIconsPager.itemsPerPage" [(ngModel)]="blackIconsPager.currentPage" (pageChanged)="blackIconsPageChanged($event)" [maxSize]="0"></pagination>
+                    <div class="data layout-wrap layout-row flex-100 layout-align-center-center">
+                        <div *ngFor="let icon of blackIcons " class="flex-20 s-add-tab-mt-icon" [class.selected]="iconSelect[icon.id]">
+                            <div class="icon" (click)="setIcon(icon.id, icon.name, icon.type)">
+                                <!--<img src="{{icon.src}}" alt="Tab Icon" style="width:30px;height:30px">-->
+                                <i class="Glyphter icon-{{icon.name}}" style="color:#000;" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="WHITE" class="white-data">
+                    <pagination [totalItems]="whiteIconsPager.total" [itemsPerPage]="whiteIconsPager.itemsPerPage" [(ngModel)]="whiteIconsPager.currentPage" (pageChanged)="whiteIconsPageChanged($event)" [maxSize]="0"></pagination>
+                    <div class="data layout-wrap layout-row flex-100 layout-align-center-center">
+                        <div *ngFor="let icon of whiteIcons" class="flex-20 s-add-tab-mt-icon" [class.selected]="iconSelect[icon.id]">
+                            <div class="icon" (click)="setIcon(icon.id, icon.name, icon.type)">
+                                <!--<img src="{{icon.src}}" alt="Tab Icon" style="width:30px;height:30px">-->
+                                <i class="Glyphter icon-{{icon.name}}" style="color:#fff" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="COLOR" class="color-data">
+                    <pagination [totalItems]="colorIconsPager.total" [itemsPerPage]="colorIconsPager.itemsPerPage" [(ngModel)]="colorIconsPager.currentPage" (pageChanged)="colorIconsPageChanged($event)" [maxSize]="0"></pagination>
+                    <div class="data layout-wrap layout-row flex-100 layout-align-center-center">
+                        <div *ngFor="let icon of (colorIcons | slice: ((colorIconsPager.currentPage - 1) * colorIconsPager.itemsPerPage) : (colorIconsPager.currentPage * colorIconsPager.itemsPerPage))" class="flex-20 s-add-tab-mt-icon" [class.selected]="iconSelect[icon.id]">
+                            <div class="icon" (click)="setIcon(icon.id, icon.name, icon.type, 'insert', true)">
+                                <img src="{{icon.src}}" alt="Tab Icon" style="width:64px;height:64px">
+                            </div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+
+                <p-tabPanel header="PHOTO" class="color-data">
+                    <pagination [totalItems]="photosIconsPager.total" [itemsPerPage]="photosIconsPager.itemsPerPage" [(ngModel)]="photosIconsPager.currentPage" (pageChanged)="photosIconsPageChanged($event)" [maxSize]="0"></pagination>
+                    <div class="data layout-wrap layout-row flex-100 layout-align-center-center">
+                        <div *ngFor="let icon of (photosIcons | slice: ((photosIconsPager.currentPage - 1) * photosIconsPager.itemsPerPage) : (photosIconsPager.currentPage * photosIconsPager.itemsPerPage))" class="flex-20 s-add-tab-mt-icon" [class.selected]="iconSelect[icon.id]">
+                            <div class="icon" (click)="setIcon(icon.id, icon.name, icon.type, 'insert', true)">
+                                <img src="{{icon.src}}" alt="Tab Icon" style="width:64px;height:64px">
+                            </div>
+                        </div>
+                    </div>
+                </p-tabPanel>
+            </p-tabView>
+
+        </div>
+        <p-footer>
+            <div class="save-btn"><button class="blue-btn btn btn-lg" [disabled]="disableSaveButton" type="submit">SAVE</button></div>
+        </p-footer>
+    </form>
+</p-dialog>
+
+<!--Edit Tab Info-->
+
+<p-dialog [draggable]="false" header="Edit Tab Detail" [(visible)]="appTabEditDisplay" modal="modal" class="app-dialog add-app bbv natd app-tab-dilog-wrapper">
+    <div *ngIf="editAppTabForm">
+
+        <form (ngSubmit)="updateAppTabSubmit()" class="new-tab-detail  web-bg white-bg">
+            <input type="hidden" [(ngModel)]="editAppTabForm.id">
+            <div class="flex-100 layout-row layout-wrap block-1 s-tab-block-1">
+
+                <div class="flex-100">
+                    <div class="layout-row layout-align-space-between">
+                        <div class="flex-30 layout-column">
+                            <span class="s-tool-label">Tab Title &nbsp; <i class="fa fa-info-circle " tooltip="Edit a title to this tab" aria-hidden="true">
+                                </i></span>
+                            <span class="layout-row"><input class="input-class" [(ngModel)]="editAppTabForm.title" type="text" >
+                            </span>
+                        </div>
+
+                        <div class="flex-30 layout-column">
+                            <span class="s-tool-label">Tab Function &nbsp;  <i class="fa fa-info-circle l" tooltip="Choose the tab functionality" aria-hidden="true"></i></span>
+                            <span class="layout-row"> <p-dropdown [options]="categories" [(ngModel)]="editAppTabForm.tab_func_id" [filter]="true" class="cat-drop pad-0"></p-dropdown>
+                            </span>
+                        </div>
+                        <div class="flex-30 layout-column margn-t" style="margin-left: 30px">
+                            <div>
+                                <span class="s-check-btn">
+                                    <label class="checkbox-inline custom-checkbox nowrap">
+                                     <input type="checkbox" [(ngModel)]="editAppTabForm.active" checked="checked" value="1">
+                                    <span>Active Tab</span>
+                                </label>
+
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="appTabIconSrc" class="layout-row layout-align-start-center">
+                <span class="s-tool-label">Current Tab Icon &nbsp; </span>
+                <span class="bg-up-bg">
+                <img *ngIf="editAppTabForm.type == 1" src="{{appTabIconSrc}}" alt="{{editAppTabForm.title}}" style="width: 30px; height: 30px">
+                <i *ngIf="editAppTabForm.type == 2" class="Glyphter icon-{{editAppTabForm.icon_name}}" aria-hidden="true"></i>
+            </span>
+            </div>
+            <div class="flex-100 block-2">
+                <span class="s-tool-label">Tab Icon &nbsp; <i class="fa fa-info-circle" tooltipPlacement="right" tooltip="Select an icon for your tab" aria-hidden="true">
+                    </i></span>
+            </div>
+            <div class="block-3">
+                <span>Upload Custom Icon &nbsp; <i class="fa fa-info-circle " tooltipPlacement="right" tooltip="If you want to use a custom tab icon, upload an image here (64 x 64px)" aria-hidden="true"></i></span>
+                <input type="file" (change)="onEditTabImageChange($event)" />
+            </div>
+            <div class="block-4">
+                <p-tabView class=" layout-row s-tab-add-tab" (onChange)="onFormTabChange($event)">
+
+                    <p-tabPanel header="BLACK" class="black-data">
+                        <pagination [totalItems]="blackIconsPager.total" [itemsPerPage]="blackIconsPager.itemsPerPage" [(ngModel)]="blackIconsPager.currentPage" (pageChanged)="blackIconsPageChanged($event)" [maxSize]="0"></pagination>
+                        <div class="data layout-wrap layout-row flex-100 layout-align-center-center">
+                            <div *ngFor="let icon of blackIcons" class="flex-20 s-add-tab-mt-icon" [class.selected]="iconSelect[icon.id]">
+                                <div class="icon" (click)="setIcon(icon.id, icon.name,icon.type, 'edit')">
+                                    <!--<img src="{{icon.src}}" alt="Tab Icon" style="width:30px;height:30px">-->
+                                    <i class="Glyphter icon-{{icon.name}}" style="color:#000" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="WHITE" class="white-data">
+                        <pagination [totalItems]="whiteIconsPager.total" [itemsPerPage]="whiteIconsPager.itemsPerPage" [(ngModel)]="whiteIconsPager.currentPage" (pageChanged)="whiteIconsPageChanged($event)" [maxSize]="0"></pagination>
+                        <div class="data layout-wrap layout-row flex-100 layout-align-center-center">
+                            <div *ngFor="let icon of whiteIcons" class="flex-20 s-add-tab-mt-icon" [class.selected]="iconSelect[icon.id]">
+                                <div class="icon" (click)="setIcon(icon.id, icon.name,icon.type, 'edit')">
+                                    <!--<img src="{{icon.src}}" alt="Tab Icon" style="width:30px;height:30px">-->
+                                    <i class="Glyphter icon-{{icon.name}}" style="color:#fff" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="COLOR" class="color-data">
+                        <pagination [totalItems]="colorIconsPager.total" [itemsPerPage]="colorIconsPager.itemsPerPage" [(ngModel)]="colorIconsPager.currentPage" (pageChanged)="colorIconsPageChanged($event)" [maxSize]="0"></pagination>
+                        <div class="data layout-wrap layout-row flex-100 layout-align-center-center">
+                            <div *ngFor="let icon of (colorIcons | slice: ((colorIconsPager.currentPage - 1) * colorIconsPager.itemsPerPage) : (colorIconsPager.currentPage * colorIconsPager.itemsPerPage))" class="flex-20 s-add-tab-mt-icon" [class.selected]="iconSelect[icon.id]">
+                                <div class="icon" (click)="setIcon(icon.id, icon.name, icon.type, 'edit', true)">
+                                    <img src="{{icon.src}}" alt="Tab Icon" style="width:40px;height:40px">
+                                </div>
+                            </div>
+                        </div>
+                    </p-tabPanel>
+
+                    <p-tabPanel header="PHOTO" class="color-data">
+                        <pagination [totalItems]="photosIconsPager.total" [itemsPerPage]="photosIconsPager.itemsPerPage" [(ngModel)]="photosIconsPager.currentPage" (pageChanged)="photosIconsPageChanged($event)" [maxSize]="0"></pagination>
+                        <div class="data layout-wrap layout-row flex-100 layout-align-center-center">
+                            <div *ngFor="let icon of (photosIcons | slice: ((photosIconsPager.currentPage - 1) * photosIconsPager.itemsPerPage) : (photosIconsPager.currentPage * photosIconsPager.itemsPerPage))" class="flex-20 s-add-tab-mt-icon" [class.selected]="iconSelect[icon.id]">
+                                <div class="icon" (click)="setIcon(icon.id, icon.name, icon.type, 'edit', true)">
+                                    <img src="{{icon.src}}" alt="Tab Icon" style="width:40px;height:40px">
+                                </div>
+                            </div>
+                        </div>
+                    </p-tabPanel>
+
+                </p-tabView>
+
+            </div>
+            <footer>
+                <div class="">
+                    <div class="save-btn"><button [disabled]="disableSaveButton" class="blue-btn btn btn-lg" type="submit">SAVE</button></div>
+                </div>
+            </footer>
+        </form>
+    </div>
+</p-dialog>
+
+<p-dialog [draggable]="false" header="Delete Tabs" [(visible)]="deleteConfirmDialogDisplay" modal="modal" class="app-dialog">
+    <p style="color: #000">Are you sure you want to delete the selected tabs ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn cursor-p" (click)="deleteTabs()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="deleteConfirmDialogDisplay=false">No</a>
+        </div>
+    </footer>
+</p-dialog>
+
+<p-dialog [draggable]="false" header="Turn All On ?" [(visible)]="allActiveDialogDisplay" modal="modal" class="app-dialog">
+    <p style="color: #000">Are you sure you want to turn all inactive tabs on ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn cursor-p" (click)="makeAllActive()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="allActiveDialogDisplay=false">No</a>
+        </div>
+    </footer>
+</p-dialog>

@@ -1,0 +1,48 @@
+<ion-header>
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">
+            Confirmation
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <span ion-text showWhen="ios">Cancel</span>
+                <ion-icon name="md-close" showWhen="android"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content>
+    <ion-item>
+        <ion-thumbnail item-left>
+            <img [src]="imageURL">
+        </ion-thumbnail>
+        <h2>{{cartItem.item_name}}</h2>
+        <p>Quantity: {{cartItem.quantity}}</p>
+        <p *ngIf="cartItem.size">Size: {{cartItem.size.title}}</p>
+        <p>
+            Item Price:
+            <span [innerHTML]="currencySymbol"></span>
+            {{cartItem.item_price | number: '1.2-2'}}
+        </p>
+        <p item-right>
+            <span [innerHTML]="currencySymbol"></span>
+            {{(cartItem.total_price * cartItem.quantity) | number: '1.2-2'}}
+        </p>
+    </ion-item>
+    <ion-footer>
+        <ion-row>
+            <ion-col width-50>
+                <button ion-button block (click)="dismiss()" [style.background-color]="(globalService.initData.globalStyleSettings?.features?.button_image)| hex2rgba"
+                    [style.color]="globalService.initData.globalStyleSettings?.features?.button_text">Cancel</button>
+            </ion-col>
+            <ion-col width-50>
+                <button ion-button block (click)="onAddClick()" [style.background-color]="(globalService.initData.globalStyleSettings?.features?.button_image)| hex2rgba"
+                    [style.color]="globalService.initData.globalStyleSettings?.features?.button_text">Add</button>
+            </ion-col>
+        </ion-row>
+    </ion-footer>
+</ion-content>

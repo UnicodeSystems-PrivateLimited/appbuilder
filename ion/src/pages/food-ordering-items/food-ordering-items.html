@@ -1,0 +1,53 @@
+<ion-header>
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title *ngIf="!showSearchBar" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">Items for {{category.name}}</ion-title>
+
+        <ion-buttons end *ngIf="!showSearchBar">
+            <button (click)="showSearchBar = true" ion-button icon-only [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="search"></ion-icon>
+            </button>
+            <button ion-button icon-only (click)="service.openCart(navCtrl, tabId)" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="cart"></ion-icon>
+                <ion-badge *ngIf="service.cartTotal" color="danger">{{service.cartTotal}}</ion-badge>
+            </button>
+        </ion-buttons>
+
+        <template [ngIf]="showSearchBar">
+            <ion-row align-items-center>
+                <ion-searchbar class="sc-search" placeholder="Search" [(ngModel)]="search" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"></ion-searchbar>
+                <ion-buttons end>
+                    <button ion-button icon-only (click)="showSearchBar = false" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                        <ion-icon name="close"></ion-icon>
+                    </button>
+                </ion-buttons>
+            </ion-row>
+        </template>
+
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content class="card-background-page">
+    <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+    <template [ngIf]="!loader">
+        <ion-list no-lines>
+            <button ion-item (click)="onItemClick(items.id)" *ngFor="let items of (categoryListItems | search:search:'name'); let i = index;"
+                [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba"
+                [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">
+                <ion-thumbnail item-left>
+                    <img src="{{items.image}}">
+                </ion-thumbnail>
+                <h2>{{items.name}}</h2>
+                <h3>{{items.description}}</h3>
+                <h3 text-right>
+                    <span [innerHTML]="service.currencySymbolList[service.payment['currency']] || currency"></span>
+                    {{items.price}}
+                </h3>
+            </button>
+            <ion-item *ngIf="!categoryListItems.length">{{'NOTHINGTEXT' | translate}}</ion-item>
+        </ion-list>
+    </template>
+</ion-content>

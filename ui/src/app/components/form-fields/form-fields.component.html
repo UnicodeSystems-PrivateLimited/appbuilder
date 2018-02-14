@@ -1,0 +1,160 @@
+<div [dragula]="FORM_FIELDS_BAG" [dragulaModel]="fields" class="layout-column flex-100 form-field-wrap">
+
+	<div *ngFor="let field of fields; let i = index" class="layout-row form-field-wrap-block cursor-p" [ngSwitch]="field.field_type_id"
+		(click)="onFieldClick(field, i)" [class.highlight-custom-form]="activeField == i">
+
+		<div *ngSwitchCase="fieldTypes.SINGLE_LINE_TEXT" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<input type="text" readonly="readonly" [style.width]="fieldSize[field.properties.size]">
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.NUMBER" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<input type="number" readonly="readonly" value="0123456789" [style.width]="fieldSize[field.properties.size]">
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.PARAGRAPH_TEXT" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<textarea readonly="readonly"></textarea>
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.CHECKBOXES" class="layout-column flex-100">
+
+			<label>{{field.properties.label}}</label>
+			<label class="checkbox-inline custom-checkbox  flex-20 layout-row layout-align-start-center" *ngFor="let choice of field.properties.choices">
+                <input type="checkbox" id="inlineCheckbox02">
+                <span>{{choice.name}}</span>
+            </label>
+			<!--<div><input type="checkbox">}</div>-->
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.MULTIPLE_CHOICES" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<div *ngFor="let choice of field.properties.choices" class="layout-row layout-align-start-center"><input type="radio" name="radio{{i}}"> &nbsp;{{choice.name}}</div>
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.DROPDOWN" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<select [style.width]="fieldSize[field.properties.size]">
+                <option *ngFor="let choice of field.properties.choices">{{choice.name}}</option>
+            </select>
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.NAME" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<div class="layout-row">
+				<input type="text" readonly="readonly" [style.width]="'25%'" placeholder="First">
+				<input type="text" readonly="readonly" [style.width]="'25%'" placeholder="Last">
+			</div>
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.DATE" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<div class="layout-row layout-align-start-center wrap-email-date">
+				<input type="number" readonly="readonly" [style.width]="'10%'" placeholder="MM">/
+				<input type="number" readonly="readonly" [style.width]="'10%'" placeholder="DD">/
+				<input type="number" readonly="readonly" [style.width]="'20%'" placeholder="YYYY">
+			</div>
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.TIME" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<div class="layout-row layout-align-start-center">
+				<input type="number" readonly="readonly" [style.width]="'12%'" placeholder="HH">:
+				<input type="number" readonly="readonly" [style.width]="'12%'" placeholder="MM">
+				<div *ngIf="field.properties.format === TIME_FORMAT_12_HOURS">
+					<select>
+                        <option>AM</option>
+                        <option>PM</option>
+                    </select>
+					<label>AM/PM</label>
+				</div>
+			</div>
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.PHONE" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<div *ngIf="field.properties.phone_format === PHONE_FORMAT_NORMAL" class="layout-row layout-align-start-center">
+				<input type="text" readonly="readonly" [style.width]="'10%'" placeholder="(###)">-
+				<input type="text" readonly="readonly" [style.width]="'10%'" placeholder="###">-
+				<input type="text" readonly="readonly" [style.width]="'15%'" placeholder="####">
+			</div>
+			<div *ngIf="field.properties.phone_format === PHONE_FORMAT_INTERNATIONAL">
+				<input type="text" readonly="readonly" [style.width]="'50%'">
+			</div>
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.WEBSITE" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<input type="text" readonly="readonly" value="http://" [style.width]="fieldSize[field.properties.size]">
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.PRICE" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<div class="layout-row layout-align-start-center">$ <input type="text" readonly="readonly" [style.width]="'25%'"></div>
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.EMAIL" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<input type="email" readonly="readonly" value="@" [style.width]="fieldSize[field.properties.size]">
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.SECTION_BREAK" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.FILE_UPLOAD" class="layout-column flex-100">
+			<label>{{field.properties.label}}</label>
+			<input type="file" disabled="disabled">
+		</div>
+
+		<div *ngSwitchCase="fieldTypes.ADDRESS" class="layout-column flex-100 wrap-email-add">
+			<label class="m-b-10">{{field.properties.label}}</label>
+			<div class="layout-row">
+				<div class="layout-column flex-100">
+					<label>Street Address</label>
+					<input type="text" readonly="readonly">
+
+				</div>
+			</div>
+			<div class="layout-row">
+				<div class="layout-column flex-100">
+					<label>Address Line 2</label>
+					<input type="text" readonly="readonly">
+
+				</div>
+			</div>
+			<div class="layout-row">
+				<div class="layout-column flex-50">
+					<label>City</label>
+					<input type="text" readonly="readonly">
+
+				</div>
+				<div class="layout-column flex-50">
+					<label>State / Province / Region</label>
+					<input type="text" readonly="readonly">
+
+				</div>
+			</div>
+			<div class="layout-row">
+				<div class="layout-column flex-50">
+					<label>Zip / Postal Code</label>
+					<input type="text" readonly="readonly">
+
+				</div>
+				<div class="layout-column flex-50">
+					<label>Country</label>
+					<select>
+                        <option></option>
+                    </select>
+
+				</div>
+			</div>
+		</div>
+		<div class="field-actions">
+			<button type="button" title="Duplicate" (click)="onDuplicateClick(field)"><i class="fa fa-files-o" aria-hidden="true"></i></button>
+			<button type="button" title="Delete" (click)="onDeleteFieldClick(field, i)"><i class="fa fa-trash"></i></button>
+		</div>
+	</div>
+
+</div>

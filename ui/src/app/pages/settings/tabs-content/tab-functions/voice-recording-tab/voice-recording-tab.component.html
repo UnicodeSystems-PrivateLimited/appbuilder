@@ -1,0 +1,58 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+             <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <form (ngSubmit)="onItemSubmit()">
+                <div class="">
+                    <div class="">
+
+                        <div class="flex-90 layout-column  web-bg">
+                            <div class="layout-column">
+                                <div class="layout-row"><label>Description</label>
+                                    <span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Enter a description for your Voice Recorder Tab.' tooltipPlacement="right" aria-hidden="true"></i></span>
+                                </div>
+                                <textarea rows="8" cols="50" [(ngModel)]="item.description"> </textarea>
+                            </div>
+                            <div class="layout-column m-t-10  add-app">
+                                <div class="layout-row"><label>Email</label>
+                                    <span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Enter an email address. This is where your voice message will be sent.' tooltipPlacement="right" aria-hidden="true"></i></span>
+                                </div>
+                                <input type="text" [(ngModel)]="item.email_id">
+
+                            </div>
+
+                            <div class="layout-column m-t-10 add-app">
+                                <div class="layout-row"><label>Subject</label>
+                                    <span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Enter an email subject here. This will appear as the subject for each email sent from the application.' tooltipPlacement="right" aria-hidden="true"></i></span>
+                                </div>
+                                <input type="text" [(ngModel)]="item.subject">
+                            </div>
+                            <div class="layout-align-start save-btn m-t-20">
+                                <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">Save Changes</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,210 @@
+.inner-first-container
+{
+    background: #fff;
+    border:1px solid #e2e2e2;
+    margin: 20px;
+    margin-right: 0;
+    height: 100%;
+}
+.inner-heading
+{
+    border-bottom: 1px solid #e2e2e2;
+    padding: 8px 13px 8px 13px;
+    color: #333;
+    background-color: #f8f8f8;
+}
+.inner-container-content
+{
+    padding: 12px 12px 15px 15px;
+    background-color: #fff;
+}
+.container-content-box
+{
+    margin: 27px 0px 27px 30px;
+}
+.second-container-inner
+{
+    padding: 15px 12px 18px 13px;
+}
+.second-container-heading
+{
+    color: #1990d4;
+    padding: 7px 12px 6px 0px;
+    border-bottom: 2px solid #e2e2e2;
+}
+.tp-profile{
+    .tp-profile .ui-dialog {
+   
+    box-shadow: 0 0 4px #ccc;
+}
+    a.ui-dialog-titlebar-icon.ui-dialog-titlebar-close.ui-corner-all {
+    float: right;
+}
+    .ui-dialog-titlebar {
+    padding: 15px;
+}
+.ui-dialog-buttonpane {
+    padding: 12px;
+}
+    .container-content-box
+{
+    margin: 27px 0px 27px 30px;
+        border-left: 0;
+}
+    .form-group label{
+        color: #504f4f;
+    }
+    .tp-key{
+        font-size: 16px;
+    }
+    .tp-value{
+        font-size: 15px;
+    }
+    .ui-dialog {
+        position: fixed;
+        padding: 0;
+        overflow: hidden;
+        width: 483px;
+        background: #fff;
+        color: #000;
+        border-radius: 5px;
+    }
+    .ui-dialog .ui-dialog-content{
+        color: #000;
+        padding: 17px 13px;
+        border-color: #ddd;
+        border-style: solid;
+        border-width: 1px 0 0px 0;
+    }
+    .ui-dialog .ui-dialog-titlebar{
+
+    }
+    .edit-btn{
+        cursor: pointer
+    }
+
+    .form-control {
+        color: #868585;
+        border: 1px solid rgba(23, 23, 23, 0.6);
+        border-radius: 5px;
+        background-color: rgba(51, 51, 51, 0);
+        box-shadow: none;
+        font-size: 14px;
+    }
+    .edit-btn i {
+    padding-right: 5px;
+}
+}
+.ui-dialog {
+    position: fixed;
+    padding: 0;
+    overflow: hidden;
+    width: 483px;
+    background: #fff;
+    color: #000;
+    border-radius: 5px;
+}
+.ui-dialog .ui-dialog-content{
+    color: #000;
+    padding: 17px 13px;
+    border-color: #ddd;
+    border-style: solid;
+    border-width: 1px 0 0px 0;
+}
+.tp-value.col-sm-2.form-control-label.edt-c-btn {
+    float: right;
+}
+.fm-spinner {
+  width: 60px;
+    height: 60px;
+    position: absolute;
+    margin: 0 auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+
+.fm-double-bounce1, .fm-double-bounce2 {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background-color: #333;
+  opacity: 0.6;
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  -webkit-animation: fm-sk-bounce 2.0s infinite ease-in-out;
+  animation: fm-sk-bounce 2.0s infinite ease-in-out;
+}
+
+.fm-double-bounce2 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+@-webkit-keyframes fm-sk-bounce {
+  0%, 100% { -webkit-transform: scale(0.0) }
+  50% { -webkit-transform: scale(1.0) }
+}
+
+@keyframes fm-sk-bounce {
+  0%, 100% {
+    transform: scale(0.0);
+    -webkit-transform: scale(0.0);
+  } 50% {
+      transform: scale(1.0);
+      -webkit-transform: scale(1.0);
+    }
+}
+.cncl-btn.cursor-p {
+    background: #272727;
+    color: #fff;
+       padding: 7px 16px;
+    border: 1px solid #272727;
+    border-radius: 3px;
+    color: #fff !important;
+    font-size: 15px;
+}
+button.green-btn {
+    padding:7px 16px;
+    border-radius: 3px;
+    background: #1bbd5c;
+    color: #fff !important;
+    font-size: 15px;
+    vertical-align: inherit;
+    border: 1px solid #1bbd5c !important;
+    &:hover {
+        background: #10ad4c;
+    }
+    i {
+        font-size: 15px;
+    }
+}
+.white-bg{
+    background:#fff;
+}
+.border-all{
+    border-style: solid;
+    border-width:1px 1px 1px 1px;
+    border-color:#ccc
+}
+.web-bg {
+    padding: 10px 15px;
+    margin: 3px 0 11px 0;
+}
+.carte-dialog .ui-dialog .ui-dialog-content {
+    background:#f8f8f8;
+    padding: 17px 26px;
+}
+ .carte-dialog input.input-class2 {
+    border: 1px solid #bcbcbc;
+    width: 100%;
+    border-radius: 2px;
+}
+.carte-dialog .ui-dialog {
+    min-width: 760px;
+    left: 359.32px;
+    top: 53px !important;
+}
+

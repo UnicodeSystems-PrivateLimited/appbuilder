@@ -1,0 +1,118 @@
+<div class="flex-100 layout-row main-social-tab-container">
+    <div class="flex-35 layout-column">
+        <div class="layout-column flex-100 border-all white-bg">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Logo</div>
+            <div class="layout-column flex-100 layout-align-start-center pad-15">
+                <span>Required size is 350 x 350</span>
+                <div class="border-all pad-15 m-t-10" style="height: 178px;;width: 350px;text-align: center;">
+                    <img src="{{loginData.cLoginData.login_logo}}" style="max-width: 100%; max-height: 100%">
+                </div>
+                <div class="m-t-20 m-b-20">
+                    <button type="button" class="green-btn m-r-10" (click)="openReplaceLogoDialog()">Replace</button>
+                    <!--<button type="button" class="green-btn m-l-10">Edit</button>-->
+                </div>
+            </div>
+        </div>
+        <div class="layout-column border-all white-bg m-t-20 flex-55 cust">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Colors</div>
+            <div class="layout-row   m-t-10 m-b-10 updatecolor-box layout-align-space-between-center">
+                <span class="layout-column layout-align-start-center flex-50 ">Background Color</span>
+                <div class="layout-column stau-switch layout-align-end-center flex-25 ">
+                    <input class="input-class" [(colorPicker)]="loginData.cLoginData.login_bg_color" [style.background]="loginData.cLoginData.login_bg_color"
+                        [value]="loginData.cLoginData.login_bg_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                </div>
+            </div>
+            <div class="layout-row  m-t-10 updatecolor-box layout-align-space-between-center">
+                <span class="layout-column layout-align-start-center flex-50 ">Text Color</span>
+                <div class="layout-column stau-switch layout-align-end-center flex-25 ">
+                    <input class="input-class" [(colorPicker)]="loginData.cLoginData.text_color_login" [style.background]="loginData.cLoginData.text_color_login"
+                        [value]="loginData.cLoginData.text_color_login" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                </div>
+            </div>
+        </div>
+        <div class="layout-column flex-100 border-all white-bg m-t-20">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Background</div>
+            <div class="layout-column flex-100 layout-align-start pad-15">
+                <div class="layout-row m-b-20">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [(ngModel)]="loginData.cLoginData.login_bg_repeat">
+            <span>Repeat through whole page</span>
+        </label>
+
+                    <span></span>
+                </div>
+                <div class="layout-row relative" style="min-width: 120px; min-height: 120px; max-height: 402px;">
+                    <img *ngIf="loginData.cLoginData.login_bg_image" src="{{loginData.cLoginData.login_bg_image}}" style="width: 100%;">
+                    <span class="c-login-delbtn" *ngIf="loginData.cLoginData.login_bg_image" (click)="removeLoginBgImage()"><button>Remove</button></span>
+                </div>
+                <div class="m-t-20 m-b-20">
+                    <input type="file" (change)="onImagesChange($event)" />
+                </div>
+            </div>
+        </div>
+        <div class="layout-column border-all white-bg m-t-20 cpanel-min-height">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Custom HTML </div>
+            <div class="layout-column flex-100 layout-align-start pad-15 suct-tct-htnl ">
+                <div class="layout-row layout-align-start">
+                    <div class="drp-da  layout-align-start-center layout-row flex-100">
+                        <textarea rows="4" placeholder="ex: <div class='footer'>dummy content</div>" [(ngModel)]="loginData.cLoginData.login_custom_html"></textarea>
+                    </div>
+                </div>
+                <div class="layout-row m-t-10">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" [(ngModel)]="loginData.cLoginData.login_use_custom">
+            <span>Use <b>ONLY</b> this HTML. (Not recommended)</span>
+        </label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div *ngIf="!loginData.refreshLoginComponent" class="flex-65 p-l-10 m-l-10 layout-column login-detl-wrp">
+        <div class="layout-column flex-100 border-all white-bg ">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Preview</div>
+            <div class="layout-column flex-100 layout-align-start pad-15">
+                <div class="layout-row border-all white-bg pad-15" *ngIf="loginData.cLoginData.login_use_custom" [style.background-color]="loginData.cLoginData.login_bg_color"
+                    [style.background]="'url(' + loginData.cLoginData?.login_bg_image+ ')'" [style.background-size]="'cover'"
+                    [style.background-repeat]="'no-repeat'">
+                    <div class="flex-100">
+                        {{loginData.cLoginData.login_custom_html}}
+                    </div>
+                </div>
+                <div class="layout-column flex-100 border-all white-bg pad-15" *ngIf="!loginData.cLoginData.login_use_custom" [style.background-color]="loginData.cLoginData.login_bg_color"
+                    [style.background]="'url(' + loginData.cLoginData?.login_bg_image+ ')'" [style.background-size]="loginData.cLoginData.login_bg_repeat?'initial':'cover'"
+                    [style.background-repeat]="loginData.cLoginData.login_bg_repeat?'repeat':'initial'">
+                    <div class="" style="height:100px; width:100px;margin:0 auto">
+                        <img src="{{loginData.cLoginData.login_logo}}" style="max-width: 100%; max-height: 100%">
+                    </div>
+                    <div class="flex-100 login-dtl-cpanel ">
+                        <div class="layout-column flex-45 pad-15">
+                            <div class="layout-column">
+                                <label [style.color]="loginData.cLoginData.text_color_login">Username or Email address</label>
+                            </div>
+                            <div class="layout-column">
+                                <input class="ng-pristine ng-valid ng-touched" type="email" placeholder="Email">
+                            </div>
+                        </div>
+                        <div class="layout-column flex-45 pad-15">
+                            <div class="layout-row">
+                                <div class="layout-column flex-50">
+                                    <label [style.color]="loginData.cLoginData.text_color_login">Password</label>
+                                </div>
+                                <div class="layout-column flex-50">
+                                    <a> <span [style.color]="loginData.cLoginData.text_color_login">Forgot your password?</span></a>
+                                </div>
+                            </div>
+                            <div class="layout-column">
+                                <input class="ng-pristine ng-valid ng-touched" type="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="layout-column flex-45 pad-15">
+                            <button type="button" class="green-btn">Log In</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ba-cpanel-image-uploader *ngIf="showReplaceLogoDialog" [headerTitle]="headerTitleOfDialog" [imageType]="logotype" (complete)="onReplaceDialogDismiss($event)"></ba-cpanel-image-uploader>
+</div>

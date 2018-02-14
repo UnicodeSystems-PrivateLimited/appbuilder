@@ -1,0 +1,75 @@
+<ion-header>
+
+    <ion-toolbar remove-toolbar-background [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-buttons left>
+            <button ion-button (click)="onBackClick()" clear icon-only [style.color]="platform.is('ios') ? '#fff' : '#424242'">
+                <ion-icon name="arrow-back"></ion-icon>
+                <span showWhen="ios">Back</span>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content>
+    <div id="map"></div>
+    <ion-item class="location-address">
+        <div item-left>
+            <div class="pin-div">
+                <ion-icon name="pin" item-left></ion-icon>
+            </div>
+            <div>
+                {{service.getDistance(location.latitude, location.longitude, location.distance_type)}}
+            </div>
+        </div>
+        <p class="address-location-1">{{location.address_section_1}}</p>
+        <p class="address-location-2">{{location.address_section_2}}</p>
+        <button ion-button icon-only clear item-right (click)="onNavigateClick()">
+            <ion-icon name="navigate" color="black"></ion-icon>
+        </button>
+    </ion-item>
+    <ion-grid class="location-delivery">
+        <md-spinner [state]="loader" [type]="'inline'"></md-spinner>
+        <template [ngIf]="!loader">
+            <ion-row wrap>
+                <ion-col *ngIf="orderServices[0]" [widthChanger]="orderServices.length">
+                    <button ion-button block (click)="onOrderTypeClick(orderServices[0].type)" [style.background-color]="selectedOrderType === orderServices[0].type ? globalService.initData.globalStyleSettings?.features?.button_image : '#f4f4f4'"
+                        [style.color]="selectedOrderType === orderServices[0].type ? globalService.initData.globalStyleSettings?.features?.button_text : '#000'">{{orderServices[0].label}}</button>
+                </ion-col>
+                <ion-col *ngIf="orderServices[1]" width-50>
+                    <button ion-button block (click)="onOrderTypeClick(orderServices[1].type)" [style.background-color]="selectedOrderType === orderServices[1].type ? globalService.initData.globalStyleSettings?.features?.button_image : '#f4f4f4'"
+                    [style.color]="selectedOrderType === orderServices[1].type ? globalService.initData.globalStyleSettings?.features?.button_text : '#000'">{{orderServices[1].label}}</button>
+                </ion-col>
+                <ion-col *ngIf="orderServices[2]" width-100>
+                    <button ion-button block (click)="onOrderTypeClick(orderServices[2].type)" [style.background-color]="selectedOrderType === orderServices[2].type ? globalService.initData.globalStyleSettings?.features?.button_image : '#f4f4f4'"
+                    [style.color]="selectedOrderType === orderServices[2].type ? globalService.initData.globalStyleSettings?.features?.button_text : '#000'">{{orderServices[2].label}}</button>
+                </ion-col>
+            </ion-row>
+
+            <ion-list *ngIf="selectedOrderType">
+                <ion-item>
+                    <ion-label>Date</ion-label>
+                    <ion-select [(ngModel)]="orderDate" [selectOptions]="{title: 'Select Date'}" (ionChange)="onDateChange()">
+                        <ion-option *ngFor="let option of dateOptions; let i=index" [value]="option.value" [selected]="i == 0">{{option.label}}</ion-option>
+                    </ion-select>
+                </ion-item>
+                <ion-item>
+                    <ion-label>Time</ion-label>
+                    <ion-select [(ngModel)]="orderTime" [selectOptions]="{title: 'Select Time'}">
+                        <ion-option *ngFor="let option of timeOptions" [value]="option.value">{{option.label}}</ion-option>
+                    </ion-select>
+                </ion-item>
+            </ion-list>
+
+            <ion-row>
+                <ion-col>
+                    <button ion-button block (click)="onChooseItemsClick()" [style.background-color]="(globalService.initData.globalStyleSettings?.features?.button_image)"
+                        [style.color]="globalService.initData.globalStyleSettings?.features?.button_text">Choose Items</button>
+                </ion-col>
+            </ion-row>
+        </template>
+    </ion-grid>
+</ion-content>

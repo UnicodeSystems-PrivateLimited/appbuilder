@@ -1,0 +1,446 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd mailing-updates-wraaper">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="layout-row contact-us-lyot layout-align-space-between pdf-box">
+                <span class="title-sbhead">Newsletter Setup:</span>
+                <button type="button" class="green-btn" (click)="showEditDialog()"><i class="fa fa-plus ion-right" aria-hidden="true"></i>Edit Categories</button>
+            </div>
+            <form class="contact-us-formr">
+                <div class="tb-1 web-bg">
+                    <div class="layout-column">
+                        <div class="layout-column">
+                            <div class="layout-row layout-align-start-center m-b-10"><label class="m-b-0 m-r-10">Description</label>
+                                <span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Enter a description for your newsletter here' tooltipPlacement="right" aria-hidden="true"></i></span>
+                            </div>
+                            <textarea rows="8" cols="50" maxlength="131" (keypress)="onCharCount()" [(ngModel)]="mailingData.description"></textarea>
+                            <span>{{charCount}} Characters Left</span>
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-space-between m-t-10 m-b-10">
+                        <div class="layout-row flex-35 add-app">
+                            <label class="custom-checkbox">
+                                <input type="checkbox" [(ngModel)]="mailingData.prompt_action">
+                                <span>Prompt Option
+                                    <i class="fa fa-info-circle l" tooltip="Mark to prompt users to join your mailing list when they first launch the app" tooltipPlacement="right" aria-hidden="true"></i>
+                                </span>
+                            </label>
+                        </div>
+                        <div class="layout-row flex-35 add-app">
+                            <label class="custom-checkbox ">
+                                <input type="checkbox" [(ngModel)]="mailingData.automatic_upload">
+                                <span>Automatic? 
+                                    <i class="fa fa-info-circle l" tooltip="Select for automatic upload to email marketing service" tooltipPlacement="right" aria-hidden="true"></i>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="tb-3 web-bg">
+                    <div class="layout-row">
+                        <div class="layout-row flex-70 layout-align-start-center ">
+                            <label class="layout-row m-b-0 m-r-10 layout-align-start-center">Image<i class="fa fa-info-circle ion-left setinput-icon" tooltip='Upload an image. Image size is 140 x 140px' tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <thumbnail-file-reader class="layout-row layout-align-start-center" [btnText]="'Browse'" [imageTypeHeader]="true" (delete)="deleteImage(mailingData.id)"
+                                [defaultPicture]="mailingData.image_file" (complete)="onImageChange($event)">
+                            </thumbnail-file-reader>
+                        </div>
+                        <!--<div class="layout-column flex-30 layout-align-center-end">
+                            <span>Default Icon</span>
+                            <div class="div-img layout-row layout-align-center-center" style="height: 86px;">
+                                <img src="../../../../assets/img/aroundus.png" style="margin: 4 20px 0 0;">
+                            </div>
+                        </div>-->
+                    </div>
+                </div>
+                <mobile-view [tabId]='tabId'></mobile-view>
+                <div class="layout-row save-btn layout-align-center-center m-t-10">
+                    <button type="button" class="green-btn m-r-10 flex-30" (click)="onSaveSettings()">Save Changes</button>
+                    <div class="layout-row layout-align-space-between  flex-100">
+                        <a href="../api/ws/function/newsletter/download/Csv/{{tabId}}" class="green-btn-a">Download Mailing List</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="flex-50 layout-column">
+            <div class="layout-row layout-align-center-end space-top">
+                <img src="../../../../assets/img/mc.png" class="c-p" (click)="showMailchimpDialog()">
+            </div>
+            <div class="layout-row layout-align-center-end space-top">
+                <img src="../../../../assets/img/ic.png" class="c-p" (click)="showiContactDialog()">
+            </div>
+            <!--<div class="layout-row layout-align-center-end space-top">
+                <img src="../../../../assets/img/cc.png" class="c-p" (click)="showConstantContactDialog()">
+            </div>
+            <div class="layout-row layout-align-center-end space-top">
+                <img src="../../../../assets/img/cm.png" class="c-p" (click)="showCampaignMonitorDialog()">
+            </div>
+            <div class="layout-row layout-align-center-end space-top">
+                <img src="../../../../assets/img/gr.png" class="c-p" (click)="showGetResponseDialog()">
+            </div>
+            <div class="layout-row layout-align-center-end space-top">
+                <img src="../../../../assets/img/em.png" class="c-p" (click)="showMyEmmaDialog()">
+            </div>
+            <div class="layout-row layout-align-center-end space-top">
+                <img src="../../../../assets/img/vr1.png" class="c-p" (click)="showVerticalOneDialog()">
+            </div>
+            <div class="layout-row layout-align-center-end space-top">
+                <img src="../../../../assets/img/vr2.png" class="c-p" (click)="showVerticalTwoDialog()">
+            </div>-->
+        </div>
+    </div>
+
+    <!-- Edit Categories Dialog START -->
+    <p-dialog [draggable]="false"  header="EDIT CATEGORIES" [(visible)]="showEditCategoriesDialog" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="border-all web-bg white-bg">
+            <div class="layout-row contact-us-lyot layout-align-space-between">
+                <span>Showing {{categories.length}} category(s):</span>
+                <button type="button" class="green-btn" (click)="showAddCatDialog()"><i class="fa fa-plus ion-right" aria-hidden="true"></i>ADD CATEGORY</button>
+            </div>
+            <div class="flex-100 layout-column opening-time-wrap ">
+                <table class="flex-100 layout-column">
+                    <thead class="flex-100 layout-row">
+                        <th class="flex-30 layout-row layout-align-center-center">Name</th>
+                        <th class="flex-30 layout-row layout-align-center-center">Subscribers</th>
+                        <th class="flex-40 layout-row layout-align-center-center">Action</th>
+                    </thead>
+                    <tbody class="comment-box-wrap ">
+                        <tr *ngFor="let item of categories" class="layout-row flex-100">
+                            <td class="flex-30 layout-row layout-align-center-center cl-up-1  b-l-r">{{item.name}}</td>
+                            <td class="flex-30 layout-row layout-align-center-center cl-up-1 b-l-r ">{{item.userCount}}</td>
+                            <td class="flex-20 layout-row layout-align-center-center layout-row cl-up-1 "><button class="green add" type="button" (click)="showEditCatDialog(item.id)">Edit</button></td>
+                            <td class="flex-20 layout-row layout-align-center-center layout-row cl-up-1 "><button class="red" type="button" (click)="onDeleteClick(item.id)">Delete</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </p-dialog>
+    <!-- Edit Categories Dialog END -->
+
+    <!-- ADD/Edit Category Dialog START -->
+    <p-dialog [draggable]="false"  [header]="header" [(visible)]="showCategoryDialog" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class=" web-bg white-bg border-all">
+            <form>
+                <div class="">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-100">
+                            <label>Name
+                                <i class="fa fa-info-circle l ion-left" tooltip="Enter a category name" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text" [(ngModel)]="categoryData.name">
+                        </div>
+                    </div>
+                    <div class="layout-row m-t-20 layout-align-center-center">
+                        <button [disabled]="addSaveButtonHide" (click)="onSaveCategory()" type="button" class="green-btn">SAVE CHANGES</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </p-dialog>
+    <!-- Edit Category Dialog END -->
+
+
+    <!--Mailchimp Integration Dialog START -->
+    <p-dialog [draggable]="false"  header="Mailchimp Integration" [(visible)]="showMailchimpDialogBox" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="border-all white-bg web-bg">
+            <form>
+                <div class="web-bg">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-50 m-r-10">
+                            <label>API Key</label>
+                            <input class="input-class" type="text" [(ngModel)]="mailChimp.apiKey">
+                        </div>
+                        <div class="layout-column flex-50">
+                            <label>List Id</label>
+                            <input class="input-class" type="text" [(ngModel)]="mailChimp.listId">
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" [disabled]="addSaveButtonHide" class="green-btn m-r-10" (click)="onMailChimp()">UPLOAD CONTACTS</button>
+                    <button type="button" class="blue-btn" (click)="showMailchimpDialogBox=false">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </p-dialog>
+    <!-- Mailchimp Integration Dialog END -->
+
+    <!--iContact Integration Dialog START -->
+    <p-dialog [draggable]="false"  header="iContact Integration" [(visible)]="showiContactDialogBox" modal="modal" class="app-dialog add-app" >
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="border-all white-bg web-bg">
+            <p style="color: red" *ngIf="iContact.application_id == null">Please fill up the API AppID field.</p>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-100">
+                        <label>Application Id<i class="fa fa-info-circle l" tooltip="To get the Application ID you need to register you application in 'iContact'.Open https://application.icontact.com/lcp/core/registerapplication to register your application" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text" [(ngModel)]="iContact.application_id">
+                    </div>
+                </div>
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>Username<i class="fa fa-info-circle l" tooltip="Specify your 'iContact' account ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text" [(ngModel)]="iContact.user_name">
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>APP Password<i class="fa fa-info-circle l" tooltip="Please enter application password. (You need to enable it after registration, in enable step you should create password for this application)" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text" [(ngModel)]="iContact.app_password">
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" [disabled]="addSaveButtonHide" (click)="getIContactAcDetails()" class="blue-btn">Retrieve</button>
+                </div>
+            </div>
+            <div class="web-bg">
+                <div class="layout-row flex-100">
+                    <div class="layout-column flex-50 m-r-10" *ngIf="account.length">
+                        <label>Account ID<i class="fa fa-info-circle l" tooltip="Select an account ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <p-dropdown class="border-all m-l-10 m-r-10 flex-30" [options]="account" [(ngModel)]="iContact.account_id" (onChange)="getIContactClientFolderId($event)" [style]="{'width':'140px'}"></p-dropdown>
+                    </div>
+                     <div class="layout-column flex-50 m-r-10" *ngIf="folder.length">
+                        <label>Client Folder ID<i class="fa fa-info-circle l" tooltip="Select an client folder ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <p-dropdown class="border-all m-l-10 m-r-10 flex-30" [options]="folder" [(ngModel)]="iContact.client_folder_id" (onChange)="getIContactClientList($event)" [style]="{'width':'140px'}"></p-dropdown>
+                    </div>
+                     <div class="layout-column flex-50 m-r-10" *ngIf="lists.length">
+                        <label>Lists<i class="fa fa-info-circle l" tooltip="Contacts will be subscribed to selected lists" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <p-dropdown class="border-all m-l-10 m-r-10 flex-30" [options]="lists" [(ngModel)]="iContact.listId" [style]="{'width':'140px'}"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-row save-btn">
+                <button type="button" class="green-btn m-r-10" (click)="uploadIContact()">UPLOAD CONTACTS</button>
+                <button type="button" class="blue-btn" (click)="showiContactDialogBox = false">Cancel</button>
+            </div>
+        </div>
+    </p-dialog>
+    <!-- iContact Integration Dialog END -->
+
+    <!--ConstantContact Integration Dialog START -->
+    <p-dialog [draggable]="false"  header="ConstantContact Integration" [(visible)]="showConstantContactDialogBox" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="border-all white-bg web-bg">
+            <form>
+                <p style="color: red">Please fill up the API key field.</p>
+                <div class="web-bg">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-100">
+                            <label>API Key<i class="fa fa-info-circle l" tooltip="You should request API key for this application in 'ConstantContract'.After you register your application, you will get the key" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                    </div>
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-50 m-r-10">
+                            <label>Username<i class="fa fa-info-circle l" tooltip="Specify your 'Constant Contract' account ID" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                        <div class="layout-column flex-50">
+                            <label>Password<i class="fa fa-info-circle l" tooltip="Specify your 'Constant Contract' account password" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                    </div>
+                    <div class="layout-row save-btn">
+                        <button type="button" class="blue-btn">Retrieve</button>
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="green-btn m-r-10">UPLOAD CONTACTS</button>
+                    <button type="button" class="blue-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </p-dialog>
+    <!-- ConstantContact Integration Dialog END -->
+
+    <!--CampaignMonitor Integration Dialog START -->
+    <p-dialog [draggable]="false"  header="CampaignMonitor Integration" [(visible)]="showCampaignMonitorDialogBox" modal="modal" class="app-dialog add-app" >
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="border-all white-bg web-bg">
+            <form>
+                <p style="color: red">Please fill up the API key field.</p>
+                <div class="web-bg">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-100">
+                            <label>API Key<i class="fa fa-info-circle l" tooltip="Specify API key. (You can find your API key by logging into your account</p> and licking on the 'Account Settings' link at the top left on the screen.If you don't have API key, click on 'Generate your API key' link on right side of the screen, then click 'Generate my API key button'" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                    </div>
+                    <div class="layout-row save-btn">
+                        <button type="button" class="blue-btn">Retrieve</button>
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="green-btn m-r-10">UPLOAD CONTACTS</button>
+                    <button type="button" class="blue-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </p-dialog>
+    <!-- CampaignMonitor Integration Dialog END -->
+
+    <!--GetResponse Integration Dialog START -->
+    <p-dialog [draggable]="false"  header="GetResponse Integration" [(visible)]="showGetResponseDialogBox" modal="modal" class="app-dialog add-app" >
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="border-all white-bg web-bg">
+            <form>
+                <p style="color: red">Please fill up the API key field.</p>
+                <div class="web-bg">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-100">
+                            <label>API Key<i class="fa fa-info-circle l" tooltip="Specify API key. (The API key is assigned to every pro account.Open http://www.getresponse.com/my_api_key.html) to get the key" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                    </div>
+                    <div class="layout-row save-btn">
+                        <button type="button" class="blue-btn">Retrieve</button>
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="green-btn">UPLOAD CONTACTS</button>
+                    <button type="button" class="blue-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </p-dialog>
+    <!-- GetResponse Integration Dialog END -->
+
+    <!--MyEmma Integration Dialog START -->
+    <p-dialog [draggable]="false"  header="MyEmma Integration" [(visible)]="showMyEmmaDialogBox" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="border-all white-bg web-bg">
+            <form>
+                <p style="color: red">Please fill up the API key field.</p>
+                <div class="web-bg">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-100">
+                            <label>Public API key<i class="fa fa-info-circle l" tooltip="Specify public API key. ('API key' tab present under account settings)" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                    </div>
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-50">
+                            <label>Private API Key<i class="fa fa-info-circle l" tooltip="Specify your 'My Emma' private api key." tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                        <div class="layout-column flex-50">
+                            <label>Account ID<i class="fa fa-info-circle l" tooltip="Specify account ID. ('Account & Billing' link present in the upper right corner in 'MyEmma' account, next to 'Login' button)" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                    </div>
+                    <div class="layout-row save-btn">
+                        <button type="button" class="blue-btn">Retrieve</button>
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="green-btn">UPLOAD CONTACTS</button>
+                    <button type="button" class="blue-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </p-dialog>
+    <!-- MyEmma Integration Dialog END -->
+
+    <!--Vertical Response Classic Dialog START -->
+    <p-dialog [draggable]="false"  header="VerticalResponse Classic Integration" [(visible)]="showVerticalOneDialogBox" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="border-all white-bg web-bg">
+            <form>
+                <p style="color: red">Please input the username.</p>
+                <div class="web-bg">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-100">
+                            <label>Username<i class="fa fa-info-circle l" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                        <div class="layout-column flex-100">
+                            <label>Password<i class="fa fa-info-circle l"  tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                    </div>
+                    <div class="layout-row save-btn">
+                        <button type="button" class="blue-btn">Retrieve</button>
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="green-btn">Save</button>
+                    <button type="button" class="blue-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </p-dialog>
+    <!-- Vertical Response Classic Dialog END -->
+
+    <!--Vertical Response Classic Dialog START -->
+    <p-dialog [draggable]="false"  header="VerticalResponse Integration" [(visible)]="showVerticalTwoDialogBox" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="border-all white-bg web-bg">
+            <form>
+                <p style="color: red">Please input the API key.</p>
+                <div class="web-bg">
+                    <div class="layout-row flex-100">
+                        <div class="layout-column flex-100">
+                            <label>API Key<i class="fa fa-info-circle l" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                        <div class="layout-column flex-100">
+                            <label>API Secret<i class="fa fa-info-circle l"  tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <input class="input-class" type="text">
+                        </div>
+                    </div>
+                    <div class="layout-row save-btn">
+                        <button type="button" class="blue-btn">Retrieve</button>
+                    </div>
+                </div>
+                <div class="layout-row save-btn">
+                    <button type="button" class="green-btn">Save</button>
+                    <button type="button" class="blue-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </p-dialog>
+    <!-- Vertical Response Classic Dialog END -->
+</div>

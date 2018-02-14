@@ -1,0 +1,131 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready" class="contact-us-wrap">
+    <div class="flex-100 spaceborder">
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-100 layout-row main-social-tab-container">
+        <div class="flex-50 layout-column">
+            <div class="againtab-container-box">
+                <div class="header-background">
+                    <div class="tabinner-space contact-us">
+
+                        <form class="contact-us-formr">
+                            <div class="tb-3 web-bg">
+                                <div class="layout-column dis-app relative">
+                                    <div class="layout-row">
+                                        <div class="layout-row flex-100 layout-align-start-center ">
+                                            <label class="layout-row">Email</label>
+                                            <input type="email" [(ngModel)]="gateAccessData.email_id" name="email">
+                                        </div>
+                                    </div>
+                                    <div class="layout-row">
+                                        <div class="layout-row flex-70 layout-align-start-center">
+                                            <label class="layout-row">Banner Image
+                                                <i class="fa fa-info-circle setinput-icon" tooltip='Upload an image that represents your business.Image should be 288x144px.'
+                                                    tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                            <input type="file" (change)="onBannerImageChange($event)">
+                                        </div>
+                                        <div class="layout-column flex-30 layout-align-center-end">
+                                            <span *ngIf="!bannerImage">Default Image</span>
+                                            <div class="div-img layout-row layout-align-center-center">
+                                                <div *ngIf="!bannerImage"></div>
+                                                <i class="fa fa-close" *ngIf="bannerImage" (click)="deleteBannerImage()"></i>
+                                                <img [src]="bannerImage" *ngIf="bannerImage">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-row save-btn">
+                                <button type="button" class="blue-btn btn" [disabled]="addSaveButtonHide" (click)="onFormSubmit()">Save Changes</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 mob-add-wrap">
+            <div class="flex-100 layout-column">
+                <mobile-view [tabId]='tabId'></mobile-view>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!-- <p-dialog [draggable]="false"  header="Set Opening Times" [(visible)]="openingTimesDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add menu-tb">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div class="layout-column border-all white-bg web-bg " *ngIf="openingTimes">
+        <div class="layout-row layout-align-space-between mn-tb-1 flex-100">
+            <span class="layout-row layout-align-start-center">You have {{openingTimes.length}} opening time(s)</span>
+            <button class="green-btn" (click)="onAddOpeningTimeClick()">Add Opening Time</button>
+        </div>
+        <table class="flex-100 layout-column opening-time-wrap ">
+            <thead class="flex-100 layout-row">
+                <tr class="flex-100 layout-row">
+                    <th class="flex-5 layout-row layout-align-center-center"></th>
+                    <th class="flex-25 layout-row layout-align-center-center">Day</th>
+                    <th class="flex-25 layout-row layout-align-center-center">Open From</th>
+                    <th class="flex-25 layout-row layout-align-center-center">Open To</th>
+                    <th class="flex-20 layout-row layout-align-center-center">Action</th>
+                </tr>
+            </thead>
+            <tbody [dragula]="OPENING_TIMES_BAG" [dragulaModel]="openingTimes" class="height-tb">
+                <tr *ngFor="let time of openingTimes" class="flex-100 layout-row">
+                    <td class="flex-5 layout-row layout-align-center-center"><span><i class="fa fa-arrows cursor-move" aria-hidden="true"></i></span></td>
+                    <td class="flex-25 layout-row layout-align-start-center">{{time.day_name}}</td>
+                    <td class="flex-25 layout-row layout-align-start-center">{{time.open_from}}</td>
+                    <td class="flex-25 layout-row layout-align-start-center">{{time.open_to}}</td>
+                    <td class="flex-20 layout-row layout-align-center-center ">
+                        <button class="edit-btn " type="button" (click)="onOpeningTimeEditClick(time.id)">Edit</button>
+                        <button class="red" type="button" (click)="onOpeningTimeDeleteClick(time.id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</p-dialog>
+<p-dialog [draggable]="false"  [header]="openingTimeFormHeader" [(visible)]="openingTimeFormDisplay" modal="modal" class="app-dialog add-app s-tab-add menu-tb-ad">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form (ngSubmit)="onOpeningTimeFormSubmit()" class="white-bg web-bg border-all">
+        <div class="layout-column m-b-20">
+            <div class="layout-column m-b-10">
+                <label>Input Day</label>
+                <input class="input-class flex-100" type="text" [(ngModel)]="openingTime.day_name">
+            </div>
+            <div class="layout-row layout-align-space-between ">
+                <div class="layout-column flex-45">
+                    <label>Open From</label>
+                    <input class="input-class" type="text" [(ngModel)]="openingTime.open_from">
+                </div>
+                <div class="layout-column flex-45">
+                    <label>Open To</label>
+                    <input class="input-class" type="text" [(ngModel)]="openingTime.open_to">
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="">
+                <div class="save-btn">
+                    <button class="blue-btn btn" type="submit">SAVE</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+</p-dialog>  -->

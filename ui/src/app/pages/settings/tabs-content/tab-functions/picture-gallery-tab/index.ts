@@ -1,0 +1,1 @@
+export * from './picture-gallery.component.ts';

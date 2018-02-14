@@ -1,0 +1,203 @@
+<div *ngIf="!ready || showMainLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+
+<div class="flex-100 spaceborder">
+</div>
+<div class="flex-100 layout-row secondtab-block">
+    <div class="flex-30">
+        <!--<ul class="secondcontent-block" style="padding-left: 0px;">
+            <li>{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+        </ul>-->
+        <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                 <!--<li class="title-sbhead">You have {{itemData.length}} coupon(s):</li>-->
+            </ul>
+    </div>
+</div>
+
+<div class="flex-100 layout-row main-social-tab-container pdf arnd inbox-wrappr" *ngIf="settingsData">
+    <div class="flex-50 layout-column inbox-wrap boder-left-div">
+        <div class="flex-100 layout-row">
+            <div class="layout-align-start"><span class="layout-row setspace">Messages Tab Settings :</span></div>
+        </div>
+        <div class="flex-100 layout-row layout-align-start">
+            <div class="flex-100 layout-column">
+                <div class="flex-100 layout-row m-b-10">
+<!--                    <span class="layout-row right-space">
+                    <input >
+                </span> -->
+                 <label class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" id="inlineCheckbox01" type="checkbox" [checked]="settingsData['hide_msg_tab']" [(ngModel)]="settingsData.hide_msg_tab">
+                <span>Hide Messages Tab</span>
+            </label>
+                <i class="fa fa-info-circle layout-row setinput-icon m-l-10" tooltip="Check this box to hide your messages tab, so it's not shown as a 'Tab' within your app"
+                        tooltipPlacement="right" aria-hidden="true"></i>
+                </div>
+                <div class="flex-100 layout-row">
+<!--                    
+                    <span class="layout-row right-space">
+                    <input >
+                </span>-->
+                <label class="checkbox-inline custom-checkbox nowrap">
+                <input id="inlineCheckbox01" type="checkbox" [checked]="settingsData['msg_center_shortcut']" [(ngModel)]="settingsData.msg_center_shortcut" (click)="onMsgCenterShorcutClick()">
+                <span> Message Centre Shortcut</span>
+            </label>
+                <i class="fa fa-info-circle layout-row setinput-icon  m-l-10"
+                        tooltip="Check this box to have your message center shortcut icon displayed on your homescreen." tooltipPlacement="right"
+                        aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+        <div class="msgShorcut flex-100 layout-align-start">
+            <div class="overlay" [style.display]="settingsOverlayDisplay"></div>
+            <div class="flex-100 layout-row layout-align-start m-b-10">
+                <div class="flex-100 layout-row">
+                    <div class="layout-row flex-30">
+                        <label class="layout-row">Icon Location
+          <i class="fa fa-info-circle l m-l-10" tooltip="Select the location of your icon." tooltipPlacement="right" aria-hidden="true"></i>
+          </label></div>
+                    <div class="flex-70 layout-row layout-align-start-center">
+                        <div class=" layout-column">
+                            <div class="flex-10 layout-row layout-align-space-between-center">
+                                <p-radioButton name="left" [value]="LEFT" [(ngModel)]="settingsData.icon_location"></p-radioButton><span class="m-l-10">Left</span></div>
+                        </div>
+                        <div class=" layout-column">
+                            <div class="flex-15 layout-row layout-align-space-between-center m-l-10">
+                                <p-radioButton class="flex-20" name="right" [value]="RIGHT" [(ngModel)]="settingsData.icon_location"></p-radioButton><span class="m-l-10">Right</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex-100 layout-row layout-align-start">
+                <div class="flex-100 layout-row">
+                    <label class="flex-30 layout-row layout-align-start-center">
+                    Icon Opacity<i class="fa fa-info-circle l m-l-10" tooltip="You can change the opacity of your icon." tooltipPlacement="right" aria-hidden="true"></i>
+                     </label>
+                    <div class="flex-70 layout-row layout-align-start-center">
+                        <div class="flex-70 layout-row"><p-slider [(ngModel)]="settingsData.icon_opacity" [style]="{'width':'200px'}"></p-slider>
+                        <span class="m-l-10">{{settingsData.icon_opacity}}%</span></div>
+                       
+                            <div class="data-inbox-wrap">
+                            <div [style.opacity]="settingsData.icon_opacity / 100" ><i class="fa fa-comments fa-3x" aria-hidden="true"></i>
+                            </div>
+                            </div>
+                      
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-100 layout-row layout-align-start">
+            <div class="flex-100 layout-column">
+                <div class="flex-100 layout-row">
+                    <i class="fa fa-info-circle l m-r-10" tooltip="Enable to create custom message categories users can subscribe to." tooltipPlacement="right"
+                        aria-hidden="true"></i>Enable subscription push note service
+                    <p-inputSwitch [(ngModel)]="settingsData.subscription_service" (click)="onEnableSubscriptionClick()"></p-inputSwitch>
+                </div>
+            </div>
+        </div>
+
+        <div class="subscription inbox-div-wrap border-all">
+            <div class="overlay" [style.display]="subscriptionOverlayDisplay"></div>
+            <div class="flex-100 layout-row">
+                <div class="flex-100 layout-column">
+                    <div class="flex-100 layout-row">
+                        <div class="dotted-bootom-div layout-column layout-align-end flex-100 ">
+                            <div class="layout-column">
+                                <span class="layout-row layout-align-end pdf-box "> <div >
+                            <button class="green-btn" (click)="onNewSubscription()">
+                        New Subscription
+                    </button>
+                        </div></span>
+                                
+                                <div class="layout-row layout-align-space-between-center pad-l-15 pad-r-15 m-t-10 p-b-10 border-b-dot">
+                                <label class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" id="inlineCheckbox01"  [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                <span>Select All</span>
+            </label>
+                                <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                          </div>    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div [dragula]='"website-bag"' [dragulaModel]="subscriptionList">
+                
+                    <div class="dotted-bootom-div layout-row somespace-top layout-align-start-center" *ngFor="let item of subscriptionList">
+                        <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                <input type="checkbox" id="inlineCheckbox02" [(ngModel)]="selectedItem[item.id]" (click)="onCheckTabChange(selectedItem[item.id], item.id)">
+                <span>&nbsp;</span>
+            </label>
+<!--                            <span><input >
+                        </span>-->
+                            <span class="layout-align-center-center layout-row"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+                            <div class="layout-column menu-tb-span">
+                                <span>{{item.subscription_name}}</span> <span>{{item.subscribers}} Subscribers</span>
+                            </div>
+                        </div>
+                        <div class="flex-50 layout-row layout-align-end  remove-r-padding  pad-r-15">
+                            <span><button class="edit-btn m-r-0" (click)="showEditDialog(item.id)"><i class="fa fa-pencil" title="edit"></i></button></span>
+                        </div>
+                    </div>
+
+            </div>
+        </div>
+
+         <div class="layout-align-start save-btn">
+            <button class="blue-btn btn btn-lg" type="submit" [disabled]="addSaveButtonHide" (click)="onSaveInboxSettings()">Save Changes</button>
+        </div>
+    </div>
+
+    <div class="flex-50 layout-column">
+        <mobile-view [tabId]='tabId'></mobile-view>
+    </div>
+</div>
+
+
+<!-- Add/Edit New Subcription Dialog START-->
+<p-dialog [draggable]="false"  [header]="subscriptionHeader" [(visible)]="newSubscriptionDisplay" modal="modal" class="app-dialog add-app"
+    (onAfterHide)="onDialogHide()" >
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form>
+        <div class="layout-column border-all white-bg web-bg m-b-15">
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-100">
+                    <label>Subscription Name</label>
+                    <input class="input-class" type="text" [(ngModel)]="subscriptionData.subscription_name">
+                </div>
+            </div>
+        </div>
+        <footer>
+            <div class="">
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" type="button" [disabled]="addSaveButtonHide" (click)="onSaveSubscription()">SAVE</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+</p-dialog>
+<!-- Add/Edit New Subscription Dialog END-->
+
+
+<!-- Delete Subscription Dialog START 
+<p-dialog header="Delete Subscription ?" [(visible)]="showDeleteDialog" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected Item ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteSubscription()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteDialog=false">No</a>
+        </div>
+    </footer>
+</p-dialog>
+ Delete Item Dialog END -->

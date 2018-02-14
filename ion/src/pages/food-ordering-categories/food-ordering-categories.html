@@ -1,0 +1,63 @@
+<ion-header>
+
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title *ngIf="!showSearchBar" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">Categories</ion-title>
+
+        <ion-buttons end *ngIf="!showSearchBar">
+            <button (click)="showSearchBar = true" ion-button icon-only [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="search"></ion-icon>
+            </button>
+            <button ion-button icon-only (click)="service.openCart(navCtrl, tabId)" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="cart"></ion-icon>
+                <ion-badge *ngIf="service.cartTotal" color="danger">{{service.cartTotal}}</ion-badge>
+            </button>
+        </ion-buttons>
+
+        <template [ngIf]="showSearchBar">
+            <ion-row align-items-center>
+                <ion-searchbar class="sc-search" placeholder="Search" [(ngModel)]="search" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"></ion-searchbar>
+                <ion-buttons end>
+                    <button ion-button icon-only (click)="showSearchBar = false" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                        <ion-icon name="close"></ion-icon>
+                    </button>
+                </ion-buttons>
+            </ion-row>
+        </template>
+
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="card-background-page">
+    <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+
+    <template [ngIf]="!loader">
+
+        <ion-grid *ngIf="!service.settings || service.settings?.category_view_display == CATEGORY_VIEW_DISPLAY_GRID">
+            <ion-row wrap>
+                <ion-col *ngFor="let category of (categories | search:search:'name')">
+                    <ion-card tappable (click)="onCategoryClick(category)" [style.width.px]="windowObject.innerWidth / 2 - 10" [style.height.px]="windowObject.innerWidth / 2 - 10"
+                        [style.background-image]="'url(' + (category.image || 'assets/icon/grey-bg.jpg') + ')'">
+                        <div class="card-title">{{category.name}}</div>
+                        <div class="cate-item-num">{{category.no_of_items}}</div>
+                    </ion-card>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <template [ngIf]="service.settings?.category_view_display == CATEGORY_VIEW_DISPLAY_LIST">
+            <ion-card class="cate-list" tappable *ngFor="let category of (categories | search:search:'name')" (click)="onCategoryClick(category)">
+                <img [src]="category.image || 'assets/icon/grey-bg.jpg'" />
+                <div class="cate-title-with-num">
+                    <div class="card-title">{{category.name}}</div>
+                    <div class="cate-item-num">{{category.no_of_items}}</div>
+                </div>
+            </ion-card>
+        </template>
+
+    </template>
+</ion-content>

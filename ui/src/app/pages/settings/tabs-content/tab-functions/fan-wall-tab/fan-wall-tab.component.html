@@ -1,0 +1,54 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">You have {{eventsList.length}} event(s)</li>-->
+            </ul>
+        </div>
+    </div>
+    <div class="flex-100 layout-row main-social-tab-container">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="dotted-bootom-div layout-column layout-align-end">
+                <div class=" layout-row layout-align-space-between-center ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">                       
+                        <li class="title-sbhead">You have {{itemList.length}} comment(s)</li>
+                    </ul>
+                </div>
+                <div class="layout-row layout-align-space-between m-t-10">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onItemDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>                
+            </div>
+            <div [dragula]="'content-tab-two-items-bag'" [dragulaModel]="itemList">
+                <div class="dotted-bootom-div layout-row somespace-top" *ngFor="let item of itemList">
+                     <div class="flex-50 layout-row layout-align-start-center">
+                        <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedItem[item.id]" (click)="onCheckTabChange(selectedItem[item.id], item.id)">
+                            <span></span>
+                        </label>                        
+                        <span class="layout-row layout-align-center-center"><i aria-hidden="true" class="fa fa-arrows cursor-move"></i></span>
+                        <div class="layout-column menu-tb-span">
+                            <span>{{item.name}}</span>
+                            <span>{{item.description}}</span>
+
+                        </div>
+                    </div>                
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+</div>

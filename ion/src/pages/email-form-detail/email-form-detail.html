@@ -1,0 +1,229 @@
+<!--
+  Generated template for the EmailFormDetail page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title *ngIf=" tab_nav_type=='tab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]:title:title}}</ion-title>
+        <ion-title *ngIf="tab_nav_type=='subtab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.sub_tab_translation?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]:title:title}}</ion-title>
+    </ion-navbar>
+</ion-header>
+
+<ion-content padding [style.background]="'url(' + bgImage + ')'">
+    <md-spinner [state]="loader || formSubmitLoader" [type]="'fixed'"></md-spinner>
+    <template [ngIf]="!loader">
+        <h1>{{emailForm.title}}</h1>
+        <p>{{emailForm.description}}</p>
+
+        <ion-grid>
+            <form (ngSubmit)="emailFormSubmit()">
+                <ion-row *ngFor="let field of formFields; let i = index" [ngSwitch]="field.field_type_id" [class.error]="!validFields[field.id]">
+                    <ion-col>
+                        <!-- Single Line Text -->
+                        <div *ngSwitchCase="fieldTypes.SINGLE_LINE_TEXT">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <ion-input (focus)="onTextInputFocus($event)" class="input-length" *ngSwitchCase="fieldTypes.SINGLE_LINE_TEXT" type="text" [style.width]="fieldSize[field.properties.size]"
+                            [(ngModel)]="formValue[field.id]" [ngModelOptions]="inputOption"></ion-input>
+
+                        <!-- Number -->
+                        <div *ngSwitchCase="fieldTypes.NUMBER">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <ion-input (focus)="onTextInputFocus($event)" class="input-length" *ngSwitchCase="fieldTypes.NUMBER" type="number" [style.width]="fieldSize[field.properties.size]"
+                            [(ngModel)]="formValue[field.id]" [ngModelOptions]="inputOption"></ion-input>
+
+                        <!-- Paragraph Text -->
+                        <div *ngSwitchCase="fieldTypes.PARAGRAPH_TEXT">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <ion-textarea (focus)="onTextInputFocus($event)" class="input-length" *ngSwitchCase="fieldTypes.PARAGRAPH_TEXT" [style.width]="fieldSize[field.properties.size]"
+                            [(ngModel)]="formValue[field.id]" [ngModelOptions]="inputOption"></ion-textarea>
+
+                        <!-- Name -->
+                        <div *ngSwitchCase="fieldTypes.NAME">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <ion-row *ngSwitchCase="fieldTypes.NAME">
+                            <ion-input (focus)="onTextInputFocus($event)" type="text" placeholder="First" [(ngModel)]="formValue[field.id].first" [ngModelOptions]="inputOption"></ion-input>
+                            <ion-input (focus)="onTextInputFocus($event)" type="text" placeholder="Last" [(ngModel)]="formValue[field.id].last" [ngModelOptions]="inputOption"></ion-input>
+                        </ion-row>
+
+                        <!-- Checkbox -->
+                        <div *ngSwitchCase="fieldTypes.CHECKBOXES">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <span *ngSwitchCase="fieldTypes.CHECKBOXES">
+                    <ion-row *ngFor="let choice of field.properties.choices">
+                        <ion-checkbox color="dark" [(ngModel)]="formValue[field.id][choice.name]" [ngModelOptions]="inputOption"></ion-checkbox>
+                        <ion-label>{{choice.name}}</ion-label>
+                    </ion-row>
+				    </span>
+
+                        <!-- Radio Button -->
+                        <div *ngSwitchCase="fieldTypes.MULTIPLE_CHOICES">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <span *ngSwitchCase="fieldTypes.MULTIPLE_CHOICES" radio-group [(ngModel)]="formValue[field.id]" [ngModelOptions]="inputOption">
+                    <ion-row *ngFor="let choice of field.properties.choices">
+                        <ion-radio color="dark" value="{{choice.name}}"></ion-radio>
+                        <ion-label >{{choice.name}}</ion-label>
+                    </ion-row>
+				    </span>
+
+                        <!-- Dropdown -->
+                        <div *ngSwitchCase="fieldTypes.DROPDOWN">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <ion-row *ngSwitchCase="fieldTypes.DROPDOWN" class="drop-box">
+                            <ion-select class="input-length" [style.max-width]="'100%'" [style.width]="fieldSize[field.properties.size]" [(ngModel)]="formValue[field.id]"
+                                [ngModelOptions]="inputOption">
+                                <ion-option *ngFor="let choice of field.properties.choices" value="{{choice.name}}">{{choice.name}}</ion-option>
+                            </ion-select>
+                        </ion-row>
+
+                        <!-- DatePicker -->
+                        <div *ngSwitchCase="fieldTypes.DATE">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <div *ngSwitchCase="fieldTypes.DATE" class="relative">
+                            <ion-datetime displayFormat="MM/DD/YYYY" pickerFormat="MMM/DD/YYYY" [(ngModel)]="formValue[field.id]" [ngModelOptions]="inputOption"
+                                [max]="futureDate"></ion-datetime>
+                            <span tappable *ngSwitchCase="fieldTypes.DATE" (click)="clearDateTime(field.id)"><ion-icon name="close-circle"></ion-icon></span>
+                        </div>
+
+                        <!-- TimePicker -->
+                        <div *ngSwitchCase="fieldTypes.TIME">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <div *ngSwitchCase="fieldTypes.TIME" class="relative">
+                            <ion-datetime *ngIf="field.properties.format == TIME_FORMAT_24_HOURS" displayFormat="HH:mm" pickerFormat="H:mm" [(ngModel)]="formValue[field.id]"
+                                [ngModelOptions]="inputOption"></ion-datetime>
+                            <ion-datetime *ngIf="field.properties.format == TIME_FORMAT_12_HOURS" displayFormat="hh:mm A" pickerFormat="h:mm A" [(ngModel)]="formValue[field.id]"
+                                [ngModelOptions]="inputOption"></ion-datetime>
+                            <span tappable (click)="clearDateTime(field.id)"><ion-icon name="close-circle"></ion-icon></span>
+                        </div>
+
+                        <!-- Phone -->
+                        <div *ngSwitchCase="fieldTypes.PHONE">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <ion-row *ngSwitchCase="fieldTypes.PHONE">
+                            <span *ngIf="field.properties.phone_format === PHONE_FORMAT_NORMAL">
+                        <ion-input (focus)="onTextInputFocus($event)" type="number" placeholder="(###)" [(ngModel)]="formValue[field.id].fieldOne" [ngModelOptions]="inputOption"></ion-input>
+                        <span class="dash"> - </span>
+                            <ion-input (focus)="onTextInputFocus($event)" type="number" placeholder="###" [(ngModel)]="formValue[field.id].fieldTwo" [ngModelOptions]="inputOption"></ion-input>
+                            <span class="dash"> - </span>
+                            <ion-input (focus)="onTextInputFocus($event)" type="number" placeholder="####" [(ngModel)]="formValue[field.id].fieldThree" [ngModelOptions]="inputOption"></ion-input>
+                            </span>
+                            <span *ngIf="field.properties.phone_format === PHONE_FORMAT_INTERNATIONAL">
+                        <ion-input (focus)="onTextInputFocus($event)" type="tel" [(ngModel)]="formValue[field.id]" [ngModelOptions]="inputOption"></ion-input>
+                    </span>
+                        </ion-row>
+
+                        <!-- Website -->
+                        <div *ngSwitchCase="fieldTypes.WEBSITE">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <ion-input (focus)="onTextInputFocus($event)" class="input-length" *ngSwitchCase="fieldTypes.WEBSITE" type="url" [style.width]="fieldSize[field.properties.size]"
+                            [(ngModel)]="formValue[field.id]" [ngModelOptions]="inputOption"></ion-input>
+
+                        <!-- Price -->
+                        <div *ngSwitchCase="fieldTypes.PRICE">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <ion-row *ngSwitchCase="fieldTypes.PRICE">
+                            <span class="span-data">$ </span>
+                            <ion-input (focus)="onTextInputFocus($event)" type="number" [(ngModel)]="formValue[field.id]" [ngModelOptions]="inputOption"></ion-input>
+                        </ion-row>
+
+                        <!-- Email -->
+                        <div *ngSwitchCase="fieldTypes.EMAIL">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <ion-input (focus)="onTextInputFocus($event)" class="input-length" *ngSwitchCase="fieldTypes.EMAIL" type="email" [style.width]="fieldSize[field.properties.size]"
+                            [(ngModel)]="formValue[field.id]" [ngModelOptions]="inputOption"></ion-input>
+
+                        <!-- Section Break -->
+                        <div *ngSwitchCase="fieldTypes.SECTION_BREAK" class="section-brk">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+
+                        <!-- File Upload -->
+                        <div *ngSwitchCase="fieldTypes.FILE_UPLOAD">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <input *ngSwitchCase="fieldTypes.FILE_UPLOAD" type="file" (change)="onFileUploadChange($event, field.id)">
+
+                        <!-- Address -->
+                        <div *ngSwitchCase="fieldTypes.ADDRESS">
+                            {{field.properties.label}}
+                            <span *ngIf="field.properties.rules.required" class="required"> * </span>
+                            <span *ngIf="field.properties.guidelines" tappable (click)="showGuideline($event, field.properties.guidelines)"> <ion-icon name="information-circle"></ion-icon> </span>
+                        </div>
+                        <ion-row *ngSwitchCase="fieldTypes.ADDRESS">
+                            <ion-input (focus)="onTextInputFocus($event)" type="text" placeholder="Street Address" [(ngModel)]="formValue[field.id].street_address" [ngModelOptions]="inputOption"></ion-input>
+                        </ion-row>
+                        <ion-row *ngSwitchCase="fieldTypes.ADDRESS">
+                            <ion-input (focus)="onTextInputFocus($event)" type="text" placeholder="Address Line 2" [(ngModel)]="formValue[field.id].address_line_two" [ngModelOptions]="inputOption"></ion-input>
+                        </ion-row>
+                        <ion-row *ngSwitchCase="fieldTypes.ADDRESS">
+                            <ion-input (focus)="onTextInputFocus($event)" type="text" placeholder="City" [(ngModel)]="formValue[field.id].city" [ngModelOptions]="inputOption"></ion-input>
+                            <ion-input (focus)="onTextInputFocus($event)" type="text" placeholder="State/Province/Region" [(ngModel)]="formValue[field.id].state" [ngModelOptions]="inputOption"></ion-input>
+                        </ion-row>
+                        <ion-row *ngSwitchCase="fieldTypes.ADDRESS" class=zip-wrap>
+                            <ion-input (focus)="onTextInputFocus($event)" type="text" placeholder="Zip/Postal Code" [(ngModel)]="formValue[field.id].zip" [ngModelOptions]="inputOption"></ion-input>
+                            <ion-select [(ngModel)]="formValue[field.id].country" [ngModelOptions]="inputOption">
+                                <ion-option *ngFor="let country of countries">{{country}}</ion-option>
+                            </ion-select>
+                        </ion-row>
+                    </ion-col>
+                </ion-row>
+
+                <!-- Submit Form-->
+                <ion-row>
+                    <ion-col>
+                        <button ion-button type="submit" color="light" full [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+                            [style.color]="globalService.initData.globalStyleSettings.features.button_text">{{emailForm.submit_button_label}}</button>
+                    </ion-col>
+                </ion-row>
+            </form>
+        </ion-grid>
+        <div *ngIf="showKeyboardOffset" [style.height]="keyboardOffsetHeight + 'px'"></div>
+    </template>
+</ion-content>

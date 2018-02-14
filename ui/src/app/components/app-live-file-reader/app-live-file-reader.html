@@ -1,0 +1,12 @@
+<div class="app-live-group layout-row layout-align-start-center">
+    
+    <div class="app-live-btn-wrap" [class.display-btn-live]="picture || defaultPicture">
+       <div class="app-live-upload-btn " (click)="bringAppLiveFileSelector()"><button class="green-btn">{{btnText}}</button></div>
+    <input #fileUpload type="file" hidden="true" (change)="changeListener($event)" /> 
+    </div>
+    <div class="app-live-picture-wrapper" [class.fr-header-image]="imageTypeHeader">
+        <img class="target-picture" src="{{ picture }}" *ngIf="picture">
+        <img src="{{ defaultPicture }}" *ngIf="!picture && defaultPicture">
+        <i class="fa fa-times {{defaultPicture}} {{canDelete && (defaultPicture != null) }}" (click)="removePicture();" *ngIf="canDelete &&  (defaultPicture != null)"></i>
+    </div>
+</div>

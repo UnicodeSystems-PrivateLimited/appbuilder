@@ -1,0 +1,1 @@
+export * from './around-us.component.ts';

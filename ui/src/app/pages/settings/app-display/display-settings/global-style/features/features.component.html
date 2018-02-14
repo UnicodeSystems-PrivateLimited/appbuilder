@@ -1,0 +1,31 @@
+<div class="header tabinner-space button-tab-wrapper">
+    <div class="layout-column">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-20">Button Text</label>
+            <input class="input-class" [(colorPicker)]="service.globalStyleSettings.features.button_text" [style.background]="service.globalStyleSettings.features.button_text"
+                [value]="service.globalStyleSettings.features.button_text" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-20">Button & Image</label>
+            <input class="input-class" [(colorPicker)]="service.globalStyleSettings.features.button_image" [style.background]="service.globalStyleSettings.features.button_image"
+                [value]="service.globalStyleSettings.features.button_image" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-20">Feature Text</label>
+            <input class="input-class" [(colorPicker)]="service.globalStyleSettings.features.feature_text" [style.background]="service.globalStyleSettings.features.feature_text"
+                [value]="service.globalStyleSettings.features.feature_text" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+        </div>
+    </div>
+    <div class="layout-column m-t-10">
+        <div class="layout-row layout-align-start-center">
+            <label class="flex-20">Background Color</label>
+            <input class="input-class" [(colorPicker)]="service.globalStyleSettings.features.background_color" [style.background]="service.globalStyleSettings.features.background_color"
+                [value]="service.globalStyleSettings.features.background_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+        </div>
+    </div>
+</div>

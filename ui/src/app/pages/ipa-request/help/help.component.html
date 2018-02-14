@@ -1,0 +1,145 @@
+<div class="border-all white-bg help-updates layout-column">
+    <b>iPA Generation Process</b>
+    <div>
+        <span>Topics Covered : </span>
+        <ul>
+            <li>Microphone Access (For audio video and recorder) </li>
+            <li>Location Access Permission</li>
+            <li>Calendar Access Permission</li>
+            <li>Contacts Permission</li>
+            <li> Camera and Photo library access Permission</li>
+            <li>To access Custom URL’s</li>
+            <li>Push Notification</li>
+            <li>Certificates & Provisioning Profile Generation</li>
+
+        </ul>
+    </div>
+    <div class="layout-column">
+        <label>To get the permissions we need to add following things in info.plist</label>
+        <div class="layout-column">
+            <span> For Microphone :-</span>
+            <ul>
+                <li>
+                    Privacy - Microphone Usage Description :: This app requires microphone access to function properly.
+                </li>
+            </ul>
+        </div>
+        <div class="layout-column">
+            <span> For Motion  & Location :-</span>
+            <ul>
+                <li>
+                    Privacy - Motion Usage Description :: This app requires motion detection access to function properly.
+                </li>
+                <li>
+                    NSLocationAlwaysUsageDescription :: This app requires constant access to your location in order to track your position, even
+                    when the screen is off.
+                </li>
+            </ul>
+        </div>
+        <div class="layout-column">
+            <span> For Calendar :-</span>
+            <ul>
+                <li>
+                    Privacy - Calendars Usage Description :: This app requires calendar access to function properly.
+                </li>
+            </ul>
+        </div>
+        <div class="layout-column">
+            <span>For Contacts :-</span>
+            <ul>
+                <li>
+                    Privacy - Contacts Usage Description :: $(PRODUCT_NAME) contact use. OR This app requires calendar access to function properly.
+                </li>
+            </ul>
+        </div>
+        <div class="layout-column">
+            <span> For Microphone :-</span>
+            <ul>
+                <li>
+                    Privacy - Microphone Usage Description :: This app requires microphone access to function properly.
+                </li>
+            </ul>
+        </div>
+        <div class="layout-column">
+            <span>For Camera and Photo library :-</span>
+            <ul>
+                <li>
+                    Privacy - Camera Usage Description :: $(PRODUCT_NAME) Camera Use
+                </li>
+                <li>
+                    Privacy - Photo Library Usage Description :: This app requires photo library access to function properly.
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="layout-column">
+        <div class="head">To access Custom URL’s we need to add transport security layer in plist file - </div>
+        <div class="layout-column">
+            <span> Right Click on your plist file -> Open as source code. </span>
+            <ul>
+                <li>If you know what URL’s you need to access use this in code ::
+                   
+                </li>
+                 <img src="assets/img/ss6.png" />
+                 <li>If you don’t know what URL’s you need to access use this in code ::
+                   
+                </li>
+                 <img src="assets/img/ss7.png" />
+                 <img src="assets/img/ss1.png" />
+            </ul>
+                <div class="layout-column">
+                <label>It will look like above after adding transport security (to access custom URL’s).</label>
+                <span>Plist will look like this :-</span>
+                <div class="img-dic"><img src="assets/img/ss2.png" /></div>
+            </div>
+        </div>
+    </div>
+    <div class="layout-column">
+        <b>Push Notification, Certificate & Provisioning Profile Generation Process</b>
+        <div class="layout-column">
+            <label>Login into your apple account - developer.apple.com</label>
+            <label>In ‘Identifier’ section under ‘App IDs’ Click on + Icon a scrren will open like this :-</label>
+            <div> <img src="assets/img/ss3.png" /></div>
+            <div class="layout-column">
+                <span> Create your App Id with as the description provided over the page : </span>
+                <ul>
+                    <li>App Id Description</li>
+                    <li>App Id prefix</li>
+                    <li>App Id Suffix - Select Explicit App ID - Bundle Id (Your application Bundle Id here)</li>
+                    <li>App Services - Select what features you like to include in your application. Ex. Push Notification: Make
+                        sure its checked if your application is using Push notification</li>
+
+                </ul>
+                <div class="img-dic"><img src="assets/img/ss4.png" /></div>
+                <div>Once done with all the details select on Continue. It will navigate to next page for the confirmation of app id Register it.</div>
+                <label>Now from the App ID list select the App Id you just created. Go to Push notifications - </label>
+                <div class="img-dic"><img src="assets/img/ss5.png" /></div>
+                <label>Follow the steps to create push notiifcation certificate for distribution and development.</label>
+                <label>Go to ‘Provisioning Profile’ section click on + button. A Ui will be populated like below- </label>
+               <div class="img-dic"><img src="assets/img/ss8.png" /></div>
+                <span>Select according to your need to create certificates and provisioning profile -</span>
+                <ul>
+                    <li>Developer certificate - To run application on your device.</li>
+                    <li>Distribution certificate - To upload your application on app store</li>
+                    <li>To share your application except from appstore (For diawi, UAT etc)</li>
+                </ul>
+                <label>Follow steps as described to generate provisioning profile.</label>
+                <span>Go to ‘Certificates’ Section - All Click on + Button. A Ui will be poped up like below - </span>
+                <div class="img-dic"><img src="assets/img/ss9.png" /></div>
+                <label>Select steps according to your need as same as provisionning profile.</label>
+                <div>Open the cerficates and provisioning profile from download list, it will be listed in keychain and Xcode automatically. </div>
+                <label>Requirements - Xcode, apple Id, Mac System.</label>
+                <span>In your project, select the project name and select the team as below - </span>
+               <div class="img-dic"><img src="assets/img/ss10.png" /></div>
+                <label>After selecting a team. Go to Build Settings -> Code signing</label>
+                <div class="img-dic"><img src="assets/img/ss11.png" /></div>
+                <label>Select Provisionning Profile and Code Signing Identity (Distribution or development as per requirement).</label>
+                <div>When you done with all the above mentioned parts select Generic iOS device into your project build. Now from the navigation panel goto Product and select for Archive as below </div>
+               <div class="img-dic"><img src="assets/img/ss12.png" /></div>
+              
+            </div>
+        </div>
+          <label style="color: green;font-weight: 500;">When ipa is generated Upload it to the appstore directly by :- Validate - Upload to appStore or Export it to share it via other platform out from appstore.</label>
+    </div>
+</div>

@@ -1,0 +1,327 @@
+<!--
+  Generated template for the First page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+<!--<template [ngIf]="((globalService.tabs) && (!globalService.isMemberLogin))">-->
+<ion-header *ngIf="((globalService.tabs.length>0) && (!globalService.isMemberLogin) || (noTabAccess))" class="point-none">
+    <ion-navbar class="bg-style" [style.background]="'url(' + globalService.headerBgImageSrcs[globalService.initData.homeScreenSettings ? globalService.initData.homeScreenSettings.header.background_img : null] + ')'"
+        [style.background-color]="globalService.initData.homeScreenSettings ? globalService.initData.homeScreenSettings.header.background_tint : '#387ef5'"
+        [style.opacity]="globalService.initData.homeScreenSettings ? globalService.initData.homeScreenSettings.header.opacity / 100 : 1">
+        <button *ngIf="globalService.initData.homeScreenSettings && globalService.initData.homeScreenSettings.layout && globalService.initData.homeScreenSettings.layout.home_layout != 1"
+            ion-button icon-only menuToggle [style.color]="globalService.initData.globalStyleSettings ? globalService.initData.globalStyleSettings.features.feature_text : '#fff'"
+            class="point-auto">
+            <ion-icon name="menu"></ion-icon>
+        </button>
+        <!-- <ion-title [style.color]="globalService.initData.globalStyleSettings ? globalService.initData.globalStyleSettings.header.text_color : '#fff'">{{'HOME.title' | translate}}</ion-title> -->
+        <ion-buttons left>
+
+            <!-- INBOX TAB SHORTCUT LEFT -->
+            <button showWhen="cordova" *ngIf="globalService.initData.inboxTabSettings?.settings?.msg_center_shortcut && globalService.initData.inboxTabSettings?.settings?.icon_location == 1"
+                ion-button icon-only class="point-auto" (click)="onInboxTabShortcutClick(globalService.initData.inboxTabSettings?.data)"
+                [style.color]="globalService.initData.globalStyleSettings ? globalService.initData.globalStyleSettings.features.feature_text : '#fff'"
+                [style.opacity]="globalService.initData.inboxTabSettings?.settings?.icon_opacity / 100">
+                <ion-icon name="chatbubbles"></ion-icon>
+            </button>
+
+            <button *ngIf="globalService.musicIconShowFlag && globalService.musicTabSettingData?.widget_location==1 && musicTabAccess" ion-button icon-only clear (click)="goToMusicPage(globalService.musicTabData)" class="point-auto">
+                <img *ngIf="!globalService.isMusicPlaying" src="{{globalService.checkColorLuminosity(globalService.initData.homeScreenSettings ? globalService.initData.homeScreenSettings.header.background_tint : '#387ef5')?'assets/icon/audio-equalizer-black-25.png':'assets/icon/audio-equalizer-white-25.png'}}"
+                    [style.opacity]="globalService.musicTabSettingData?.icon_opacity / 100">
+                <img *ngIf="globalService.isMusicPlaying" src="{{globalService.checkColorLuminosity(globalService.initData.homeScreenSettings ? globalService.initData.homeScreenSettings.header.background_tint : '#387ef5')?'assets/icon/audio-equalizer-black-25.gif':'assets/icon/audio-equalizer-white-25.gif'}}"
+                    [style.opacity]="globalService.musicTabSettingData?.icon_opacity / 100">
+            </button>
+        </ion-buttons>
+        <ion-buttons right>
+            <button ion-button icon-only *ngIf="globalService.musicIconShowFlag && globalService.musicTabSettingData?.widget_location==2 && musicTabAccess"
+                (click)="goToMusicPage(globalService.musicTabData)" class="point-auto">
+                <img *ngIf="!globalService.isMusicPlaying" src="{{globalService.checkColorLuminosity(globalService.initData.homeScreenSettings ? globalService.initData.homeScreenSettings.header.background_tint : '#387ef5')?'assets/icon/audio-equalizer-black-25.png':'assets/icon/audio-equalizer-white-25.png'}}"
+                    [style.opacity]="globalService.musicTabSettingData?.icon_opacity / 100">
+                <img *ngIf="globalService.isMusicPlaying" src="{{globalService.checkColorLuminosity(globalService.initData.homeScreenSettings ? globalService.initData.homeScreenSettings.header.background_tint : '#387ef5')?'assets/icon/audio-equalizer-black-25.gif':'assets/icon/audio-equalizer-white-25.gif'}}"
+                    [style.opacity]="globalService.musicTabSettingData?.icon_opacity / 100">
+            </button>
+
+            <!-- INBOX TAB SHORTCUT RIGHT -->
+            <button showWhen="cordova" *ngIf="globalService.initData.inboxTabSettings?.settings?.msg_center_shortcut && globalService.initData.inboxTabSettings?.settings?.icon_location == 2"
+                ion-button icon-only class="point-auto" (click)="onInboxTabShortcutClick(globalService.initData.inboxTabSettings?.data)"
+                [style.color]="globalService.initData.globalStyleSettings ? globalService.initData.globalStyleSettings.features.feature_text : '#fff'"
+                [style.opacity]="globalService.initData.inboxTabSettings?.settings?.icon_opacity / 100">
+                <ion-icon name="chatbubbles"></ion-icon>
+            </button>
+
+            <button ion-button icon-only class="point-auto" (click)="onSettingsClick()" [style.color]="globalService.initData.globalStyleSettings ? globalService.initData.globalStyleSettings.features.feature_text : '#fff'">
+                <ion-icon name="settings"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+</ion-header>
+
+<ion-content [style.background]="'url(' + ((!globalService.isMemberLogin) ? (globalService.initData.appData ? (showonTab?globalService.initData.appData.tab_background_img:globalService.initData.appData.background_img) : null) : (globalService.membershipLoginBg ? globalService.membershipLoginBg : null)) + ')'"
+    class="layout-column first-page-background">
+    <!--<button ion-button [myDirective]="'First'" (click)="formfile()">file</button>-->
+
+    <md-spinner [state]="globalService.isInit" [type]="'fixed'"></md-spinner>
+
+    <template [ngIf]="((globalService.tabs.length>0) && (!globalService.isMemberLogin))">
+        <div class="subtab-detail point-none" *ngIf="globalService.initData.subTabs && (globalService.initData.homeScreenSettings.layout.home_layout != 1 || (globalService.initData.homeScreenSettings.layout.traditional_position == LAYOUT_BOTTOM && globalService.initData.homeScreenSettings.layout.traditional_rows == 1 ))">
+            <!--subtab-->
+            <ion-grid *ngIf="((showonTab && globalService.initData.homeScreenSettings.subtabs?.show_on_tablet == 1) || (showOnAll && globalService.initData.homeScreenSettings.subtabs?.show_on_tablet == 0))">
+                <ion-row wrap class="layout-align-center-center layout-row">
+                    <ion-col tappable class="layout-coumn min-height m-t-10 layout-align-center-center sub-tabs-display" width-33 *ngFor="let subTab of globalService.initData.subTabs">
+                        <ion-grid *ngIf="!isEmpty(subTab)" (click)="checkExternalUrlInSubTab(subTab)" class="point-auto">
+                            <ion-row class="text-center m-b-5">
+                                <img [src]="subTab.icon_name" style="width: 60px; height: 60px">
+                            </ion-row>
+                            <ion-row class="text-center">
+                                <span [style.color]="subTab.text_color" [style.text-shadow]="'0 0 2px' + subTab.text_color_shadow">{{globalService.appTabTitleLanguages?.sub_tab_translation?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTab.id]?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTab.id]:subTab.title:subTab.title
+                                    | trimmer: 20}}</span>
+                            </ion-row>
+                        </ion-grid>
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+            <!--<ion-grid>
+                <ion-row>
+                    <button ion-button (click)="onShowClick()">Show</button>
+                    </ion-row>
+                </ion-grid>-->
+        </div>
+        <ion-grid *ngIf="globalService.initData.homeScreenSettings && globalService.initData.homeScreenSettings.extra_buttons && (globalService.initData.homeScreenSettings.layout.home_layout != 1 || globalService.initData.homeScreenSettings.layout.traditional_position == LAYOUT_BOTTOM)"
+            [class.marque]="!globalService.isObjectEmpty(newsService.newsFeedData)">
+            <ion-row class="m-b-10 ion-col-buttons">
+                <ion-col *ngIf="globalService.initData.homeScreenSettings.extra_buttons.call_us == '1'">
+                    <button ion-button [style.background-color]="globalService.initData.globalStyleSettings.features.button_image" [style.color]="globalService.initData.globalStyleSettings.features.button_text"
+                        (click)="onCallUsClick()">
+                        {{'CALLUSTITLE' | translate}}</button>
+                </ion-col>
+                <ion-col *ngIf="globalService.initData.homeScreenSettings.extra_buttons.direction == '1'">
+                    <button ion-button [style.background-color]="globalService.initData.globalStyleSettings.features.button_image" [style.color]="globalService.initData.globalStyleSettings.features.button_text"
+                        (click)="onDirectionClick()">{{'DIRECTIONTITLE' | translate}}</button>
+                </ion-col>
+                <ion-col *ngIf="globalService.initData.homeScreenSettings.extra_buttons.tell_friend == '1'">
+                    <button ion-button [style.background-color]="globalService.initData.globalStyleSettings.features.button_image" [style.color]="globalService.initData.globalStyleSettings.features.button_text"
+                        (click)="onTellFriendClick()">{{'TELLFRIENDTITLE' | translate}}</button>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <!-- TRADITIONAL LAYOUT BOTTOM -->
+        <ion-grid class="bottom bootom-wrapper widthWrap-5 rowWrap-5" [class.margin-0]="!((globalService.initData.homeScreenSettings.extra_buttons.call_us == '1' || globalService.initData.homeScreenSettings.extra_buttons.direction == '1' || globalService.initData.homeScreenSettings.extra_buttons.tell_friend == '1') || (!globalService.isMemberLogin && !globalService.isObjectEmpty(newsService.newsFeedData)))"
+            [class.memnews]="(!globalService.isMemberLogin && !globalService.isObjectEmpty(newsService.newsFeedData)) && !(globalService.initData.homeScreenSettings.extra_buttons.call_us == '1' || globalService.initData.homeScreenSettings.extra_buttons.direction == '1' || globalService.initData.homeScreenSettings.extra_buttons.tell_friend == '1')"
+            *ngIf="globalService.initData.homeScreenSettings && globalService.initData.homeScreenSettings.layout && globalService.initData.homeScreenSettings.layout.home_layout == 1 && globalService.initData.homeScreenSettings.layout.traditional_position == LAYOUT_BOTTOM">
+            <ion-row class="m-b-10" [style.width]="'100%'" *ngFor="let row of globalService.tabRowsIterator; let i = index;">
+                <ion-col tappable *ngFor="let tab of globalService.tabs | tabsRestrictionPipe | bottomLayoutMaker:globalService.initData.homeScreenSettings.layout.traditional_rows:globalService.initData.homeScreenSettings.layout.traditional_tab_number:row"
+                    class="width-5" [style.background-color]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_tint : globalService.initData.homeScreenSettings.buttons.background_tint"
+                    [style.opacity]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_opacity / 100 : globalService.initData.homeScreenSettings.buttons.background_opacity / 100"
+                    [style.background]="'url(' + globalService.buttonBgImageSrcs[globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_img : globalService.initData.homeScreenSettings.buttons.background_img] + ')'"
+                    [style.background-size]="'100%'" [style.background-repeat]="'round'" (click)="pushPage(tab.tab_func_code, tab.id, tab.title,tab,'tab')"
+                    [tabWidth]="globalService.initData.homeScreenSettings?.layout?.traditional_tab_number">
+                    <div class="image-wrap-dp layout-align-start-center flex-45 layout-row slider-list-wrap">
+                        <i class="fa fa-pencil-square-o"></i>
+                        <div class="flex-20 layout-align-center-center layout-row image-wrap">
+                            <img src="{{tab.icon_src}}" [style.height]="'38px'" *ngIf="(globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 1)"
+                            />
+                            <i [style.font-size]="'x-large'" [style.color]="(globalService.initData.individualSettings[tab.id]	? globalService.initData.individualSettings[tab.id].icon_color.icon_color : (globalService.initData.homeScreenSettings.icon_color.icon_color != null ? globalService.initData.homeScreenSettings.icon_color.icon_color : (tab.icon_type == 1 ? '#000' : '#fff')))"
+                                *ngIf="(globalService.initData.individualSettings[tab.id] ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 2)"
+                                class="Glyphter icon-{{tab.icon_name}}" aria-hidden="true"></i>
+                        </div>
+                        <label *ngIf="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.show_text == '1' : globalService.initData.homeScreenSettings.buttons.show_text == '1'"
+                            class="image-wrap-data flex-80 layout-align-center-center" [style.color]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.text_color : globalService.initData.homeScreenSettings.buttons.text_color">{{(globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]:tab.title:tab.title)
+                            | trimmer:10}}</label>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <!--<ion-grid class="bottom bootom-wrapper widthWrap-{{globalService.initData.homeScreenSettings.layout.traditional_tab_number}} rowWrap-{{globalService.initData.homeScreenSettings.layout.traditional_rows}}"
+            *ngIf="globalService.initData.homeScreenSettings && globalService.initData.homeScreenSettings.layout && globalService.initData.homeScreenSettings.layout.home_layout == 1 && globalService.initData.homeScreenSettings.layout.traditional_position == LAYOUT_BOTTOM">
+            <ion-row class="m-b-10" *ngFor="let row of globalService.tabRowsIterator; let i = index;">
+                <ion-col *ngFor="let col of globalService.tabColumnIterator; let j = index">
+                    <ion-row>
+                        <ion-col tappable *ngFor="let tab of globalService.tabs | tabsRestrictionPipe | slice:((i * globalService.colCount) + (j * globalService.initData.homeScreenSettings.layout.traditional_tab_number)):((i * globalService.colCount) + ((globalService.initData.homeScreenSettings.layout.traditional_tab_number) + (j * globalService.initData.homeScreenSettings.layout.traditional_tab_number)))"
+                            class="width-{{globalService.initData.homeScreenSettings.layout.traditional_tab_number}}" [style.background-color]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_tint : globalService.initData.homeScreenSettings.buttons.background_tint"
+                            [style.opacity]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_opacity / 100 : globalService.initData.homeScreenSettings.buttons.background_opacity / 100"
+                            [style.background]="'url(' + globalService.buttonBgImageSrcs[globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_img : globalService.initData.homeScreenSettings.buttons.background_img] + ')'"
+                            [style.background-size]="'100%'" [style.background-repeat]="'round'" (click)="pushPage(tab.tab_func_code, tab.id, tab.title,tab,'tab')" [tabWidth]="globalService.initData.homeScreenSettings?.layout?.traditional_tab_number">
+                            <div class="image-wrap-dp layout-align-start-center flex-45 layout-row slider-list-wrap">
+                                <i class="fa fa-pencil-square-o"></i>
+                                <div class="flex-20 layout-align-center-center layout-row image-wrap">
+                                    <img src="{{tab.icon_src}}" [style.height]="'38px'" *ngIf="(globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 1)"
+                                    />
+                                    <i [style.font-size]="'x-large'" [style.color]="(globalService.initData.individualSettings[tab.id]	? globalService.initData.individualSettings[tab.id].icon_color.icon_color : (globalService.initData.homeScreenSettings.icon_color.icon_color != null ? globalService.initData.homeScreenSettings.icon_color.icon_color : (tab.icon_type == 1 ? '#000' : '#fff')))"
+                                        *ngIf="(globalService.initData.individualSettings[tab.id] ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 2)"
+                                        class="Glyphter icon-{{tab.icon_name}}" aria-hidden="true"></i>
+                                </div>
+                                <label *ngIf="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.show_text == '1' : globalService.initData.homeScreenSettings.buttons.show_text == '1'"
+                                    class="image-wrap-data flex-80 layout-align-center-center" [style.color]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.text_color : globalService.initData.homeScreenSettings.buttons.text_color">{{globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]:tab.title:tab.title}}</label>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-col>
+            </ion-row>
+        </ion-grid>-->
+
+
+        <!-- TRADITIONAL LAYOUT LEFT AND RIGHT -->
+        <ion-grid class="height" *ngIf="globalService.initData.homeScreenSettings && globalService.initData.homeScreenSettings.layout && globalService.initData.homeScreenSettings.layout.home_layout == 1 && globalService.initData.homeScreenSettings.layout.traditional_position != LAYOUT_BOTTOM && globalService.initData.homeScreenSettings.layout.traditional_position != LAYOUT_TOP">
+            <ion-row *ngFor="let col of globalService.tabColsIterator" class="{{layoutClasses[globalService.initData.homeScreenSettings.layout.traditional_position]}}">
+                <ion-col tappable *ngFor="let tab of globalService.tabs | tabsRestrictionPipe | slice:(col * globalService.initData.homeScreenSettings.layout.traditional_tab_number):(col * globalService.initData.homeScreenSettings.layout.traditional_tab_number + globalService.initData.homeScreenSettings.layout.traditional_tab_number)"
+                    class="width-{{globalService.initData.homeScreenSettings.layout.traditional_tab_number}} tabs-position" [style.background-color]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_tint : globalService.initData.homeScreenSettings.buttons.background_tint"
+                    [style.opacity]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_opacity / 100 : globalService.initData.homeScreenSettings.buttons.background_opacity / 100"
+                    [style.background]="'url(' + globalService.buttonBgImageSrcs[globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_img : globalService.initData.homeScreenSettings.buttons.background_img] + ')'"
+                    [style.background-size]="'100%'" [style.background-repeat]="'round'" (click)="pushPage(tab.tab_func_code, tab.id, tab.title,tab,'tab')">
+                    <div class="image-wrap-dp flex-45 layout-row slider-list-wrap">
+                        <i class="fa fa-pencil-square-o"></i>
+                        <div class="flex-20 layout-row image-wrap display-image-section" *ngIf="(globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 1)">
+                            <img src="{{tab.icon_src}}" [style.height]="'100%'" [style.width]="'100%'" *ngIf="(globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 1)"
+                            />
+                        </div>
+                        <div class="flex-20 layout-row image-wrap display-image-section" *ngIf="(globalService.initData.individualSettings[tab.id] ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 2)">
+                            <i [style.font-size]="'x-large'" [style.color]="(globalService.initData.individualSettings[tab.id]	? globalService.initData.individualSettings[tab.id].icon_color.icon_color : (globalService.initData.homeScreenSettings.icon_color.icon_color != null ? globalService.initData.homeScreenSettings.icon_color.icon_color : (tab.icon_type == 1 ? '#000' : '#fff')))"
+                                *ngIf="(globalService.initData.individualSettings[tab.id] ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 2)"
+                                class="Glyphter icon-{{tab.icon_name}}" aria-hidden="true"></i>
+                        </div>
+                        <label *ngIf="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.show_text == '1' : globalService.initData.homeScreenSettings.buttons.show_text == '1'"
+                            class="" [style.color]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.text_color : globalService.initData.homeScreenSettings.buttons.text_color">{{(globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]:tab.title:tab.title)
+                            | trimmer:10}}</label>
+                    </div>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+
+        <!--top
+        -->
+        <ion-grid class=" bottom tlr_wrap widthWrap-{{globalService.initData.homeScreenSettings.layout.traditional_tab_number}} tabs-position side-{{layoutClasses[globalService.initData.homeScreenSettings.layout.traditional_position]}}"
+            *ngIf="globalService.initData.homeScreenSettings && globalService.initData.homeScreenSettings.layout && globalService.initData.homeScreenSettings.layout.home_layout == 1 && globalService.initData.homeScreenSettings.layout.traditional_position == LAYOUT_TOP">
+            <ion-row class="m-b-10">
+                <ion-col *ngFor="let col of globalService.tabColsIterator" class="{{layoutClasses[globalService.initData.homeScreenSettings.layout.traditional_position]}}">
+                    <ion-row>
+                        <ion-col tappable *ngFor="let tab of globalService.tabs | tabsRestrictionPipe | slice:(col * globalService.initData.homeScreenSettings.layout.traditional_tab_number):(col * globalService.initData.homeScreenSettings.layout.traditional_tab_number + globalService.initData.homeScreenSettings.layout.traditional_tab_number)"
+                            class="width-{{globalService.initData.homeScreenSettings.layout.traditional_tab_number}} tabs-position"
+                            [style.background-color]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_tint : globalService.initData.homeScreenSettings.buttons.background_tint"
+                            [style.opacity]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_opacity / 100 : globalService.initData.homeScreenSettings.buttons.background_opacity / 100"
+                            [style.background]="'url(' + globalService.buttonBgImageSrcs[globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.background_img : globalService.initData.homeScreenSettings.buttons.background_img] + ')'"
+                            [style.background-size]="'100%'" [style.background-repeat]="'round'" (click)="pushPage(tab.tab_func_code, tab.id, tab.title,tab,'tab')">
+                            <div class="image-wrap-dp flex-45 layout-row slider-list-wrap">
+                                <i class="fa fa-pencil-square-o"></i>
+                                <div class="flex-20 layout-row image-wrap display-image-section" *ngIf="(globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 1)">
+                                    <img src="{{tab.icon_src}}" [style.height]="'100%'" [style.width]="'100%'" *ngIf="(globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 1)"
+                                    />
+                                </div>
+                                <div class="flex-20 layout-row image-wrap display-image-section" *ngIf="(globalService.initData.individualSettings[tab.id] ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 2)">
+                                    <i [style.font-size]="'x-large'" [style.color]="(globalService.initData.individualSettings[tab.id]	? globalService.initData.individualSettings[tab.id].icon_color.icon_color : (globalService.initData.homeScreenSettings.icon_color.icon_color != null ? globalService.initData.homeScreenSettings.icon_color.icon_color : (tab.icon_type == 1 ? '#000' : '#fff')))"
+                                        *ngIf="(globalService.initData.individualSettings[tab.id] ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 2)"
+                                        class="Glyphter icon-{{tab.icon_name}}" aria-hidden="true"></i>
+                                </div>
+                                <label *ngIf="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.show_text == '1' : globalService.initData.homeScreenSettings.buttons.show_text == '1'"
+                                    class="" [style.color]="globalService.initData.individualSettings[tab.id]
+                                        ? globalService.initData.individualSettings[tab.id].buttons.text_color : globalService.initData.homeScreenSettings.buttons.text_color">{{(globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]:tab.title:tab.title)
+                                    | trimmer:10}}</label>
+                            </div>
+                        </ion-col>
+                    </ion-row>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+    </template>
+
+    <template [ngIf]="globalService.isMemberLogin">
+        <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+        <div padding class="bg-dark">
+            <ion-list>
+                <div [style.box-shadow]="globalService.membershipLoginInputColor">
+                    <ion-icon name="mail" class="mail" [style.color]="globalService.membershipLoginFormColor"></ion-icon>
+                    <ion-item [style.box-shadow]="globalService.membershipLoginInputColor">
+                        <ion-input [style.box-shadow]="globalService.membershipLoginInputColor" type="text" placeholder="Username" [(ngModel)]="memberLoginData.userName"
+                            [style.color]="globalService.membershipLoginFormColor"></ion-input>
+                    </ion-item>
+
+                </div>
+                <div [style.box-shadow]="globalService.membershipLoginInputColor">
+                    <ion-icon name="key" class="key" [style.color]="globalService.membershipLoginFormColor"></ion-icon>
+                    <ion-item [style.box-shadow]="globalService.membershipLoginInputColor">
+                        <ion-input [style.box-shadow]="globalService.membershipLoginInputColor" type="password" placeholder="Password" [(ngModel)]="memberLoginData.password"
+                            [style.color]="globalService.membershipLoginFormColor"></ion-input>
+                    </ion-item>
+                </div>
+            </ion-list>
+            <button ion-button [style.background-color]="globalService.membershipLoginFormColor" (click)="onLoginClick()">{{'LOGIN' | translate}}</button>
+            <button ion-button *ngIf="globalService.isGuestLoginEnabled" [style.background-color]="globalService.membershipLoginFormColor"
+                (click)="onGuestLoginClick()">{{'GUEST' | translate}}</button>
+        </div>
+    </template>
+    <ion-row *ngIf="!globalService.isMemberLogin">
+        <ion-slides *ngIf="globalService.isSliderInitialize" [options]="globalService.mySlideOptions">
+            <ion-slide tappable *ngFor="let item of globalService.initData.homeScreenSliders">
+                <img *ngIf="item.image_name && !showonTab" src="{{item.image_name}}" (click)="onSlideClick(item.linked_tab_id)" />
+                <img *ngIf="item.tab_image_name && showonTab" src="{{item.tab_image_name}}" (click)="onSlideClick(item.linked_tab_id)" />
+            </ion-slide>
+        </ion-slides>
+    </ion-row>
+    <ion-footer *ngIf="!globalService.isMemberLogin && !globalService.isObjectEmpty(newsService.newsFeedData)">
+        <MARQUEE class="marquee-data" [style.background-color]="globalService.initData.globalStyleSettings?.features?.button_image"
+            [style.color]="globalService.initData.globalStyleSettings?.features?.button_text">
+            <span tappable *ngFor="let google of newsService.newsFeedData.google_feeds" (click)="onNewsClick(google.link)">
+                <img *ngIf="google.image" src="{{google.image}}" />
+                <span>{{google.title}}</span>
+            </span>
+            <span *ngFor="let twitter of newsService.newsFeedData.twitter_feeds" (click)="onTwitterNewsClick(newsService.newsFeedData.show_news_home)">
+                <img *ngIf="twitter.image" src="{{twitter.image}}" />
+                <span>{{twitter.title}}</span>
+            </span>
+        </MARQUEE>
+    </ion-footer>
+</ion-content>
+
+<!--</template>-->
+
+<!--<template [ngIf]="globalService.isMemberLogin">
+	<ion-content>
+		<div padding class="bg-dark">
+            <ion-list>
+                <div>
+                    <ion-item>
+                        <ion-input type="text" placeholder="Username" [(ngModel)]="memberLoginData.userName" style="color: #387ef5"></ion-input>
+                    </ion-item>
+                    <ion-icon name="mail" class="mail" style="color: #387ef5"></ion-icon> 
+                </div>
+                <div>
+                    <ion-icon name="key" class="key" style="color: #387ef5"></ion-icon>
+                    <ion-item>
+                        <ion-input type="password" placeholder="Password" [(ngModel)]="memberLoginData.password" style="color: #387ef5"></ion-input>
+                    </ion-item>
+                </div>
+            </ion-list>
+			<button ion-button (click)="onLoginClick()">Login</button>
+			<button ion-button (click)="onLoginClick()">Guest</button>
+		</div>
+	</ion-content>
+</template>-->

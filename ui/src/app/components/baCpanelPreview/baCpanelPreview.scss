@@ -1,0 +1,23 @@
+.app-settings.flex-100.setting-pge {
+    margin-right: 61px;
+    border: 1px solid #ccc;
+    margin-left: 20px;
+    position: relative;
+}
+.app-code-wid {
+    position: absolute;
+    left: -13px;
+    top: 12%;
+}
+.app-code-wid-prev{
+    position: absolute;
+    right: -11%;
+    top: 10%;
+        width: 31%;
+        img{
+            max-width: 100%;
+        }
+}
+ba-cpanel-preview {
+    height: 589px;
+}

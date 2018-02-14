@@ -1,0 +1,141 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready" class="info-wrap">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-35">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+<li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+</ul>
+</div>
+</div>
+<div class="flex-100 thirdtabcontainer">
+        <div class="layout-align-start"> <span class="layout-row setspace">Color Settings :</span></div>
+        <div class="layout-row layout-align-start content-center-align">
+            <span class="layout-row right-space">
+                    <input id="inlineCheckbox01" type="checkbox" [(ngModel)]="item.use_global_colors" (click)="onItemUseGlobalClick()">
+                </span> Use Global Background & Text Colors
+            <span class="layout-row extra-space"><i class="fa fa-info-circle layout-row setinput-icon" tooltip="Use the Global Background & Text Colors instead of custom colors" tooltipPlacement="right" aria-hidden="true"></i></span>
+        </div>
+        <div class="updatecolor-box layout-row block-1">
+            <div class="overlay" [style.display]="itemOverlayDisplay"></div>
+
+            <label>Background</label><span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Select a custom background color for your text area. You must click "Update Colors" in order for the changes to reflect. The global color will be used if nothing is selected.' tooltipPlacement="right" aria-hidden="true"></i></span>
+            <input class="input-class" [(colorPicker)]="item.background_color" [style.background]="item.background_color" [value]="item.background_color"
+                [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly>
+
+            <label>Text</label><span><i class="fa fa-info-circle layout-row setinput-icon" tooltip='Select a custom text color. You must click "Update Colors" in order for the changes to reflect. The global color will be used if nothing is selected.' tooltipPlacement="right" aria-hidden="true"></i></span>
+            <input class="input-class" [(colorPicker)]="item.text_color" [style.background]="item.text_color" [value]="item.text_color"
+                [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly>
+
+            <button class="btn" (click)="onUpdateColorClick()">Update Colors</button>
+        </div>
+        <div class="againtab-container-box">
+            <div class="header-background">
+                <tabset class="container-tab-detail">
+                    <tab heading="General Information">
+                        <div class="tabinner-space">
+                            <div class="uploaded-file-box">
+                                <div class="layout-row layout-align-start-center">
+                                    <label class="checkbox-inline custom-checkbox nowrap">
+                                    <input id="inlineCheckbox01" type="checkbox" [(ngModel)]="item.is_header_required">
+                                    <span>&nbsp;</span>
+                                </label>
+                                    
+                                    <label class="flex-20 layout-row layout-align-start-center">Phone Header Image
+                                                    <i class="fa fa-info-circle m-l-10" tooltip='Upload a Phone Header Image 640x264px.' tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+                                    <!--                                        <span></span>
+                                        <span ></span>-->
+                                    <input class=" layout-row layout-align-start-center" type="file" (change)="onPhoneHeaderImageChange($event)">
+                                    <div class="phone-header-img div-img layout-row layout-align-center-center" *ngIf="phoneHeaderImage">
+                                        <i class="fa fa-close" (click)="deleteImage('phone_header',item.id)"></i>
+                                        <img style="max-height:64px; max-width: 64px" src="{{phoneHeaderImage}}">
+</div>
+</div>
+<div class="layout-row layout-align-start-center p-l-25">
+    <label class="flex-20 layout-row layout-align-start-center m-l-25 p-l-20">Tablet Header Image
+                                                   <i class="fa fa-info-circle m-l-10" tooltip='Upload a Tablet Header Image 1536x634px.' tooltipPlacement="right" aria-hidden="true"></i>
+                                                </label>
+    <!--                                        <span></span>
+                                        <span></span>-->
+    <input class=" layout-row layout-align-start-center" type="file" (change)="onTabletHeaderImageChange($event)">
+    <div class="tablet-header-img div-img layout-row layout-align-center-center" *ngIf="tabletHeaderImage">
+        <i class="fa fa-close" (click)="deleteImage('tablet_header',item.id)"></i>
+        <img style="max-height:64px; max-width: 64px" src="{{tabletHeaderImage}}">
+</div>
+</div>
+</div>
+<div>
+    <div>
+        <span class="layout-row right-space"><input id="inlineCheckbox02" type="checkbox" [(ngModel)]="item.add_header_and_comment"></span>        Add Header & Comment Sections
+        <span class="layout-row extra-space"><i class="fa fa-info-circle layout-row setinput-icon" tooltip="This will display a header image section and enable commenting ability" tooltipPlacement="right" aria-hidden="true"></i></span>
+    </div>
+    <div>
+        <label class="flex-20 layout-row layout-align-start-center m-t-10">Description<i class="fa fa-info-circle layout-row setinput-icon extra-space" tooltip='Enter your content here, you can also use images, links and more' tooltipPlacement="right" aria-hidden="true"></i></label>
+        <!--<ckeditor *ngIf="showEditor" [config]="ckEditorConfig" [(ngModel)]="item.description"></ckeditor>-->
+        <div id="description-editor"></div>
+    </div>
+</div>
+</div>
+</tab>
+<tab heading="Comments" ng-reflect-heading="Comments" class="tab-pane active">
+    <div class="tabinner-space comment-sec">
+        <span>Showing {{comments.length}} Comment(s):</span>
+
+        <div class="coment-conct-wrap">
+            <table class="flex-100 layout-column">
+                <tbody class="comment-box-wrap">
+                    <tr class="layout-row flex-100">
+                        <td class="flex-30 layout-row layout-align-center-center cl-up">Date</td>
+                        <td class="flex-70 layout-row">
+                            <table class="layout-row flex-100">
+                                <tbody class="layout-row flex-100">
+                                    <tr class="layout-row flex-100">
+                                        <td class="flex-80 layout-align-center-center cl-up">Name/Comment</td>
+                                        <td class="flex-20 layout-align-center-center cl-up opening-time-wrap-th "></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody class="comment-box-wrap ">
+                    <tr class="layout-row flex-100" *ngFor="let comment of comments">
+                        <td class="flex-30 layout-row layout-align-center-center cl-up-1  b-l-r">{{comment.created_at}}</td>
+                        <td class="flex-70 layout-row">
+                            <table class="layout-row flex-100">
+                                <tbody class="layout-column flex-100">
+                                    <tr class="layout-row flex-100 ">
+                                        <td class="flex-80 layout-align-center-center cl-up-1 border-r "> {{comment.name}}</td>
+                                        <td class="flex-20 layout-align-center-center layout-row cl-up-1 "><button class="red" type="button" (click)="deleteComment(comment.id)">Delete</button></td>
+                                    </tr>
+                                    <tr class="cl-up-1 layout-row flex-100 layout-align-start-center ">
+                                        {{comment.description}}
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+                </tbody>
+
+
+            </table>
+        </div>
+
+    </div>
+</tab>
+</tabset>
+</div>
+</div>
+
+<div class="layout-align-start save-btn">
+    <button class="blue-btn m-t-10 btn btn-lg" [disabled]="addSaveButtonHide" (click)="onItemSubmit()">Save Changes</button>
+</div>
+</div>
+</div>

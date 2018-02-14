@@ -1,0 +1,171 @@
+<div class="Cart-payment">
+    <div class="layout-row layout-align-space-between-center">
+        <!-- <button class="btn green-btn" (click)="onSaveClick()">SAVE LOCATIONS OPTIONS</button> -->
+    </div>
+    <div class="layout-column  m-t-10 food-ordering">
+        <div class="layout-row layout-align-start-center m-t-10 emails-confirmation food-ordering-location">
+            <label class="flex-30">
+                Start Order Button
+                <i class="fa fa-info-circle l" tooltip="Choose what text your 'Start Order' button displays" tooltipPlacement="right" aria-hidden="true"></i>
+                *
+            </label>
+            <input class="input-class flex-50" type="text" [(ngModel)]="service.settings.start_order_button" placeholder="Start Order">
+            <button class="btn green-btn" (click)="onUpdateSettingsClick()">UPDATE</button>
+        </div>
+        <div class="layout-row layout-align-start-start m-t-10 emails-confirmation" *ngIf="foodlocationInfoData.length > 0">
+            <label class="flex-30">
+                You Have {{foodlocationInfoData.length}} Location(s)
+            </label>
+        </div>
+        <div class="layout-row layout-align-space-between-center pad-al-15">
+            <label class="checkbox-inline custom-checkbox nowrap" *ngIf="foodlocationInfoData.length > 0">
+                <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAllToggle" (change)="onSelectAllCheck()">
+                <span>Select All</span>
+            </label>
+            <div class="layout-align-end">
+                <button class="btn green-btn" (click)="showLocationDialog()">Add New Location</button>
+                <span class="lastspan-out" *ngIf="foodlocationInfoData.length > 0">
+                <button class="red" [class.checkTrue]="selectedFoodLocations.length > 0 && selectedFoodLocations.indexOf(true) !== -1" (click)="onFoodLocationDeleteClick()">
+                    <i class="fa fa-trash" title="delete"></i>
+                </button>
+            </span>
+            </div>
+        </div>
+        <div [dragula]="CATEGORIES_BAG" [dragulaModel]="foodlocationInfoData" class="layout-column flex-70 layout-align-start-start tab_section">
+            <div *ngFor="let item of foodlocationInfoData" class="layout-column tab-wrapper" (click)="onItemDivClick(item.id)">
+                <div class="tab-detail flex-100 layout-row m-t-10 inventory-tab-header" [class.active]="activeItem === item.id">
+                    <div class="layout-row flex-90 pad-12-12 tab-stauts-cheak layout-align-start-center">
+                        <div class="icon-cheak m-l-10 layout-align-center-center">
+                            <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                                <input type="checkbox" class="ng-valid ng-dirty ng-touched" [(ngModel)]="selectedFoodLocations[item.id]" (click)="onLocationCheck()">
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="m-l-10 layout-align-center-center">
+                            <span>
+                                <i aria-hidden="true" class="fa fa-arrows dev-cat-drag-handle"></i>
+                            </span>
+                        </div>
+                        <div class="flex-90 m-l-10 layout-align-center-start layout-wrap">{{item.address_section_2 ? item.address_section_2 : 'Empty Location'}}</div>
+
+                    </div>
+                    <div class="tab-stauts-cheak layout-row flex-10 pad-12-12 layout-align-center-center">
+                        <div class="edit-app c-p" (click)="onEditCategoryClick(item)">
+                            <i aria-hidden="true" class="fa fa-pencil"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p-dialog [draggable]="false" [header]="LocationFormHeader" [(visible)]="showAddLocationDialog" modal="modal" class="app-dialog add-app s-tab-add menu-tb-ad">
+            <form class="white-bg web-bg border-all">
+                <div class="layout-row flex-100 layout-align-space-between">
+                    <div class="layout-column flex-48 m-b-20 p-10 location-left-section">
+                        <div class="layout-row width-100 layout-align-start-center m-b-10">
+                            <label class="switch m-r-10 m-b-0">
+                                <input type="checkbox" [(ngModel)]="foodlocationInfo.is_custom_timezone">
+                                <div class="slider round"></div>
+                            </label>
+                            <span class="m-l-10">Custom Time Zone
+                                <i class="fa fa-info-circle l" tooltip="Use a custom time zone for this specific feature. The global time zone will be used if nothing is changed."
+                                    tooltipPlacement="right" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <div class="layout-column m-b-10 width-100">
+                            <p-dropdown [disabled]="!foodlocationInfo.is_custom_timezone" (click)="foodlocationInfo.is_custom_timezone = true" [options]="timezoneSelect" [(ngModel)]="foodlocationInfo.timezone_id" [filter]="true" class="cat-drop flex-100"></p-dropdown>
+                        </div>
+                        <div class="layout-column  m-b-10 width-100">
+                            <label>Choose your items available hours.</label>
+                        </div>
+                        <div class="layout-column width-100  m-b-10">
+                            <div *ngFor="let hour of foodLocationHours; let i = index;" class="layout-row layout-align-start-start available-hours m-b-10">
+                                <div class="layout-row flex-45 layout-align-start-center">
+                                    <label class="switch m-b-0">
+                                            <input type="checkbox" [(ngModel)]="hour.status">
+                                            <div class="slider round"></div>
+                                        </label>
+                                    <span class="m-l-10 flex-40">{{hour.day}}</span>
+                                    <button class="btn green-btn add-hours m-l-10" (click)="pushTimings(i)">+</button>
+                                </div>
+                                <div class="layout-column flex-55 hours-timing">
+                                    <div *ngFor="let t of hour.timings; let j = index;" class="layout-row width-100 layout-align-space-between">
+                                        <div class="layout-row flex-49 hours-mins">
+                                            <p-dropdown [options]="startTimeHour" [disabled]="!hour.status" [(ngModel)]="t.start_time_hour" class="cat-drop flex-45"></p-dropdown>
+                                            <p-dropdown [options]="startTimeMin" [disabled]="!hour.status" [(ngModel)]="t.start_time_minute" class="cat-drop flex-45"></p-dropdown>
+                                        </div>
+                                        <div class="layout-row flex-49 hours-mins">
+                                            <p-dropdown [options]="startTimeHour" [disabled]="!hour.status" [(ngModel)]="t.end_time_hour" class="cat-drop flex-45"></p-dropdown>
+                                            <p-dropdown [options]="startTimeMin" [disabled]="!hour.status" [(ngModel)]="t.end_time_minute" class="cat-drop flex-45"></p-dropdown>
+                                        </div>
+                                        <button *ngIf="j > 0" class="btn minus-hours" (click)="spliceTimings(i, j)">-</button>
+                                        <br />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layout-column width-100 m-t-10">
+                            <label>List the email addresses here that you wish to receive this locations orders.</label>
+                            <input id="name" type="text" [(ngModel)]="foodlocationInfo.emails">
+                        </div>
+                    </div>
+                    <!--location-left-section-->
+                    <div class="layout-column flex-48 m-b-20 p-10 location-right-section">
+                        <div class="layout-row width-100 layout-align-start-center m-b-10">
+                            <label class="switch m-r-10 m-b-0">
+                                <input type="checkbox" [(ngModel)]="foodlocationInfo.is_imported_locations">
+                                <div class="slider round"></div>
+                            </label>
+                            <span class="m-l-10">Imported Location(s)
+                                <i class="fa fa-info-circle l" tooltip="Use imported location(s) from the Contact Feature" tooltipPlacement="right" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <div class="layout-row width-100 m-b-10">
+                            <p-dropdown [options]="contactSelect" [disabled]="!foodlocationInfo.is_imported_locations" (onChange)="onLocationClick(foodlocationInfo.imported_location_id)" [(ngModel)]="foodlocationInfo.imported_location_id" (click)="foodlocationInfo.is_imported_locations = true"
+                                class="cat-drop flex-100"></p-dropdown>
+                        </div>
+                        <div class="layout-column width-100 m-t-10 m-b-10">
+                            <label>Custom Location Name
+                                    <i class="fa fa-info-circle l" tooltip="Use a custom location description instead of the default address format. If left blank, the default address format will be used."
+                                        tooltipPlacement="right" aria-hidden="true"></i>
+                                </label>
+                        </div>
+                        <div class="layout-row width-100 m-b-10 layout-align-space-between">
+                            <div class="layout-cloumn flex-49">
+                                <label class="m-b-10">Address Section 1
+                                    <i class="fa fa-info-circle l" tooltip="The first section (or top row on your mobile device) of the address description"
+                                        tooltipPlacement="right" aria-hidden="true"></i>
+                                </label>
+                                <input id="name" type="text" [(ngModel)]="foodlocationInfo.address_section_1">
+                            </div>
+                            <div class="layout-cloumn flex-49">
+                                <label class="m-b-10">Address Section 2
+                                    <i class="fa fa-info-circle l" tooltip="The second section (or bottom row on your mobile device) of the address description"
+                                        tooltipPlacement="right" aria-hidden="true"></i>
+                                </label>
+                                <input id="name" type="text" [(ngModel)]="foodlocationInfo.address_section_2">
+                            </div>
+                        </div>
+                        <div class="layout-column width-100 m-b-10 m-t-10">
+                            <div *ngIf="!addFormlocationEditorDisplay" (click)="showLocationEditor()" class="loctn-up">
+                                <i class="fa fa-map-marker m-r-10" aria-hidden="true"></i>Click to edit your location.</div>
+
+                            <div class="flex-100" *ngIf="addFormlocationEditorDisplay">
+                                <location-editor [lat]="foodlocationInfo.latitude" [long]="foodlocationInfo.longitude" (latLongChange)="onLatLongChange($event)" (addressChange)="onAddressChange($event)"></location-editor>
+                                <div class="layout-column dis-wrap">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layout-column width-100 m-t-10">
+                            <label>Distance Type</label>
+                            <p-dropdown [options]="distanceOptions" [(ngModel)]="foodlocationInfo.distance_type" class="cat-drop flex-100"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+                <div class="save-btn">
+                    <button class="blue-btn btn" type="submit" (click)="saveLocationInfo()">SAVE</button>
+                </div>
+            </form>
+        </p-dialog>
+    </div>
+</div>

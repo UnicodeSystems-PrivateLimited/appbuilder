@@ -1,0 +1,943 @@
+<div *ngIf="showMainLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div class="flex-100  c-overview-wrapper relative c-promote-wrapper c-setings-wrapo">
+    <tabset class="container-tab-detail ">
+        <tab heading="General">
+            <div class="pad-15 ">
+                <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                    <h2 class="flex-15 layout-row">Time zone</h2>
+                    <h3></h3>
+                </div>
+                <div class="layout-row flex-70 layout-align-start-center m-b-20">
+                    <div class="layout-row flex-30 m-r-10">
+                        <span>Select a primary time zone for your app</span>
+                    </div>
+                    <div class="layout-row flex-50 dis-wrap m-l-10">
+                        <p-dropdown class="category-dropdown m-l-10 flex-60  cat-drop layout-row layout-align-start-center" [options]="timezoneSelect"
+                            [(ngModel)]="appConfigSetting.time_zone"></p-dropdown>
+                    </div>
+                </div>
+                <div class="layout-row flex-70 layout-align-start-start">
+                    <div class="layout-row flex-45">
+                        <span>Select the time display format<i class="fa fa-info-circle l ion-left"></i></span>
+                    </div>
+                    <div class="layout-row flex-50">
+                        <div class="ui-g" style="width:250px;margin-bottom:10px">
+                            <div class="ui-g-12 layout-row layout-align-start-center">
+                                <p-radioButton name="group2" value="12" label="12 Hour" [(ngModel)]="appConfigSetting.date_time_format"></p-radioButton>
+                                <span class="m-l-10">12 Hour</span>
+                            </div>
+                            <div class="ui-g-12 layout-row layout-align-start-center">
+                                <p-radioButton name="group2" value="24" label="24 Hour" [(ngModel)]="appConfigSetting.date_time_format"></p-radioButton>
+                                <span class="m-l-10">24 Hour</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pad-15 ">
+                <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                    <h2 class="flex-15 layout-row">App Store URLs</h2>
+                    <h3></h3>
+                </div>
+                <div class="layout-row flex-70 layout-align-start-start m-b-20">
+                    <div class="layout-row flex-45">
+                        <span>
+                            Insert your app store URLs here to generate the QR codes on the Promote tab 
+                            <i class="fa fa-info-circle l ion-left" tooltip="This will be automatically populated after you have published your app and the upload process has begun." tooltipPlacement="right"></i>
+                        </span>
+                    </div>
+                    <div class="layout-column flex-50 dis-wrap m-l-10">
+                        <input class="input-class form-control flex-100 m-b-20" type="text" placeholder="iOS URL" [(ngModel)]="appConfigSetting.ios_url">
+                        <input class="input-class form-control flex-100" type="text" placeholder="Android URL" [(ngModel)]="appConfigSetting.android_url">
+                    </div>
+                </div>
+            </div>
+
+            <div class="pad-15 ">
+                <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                    <h2 class="flex-20 layout-row">Mobile Website</h2>
+                    <h3></h3>
+                </div>
+                <div class="layout-row flex-70 layout-align-start-center m-b-20">
+                    <div class="layout-row flex-30 m-r-10">
+                        <span>Your HTML5 mobile website is enabled by default. You may choose to disable it if you are using certain incompatible features such as Members and Groups.</span>
+                    </div>
+                    <div class="layout-row flex-50">
+                        <div class="ui-g" style="width:250px;margin-bottom:10px">
+                            <div class="ui-g-12 layout-row layout-align-start-center">
+                                <p-radioButton name="group3" value="1" label="Mobile Website Enabled (Recommended)" [(ngModel)]="appConfigSetting.mobile_website_enabled"></p-radioButton>
+                                <span class="m-l-10">Mobile Website Enabled (Recommended)</span>
+                            </div>
+                            <div class="ui-g-12 layout-row layout-align-start-center">
+                                <p-radioButton name="group3" value="2" label="Mobile Website Disabled" [(ngModel)]="appConfigSetting.mobile_website_enabled"></p-radioButton>
+                                <span class="m-l-10">Mobile Website Disabled</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="layout-row flex-70 layout-align-start-start">
+                    <div class="layout-row flex-45">
+                        <span>Enable Smart Banners to redirect mobile website visitors to your iOS and Android mobile apps. When enabled, mobile optimized ads will show up in your app.</span>
+                    </div>
+                    <div class="layout-row flex-50">
+                        <div class="ui-g" style="width:250px;margin-bottom:10px">
+                            <div class="ui-g-12 layout-row layout-align-start-center">
+                                <div class="layout-row layout-align-start-center m-b-10">
+                                    <label class="switch  m-r-10  m-b-0">
+                                        <input type="checkbox" [(ngModel)]="appConfigSetting.smart_banners">
+                                        <div class="slider round"></div>
+                                    </label>
+                                    <span>Smart Banners</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+
+            <!--<div class="pad-15 ">
+                <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                    <h2 class="flex-20 layout-row">Image Display</h2>
+                    <h3></h3>
+                </div>
+                <div class="layout-row flex-70 layout-align-start-center m-b-20">
+                    <div class="layout-row flex-30 m-r-10">
+                        <span>iOS Images: Default to Fill Screen</span>
+                    </div>
+                </div>
+                <div class="layout-row flex-70 layout-align-start-center m-b-20">
+                    <div class="layout-row flex-30 m-r-10">
+                        <span>
+                            Android Images
+                            <i class="fa fa-info-circle l ion-left" tooltip="Choose the Image display type for Android devices." tooltipPlacement="right"></i>
+                        </span>
+                    </div>
+                    <div class="layout-row flex-50">
+                        <div class="ui-g" style="width:250px;margin-bottom:10px">
+                            <div class="ui-g-12 layout-row layout-align-start-center">
+                                <p-radioButton name="group4" value="1" label="Fill Screen (Recommended)" [(ngModel)]="appConfigSetting.android_images"></p-radioButton>
+                                <span class="m-l-10">Fill Screen (Recommended)</span>
+                            </div>
+                            <div class="ui-g-12 layout-row layout-align-start-center">
+                                <p-radioButton name="group4" value="2" label="Stretch To Fit" [(ngModel)]="appConfigSetting.android_images"></p-radioButton>
+                                <span class="m-l-10">Stretch To Fit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-row flex-70 layout-align-start-center m-b-20">
+                    <div class="layout-row flex-30 m-r-10">
+                        <span>
+                            Mobile Website Images
+                            <i class="fa fa-info-circle l ion-left" tooltip="Choose the Image display type for Android devices." tooltipPlacement="right"></i>
+                        </span>
+                    </div>
+                    <div class="layout-row flex-50">
+                        <div class="ui-g" style="width:250px;margin-bottom:10px">
+                            <div class="ui-g-12 layout-row layout-align-start-center">
+                                <p-radioButton name="group5" value="1" label="Fill Screen (Recommended)" [(ngModel)]="appConfigSetting.mobile_website_images"></p-radioButton>
+                                <span class="m-l-10">Fill Screen (Recommended)</span>
+                            </div>
+                            <div class="ui-g-12 layout-row layout-align-start-center">
+                                <p-radioButton name="group5" value="2" label="Stretch To Fit" [(ngModel)]="appConfigSetting.mobile_website_images"></p-radioButton>
+                                <span class="m-l-10">Stretch To Fit</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>-->
+        </tab>
+
+        <tab heading="App Screens">
+            <div class="pad-15 ">
+                <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                    <h2 class="flex-15 layout-row">User Accounts</h2>
+                    <h3></h3>
+                </div>
+                <div class="layout-row flex-80 layout-align-start-start m-b-20">
+                    <div class="layout-row flex-55 m-r-10">
+                        <span>Customize the options shown within the accounts section of your app settings page</span>
+                    </div>
+                    <div class="layout-column flex-45  m-l-10">
+                        <div class="layout-row layout-align-start-center m-b-10">
+                            <label class="switch  m-r-10  m-b-0">
+                                <input type="checkbox" [(ngModel)]="appConfigScreenSetting.user_profile">
+                                <div class="slider round"></div>
+                            </label>
+                            <span>User Profile <i class="fa fa-info-circle l ion-left"></i></span>
+                        </div>
+                        <div class="layout-row layout-align-start-center">
+                            <label class="switch  m-r-10  m-b-0">
+                                <input type="checkbox" [(ngModel)]="appConfigScreenSetting.social_login">
+                                <div class="slider round"></div>
+                            </label>
+                            <span>Social Logins<i class="fa fa-info-circle l ion-left"></i> </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="pad-15 ">
+                <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                    <h2 class="flex-15 layout-row">Terms of Service</h2>
+                    <h3></h3>
+                </div>
+                <div class="layout-row flex-80 layout-align-start-start m-b-20">
+                    <div class="layout-row flex-55 m-r-10">
+                        <span>Enable terms of service to be displayed in your app. A URL pointing to your Terms of Service is required.</span>
+                    </div>
+                    <div class="layout-column flex-45  m-l-10">
+                        <div class="layout-row layout-align-start-center m-b-20">
+                            <label class="switch  m-r-10  m-b-0">
+                                <input type="checkbox" [(ngModel)]="appConfigScreenSetting.terms_of_service">
+                                <div class="slider round"></div>
+                            </label>
+                            <span>Show-in App </span>
+                        </div>
+                        <input class="input-class form-control flex-100" type="text" [(ngModel)]="appConfigScreenSetting.terms_of_service_url" [disabled]="!appConfigScreenSetting.terms_of_service">
+                    </div>
+                </div>
+            </div>
+            <div class="pad-15 ">
+                <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                    <h2 class="flex-15 layout-row">Privacy Policy URL</h2>
+                    <h3></h3>
+                </div>
+                <div class="layout-row flex-80 layout-align-start-start m-b-20">
+                    <div class="layout-row flex-55 m-r-10">
+                        <span>App Stores require that a privacy policy be displayed in your app. To override the default policy, choose Custom and enter a URL pointing to your Privacy Policy.</span>
+                    </div>
+                    <div class="layout-column flex-45 m-l-10">
+                        <div class="layout-row layout-align-start-center m-b-10">
+                            <p-radioButton name="group2" value="1" label="Default" (click)="onChangePrivacy()" [(ngModel)]="appConfigScreenSetting.privacy_policy"></p-radioButton>
+                            <span class="m-l-10">Default</span>
+                        </div>
+                        <div class=" layout-row layout-align-start-center m-b-20">
+                            <p-radioButton name="group2" value="2" label="Custom" (click)="onChangePrivacy()" [(ngModel)]="appConfigScreenSetting.privacy_policy"></p-radioButton>
+                            <span class="m-l-10">Custom</span>
+                        </div>
+                        <input class="input-class form-control flex-100" type="text" [(ngModel)]="appConfigScreenSetting.privacy_policy_url" [disabled]="appConfigScreenSetting.privacy_policy==1">
+                    </div>
+                </div>
+            </div>
+            <div class="pad-15  ">
+                <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                    <h2 class="flex-15 layout-row">Social</h2>
+                    <h3></h3>
+                </div>
+                <div class="layout-column">
+                    <div class="layout-row flex-80 layout-align-start-start m-b-20">
+                        <div class="layout-row flex-45 m-r-10">
+                            <span class="line-height-18">User commenting ability is enabled globally throughout your app by default. With the exception of the Fan Wall and YouTube tabs, you may choose to disable this feature.</span>
+                        </div>
+                        <div class="layout-column flex-45 m-l-10">
+                            <div class="layout-row layout-align-start-center m-b-20">
+                                <label class="switch  m-r-10 m-b-0">
+                                    <input type="checkbox" [(ngModel)]="appConfigScreenSetting.user_comment_ability">
+                                    <div class="slider round"></div>
+                                </label>
+                                <span>User Commenting Ability </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-row flex-80 layout-align-start-start m-b-20">
+                        <div class="layout-row flex-45 m-r-10">
+                            <span class="line-height-18">Social onboarding prompts users to sign into their Facebook and Twitter accounts the first time they launch your app. This feature is disabled by default.</span>
+                        </div>
+                        <div class="layout-column flex-45 m-l-10">
+                            <div class="layout-row layout-align-start-center m-b-20">
+                                <label class="switch  m-r-10 m-b-0">
+                                    <input type="checkbox" [(ngModel)]="appConfigScreenSetting.social_onboarding">
+                                    <div class="slider round"></div>
+                                </label>
+                                <span>Social Onboarding </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-row flex-80 layout-align-start-start m-b-20">
+                        <div class="layout-row flex-45 m-r-10">
+                            <span class="line-height-18">Enter the default message you would like to send when users share from within your app. Available tags are: [iOS] [Android] [HTML5]</span>
+                        </div>
+                        <div class="layout-column flex-45 m-l-10">
+                            <span class="m-b-10">Share Default Message</span>
+                            <textarea class="flex-45" [(ngModel)]="appConfigScreenSetting.share_default_msg"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+
+        <!-- Membership & Groups Fuctionality -->
+        <tab heading="Members & Groups">
+            <!-- Membership Off -->
+            <div *ngIf="mLview" class="membershp-login-wrp layout-align-center-center layout-column pad-15">
+                <img src="assets/img/no-membership.png" />
+                <h2 text-center>Members & Groups</h2>
+                <p>The Members & Groups feature is a great solution for creating groups, users and guest login ability while
+                    controlling each feature they have access to. Additionally, you have the ability to send push notifications
+                    to these accounts specifically, giving you an entirely new level of control over your messaging.</p>
+                <button class="turn-on" (click)="memberDisplayWrapper()">Turn On</button>
+            </div>
+            <div>
+
+            </div>
+
+            <!-- Membership On -->
+            <div *ngIf="!mLview" class="membershp-login-wrp-1">
+                <div class="pad-15  ">
+                    <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                        <h2 class="flex-15 layout-row">Login Settings</h2>
+                        <h3></h3>
+                    </div>
+                    <div class="layout-column">
+                        <div class="layout-row flex-80 layout-align-start-center ">
+                            <div class="layout-row flex-45 m-r-10">
+                                <span class="line-height-18">Member login requires username and password to access your app</span>
+                            </div>
+                            <div class="layout-column flex-45 m-l-10">
+                                <div class="layout-row layout-align-start-center m-b-20">
+                                    <label class="switch  m-r-10 m-b-0">
+                                        <input type="checkbox" (change)="onChangeMember()" [(ngModel)]="appMembershipData.member_login" >
+                                        <div class="slider round"></div>
+                                    </label>
+                                    <span>Member Login </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layout-row flex-80 layout-align-start-center m-b-20">
+                            <div class="layout-row flex-45 m-r-10">
+                                <span class="line-height-18">Login Color.</span>
+                            </div>
+                            <div class="layout-column flex-45 m-l-10">
+                                <div class="layout-row layout-align-start-center m-b-20 updatecolor-box  pad-0 m-t-0 m-b-0 border-0 white-bg">
+                                    <input type="text" class="input-class" [(colorPicker)]="appMembershipData.login_color" [style.background]="appMembershipData.login_color"
+                                        [value]="appMembershipData.login_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'"
+                                        readonly/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layout-row flex-80 layout-align-start-center m-b-20">
+                            <div class="layout-row flex-45 m-r-10">
+                                <span class="line-height-18">Screen Background <i class="fa fa-info-circle l ion-left" tooltip="Set screen background color & background images here." tooltipPlacement="right"></i></span>
+                            </div>
+                            <div class="layout-column m-l-10">
+                                <button class="turn-on" (click)="changeBackgroundImage(0)">ADD</button>
+                            </div>
+                        </div>
+                        <div class="layout-row flex-80 layout-align-start-center  relative">
+                            <div class="layout-row flex-45 m-r-10">
+                                <span class="line-height-18">Guest login allows the general public access to your app </span>
+                            </div>
+                            <div class="layout-column flex-45 m-l-10">
+                                <div class="layout-row layout-align-start-center m-b-20">
+                                    <label class="switch  m-r-10 m-b-0">
+                                        <input type="checkbox" (change)="onChangeLMember()" [(ngModel)]="appMembershipData.guest_login">
+                                        <div class="slider round"></div>
+                                    </label>
+                                    <span>Guest Login </span>
+                                </div>
+                            </div>
+                            <div *ngIf="loginMveiw" class="loginMview"></div>
+                        </div>
+
+                        <!--<div class="layout-row flex-80 layout-align-start-center">
+                            <div class="layout-row flex-45">
+                                <span>Guest Login Name *</span>
+                            </div>
+                            <div class="layout-column flex-50 dis-wrap m-l-10">
+                                <input class="input-class form-control flex-100 m-b-20" type="text" [(ngModel)]="guestData.user_name">
+                            </div>
+                        </div>-->
+                        <div class="layout-row flex-80 layout-align-start-center m-b-20">
+                            <div class="layout-row flex-45 m-r-10">
+                                <span class="line-height-18">Customize Guest Login </span>
+                            </div>
+                            <div class="layout-column m-l-10">
+                                <button class="turn-on" (click)="showGuestLoginDialog()"> <i class="fa fa-cog ion-right"></i>Customize</button>
+                            </div>
+                        </div>
+                        <div class="layout-row flex-80 layout-align-start-center">
+                            <div class="layout-row flex-45 m-r-10">
+                                <span>Customize how your members see their invites.</span>
+                            </div>
+                            <div class="layout-column flex-50 m-l-10">
+                                <div class="layout-row layout-align-start-center m-b-10">
+                                    <p-radioButton name="group2" value="3" label="Default" [(ngModel)]="appMembershipData.type"></p-radioButton>
+                                    <span class="m-l-10">Multiple</span>
+                                </div>
+                                <div class=" layout-row layout-align-start-center ">
+                                    <p-radioButton name="group2" value="2" label="Custom" [(ngModel)]="appMembershipData.type"></p-radioButton>
+                                    <span class="m-l-10">Single</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Membership Multiple Type -->
+                <div class="pad-15 layout-column" *ngIf="appMembershipData.type==ACCESS_TYPE_MULTIPLE">
+                    <!-- Email Invite -->
+                    <div>
+                        <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                            <h2 class="flex-15 layout-row">Email Invite Form</h2>
+                            <h3></h3>
+                        </div>
+                        <div class="layout-column">
+                            <div class="layout-row flex-80 layout-align-start-start m-b-20">
+                                <div class="layout-row flex-45 m-r-10">
+                                    <span class="line-height-18">Customize how your users see your invites. </span>
+                                </div>
+                                <div class="layout-column m-l-10">
+                                    <button class="turn-on" (click)="showEditInviteMailDialog()"> <i class="fa fa-cog ion-right"></i>Customize</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Membership Multiple Type -->
+                    <div>
+                        <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                            <h2 class="flex-15 layout-row">Members</h2>
+                            <h3></h3>
+                        </div>
+
+                        <div class="layout-column update-list-member-wrap">
+                            <div class="layout-row flex-80 layout-align-space-between-start m-b-20">
+                                <!-- Membership Groups List-->
+                                <div class="layout-column flex-45 m-r-10">
+                                    <div class=" layout-row layout-align-space-between-center m-b-20">
+                                        <label class="checkbox-inline custom-checkbox nowrap width-800 flex-15">
+                                            <input type="checkbox" [(ngModel)]="checkAllGroup" (change)="onCheckAllGroupChange()">
+                                            <span>Select All</span>
+                                        </label>
+                                        <div class="layout-row layout-align-start-center list">
+                                            <button class="turn-on small" (click)="showCreateGroupFormDialog()">Add Group</button>                                            <i class="fa fa-trash ion-left" (click)="onGroupDeleteClick()" [class.checkGrpTrue]="selectedGroup.length > 0 && selectedGroup.indexOf(true) !== -1"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <ul class="layout-row layout-wrap layout-align-space-between-start">
+                                            <li *ngFor="let group of groupList" class=" group flex-45 margin-10" data-id="1" id="group_1">
+                                                <div class="group-content">
+                                                    <div class="group-header" [style.background]="group.group_color">
+                                                        <div class="group-color-overlay"></div>
+                                                        <div class="checker">
+                                                            <span><input class="choose" type="checkbox" [(ngModel)]="selectedGroup[group.id]" (click)="onSelectedGroupCheckTabChange(selectedGroup[group.id], group.id)"></span>
+                                                        </div>
+                                                        <button type="button" class="btn-edit  btn-white" (click)="showEditGroupFormDialog(group.id)">
+                                                            <i class="fa fa-edit"></i>
+                                                        </button>
+                                                        <div class="group-title group-info">{{group.group_name}}</div>
+                                                    </div>
+                                                    <div class="group-body">
+                                                        <div class="group-app-feature group-info">
+                                                            <i class="iconba icon-app-feature"></i><span class="tab-count"
+                                                                [innerHTML]="group.tabs_access | arrayElementCounterPipe"></span>                                                            App Features
+                                                        </div>
+                                                        <div class="group-info">
+                                                            <ul class="group-user-list"></ul>
+                                                        </div>
+                                                    </div>
+                                                    <div class="group-footer">
+                                                        <div class="group-info">
+                                                            <span class="user-count">{{group.user_count}}</span> Users
+                                                            <a href="#"><span class="view-more" style="display: none;">(View More <span class="more-count">0</span>)</span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <!-- Membership Users List -->
+                                <div class="layout-column flex-45 m-r-10">
+                                    <div class="layout-align-end-center layout-row list">
+                                        <button class="turn-on small" (click)="showCreateUserDialog()">Add User</button>
+                                        <button class="turn-on small m-l-10" (click)="showInviteUserDialog()">Invite</button>
+                                        <i class="fa fa-trash  m-l-10" (click)="onUserDeleteClick()" [class.checkGrpTrue]="selectedUser.length > 0 && selectedUser.indexOf(true) !== -1"></i>
+                                    </div>
+                                    <div>
+                                        <div class="user-list-block user-list-wrapper">
+                                            <div class="search-user">
+                                                <input class="form-control" type="text" id="search_user" placeholder="Search Users" [(ngModel)]="userSearch">
+                                                <i class="fa fa-search"></i>
+                                            </div>
+                                            <div class="user-list-wrapper" style="height: 201px;">
+                                                <ul class="user-list ">
+                                                    <li *ngFor="let user of (multipleUserList | userFilterPipe:userSearch)" class="user" data-group-id="0" data-id="0" id="user_0_0">
+                                                        <div class="user-content">
+                                                            <div class="user-content-overlay">
+                                                                <div class="user-details">
+                                                                    <div class="user-name">{{user.user_name}}</div>
+                                                                    <div class="user-group-info">
+                                                                        <div class="user-group-color no-group" [style.background]="user.group_color ? user.group_color : '#fff'"></div>
+                                                                        <span class="user-group-name" [innerHTML]="user.group_name ? user.group_name : 'No Group'"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="checker">
+                                                                <span><input class="user-choose ignore" type="checkbox" [(ngModel)]="selectedUser[user.id]" (click)="onSelectedUserCheckTabChange(selectedUser[user.id], user.id)"></span>
+                                                            </div>
+                                                            <div class="user-edit">
+                                                                <button type="button" class="btn-edit btn btn-white" (click)="showEditUserFormDialog(user.id)">
+                                                                <i class="fa fa-edit"></i>
+                                                            </button>
+                                                            </div>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Membership Single Type -->
+                <div class="pad-15 " *ngIf="appMembershipData.type==ACCESS_TYPE_SINGLE">
+                    <div class="layout-row layout-align-start-center c-setting-wraper-title m-b-20">
+                        <h2 class="flex-15 layout-row">Members</h2>
+                        <h3></h3>
+                    </div>
+                    <div class="layout-column">
+                        <div class="layout-row flex-80 layout-align-start-center m-b-20">
+                            <div class="layout-row flex-45">
+                                <span>Login Username *</span>
+                            </div>
+                            <div class="layout-column flex-50 dis-wrap m-l-10">
+                                <input class="input-class form-control flex-100 " type="text" [(ngModel)]="singleMemberLoginDetails.user_name">
+                            </div>
+                        </div>
+
+                        <div class="layout-row flex-80 layout-align-start-center m-b-20">
+                            <div class="layout-row flex-45">
+                                <span>Login Password *</span>
+                            </div>
+                            <div class="layout-column flex-50 dis-wrap m-l-10">
+                                <input class="input-class form-control flex-100 m-b-20" type="password" [(ngModel)]="singleMemberLoginDetails.password">
+                            </div>
+                        </div>
+
+                        <div class="layout-row flex-80 layout-align-start-center m-b-20">
+                            <div class="layout-row flex-45"> </div>
+                            <div class="layout-column flex-22 dis-wrap m-l-10">
+                                <div class="layout-column m-l-10">
+                                    <button class="turn-on" (click)="showSingleLoginTabsAccessDialog()"> Single App Feature Access</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+    <button [disabled]="disableSaveButton" class="green-btn custome-port-btn" (click)="saveSetting()">save</button>
+</div>
+
+<!-- Customize Guest Login Dialog -->
+<p-dialog [draggable]="false"  header="Customize Guest Login" [(visible)]="guestFormDialogDisplay" modal="modal" class="app-dialog add-app  info-wrap info-2">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form class="border-all white-bg web-bg" (ngSubmit)="onGuestFormSubmit()">
+        <div class="group-info-panel layout-column">
+            <div class="row-sm">
+                <div class="col-md-12"><label for="group_name">Guest Login Name <span class="required-mark">*</span></label></div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="group_name" name="group_name" autofocus="" [(ngModel)]="guestData.user_name">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row-sm">
+                <div class="col-md-12">
+                    <label for="feature_list"></label>
+                </div>
+                <div class="col-md-12">
+                    <div class="ctrls">
+                        <label class="checkbox-inline custom-checkbox nowrap width-800 flex-15">
+                            <input type="checkbox" [(ngModel)]="checkAllGuestTabs" (change)="onCheckAllGuestTabsChange()">
+                            <span>Select All</span>
+                        </label>
+                    </div>
+                    <ul class="feature-list" id="feature_list" name="feature_list">
+                        <li class="feature" *ngFor="let tab of appTabs; let i = index;">
+                            <div class="feature-index" [innerHTML]="i+1"></div>
+                            <div class="checker">
+                                <label class="checkbox-inline custom-checkbox nowrap width-800 flex-15">
+                                    <input type="checkbox" [(ngModel)]="selectedGuestTabs[tab.id]" (click)="onGuestCheckTabChange(selectedGuestTabs[tab.id], tab.id)">
+                                    <span>{{tab.title}}</span>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="layout-row layout-align-end">
+                <button class="green-btn" type="submit">Save</button>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+<!-- Single Login Tab Access Dialog -->
+<p-dialog [draggable]="false"  header="Single Login Feature Access" [(visible)]="singleLoginTabAccessFormDialogDisplay" modal="modal" class="app-dialog add-app  info-wrap info-2">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form class="border-all white-bg web-bg" (ngSubmit)="onsingleLoginTabAccessFormSubmit()">
+        <div class="group-info-panel layout-column">
+            <div class="row-sm">
+                <div class="col-md-12">
+                    <label for="feature_list"></label>
+                </div>
+                <div class="col-md-12">
+                    <div class="ctrls">
+                        <label class="checkbox-inline custom-checkbox nowrap width-800 flex-15">
+                            <input type="checkbox" [(ngModel)]="checkAllSingleLoginTabs" (change)="onCheckAllSingleLoginTabsChange()">
+                            <span>Select All</span>
+                        </label>
+                    </div>
+                    <ul class="feature-list" id="feature_list" name="feature_list">
+                        <li class="feature" *ngFor="let tab of appTabs; let i = index;">
+                            <div class="feature-index" [innerHTML]="i+1"></div>
+                            <div class="checker">
+                                <label class="checkbox-inline custom-checkbox nowrap width-800 flex-15">
+                                    <input type="checkbox" [(ngModel)]="selectedSingleLoginTabs[tab.id]" (click)="onSingleLoginCheckTabChange(selectedSingleLoginTabs[tab.id], tab.id)">
+                                    <span>{{tab.title}}</span>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="layout-row layout-align-end">
+                <button class="green-btn" type="submit">Save</button>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+<!-- Add/Edit Group Dialog-->
+<p-dialog [draggable]="false"  [header]="groupHeader" [(visible)]="groupFormDialogDisplay" modal="modal" class="app-dialog add-app  info-wrap info-2">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form class="border-all white-bg web-bg" (ngSubmit)="onGroupFormSubmit()">
+        <div class="group-info-panel layout-column">
+            <div class="row-sm">
+                <div class="col-md-12">
+                    <label for="group_name">Group Name <span class="required-mark">*</span></label>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="group_name" name="group_name" autofocus="" [(ngModel)]="groupData.group_name">
+                    </div>
+                </div>
+            </div>
+            <div class="row-sm updatecolor-box layout-row layout-align-start-center">
+                <div class="col-md-5"><label for="group_color">Assign a Color</label></div>
+                <div class="col-md-7">
+                    <div class=" layout-row layout-align-start-center">
+                        <input type="text" class="input-class" [(colorPicker)]="groupData.group_color" [style.background]="groupData.group_color"
+                            [value]="groupData.group_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                        <div class="hex-previewer-col m-l-10" style="background-color: rgb(255, 255, 255);"></div>
+                        <div class="hex-previewer-text">Hex:<span class="hex">{{groupData.group_color}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-sm">
+                <div class="col-md-12"><label for="feature_list"></label></div>
+                <div class="col-md-12">
+                    <div class="ctrls">
+                        <label class="checkbox-inline custom-checkbox nowrap width-800 flex-15">
+                            <input type="checkbox" [(ngModel)]="checkAllGroupTabs" (change)="onCheckAllGroupTabsChange()">
+                            <span>Select All</span>
+                        </label>
+                    </div>
+                    <ul class="feature-list" id="feature_list" name="feature_list">
+                        <li class="feature" *ngFor="let tab of appTabs; let i = index;">
+                            <div class="feature-index" [innerHTML]="i+1"></div>
+                            <div class="checker">
+                                <label class="checkbox-inline custom-checkbox nowrap width-800 flex-15">
+                                    <input type="checkbox" [(ngModel)]="selectedGroupTabs[tab.id]" (click)="onGroupCheckTabChange(selectedGroupTabs[tab.id], tab.id)">
+                                    <span>{{tab.title}}</span>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="layout-row layout-align-end">
+                <button class="green-btn" [disabled]="addSaveButtonHide" type="submit" [innerHTML]="groupSubmitButton"></button>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+<!-- Add/Edit User Dialog-->
+<p-dialog [draggable]="false"  [header]="userHeader" [(visible)]="userFormDialogDisplay" modal="modal" class="app-dialog add-app  info-wrap info-2">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form class="border-all white-bg web-bg" (ngSubmit)="onUserFormSubmit()">
+        <div class="group-info-panel layout-column">
+            <div class="row-sm">
+                <div class="col-sm-6">
+                    <label for="user_name">Username <span class="required-mark">*</span></label>
+                    <div class="">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="user_name" name="user_name" [(ngModel)]="userData.user_name">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="user_email">Email </label>
+                    <div class="">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="user_email" name="user_email" [(ngModel)]="userData.email">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-sm">
+                <div class="col-sm-6">
+                    <label for="user_name">Password <span class="required-mark">*</span></label>
+                    <div class="">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="user_password" name="user_password" [(ngModel)]="userData.password">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="user_confirm_password">Confirm Password <span class="required-mark">*</span></label>
+                    <div class="">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="user_confirm_password" name="user_confirm_password" [(ngModel)]="userData.password_confirmation">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-sm">
+                <div class="col-md-12">
+                    <label for="user_group">Assign Group <span class="required-mark">*</span></label>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <p-dropdown [options]="groups" [(ngModel)]="userData.group_id" class="flex-100 layout-row border-all m-t-10"></p-dropdown>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="userData.group_id==1.1 || userData.group_id==null">
+                <div class="row-sm">
+                    <div class="col-md-12">
+                        <label for="feature_list">Select which app features this user has access to.</label>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="ctrls">
+                            <label class="checkbox-inline custom-checkbox nowrap width-800 flex-15">
+                                <input type="checkbox" [(ngModel)]="checkAllUserTabs" (change)="onCheckAllUserTabsChange()">
+                                <span>Select All</span>
+                            </label>
+                        </div>
+                        <ul class="feature-list" id="feature_list" name="feature_list">
+                            <li class="feature layout-row layout-align-start-center" *ngFor="let tab of appTabs; let i = index;">
+                                <div class="feature-index" [innerHTML]="i+1"></div>
+                                <div class="checker">
+                                    <label class="checkbox-inline custom-checkbox nowrap width-800 flex-15">
+                                        <input type="checkbox" [(ngModel)]="selectedUserTabs[tab.id]" (click)="onUserCheckTabChange(selectedUserTabs[tab.id], tab.id)">
+                                        <span>{{tab.title}}</span>
+                                    </label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-row layout-align-end">
+                <button class="green-btn" [disabled]="addSaveButtonHide" type="submit" [innerHTML]="userSubmitButton">Add</button>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+<!-- Customize Email Invite Dialog -->
+<p-dialog [draggable]="false"  header="Customize Email Invite Form" [(visible)]="emailInviteFormDialogDisplay" modal="modal" class="app-dialog add-app  info-wrap info-2"
+    (onAfterHide)="hideDescDialog()">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form class="border-all white-bg web-bg" (ngSubmit)="onEmailInviteFormSubmit()">
+        <div class="group-info-panel layout-column">
+            <div class="row-sm">
+                <div class="col-md-12">
+                    <label for="invite_email_template">Invite Email Form</label>
+                </div>
+                <div class="col-md-12">
+                    <div id="description-editor"></div>
+                </div>
+            </div>
+            <div class="layout-row layout-align-end">
+                <button class="green-btn" type="submit">Save</button>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+<!-- Invite User Dialog -->
+<p-dialog [draggable]="false"  header="Invite User(s)" [(visible)]="inviteUserFormDialogDisplay" modal="modal" class="app-dialog add-app  info-wrap info-2">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form class="border-all white-bg web-bg" (ngSubmit)="onInviteUserFormSubmit()">
+        <div class="group-info-panel layout-column">
+            <div class="row-sm">
+                <div class="col-sm-6">
+                    <label for="user_name">CSV Data </label>
+                    <div class="">
+                        <div class="form-group">
+                            <input type="file" (change)="onCSVDataChange($event)">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="user_email">Email (Multiple Emails Separated By Commas) </label>
+                    <div class="">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="user_emails" name="user_emails" [(ngModel)]="inviteUserFormData.email">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-sm">
+                <div class="col-sm-6">
+                    <label for="user_name">From Email <span class="required-mark">*</span></label>
+                    <div class="">
+                        <div class="form-group">
+                            <input type="text" class="form-control" id="from_email" name="from_email" [(ngModel)]="inviteUserFormData.from_email">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <label for="user_confirm_password">Assign Group <span class="required-mark">*</span></label>
+                    <div class="">
+                        <div class="form-group">
+                            <p-dropdown [options]="groups" [(ngModel)]="inviteUserFormData.group_id" class="flex-100 layout-row border-all m-t-10"></p-dropdown>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-sm" *ngIf="showError">
+                <div class="col-md-12">
+                    <span class="errorLabel" style="color:#ff0000">{{errorMsg}}</span>
+                </div>
+            </div>
+            <div class="layout-row layout-align-end">
+                <button class="green-btn" [disabled]="addSaveButtonHide" type="submit">Add</button>
+            </div>
+        </div>
+    </form>
+</p-dialog>
+
+<!-- Screen Background dialog -->
+<p-dialog [draggable]="false"  header="SET A BACKGROUND IMAGE" [(visible)]="addImages" modal="modal" class="tab-content-dia backg-inf-dia app-dialog add-app s-tab-add bg-dialog-1">
+    <div class=" header-background border-all white-bg ">
+        <tabset class="container-tab-detail">
+            <tab heading="LIBRARY" active="!activeYourImagesTab">
+                <form>
+                    <div class="layout-column flex-100 web-bg">
+                        <div class="layout-row layout-align-space-between-center">
+                            <button class="green-btn m-b-20" *ngIf="importImageIds.length" (click)="importLibraryImagesToYourImages()">Import Images</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="">
+                    <div class="layout-row layout-wrap layout-wrap phone-image-wrap no-bg m-t-10">
+                        <div class="flex-25 layout-row layout-align-center-center related-to imag-up" *ngFor="let image of libraryImages" (click)="importImage(image.id)">
+                            <span *ngIf="importImageIds.indexOf(image.id)>=0" class="right-tick"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <img src="{{image.name}}" [class.right-img]="importImageIds.indexOf(image.id)>=0" />
+                        </div>
+                    </div>
+                </div>
+            </tab>
+            <tab heading="YOUR IMAGES" active="activeYourImagesTab">
+                <form>
+                    <div class="layout-row flex-100 web-bg layout-align-start-center">
+                        <div class="layout-column flex-45 m-l-10">
+                            <div class="layout-row layout-align-start-center m-r-10">
+                                <p-radioButton name="device_type" value="1" [(ngModel)]="deviceType"></p-radioButton><span class="m-l-10">Phone</span>
+                            </div>
+                            <div class="layout-row layout-align-start-center m-r-10">
+                                <p-radioButton name="device_type" value="2" [(ngModel)]="deviceType"></p-radioButton><span class="m-l-10">Tablet</span>
+                            </div>
+                        </div>
+
+                        <div class="layout-column flex-45 m-l-10" *ngIf="deviceType==2">
+                            <div class="layout-row layout-align-start-center">
+                                <label class="switch  m-r-10 m-b-0">
+                                        <input type="checkbox" (change)="onChangeTabImgSettings()" [(ngModel)]="tabletSettingsAsPhone" >
+                                        <div class="slider round"></div>
+                                    </label>
+                                <span>Use Phone Settings </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="layout-column flex-100 web-bg" *ngIf="!tabletSettingsAsPhone || deviceType == 1">
+                        <div class="layout-column">
+                            <div class="layout-row">
+                                <!--<label class="flex-50 font-weight-bold">{{phoneTabActive?"PHONE":tabletTabActive?"TABLET":"IPHONE"}}</label>-->
+                                <div class="flex-50 layout-align-space-between-center">
+                                    <button class="green-btn m-b-20" *ngIf="targetedImageId" (click)="SaveMyChoice()">Save My Choice</button>
+                                    <button class="green-btn m-b-20" *ngIf="targetedImageId" (click)="deleteTargetedImage()">Delete Image</button>
+                                </div>
+                            </div>
+                            <div class="layout-row layout-align-space-between-center">
+                                <!--<label><i class="fa fa-info-circle l ion-right"></i>{{phoneTabActive?"Phone Background Image : 640 x 1008 px":tabletTabActive?"Tablet Background Image: 1536x1920px":"iPhone 4 Background Image: 640x832px"}}</label>-->
+                                <thumbnail-file-reader (change)="onImageSelect($event)" [btnText]="'Choose File'"></thumbnail-file-reader>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+                <div class="" *ngIf="!tabletSettingsAsPhone || deviceType == 1">
+                    <div class="layout-row layout-wrap layout-wrap phone-image-wrap no-bg m-t-10">
+                        <div class="flex-25 layout-row layout-align-center-center imag-up" *ngFor="let image of userImages" (click)="targetImage(image.id)">
+                            <span *ngIf="targetedImageId==image.id" class="right-tick"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <span *ngIf="userImageInfo[image.id] && userImageInfo[image.id].length">
+                            <template ngFor let-info [ngForOf]="userImageInfo[image.id]" let-i="index">
+                                <template [ngIf]="i<5">
+                                    {{info}}<br>
+                                </template> 
+                            </template> 
+                            <template [ngIf]="userImageInfo[image.id] &&userImageInfo[image.id].length>5">
+                                {{userImageInfo[image.id].length-5}} More
+                            </template> 
+                        </span>
+                            <img src="{{image.name}}" [class.right-img]="targetedImageId==image.id" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="" *ngIf="tabletSettingsAsPhone && deviceType == 2">
+                    <div class="layout-row layout-align-center-center text-center pad-15 m-b-20 m-t-20 c-seting-wrap-phone">
+                        <img src="assets/img/phone.png">&nbsp;&nbsp;<span >Using Settings From Phone Section</span>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</p-dialog>

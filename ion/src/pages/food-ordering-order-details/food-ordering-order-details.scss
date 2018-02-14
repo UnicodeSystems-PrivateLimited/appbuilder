@@ -1,0 +1,21 @@
+page-food-ordering-order-details {
+    ion-content {
+        .ios-p {
+            font-size: 1.2rem !important;
+        }
+        .android-p {
+            font-size: 1.4rem !important;
+        }
+        .item-inner {
+            border: none !important;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        ion-item{
+            &.item{
+                h2{font-size: 1.8rem !important}
+            }
+        }
+    }
+}

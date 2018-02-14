@@ -1,0 +1,1 @@
+export * from './food-ordering.component';

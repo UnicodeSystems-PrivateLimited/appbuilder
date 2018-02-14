@@ -1,0 +1,190 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready" class="shopping-cart">
+    <div class="flex-100 spaceborder">
+    </div>
+    <div class="flex-100 layout-row secondtab-block layout-align-space-between-center m-b-10">
+        <div class="">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-100 layout-column">
+        <div class="flex-100 layout-row layout-align-space-between-center  set-div">
+            <div class="layout-row">
+                <p>Ordering Service:</p>
+            </div>
+            <div class="layout-row layout-align-center-center ins" [class.disable]="savedServiceType == ordServiceType">
+                <button class="blue-btn" (click)="updateOrderingService()">Save</button>
+            </div>
+        </div>
+        <div class="gallery-img-wrap flex-100 layout-row">
+            <div class="layout-row layout-align-space-around-center full-width">
+                <div *ngIf="!loader" class="fm-spinner">
+                    <div class="fm-double-bounce1"></div>
+                    <div class="fm-double-bounce2"></div>
+                </div>
+                <div class="layout-column layout-align-center-center order-icon-name c-p" [class.active]="ordServiceType===orderServiceType.CUSTOM" (click)="onOrderServiceTypeChange(orderServiceType.CUSTOM)">
+                    <div class="icon icon-circle layout-row layout-align-center-center m-b-10"><img src="../../assets/img/food-order/food-ordering.svg"></div>
+                    <p>Custom</p>
+                </div>
+                <div class="layout-column layout-align-center-center m-l-10 ins order-icon-name c-p" [class.active]="ordServiceType===orderServiceType.MYCHECK" (click)="onOrderServiceTypeChange(orderServiceType.MYCHECK)">
+                    <div class="icon icon-circle layout-row layout-align-center-center m-b-10"><img src="../../assets/img/food-order/mycheck.png"></div>
+                    <p>MyCheck</p>
+                </div>
+                <div class="layout-column layout-align-center-center m-l-10 ins order-icon-name  c-p" [class.active]="ordServiceType===orderServiceType.IMENU360" (click)="onOrderServiceTypeChange(orderServiceType.IMENU360)">
+                    <div class="icon icon-circle layout-row layout-align-center-center m-b-10"><img src="../../assets/img/food-order/iMenu-360.png"></div>
+                    <p>iMenu360</p>
+                </div>
+                <div class="layout-column layout-align-center-center m-l-10 ins order-icon-name c-p" [class.active]="ordServiceType===orderServiceType.OLO" (click)="onOrderServiceTypeChange(orderServiceType.OLO)">
+                    <div class="icon icon-circle layout-row layout-align-center-center m-b-10"><img src="../../assets/img/food-order/olo.png"></div>
+                    <p>olo</p>
+                </div>
+                <div class="layout-column layout-align-center-center m-l-10 ins order-icon-name c-p" [class.active]="ordServiceType===orderServiceType.EAT24" (click)="onOrderServiceTypeChange(orderServiceType.EAT24)">
+                    <div class="icon icon-circle layout-row layout-align-center-center m-b-10"><img src="../../assets/img/food-order/eat-24.png"></div>
+                    <p>Eat24</p>
+                </div>
+                <div class="layout-column layout-align-center-center m-l-10 ins order-icon-name c-p" [class.active]="ordServiceType===orderServiceType.GRUBHUB" (click)="onOrderServiceTypeChange(orderServiceType.GRUBHUB)">
+                    <div class="icon icon-circle layout-row layout-align-center-center m-b-10"><img src="../../assets/img/food-order/grubHub.png"></div>
+                    <p>Grubhub</p>
+                </div>
+                <div class="layout-column layout-align-center-center m-l-10 ins order-icon-name c-p" [class.active]="ordServiceType===orderServiceType.SEAMLESS" (click)="onOrderServiceTypeChange(orderServiceType.SEAMLESS)">
+                    <div class="icon icon-circle layout-row layout-align-center-center m-b-10"><img src="../../assets/img/food-order/seamless.png"></div>
+                    <p>Seamless</p>
+                </div>
+                <div class="layout-column layout-align-center-center m-l-10 ins order-icon-name c-p" [class.active]="ordServiceType===orderServiceType.ONOSYS" (click)="onOrderServiceTypeChange(orderServiceType.ONOSYS)">
+                    <div class="icon icon-circle layout-row layout-align-center-center m-b-10"><img src="../../assets/img/food-order/onosys.png"></div>
+                    <p>Onosys</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="layout-row flex-100" *ngIf="ordServiceType===orderServiceType.CUSTOM">
+        <p-tabView orientation="left" class="mon-left-wrap flex-100">
+            <p-tabPanel header="Locations" [selected]="true">
+                <food-ordering-locations [contactList]="data.contactList" [timeZoneList]="data.timeZoneList" [foodlocationInfoData]="data.foodlocationInfoData">
+                </food-ordering-locations>
+            </p-tabPanel>
+            <p-tabPanel header="Services">
+                <food-ordering-services [servicesInfo]="data.services" [currency]="data.payment.currency">
+                </food-ordering-services>
+            </p-tabPanel>
+            <p-tabPanel header="Payment">
+                <food-ordering-payment [payment]="data.payment" [currencyOptions]="data.currencyOptions" [paymentGatewayOptions]="data.paymentGatewayOptions" [taxMethodOptions]="data.taxMethodOptions" [taxAmountList]="data.taxAmountList">
+                </food-ordering-payment>
+            </p-tabPanel>
+            <p-tabPanel header="Menu">
+                <food-ordering-menu [foodlocationInfoData]="data.foodlocationInfoData" [categoryList]="data.categoryList" [itemList]="data.itemList" [settings]="settings" [currency]="data.payment.currency">
+                </food-ordering-menu>
+            </p-tabPanel>
+            <p-tabPanel header="Emails">
+                <food-ordering-email [emailCustomerConfirmation]="data.foodConfirmation" [emailAdminReceipt]="data.foodAdminreceipt" [emailCustomGuides]="data.foodCustomGuides">
+                </food-ordering-email>
+            </p-tabPanel>
+            <p-tabPanel header="Extras">
+                <food-ordering-extras>
+                </food-ordering-extras>
+            </p-tabPanel>
+        </p-tabView>
+    </div>
+
+    <div class="layout-row flex-100 p-15 inputarea-bg" *ngIf="ordServiceType!==orderServiceType.CUSTOM">
+        <div class="layout-column layout-align-center-start m-t-10 emails-confirmation food-ordering-location full-width" *ngIf="ordServiceType===orderServiceType.MYCHECK">
+            <div class="layout-row layout-align-start-center m-b-10 full-width">
+                <label class="m-r-10">
+                Mycheck Menu URL 
+                <i class="fa fa-info-circle l" tooltip="Input the Mycheck menu url to have your app include this food ordering service." tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+                <input class="input-class" type="text" [(ngModel)]="service.settings.url_2" placeholder="Your URL Here">
+            </div>
+            <div class="account-create layout-row layout-align-start-center">
+                <a href="http://www.mycheck.io/" target="_blank">Create an account with Mycheck</a>
+            </div>
+        </div>
+
+        <div class="layout-column layout-align-center-start m-t-10 emails-confirmation food-ordering-location full-width" *ngIf="ordServiceType===orderServiceType.IMENU360">
+            <div class="layout-row layout-align-start-center m-b-10 full-width">
+                <label class="m-r-10">
+                    iMenu360 Menu URL 
+                    <i class="fa fa-info-circle l" tooltip="Input the iMenu360 menu url to have your app include this food ordering service." tooltipPlacement="right" aria-hidden="true"></i>
+                </label>
+                <input class="input-class" type="text" [(ngModel)]="service.settings.url_3" placeholder="Your URL Here">
+            </div>
+            <div class="account-create layout-row layout-align-start-center">
+                <a href="http://imenu360.com/" target="_blank">Create an account with iMenu360</a>
+            </div>
+        </div>
+
+        <div class="layout-column layout-align-center-start m-t-10 emails-confirmation food-ordering-locatio full-widthn" *ngIf="ordServiceType===orderServiceType.OLO">
+            <div class="layout-row layout-align-start-center m-b-10 full-width">
+                <label class="m-r-10">
+                    olo Menu URL 
+                    <i class="fa fa-info-circle l" tooltip="Input the olo menu url to have your app include this food ordering service." tooltipPlacement="right" aria-hidden="true"></i>
+                </label>
+                <input class="input-class" type="text" [(ngModel)]="service.settings.url_4" placeholder="Your URL Here">
+            </div>
+            <div class="account-create layout-row layout-align-start-center">
+                <a href="https://www.olo.com/" target="_blank">Create an account with olo</a>
+            </div>
+        </div>
+
+        <div class="layout-column layout-align-center-start m-t-10 emails-confirmation food-ordering-location full-width" *ngIf="ordServiceType===orderServiceType.EAT24">
+            <div class="layout-row layout-align-start-center m-b-10 full-width">
+                <label class="m-r-10">
+                Eat24 Menu URL 
+                <i class="fa fa-info-circle l" tooltip="Input the Eat24 menu url to have your app include this food ordering service." tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+                <input class="input-class" type="text" [(ngModel)]="service.settings.url_5" placeholder="Your URL Here">
+            </div>
+            <div class="account-create layout-row layout-align-start-center">
+                <a href="http://eat24.com/" target="_blank">Create an account with Eat24</a>
+            </div>
+
+        </div>
+
+        <div class="layout-column layout-align-center-start m-t-10 emails-confirmation food-ordering-location full-width" *ngIf="ordServiceType===orderServiceType.GRUBHUB">
+            <div class="layout-row layout-align-start-center m-b-10 full-width">
+                <label class="m-r-10">
+                Grubhub Menu URL 
+                <i class="fa fa-info-circle l" tooltip="Input the Grubhub menu url to have your app include this food ordering service." tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+                <input class="input-class" type="text" [(ngModel)]="service.settings.url_6" placeholder="Your URL Here">
+            </div>
+            <div class="account-create layout-row layout-align-start-center">
+                <a href="https://www.grubhub.com/" target="_blank">Create an account with Grubhub</a>
+            </div>
+        </div>
+
+        <div class="layout-column layout-align-center-start m-t-10 emails-confirmation food-ordering-location full-width" *ngIf="ordServiceType===orderServiceType.SEAMLESS">
+            <div class="layout-row layout-align-start-center m-b-10 full-width">
+                <label class="m-r-10">
+                    Seamless Menu URL 
+                    <i class="fa fa-info-circle l" tooltip="Input the Seamless menu url to have your app include this food ordering service." tooltipPlacement="right" aria-hidden="true"></i>
+                </label>
+                <input class="input-class" type="text" [(ngModel)]="service.settings.url_7" placeholder="Your URL Here">
+            </div>
+            <div class="account-create layout-row layout-align-start-center">
+                <a href="https://www.seamless.com/" target="_blank">Create an account with Seamless</a>
+            </div>
+        </div>
+
+        <div class="layout-column layout-align-center-start m-t-10 emails-confirmation food-ordering-location full-width" *ngIf="ordServiceType===orderServiceType.ONOSYS">
+            <div class="layout-row layout-align-start-center m-b-10 full-width">
+                <label class="m-r-10">
+                Onosys Menu URL 
+                <i class="fa fa-info-circle l" tooltip="Input the Onosys menu url to have your app include this food ordering service." tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+                <input class="input-class" type="text" [(ngModel)]="service.settings.url_8" placeholder="Your URL Here">
+            </div>
+            <div class="account-create layout-row layout-align-start-center">
+                <a href="https://www.onosys.com/" target="_blank">Create an account with Onosys</a>
+            </div>
+        </div>
+    </div>
+</div>

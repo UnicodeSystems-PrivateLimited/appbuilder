@@ -1,0 +1,35 @@
+<!--
+  Generated template for the PictureGalleryPhotos page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{galleryName}}</ion-title>
+    </ion-navbar>
+
+</ion-header>
+
+<ion-content [style.background]="'url(' + bgImage + ')'">
+    <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+    <template [ngIf]="!loader">
+        <ion-grid *ngIf="galleryType === GALLERY_TYPE_GRID">
+            <ion-row wrap>
+                <ion-col center text-center *ngFor="let galleryPhoto of galleryPhotos; let i = index;" width-33>
+                    <img class="photo" [src]="galleryPhoto.image" (click)="onGalleryPictureClick(i, galleryPhotos)">
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+
+        <ion-slides #coverflowGrid (ionDidChange)="onSlideChanged()" *ngIf="galleryType === GALLERY_TYPE_COVERFLOW" [options]="slideOptions">
+            <ion-slide *ngFor="let galleryPhoto of galleryPhotos; let i = index;">
+                <img [src]="galleryPhoto.image" (click)="onGalleryPictureClick(i, galleryPhotos)">
+            </ion-slide>
+        </ion-slides>
+    </template>
+</ion-content>

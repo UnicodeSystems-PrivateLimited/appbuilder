@@ -1,0 +1,54 @@
+<div class="app-settings flex-100 setting-pge">
+    <div class="setting-tab-wrap main-header-tabs">
+        
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div *ngIf="staticCPanel.defaultCmsSettingButton" class="default-active"></div>
+        <div [routerLink]="['CTheme']" class="tab-set tabs-data">
+            <div class="layout-row tab-head layout-align-center-center" tooltipPlacement="top">
+                <div class="layout-column">
+                    <span> Theme</span>
+                </div>
+            </div>
+        </div>
+        <div [routerLink]="['CHeader']" class="tab-set" [class.disable-link]="staticCPanel.defaultCmsSettingButton">
+            <div class="layout-row tab-head layout-align-center-center" tooltipPlacement="top">
+                <div class="layout-column">
+                    <span>  Header</span>
+                </div>
+            </div>
+        </div>
+        <div [routerLink]="['CSteps']" class="tab-set">
+            <div class="layout-row tab-head layout-align-center-center" tooltipPlacement="top">
+                <div class="layout-column">
+                    <span> Steps</span>
+                </div>
+            </div>
+        </div>
+        <div [routerLink]="['CPreviewer']" class="tab-set">
+            <div class="layout-row tab-head layout-align-center-center" tooltipPlacement="top">
+                <div class="layout-column">
+                    <span> Previewer</span>
+                </div>
+            </div>
+        </div>
+        <div [routerLink]="['CFooter']" class="tab-set">
+            <div class="layout-row tab-head layout-align-center-center" tooltipPlacement="top">
+                <div class="layout-column">
+                    <span> Footer</span>
+                </div>
+            </div>
+        </div>
+        <div [routerLink]="['CLoginPage']" class="tab-set">
+            <div class="layout-row tab-head layout-align-center-center" tooltipPlacement="top">
+                <div class="layout-column">
+                    <span> Login Page</span>
+                </div>
+            </div>
+        </div>
+        <button type="button" class="green-btn m-r-10" (click)="saveCPanelSettings()">Save</button>
+    </div>
+    <router-outlet></router-outlet>
+</div>

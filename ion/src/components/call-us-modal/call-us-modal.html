@@ -1,0 +1,26 @@
+<!--
+  Generated template for the CallUsModal component.
+
+  See https://angular.io/docs/ts/latest/api/core/index/ComponentMetadata-class.html
+  for more info on Angular 2 Components.
+-->
+
+<ion-header>
+	<ion-toolbar>
+		<ion-title>Which location would you like to call?</ion-title>
+		<ion-buttons start>
+			<button ion-button (click)="dismiss()">
+                <ion-icon name="md-close"></ion-icon>
+            </button>
+		</ion-buttons>
+	</ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<ion-list>
+		<button ion-item *ngFor="let contact of callUsData" (click)="onNumberClick(contact.telephone)">
+            <p>{{contact.telephone}}</p>
+            <p>{{contact.address}}</p>
+        </button>
+	</ion-list>
+</ion-content>

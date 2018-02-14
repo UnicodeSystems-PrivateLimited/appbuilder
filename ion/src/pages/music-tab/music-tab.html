@@ -1,0 +1,123 @@
+<!--
+  Generated template for the MusicTab page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+    [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+    [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+    <ion-title *ngIf="tab_nav_type=='tab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+      [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]:title:title}}</ion-title>
+    <ion-title *ngIf="tab_nav_type=='subtab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+      [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.sub_tab_translation?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]:title:title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content [style.background]="'url(' + bgImage + ')'" [style.height]="'100%'">
+  <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+  <template [ngIf]="!loader">
+    <div>
+      <img [src]="tabHeaderImage?tabHeaderImage:''">
+    </div>
+    <div padding showWhen="ios,core">
+      <ion-segment [(ngModel)]="tabs">
+        <ion-segment-button value="alltracks">
+          {{'ALLTRACK' | translate}}
+        </ion-segment-button>
+        <ion-segment-button value="albums">
+          {{'ALBUMS' | translate}}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+
+    <div showWhen="android">
+      <ion-segment [(ngModel)]="tabs">
+        <ion-segment-button value="alltracks">
+          {{'ALLTRACK' | translate}}
+        </ion-segment-button>
+        <ion-segment-button value="albums">
+          {{'ALBUMS' | translate}}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <ion-scroll scrollY="true">
+      <div [ngSwitch]="tabs">
+        <div *ngIf="alltrackList && alltrackList.length">
+          <div *ngSwitchCase="'alltracks'">
+            <ion-card *ngFor="let track of alltrackList;let i=index;">
+              <ion-list>
+                <ion-item no-lines [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                  <md-spinner [state]="service.loaderOfTrack==track.id" [type]="'inline'"></md-spinner>
+                  <ion-icon class="player-icon" [name]="service.playingFile === track.title && service.isPlaying ? 'pause' : 'play'" (click)="service.playPauseMusic(track)"
+                    item-left></ion-icon>
+                  <div (click)="goTrackDetailPage(track)">
+                    <h2>{{track.title}}</h2>
+                    <h3>{{track.artist}}</h3>
+                  </div>
+                  <button *ngIf="track.purchase_url" ion-button icon-left clear item-right (click)="service.goToWebsite(track.purchase_url)">
+              <ion-icon name="cart" ios="ios-cart" md="md-cart" item-right></ion-icon>
+              </button>
+                </ion-item>
+                <ion-item *ngIf="service.toggleAllTrackRange==track.id" no-lines [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                  <ion-range min="{{service.playedMinrange[track.id]}}" max="{{service.playedMaxrange[track.id]}}" [(ngModel)]="service.playedrange[track.id]"
+                    name="service.playedrange[track.id]" (ionChange)="service.tapOnRangeEvent($event,track.id)">
+                    <ion-icon range-left name="rewind"></ion-icon>
+                    <ion-icon range-right name="fastforward"></ion-icon>
+                  </ion-range>
+                </ion-item>
+              </ion-list>
+            </ion-card>
+          </div>
+          <div *ngSwitchCase="'albums'">
+            <ion-card *ngFor="let album of albumList;let i=index;">
+              <ion-list>
+                <ion-item [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)"
+                  [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                  <ion-thumbnail item-left>
+                    <img [src]="service.albumURL(album[0].art_url,album[0].art_file)">
+                  </ion-thumbnail>
+                  <h2>{{album[0].artist}}</h2>
+                  <h3>{{album[0].album}}</h3>
+                  <h3>{{album.length}}{{album.length==1?" song":" songs"}}</h3>
+                  <button ion-button icon-left clear item-right (click)="toggleAlbumTracks(i)">
+                     <ion-icon item-right *ngIf="!toggleAlbumTrack[i]" name="arrow-dropdown-circle"></ion-icon>
+                     <ion-icon item-right *ngIf="toggleAlbumTrack[i]" name="arrow-dropup-circle"></ion-icon>
+                  </button>
+                </ion-item>
+              </ion-list>
+              <ion-list *ngIf="toggleAlbumTrack[i]">
+                <div *ngFor="let track of album;let j=index;">
+                  <ion-item no-lines [style.background-color]="((j % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                    <md-spinner [state]="service.loaderOfTrack==track.id" [type]="'inline'"></md-spinner>
+                    <ion-icon class="player-icon" [name]="service.playingFile === track.title && service.isPlaying ? 'pause' : 'play'" (click)="service.playPauseMusic(track)"
+                      item-left></ion-icon>
+                    <div (click)="goTrackDetailPage(track)">
+                      <h2>{{track.title}}</h2>
+                      <h3>{{track.artist}}</h3>
+                    </div>
+                    <button *ngIf="track.purchase_url" ion-button icon-left clear item-right (click)="service.goToWebsite(track.purchase_url)">
+                <ion-icon name="cart" ios="ios-cart" md="md-cart" item-right></ion-icon>
+                </button>
+                  </ion-item>
+                  <ion-item *ngIf="service.toggleAllTrackRange==track.id" no-lines [style.background-color]="((j % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                    <ion-range min="{{service.playedMinrange[track.id]}}" max="{{service.playedMaxrange[track.id]}}" [(ngModel)]="service.playedrange[track.id]"
+                      name="service.playedrange[track.id]" (ionChange)="service.tapOnRangeEvent($event,track.id)">
+                      <ion-icon range-left name="rewind"></ion-icon>
+                      <ion-icon range-right name="fastforward"></ion-icon>
+                    </ion-range>
+                  </ion-item>
+                </div>
+              </ion-list>
+            </ion-card>
+          </div>
+        </div>
+        <div class="desc-box" *ngIf="!alltrackList.length" padding>
+          <span> {{'NOTHINGTEXT' | translate}}</span>
+        </div>
+      </div>
+    </ion-scroll>
+  </template>
+</ion-content>

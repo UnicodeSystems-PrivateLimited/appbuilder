@@ -1,0 +1,144 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+            </ul>
+        </div>
+    </div>
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="dotted-bootom-div layout-column layout-align-end">
+                <div class=" layout-row layout-align-space-between-center pdf-box ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                        <li class="title-sbhead">You have {{phoneNumbers.length}} phone number(s)</li>
+                    </ul>
+                    <button class="green-btn" (click)="showAddDialog()">
+                        <i class="fa fa-plus ion-right" aria-hidden="true"></i> Add Phone Number
+                    </button>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>
+            </div>
+            <div [dragula]='"phone-number-bag"' [dragulaModel]="phoneNumbers">
+                <div *ngFor="let number of phoneNumbers" class="dotted-bootom-div layout-row somespace-top layout-align-start-center">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedItem[number.id]" (click)="onCheckTabChange(selectedItem[number.id], number.id)">
+                            <span></span>
+                        </label>
+                        <span class="layout-align-center-center layout-row"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+                        <div class="layout-column menu-tb-span">
+                            <span>{{number.title}}</span>
+                            <span>{{number.phone}}</span>
+                        </div>
+                    </div>
+                    <div class="flex-50 layout-row layout-align-end  remove-r-padding  pad-r-15">
+                        <span><button class="edit-btn m-r-0" (click)="showEditDialog(number.id)">edit</button></span>
+                        <!--<span class="lastspan-out"><button class="red" (click)="onDeleteClick(number.id)">delete</button></span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+
+    <!-- Add Phone Number Dialog START-->
+    <p-dialog [draggable]="false"  header="Add Phone Number" [(visible)]="addDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add" >
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onAddSubmit()">
+            <div class="layout-column border-all white-bg">
+                <div class="web-bg">
+                    <div class="layout-row m-b-15 layout-align-space-between">
+                        <div class="layout-column flex-45">
+                            <label>Title
+                                <i class="fa fa-info-circle l" tooltip="Enter the title for the phone number" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="addNumberData.title">
+                        </div>
+                        <div class="layout-column flex-45">
+                            <label>Phone Number
+                                <i class="fa fa-info-circle l" tooltip="Enter the phone number" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="addNumberData.phone">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <p-footer>
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+                </div>
+            </p-footer>
+        </form>
+    </p-dialog>
+    <!-- Add Phone Number Dialog END-->
+
+    <!-- Edit Phone Number Dialog START-->
+    <p-dialog [draggable]="false"  header="Edit Phone Number" [(visible)]="editDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add" >
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onEditSubmit()" *ngIf="editNumberData.id">
+            <div class="layout-column border-all white-bg">
+                <div class="web-bg">
+                    <div class="layout-row m-b-15 layout-align-space-between">
+                        <div class="layout-column flex-45">
+                            <label>Title
+                                <i class="fa fa-info-circle l" tooltip="Enter the title for the phone number" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="editNumberData.title">
+                        </div>
+                        <div class="layout-column flex-45">
+                            <label>Phone Number
+                                <i class="fa fa-info-circle l" tooltip="Enter the phone number" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+                            <input class="input-class" type="text" [(ngModel)]="editNumberData.phone">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p-footer>
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+                </div>
+            </p-footer>
+        </form>
+    </p-dialog>
+    <!-- Edit Phone Number Dialog END-->
+
+    <!-- Delete Dialog START -->
+    <p-dialog [draggable]="false"  header="Delete Phone Number ?" [(visible)]="showDeleteDialog" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <p style="color: #000">Are you sure you want to delete the selected phone number ?</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+                <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="delete()">Yes</a>
+                <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteDialog=false">No</a>
+            </div>
+        </footer>
+    </p-dialog>
+    <!-- Delete Dialog END -->
+</div>

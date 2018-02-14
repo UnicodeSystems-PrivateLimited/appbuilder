@@ -1,0 +1,214 @@
+<!--
+  Generated template for the InboxTab page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title *ngIf="tab_nav_type=='tab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]:title:title}}</ion-title>
+        <ion-title *ngIf="tab_nav_type=='subtab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.sub_tab_translation?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]:title:title}}</ion-title>
+        <ion-buttons end *ngIf="settingsIcon == 1">
+            <button ion-button icon-only (click)="onSettingsClick()" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="settings"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content class="fan-wall-content" [style.background]="'url(' + bgImage + ')'">
+    <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+    <template [ngIf]="itemList.length && areItemsFromAPIRetrieved">
+        <div class="comment-cards-wrapper" showWhen="android">
+            <template ngFor let-item [ngForOf]="itemList" let-i="index">
+                <ion-card class="comment-card" *ngIf="item.android_type == 1 && allMessage" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                    <ion-card-content class="fan-wall-comment">
+                        <ion-row class="inbox-wrap" *ngIf="!item.tab_id && !item.website_url">
+                            <span [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">
+                                <p>{{item.message}}</p>
+                                <p>{{item.created_at | servertimeformatpipe}}</p>
+                            </span>
+                        </ion-row>
+                        <ion-row class="inbox-wrap" *ngIf="item.tab_id" (click)="pushPage(item.tab_func_code, item.tab_id, item.title,item.bgImage,item,'tab')">
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="tablet-portrait" item-left></ion-icon>
+                            <span [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">
+                                <p>{{item.message}}</p>
+                                <p>{{item.created_at | servertimeformatpipe}}</p>
+                            </span>
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="arrow-forward" item-right></ion-icon>
+                        </ion-row>
+                        <ion-row class="inbox-wrap" *ngIf="item.website_url" (click)="openWebView(item.website_url)">
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="globe" item-left></ion-icon>
+                            <span [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">
+                                <p>{{item.message}}</p>
+                                <p>{{item.created_at | servertimeformatpipe}}</p>
+                            </span>
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="arrow-forward" item-right></ion-icon>
+                        </ion-row>
+
+
+                    </ion-card-content>
+
+                    <ion-item tappable>
+                        <button ion-button clear icon-left item-right primary (click)="onSharingClick()" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+                    <ion-icon name="ios-share-outline"></ion-icon>
+                </button>
+                        <button ion-button clear icon-left item-right primary (click)="onDeleteClick(item.id)" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+          <ion-icon name="trash"></ion-icon>
+                </button>
+
+                    </ion-item>
+                </ion-card>
+                <ion-card class="comment-card" *ngIf="item.website_url && item.android_type == 1 && weburl" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+
+                    <ion-card-content class="fan-wall-comment" (click)="openWebView(item.website_url)">
+                        <ion-row class="inbox-wrap">
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="globe" item-left></ion-icon>
+                            <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.message}}</p>
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="arrow-forward" item-right></ion-icon>
+                        </ion-row>
+                        <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.created_at | servertimeformatpipe}}</p>
+                    </ion-card-content>
+                    <ion-item tappable>
+                        <button ion-button clear icon-left item-right primary (click)="onSharingClick()" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+                    <ion-icon name="ios-share-outline"></ion-icon>
+                </button>
+                        <button ion-button clear icon-left item-right primary (click)="onDeleteClick(item.id)" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+          <ion-icon name="trash"></ion-icon>
+                </button>
+
+                    </ion-item>
+                </ion-card>
+                <ion-card class="comment-card" *ngIf="item.tab_id && item.android_type == 1 && tab" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+
+                    <ion-card-content class="fan-wall-comment" (click)="pushPage(item.tab_func_code, item.tab_id, item.title,item.bgImage,item,'tab')">
+                        <ion-row class="inbox-wrap">
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="tablet-portrait" item-left></ion-icon>
+                            <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.message}}</p>
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="arrow-forward" item-right></ion-icon>
+                        </ion-row>
+                        <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.created_at | servertimeformatpipe}}</p>
+                    </ion-card-content>
+
+                    <ion-item tappable>
+                        <button ion-button clear icon-left item-right primary (click)="onSharingClick()" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+                    <ion-icon name="ios-share-outline"></ion-icon>
+                </button>
+                        <button ion-button clear icon-left item-right primary (click)="onDeleteClick(item.id)" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+          <ion-icon name="trash"></ion-icon>
+                </button>
+                    </ion-item>
+                </ion-card>
+            </template>
+        </div>
+        <div class="comment-cards-wrapper" showWhen="ios">
+            <template ngFor let-item [ngForOf]="itemList" let-i="index">
+                <ion-card class="comment-card" *ngIf="item.iphone_type == 1 && allMessage" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                    <ion-card-content class="fan-wall-comment">
+                        <ion-row class="inbox-wrap" *ngIf="!item.tab_id && !item.website_url">
+                            <span [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">
+                                <p>{{item.message}}</p>
+                                <p>{{item.created_at | servertimeformatpipe}}</p>
+                            </span>
+                        </ion-row>
+                        <ion-row class="inbox-wrap" *ngIf="item.tab_id" (click)="pushPage(item.tab_func_code, item.tab_id, item.title,item.bgImage,item,'tab')">
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="tablet-portrait" item-left></ion-icon>
+                            <span [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">
+                                <p>{{item.message}}</p>
+                                <p>{{item.created_at | servertimeformatpipe}}</p>
+                            </span>
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="arrow-forward" item-right></ion-icon>
+                        </ion-row>
+                        <ion-row class="inbox-wrap" *ngIf="item.website_url" (click)="openWebView(item.website_url)">
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="globe" item-left></ion-icon>
+                            <span [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">
+                                <p>{{item.message}}</p>
+                                <p>{{item.created_at | servertimeformatpipe}}</p>
+                            </span>
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="arrow-forward" item-right></ion-icon>
+                        </ion-row>
+                    </ion-card-content>
+
+                    <ion-item tappable>
+                        <button ion-button clear icon-left item-right primary (click)="onSharingClick()" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+                    <ion-icon name="ios-share-outline"></ion-icon>
+                </button>
+                        <button ion-button clear icon-left item-right primary (click)="onDeleteClick(item.id)" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+          <ion-icon name="trash"></ion-icon>
+                </button>
+
+                    </ion-item>
+                </ion-card>
+                <ion-card class="comment-card" *ngIf="item.website_url && item.iphone_type == 1 && weburl" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                    <ion-card-content class="fan-wall-comment" (click)="openWebView(item.website_url)">
+                        <ion-row class="inbox-wrap">
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="globe" item-left></ion-icon>
+                            <span [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">
+                                <p>{{item.message}}</p>
+                                <p>{{item.created_at | servertimeformatpipe}}</p>
+                            </span>
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="arrow-forward" item-right></ion-icon>
+                        </ion-row>
+                    </ion-card-content>
+                    <ion-item>
+                        <button ion-button clear icon-left item-right primary (click)="onSharingClick()" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+                    <ion-icon name="ios-share-outline"></ion-icon>
+                </button>
+                        <button ion-button clear icon-left item-right primary (click)="onDeleteClick(item.id)" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+          <ion-icon name="trash"></ion-icon>
+                </button>
+
+                    </ion-item>
+                </ion-card>
+                <ion-card class="comment-card" *ngIf="item.tab_id && item.iphone_type == 1 && tab" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                    <ion-card-content class="fan-wall-comment" (click)="pushPage(item.tab_func_code, item.tab_id, item.title,item.bgImage,item,'tab')">
+                        <ion-row class="inbox-wrap">
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="tablet-portrait" item-left></ion-icon>
+                            <span [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">
+                                <p>{{item.message}}</p>
+                                <p>{{item.created_at | servertimeformatpipe}}</p>
+                            </span>
+                            <ion-icon [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" name="arrow-forward" item-right></ion-icon>
+                        </ion-row>
+                    </ion-card-content>
+                    <ion-item>
+                        <button ion-button clear icon-left item-right primary (click)="onSharingClick()" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+                    <ion-icon name="ios-share-outline"></ion-icon>
+                </button>
+                        <button ion-button clear icon-left item-right primary (click)="onDeleteClick(item.id)" [style.color]="globalService.initData.globalStyleSettings.features.button_image">
+          <ion-icon name="trash"></ion-icon>
+                </button>
+
+                    </ion-item>
+                </ion-card>
+            </template>
+        </div>
+    </template>
+    <ion-item *ngIf="!itemList.length">{{'NOTHINGTEXT' | translate}}</ion-item>
+</ion-content>
+
+<ion-footer>
+    <ion-toolbar color="primary" no-shadow>
+        <ion-row>
+            <ion-col center text-center width-33 (click)="onAllClick(1)">
+                <ion-icon name="list"></ion-icon>
+                <span>{{'ALL' | translate}}</span>
+            </ion-col>
+            <ion-col center text-center width-33 (click)="onAllClick(2)">
+                <ion-icon name="globe"></ion-icon>
+                <span>{{'WEBURL' | translate}}</span>
+            </ion-col>
+            <ion-col center text-center width-33 (click)="onAllClick(3)">
+                <ion-icon name="tablet-portrait"></ion-icon>
+                <span>{{'TAB' | translate}}</span>
+            </ion-col>
+        </ion-row>
+    </ion-toolbar>
+</ion-footer>

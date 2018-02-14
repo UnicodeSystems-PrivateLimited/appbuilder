@@ -1,0 +1,724 @@
+<!--<div class="app-block">
+    <div class="grid-view flex-100 layout-row layout-sm-wrap ">
+        <div class="flex-15 flex-xl-10 flex-lg-15 flex-md-25 flex-sm-40 sm-m-b-20">
+
+            <p-dropdown [options]="categories" [(ngModel)]="selectedCat" class="cat-drop"></p-dropdown>
+
+        </div>
+
+        <div class="flex-md-20 sm-m-b-20 flex-10 flex-sm-25 layout-align-end-center layout-column flex-gt-md-15 flex-lg-10 layout-align-lg-center-start layout-align-xl-center-center">
+            <p-dropdown [options]="app" [(ngModel)]="selectedApp" class="cat-drop app-drop"></p-dropdown>
+
+        </div>
+
+        <div class="flex-20">
+
+            <div class="dropdown al-user-profile layout-column app-link-count-2 main-dropdown">
+                <form (ngSubmit)="searchApp()">
+                    <div class="input-group btn-group">
+                        <input [(ngModel)]="appSearch.title" type="text" class="form-control txt-less-bottom" placeholder="Search App">
+                        <span class="input-group-btn">
+                            <button class="group-btn-style" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        <div class="flex-10 layout-row flex-gt-md-5 sm-m-b-20">
+            <ul class="grid-list layout-row layout-align-center-center">
+                <li class="cursor-p"> <button><i class="fa fa-plus" aria-hidden="true"></i></button></li>
+            </ul>
+        </div>
+        
+    </div>
+</div>-->
+<div *ngIf="showLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+
+<div class="pagination-block layout-row flex-100 layout-wrap">
+    <div class="flex-55 layout-row">
+        <div class="cheak-block  layout-align-start-center layout-row " *ngIf="!appState.isCustomerLogin">
+            <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox" id="check-all" [(ngModel)]="checkAll" (change)="onCheckAllChange()">
+            <span> Check All</span>
+        </label>
+        </div>
+        <!--<div class="drp-da  layout-align-end-center layout-row">
+
+            <p-dropdown [options]="categories" [(ngModel)]="selectedCat" class="cat-drop layout-align-center-center layout-row"></p-dropdown>
+
+        </div>-->
+        <form (ngSubmit)="searchApp()" class="form-search-app layout-row">
+            <div class=" drp-da   layout-align-center-center layout-row ">
+                <p-dropdown [options]="app" [(ngModel)]="appSearch.publish_status" class="cat-drop app-drop layout-align-center-center layout-row"></p-dropdown>
+            </div>
+            <div class="layout-align-start-center layout-row">
+                <ul class="link-block layout-row">
+                    <li>
+
+                        <div class="input-group btn-group">
+                            <input [(ngModel)]="appSearch.title" type="text" class="form-control txt-less-bottom" placeholder="Search App">
+                            <span class="input-group-btn">
+                            <button class="group-btn-style" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </span>
+                        </div>
+
+                    </li>
+
+
+                    <li>
+                        <button (click)="refreshApps()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                    </li>
+
+                    <li *ngIf="!appState.isCustomerLogin">
+                        <button (click)="showDeleteConfirmDialog()" [class.checkTrue]="selectedApps.length > 0 && selectedApps.indexOf(true) !== -1"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </li>
+                </ul>
+            </div>
+        </form>
+    </div>
+
+    <div class="page-block flex-45 layout-row layout-align-end-center flex-sm-50">
+        <div class="cate-block flex-20 layout-row layout-align-center-center">
+            <span>Total: {{totalItems}}</span>
+            <p-dropdown [options]="count" [(ngModel)]="selectedCount" (onChange)="setItemsPerPage(selectedCount)" class="cat-drop count-drop layout-align-end layout-row"></p-dropdown>
+        </div>
+        <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)"
+            [maxSize]="maxSize" class="pagination-sm layout-row layout-align-center-center" previousText="&lsaquo;" nextText="&rsaquo;"
+            firstText="&laquo;" lastText="&raquo;"></pagination>
+        <div class="create-new" *ngIf="!appState.isCustomerLogin">
+            <button class="green-btn " (click)="showDialog1()"><i class="Ionicons ion-md-add ion-right" style="color:#fff" aria-hidden="true"></i>&nbsp;<span>Create</span></button>
+        </div>
+    </div>
+</div>
+<div class="main-container" *ngIf="!showLoader">
+    <div class="flex-100 app-flex   layout-row layout-align-center-center layout-wrap layout-align-gt-lg-center-center">
+        <div *ngFor="let list of list;let tempImg=index" class="flex-15 flex-gt-md-15 flex-lg-14 flex-gt-lg-17 layout-column layout-align-gt-md-center-center flex-sm-50">
+            <div class="main-app">
+                <div class="apps1-items">
+                    <div class="apps-items">
+                        <div class="app-box-icon">
+                            <div class="input-box-icon">
+                                <span class="input-group-btn app-chek-detl">
+                                <label class="checkbox-inline custom-checkbox nowrap" *ngIf="!appState.isCustomerLogin">
+                                    <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="selectedApps[list.id]" (click)="onCheckTabChange(selectedApps[list.id], list.id)">
+                                    <span>&nbsp;</span>
+                                </label>
+                                <label class="form-control overlap-content" placeholder="App Name">{{list.app_name | appLengthFilterPipe}}</label>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="img-app-del layout-align-center-center layout-row">
+                            <img *ngIf="list.icon_name" alt="../../../assets/app-image/app-6.jpg" src="{{list.icon_name}}">
+                            <img *ngIf="!list.icon_name" src="../../../assets/app-image/app-6.jpg" alt="">
+                            <div class="overcontainer">
+                                <div class="overcontainerbox">
+
+                                    <div class="overcontent">
+                                        <div class="overcontainer-content-space"><span>App Name</span>:<span> {{list.app_name | appLengthFilterPipe}}</span></div>
+                                        <div class="overcontainer-content-space"><span>App Code</span>:<span> {{list.app_code | appLengthFilterPipe}}</span></div>
+                                        <div class="overcontainer-content-space"><span>Created At</span>:<span> {{list.created_at}}</span></div>
+                                        <div class="overcontainer-content-space"><span>Apple Credit Used</span>:<span><i *ngIf="list.apple_credit_used==1" aria-hidden="true" class="fa fa-check-circle"></i></span></div>
+                                        <!--<div><span>Code Version</span>:<span> {{list.code_version}}</span></div>-->
+                                    </div>
+                                    <div class="box-button">
+                                        <button class="change-color" (click)="showDialog(list.app_code,list.id)" pButton icon="fa-external-link-square" label="Show">LAUNCH APP</button>
+                                    </div>
+                                    <div class="boxbuttontwo">
+                                        <button class="changetwo">
+                                        <i class="fa fa-apple active" aria-hidden="true"></i>
+                            <i class="fa fa-android" aria-hidden="true"></i>
+                                    </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div  class="maincontainer-icon-box layout-row layout-align-center-center">
+                        <span> <i class="fa fa-check-circle" aria-hidden="true"></i></span>
+                        <span class="second" style=""> 
+                        <a *ngIf="!appState.isCustomerLogin" class="profile-toggle-link" id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+                            <i class="fa fa-cog" aria-hidden="true"></i>
+                        </a>
+                        <div class="dropdown-menu app-cog top-dropdown-menu profile-dropdown setting-container" aria-labelledby="user-profile-dd">
+                            <li class="dropdown-item" ><i class="dropdown-arr no-block"></i></li>
+                            <li class="dropdown-item c-p" (click)="showDuplicateDialog(list.id)"><a><i class="fa fa-server" aria-hidden="true"></i>Clone App</a></li>
+                            <li class="dropdown-item  c-p"  (click)="showDialog2(list.id)"><a  class="signout"><i class="fa fa-pencil-square-o" aria-hidden="true" ></i>Edit Info</a></li>
+                            <li class="dropdown-item  c-p" (click)="showDialog4(list.id)"><a><i class="fa fa-sliders" aria-hidden="true"></i>Upload Status</a></li>
+                            <li class="dropdown-item  c-p" (click)="showDialog3(list.id)"><a class="signout"><i class="fa fa-paper-plane" aria-hidden="true"></i>Push Publish</a></li>
+                        </div>
+                    </span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+
+<p-dialog header="Login" [(visible)]="display" modal="modal" class="app-dialog" [draggable]="false">
+    <p>Are you sure you want to login to {{loginAppCode}}? </p>
+    <p-footer>
+        <div>
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn" href="#/pages/settings">Login</a>
+            <a type="" pButton icon="fa-check" label="Yes" class=" login-btn cncle-btn cursor-p" (click)="display=false">Cancel</a>
+        </div>
+    </p-footer>
+</p-dialog>
+
+<!--Create App Modal-->
+
+<p-dialog header="Create App" [(visible)]="display2" modal="modal" class="carte-dialog au-create-dialog" [draggable]="false">
+    <div *ngIf="isDelayedRunning" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form [ngFormModel]="form" (ngSubmit)="onSubmit(form.value)">
+        <div class="layout-column white-bg border-all web-bg">
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-50">
+                    <label>App Name</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!app_name.valid && app_name.touched), 'has-success': (app_name.valid && app_name.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="app_name" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!app_name.valid && app_name.touched), 'fa-check c-g': (app_name.valid && app_name.touched)}"
+                            class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!app_name.valid && app_name.touched)">Enter minimum 3 characters, without special characters.</div>
+                </div>
+                <div class="layout-column flex-50">
+                    <label>App Code</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!app_code.valid && app_code.touched), 'has-success': (app_code.valid && app_code.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="app_code" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!app_code.valid && app_code.touched), 'fa-check c-g': (app_code.valid && app_code.touched)}"
+                            class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!app_code.valid && app_code.touched)">Enter minimum 4 characters, without any space in between.</div>
+                </div>
+            </div>
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-50">
+                    <label>App Icon Name</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!app_icon_name.valid && app_icon_name.touched), 'has-success': (app_icon_name.valid && app_icon_name.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="app_icon_name" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!app_icon_name.valid && app_icon_name.touched), 'fa-check c-g': (app_icon_name.valid && app_icon_name.touched)}"
+                            class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!app_icon_name.valid && app_icon_name.touched)">Enter Minimum 3 Character</div>
+                </div>
+                <div class="layout-column flex-50">
+                    <label>Username</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!username.valid && username.touched), 'has-success': (username.valid && username.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="username" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!username.valid && username.touched), 'fa-check c-g': (username.valid && username.touched)}"
+                            class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!username.valid && username.touched)">Enter Minimum 4 Character</div>
+                </div>
+            </div>
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-50">
+                    <label>Password</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!password.valid && password.touched), 'has-success': (password.valid && password.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="password" type="password">
+                        <!--<i [ngClass]="{'fa-times c-r': (!password.valid && password.touched), 'fa-check c-g': (password.valid && password.touched)}"
+                            class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!password.valid && password.touched)">Enter Minimum 4 Character (Only Numbers and Characters)</div>
+                </div>
+                <div class="layout-column flex-50">
+                    <label>Client Name</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!client_name.valid && client_name.touched), 'has-success': (client_name.valid && client_name.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="client_name" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!client_name.valid && client_name.touched), 'fa-check c-g': (client_name.valid && client_name.touched)}"
+                            class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!client_name.valid && client_name.touched)">Enter Minimum 3 Character</div>
+                </div>
+            </div>
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-50">
+                    <label>Client Email</label>
+                    <div class="layout-row " [ngClass]="{'has-error': (!client_email.valid && client_email.touched), 'has-success': (client_email.valid && client_email.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="client_email" type="email">
+                        <!--<i [ngClass]="{'fa-times c-r': (!client_email.valid && client_email.touched), 'fa-check c-g': (client_email.valid && client_email.touched)}"
+                            class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <!--<div class="au-msg" *ngIf="(!client_email.valid  && client_email.pristine  && client_email.touched)">Enter Valid Email</div>-->
+                    <div class="au-msg" *ngIf="(!client_email.valid && client_email.touched)">Enter Valid Email</div>
+                </div>
+                <div class="layout-column flex-50">
+                    <label>Client Phone</label>
+                    <div class="layout-row " [ngClass]="{'has-error': (!client_phone.valid && client_phone.touched), 'has-success': (client_phone.valid && client_phone.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="client_phone" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!client_phone.valid && client_phone.touched), 'fa-check c-g': (client_phone.valid && client_phone.touched)}"
+                            class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!client_phone.valid && client_phone.touched)">Enter valid Phone No</div>
+                </div>
+            </div>
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-50">
+                    <label>Label</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!label.valid && label.touched), 'has-success': (label.valid && label.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="label" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!label.valid && label.touched), 'fa-check c-g': (label.valid && label.touched)}" class="fa layout-align-center-center layout-row setinput-icon lastboxicon"
+                            aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!label.valid && label.touched)">Enter Alpha Character</div>
+                </div>
+                <div class="layout-column flex-50">
+                    <label>IOS App Store Url</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!ios_app_store_url.valid && ios_app_store_url.touched), 'has-success': (ios_app_store_url.valid && ios_app_store_url.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="ios_app_store_url" type="text">
+
+                        <!--<i [ngClass]="{'fa-times c-r': (!ios_app_store_url.valid && ios_app_store_url.touched), 'fa-check c-g': (ios_app_store_url.valid && ios_app_store_url.touched)}"
+                            class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!ios_app_store_url.valid && ios_app_store_url.touched)">Enter Valid Url Format</div>
+                </div>
+            </div>
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-50">
+                    <label>IOS App Store Id</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!ios_app_store_id.valid && ios_app_store_id.touched), 'has-success': (ios_app_store_id.valid && ios_app_store_id.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="ios_app_store_id" type="text">
+
+                        <!--<i [ngClass]="{'fa-times c-r': (!ios_app_store_id.valid && ios_app_store_id.touched), 'fa-check c-g': (ios_app_store_id.valid && ios_app_store_id.touched)}"
+                            class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!ios_app_store_id.valid && ios_app_store_id.touched)">Enter Minimum 3 Character</div>
+
+                </div>
+                <div class="layout-column flex-50">
+                    <label>Google Play Store Url</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!google_play_store_url.valid && google_play_store_url.touched), 'has-success': (google_play_store_url.valid && google_play_store_url.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="google_play_store_url" type="text">
+
+                        <!--<i [ngClass]="{'fa-times c-r': (!google_play_store_url.valid && google_play_store_url.touched), 'fa-check c-g': (google_play_store_url.valid && google_play_store_url.touched)}"
+                            class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!google_play_store_url.valid && google_play_store_url.touched)">Enter Valid Url Format</div>
+                </div>
+            </div>
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-50">
+                    <label>Html5 Mobile Website Url</label>
+                    <div class="layout-row" [ngClass]="{'has-error': (!html5_mobile_website_url.valid && html5_mobile_website_url.touched), 'has-success': (html5_mobile_website_url.valid && html5_mobile_website_url.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="html5_mobile_website_url" type="text">
+
+                        <!--<i [ngClass]="{'fa-times c-r': (!html5_mobile_website_url.valid && html5_mobile_website_url.touched), 'fa-check c-g': (html5_mobile_website_url.valid && html5_mobile_website_url.touched)}"
+                            class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!html5_mobile_website_url.valid && html5_mobile_website_url.touched)">Enter Valid Url Format</div>
+                </div>
+            </div>
+        </div>
+        <p-footer>
+            <div class="">
+                <button class="green-btn cursor-p m-t-10" [disabled]="!form.valid" type="submit">Save</button>
+            </div>
+        </p-footer>
+    </form>
+</p-dialog>
+
+<!--App Update Modal -->
+
+<p-dialog header="Update App" [(visible)]="duplicateModal" modal="modal" class="carte-dialog update-app-dialog" [draggable]="false">
+    <div *ngIf="isDelayedRunning" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div *ngIf="appData">
+        <form [ngFormModel]="duplicateForm" (ngSubmit)="onSubmit()">
+
+            <div class="layout-column white-bg border-all web-bg">
+                <div class="layout-row m-b-15">
+
+                    <div class="layout-column flex-50">
+                        <label>App Name</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_app_name.touched && !d_app_name.valid, 'has-success': d_app_name.touched && d_app_name.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.app_name" ngControl="app_name" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r': d_app_name.touched && !d_app_name.valid, 'fa-check c-g': d_app_name.touched && d_app_name.valid}"
+                                class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_app_name.touched && d_app_name.errors">Enter minimum 3 characters, without special characters.</div>
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>App Code</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_app_code.touched && !d_app_code.valid, 'has-success': d_app_code.touched && d_app_code.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.app_code" type="text" ngControl="app_code">
+                            <!--<i [ngClass]="{'fa-times c-r': d_app_code.touched && !d_app_code.valid, 'fa-check c-g': d_app_code.touched && d_app_code.valid}"
+                                class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_app_code.touched && !d_app_code.valid">Enter minimum 4 characters, without any space in between.</div>
+                    </div>
+                </div>
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50">
+                        <label>App Icon Name</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_app_icon_name.touched && !d_app_icon_name.valid, 'has-success': d_app_icon_name.touched && d_app_icon_name.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.app_icon_name" type="text" ngControl="app_icon_name">
+                            <!--<i [ngClass]="{'fa-times c-r': d_app_icon_name.touched && !d_app_icon_name.valid, 'fa-check c-g': d_app_icon_name.touched && d_app_icon_name.valid}"
+                                class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_app_icon_name.touched && !d_app_icon_name.valid">Enter Minimum 3 Character</div>
+                    </div>
+
+                    <div class="layout-column flex-50">
+                        <label>Username</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_username.touched && !d_username.valid, 'has-success': d_username.touched && d_username.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.username" ngControl="username" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r': d_username.touched && !d_username.valid, 'fa-check c-g': d_username.touched && d_username.valid}"
+                                class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_username.touched && !d_username.valid">Enter Minimum 4 Character</div>
+                    </div>
+                </div>
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50">
+                        <label>Password</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_password.touched && !d_password.valid, 'has-success': d_password.touched && d_password.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.password" ngControl="password" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r': d_password.touched && !d_password.valid, 'fa-check c-g': d_password.touched && d_password.valid}"
+                                class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_password.touched && !d_password.valid">Enter Minimum 4 Character (Only Numbers and Characters)</div>
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>Client Name</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_client_name.touched && !d_client_name.valid, 'has-success': d_client_name.touched && d_client_name.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.client_name" ngControl="client_name" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r': d_client_name.touched && !d_client_name.valid, 'fa-check c-g': d_client_name.touched && d_client_name.valid}"
+                                class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_client_name.touched && !d_client_name.valid">Enter Minimum 3 Character</div>
+                    </div>
+                </div>
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50">
+                        <label>Client Email</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_client_email.touched && !d_client_email.valid, 'has-success': d_client_email.touched && d_client_email.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.client_email" ngControl="client_email" type="email">
+                            <!--<i [ngClass]="{'fa-times c-r': d_client_email.touched && !d_client_email.valid, 'fa-check c-g': d_client_email.touched && d_client_email.valid}"
+                                class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_client_email.touched && !d_client_email.valid">Enter Valid Email</div>
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>Client Phone</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_client_phone.touched && !d_client_phone.valid, 'has-success':  d_client_phone.touched && d_client_phone.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.client_phone" ngControl="client_phone" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r':  d_client_phone.touched && !d_client_phone.valid, 'fa-check c-g':  d_client_phone.touched && d_client_phone.valid}"
+                                class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_client_phone.touched && !d_client_phone.valid">Enter valid Phone No</div>
+                    </div>
+                </div>
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50">
+                        <label>Label</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_label.touched && !d_label.valid, 'has-success': d_label.touched && d_label.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.label" ngControl="label" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r': d_label.touched && !d_label.valid, 'fa-check c-g': d_label.touched && d_label.valid}" class="fa layout-align-center-center layout-row setinput-icon lastboxicon"
+                                aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_label.touched && !d_label.valid">Enter Alpha Character</div>
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>IOS App Store Url</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_ios_app_store_url.touched && !d_ios_app_store_url.valid, 'has-success': d_ios_app_store_url.touched && d_ios_app_store_url.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.ios_app_store_url" ngControl="ios_app_store_url" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r': d_ios_app_store_url.touched && !d_ios_app_store_url.valid, 'fa-check c-g': d_ios_app_store_url.touched && d_ios_app_store_url.valid}"
+                                class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_ios_app_store_url.touched && !d_ios_app_store_url.valid">Enter Valid Url Format</div>
+                    </div>
+                </div>
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50">
+                        <label>IOS App Store Id</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_ios_app_store_id.touched && !d_ios_app_store_id.valid, 'has-success': d_ios_app_store_id.touched && d_ios_app_store_id.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.ios_app_store_id" ngControl="ios_app_store_id" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r': d_ios_app_store_id.touched && !d_ios_app_store_id.valid, 'fa-check c-g': d_ios_app_store_id.touched && d_ios_app_store_id.valid}"
+                                class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_ios_app_store_id.touched && !d_ios_app_store_id.valid">Enter Minimum 3 Character</div>
+                    </div>
+                    <div class="layout-column flex-50">
+                        <label>Google Play Store Url</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_google_play_store_url.touched && !d_google_play_store_url.valid, 'has-success': d_google_play_store_url.touched && d_google_play_store_url.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.google_play_store_url" ngControl="google_play_store_url" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r': d_google_play_store_url.touched && !d_google_play_store_url.valid, 'fa-check c-g': d_google_play_store_url.touched && d_google_play_store_url.valid}"
+                                class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_google_play_store_url.touched && !d_google_play_store_url.valid">Enter Valid Url Format</div>
+                    </div>
+                </div>
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50">
+                        <label>Html5 Mobile Website Url</label>
+                        <div class="layout-row" [ngClass]="{'has-error': d_html5_mobile_website_url.touched && !d_html5_mobile_website_url.valid, 'has-success': d_html5_mobile_website_url.touched && d_html5_mobile_website_url.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.html5_mobile_website_url" ngControl="html5_mobile_website_url"
+                                type="text">
+
+                            <!--<i [ngClass]="{'fa-times c-r': d_html5_mobile_website_url.touched && !d_html5_mobile_website_url.valid, 'fa-check c-g': d_html5_mobile_website_url.touched && d_html5_mobile_website_url.valid}"
+                                class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="d_html5_mobile_website_url.touched && !d_html5_mobile_website_url.valid">Enter Valid Url Format</div>
+                    </div>
+                </div>
+            </div>
+            <p-footer>
+                <div class=" m-t-10">
+                    <button class="green-btn cursor-p m-t-10" [disabled]="!duplicateForm.valid" type="submit">Save</button>
+                </div>
+            </p-footer>
+        </form>
+    </div>
+</p-dialog>
+
+<!-- create duplicate modal-->
+
+<p-dialog header="Create Duplicate App" [(visible)]="createDuplicateModal" modal="modal" class="carte-dialog duplicate-app-dialog" [draggable]="false">
+    <div *ngIf="isDelayedRunning" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form [ngFormModel]="createDuplicateForm" (ngSubmit)="onSubmit(createDuplicateForm.value)" *ngIf="duplicate.appTabs">
+        <div class="layout-column white-bg border-all web-bg">
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-100">
+                    <label>Source App</label>
+                    <p-dropdown [options]="appDropdown" [(ngModel)]="duplicate.id" class="drop-100" (onChange)="onAppChange()"></p-dropdown>
+                </div>
+            </div>
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-50">
+                    <label>App Name</label>
+                    <div class="layout-row " [ngClass]="{'has-error': (!cd_app_name.valid && cd_app_name.touched), 'has-success': (cd_app_name.valid && cd_app_name.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="cd_app_name" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!cd_app_name.valid && cd_app_name.touched), 'fa-check c-g': (cd_app_name.valid && cd_app_name.touched)}"
+                            class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!cd_app_name.valid && cd_app_name.touched)">Enter minimum 3 characters, without special characters.</div>
+                </div>
+                <div class="layout-column flex-50 left-mar">
+                    <label>Username</label>
+                    <div class="layout-row " [ngClass]="{'has-error': (!cd_username.valid && cd_username.touched), 'has-success': (cd_username.valid && cd_username.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="cd_username" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!cd_username.valid && cd_username.touched), 'fa-check c-g': (cd_username.valid && cd_username.touched)}"
+                            class="fa  layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!cd_username.valid && cd_username.touched)">Enter Minimum 4 Character</div>
+                </div>
+            </div>
+            <div class="layout-row m-b-15">
+                <div class="layout-column flex-50">
+                    <label>App Code</label>
+                    <div class="layout-row " [ngClass]="{'has-error': (!cd_app_code.valid && cd_app_code.touched), 'has-success': (cd_app_code.valid && cd_app_code.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="cd_app_code" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!cd_app_code.valid && cd_app_code.touched), 'fa-check c-g': (cd_app_code.valid && cd_app_code.touched)}"
+                            class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!cd_app_code.valid && cd_app_code.touched)">Enter minimum 4 characters, without any space in between.</div>
+                </div>
+                <div class="layout-column flex-50 left-mar">
+                    <label>Password</label>
+                    <div class="layout-row " [ngClass]="{'has-error': (!cd_password.valid && cd_password.touched), 'has-success': (cd_password.valid && cd_password.touched)}">
+                        <input class="input-class form-control" [ngFormControl]="cd_password" type="text">
+                        <!--<i [ngClass]="{'fa-times c-r': (!cd_password.valid && cd_password.touched), 'fa-check c-g': (cd_password.valid && cd_password.touched)}"
+                            class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                    </div>
+                    <div class="au-msg" *ngIf="(!cd_password.valid && cd_password.touched)">Enter Minimum 4 Character</div>
+                </div>
+            </div>
+            <label>Tabs</label>
+            <div *ngIf="duplicate.appTabs.length > 0" class="layout-row m-b-15">
+
+
+                <!--                
+                <div>
+                    <input type="checkbox" [(ngModel)]="checkAllAppTabs" (change)="onCheckAllTabsChange()"> <span>Check all</span>
+                </div>-->
+                <label class="checkbox-inline custom-checkbox nowrap width-800 flex-15">
+            <input type="checkbox" id="check-all" [(ngModel)]="checkAllAppTabs" (change)="onCheckAllTabsChange()">
+            <span>Check All</span>
+        </label>
+                <div class="layout-row layout-wrap flex-80 layout-align-start-center">
+                    <label class="checkbox-inline custom-checkbox nowrap width-80 flex-25" *ngFor="let tab of duplicate.appTabs">
+            <input type="checkbox" id="check-all"  [(ngModel)]="checkedAppTabs[tab.id]" (change)="onTabCheckChange()">
+            <span> {{tab.title}}</span>
+        </label>
+                </div>
+
+
+                <!--                <ul>
+                    
+                    
+                    <li *ngFor="let tab of duplicate.appTabs">
+                        <input type="checkbox" [(ngModel)]="checkedAppTabs[tab.id]" (change)="onTabCheckChange()"> {{tab.title}}
+                    </li>
+                </ul>-->
+            </div>
+            <div *ngIf="duplicate.appTabs.length === 0" class="layout-row m-b-15">
+                <p>There are no tabs available in the selected source app.</p>
+            </div>
+        </div>
+        <p-footer>
+            <div class="">
+                <button class="green-btn cursor-p m-t-10" [disabled]="!createDuplicateForm.valid" type="submit">Save</button>
+            </div>
+        </p-footer>
+    </form>
+</p-dialog>
+
+<!-- Delete App Modal-->
+
+<!--<p-dialog header="Delete Apps" [(visible)]="deleteConfirmDialogDisplay" modal="modal" class="app-dialog">
+    <p class="border-b">Are you sure you want to delete the selected app?</p>
+ <p-footer>
+        <div class="dl-wrapper">
+            <a type="" pButton icon="fa-check" label="Yes" class=" green-btn cursor-p" (click)="deleteApps()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class="cncl-btn cursor-p" (click)="deleteConfirmDialogDisplay=false">No</a>
+        </div>
+    </p-footer>
+</p-dialog>-->
+
+<!--push publish dailog-->
+<p-dialog header="Push App" [(visible)]="pushPublishModal" modal="modal" class="carte-dialog update-app-dialog" [draggable]="false">
+    <div *ngIf="ispushPublishModalRunning" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div *ngIf="appData">
+        <form [ngFormModel]="appPublishForm" (ngSubmit)="onPublishFormSubmit(appPublishForm.value)" id="frm_app_push" name="frm_app_push"
+            method="post" class="push-form-wrapper">
+            <fieldset>
+                <div class=" alert-info layout-row layout-align-start-start"><span class="fa fa-lg fa-exclamation-circle m-r-10"></span>
+                    <p>If you're having trouble with your push notifications, please submit a certificate regeneration publish
+                        request to our support team, and we'll have this rebuilt for you within 24 hours.</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="p_email">Email Address</label>
+                        <div class="layout-row" [ngClass]="{'has-error': push_publish_email.touched && !push_publish_email.valid, 'has-success': push_publish_email.touched && push_publish_email.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.push_publish_email" ngControl="push_publish_email" type="email">
+                            <!--<i [ngClass]="{'fa-times c-r': push_publish_email.touched && !push_publish_email.valid, 'fa-check c-g': push_publish_email.touched && push_publish_email.valid}"
+                                class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="push_publish_email.touched && push_publish_email.errors">Enter valid email</div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="p_apple_username">Apple Username</label>
+                        <div class="layout-row" [ngClass]="{'has-error': apple_user_name.touched && !apple_user_name.valid, 'has-success': apple_user_name.touched && apple_user_name.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.apple_user_name" ngControl="apple_user_name" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r': apple_user_name.touched && !apple_user_name.valid, 'fa-check c-g': apple_user_name.touched && apple_user_name.valid}"
+                                class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="apple_user_name.touched && apple_user_name.errors">This field is required</div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 form-group">
+                        <label for="p_apple_password">Apple Password</label>
+                        <div class="layout-row" [ngClass]="{'has-error': apple_password.touched && !apple_password.valid, 'has-success': apple_password.touched && apple_password.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.apple_password" ngControl="apple_password" type="password">
+                            <!--<i [ngClass]="{'fa-times c-r': apple_password.touched && !apple_password.valid, 'fa-check c-g': apple_password.touched && apple_password.valid}"
+                                class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="apple_password.touched && apple_password.errors">This field is required</div>
+                    </div>
+                    <div class="col-md-6 form-group">
+                        <label for="p_apple_developer">Apple Developer Name</label>
+                        <div class="layout-row" [ngClass]="{'has-error': apple_dev_name.touched && !apple_dev_name.valid, 'has-success': apple_dev_name.touched && apple_dev_name.valid}">
+                            <input class="input-class form-control" [(ngModel)]="appData.apple_dev_name" ngControl="apple_dev_name" type="text">
+                            <!--<i [ngClass]="{'fa-times c-r': apple_dev_name.touched && !apple_dev_name.valid, 'fa-check c-g': apple_dev_name.touched && apple_dev_name.valid}"
+                                class="fa layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true"></i>-->
+                        </div>
+                        <div class="au-msg" *ngIf="apple_dev_name.touched && apple_dev_name.errors">This field is required</div>
+                    </div>
+                </div>
+
+                <div class="row form-group">
+                    <div class="col-md-6">
+                        <label for="p_bundle_id">Bundle ID</label>
+                        <input class="form-control input-class" id="p_bundle_id" [(ngModel)]="appBundleId" name="bundle_id" type="text" disabled>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>&nbsp;</label>
+                    <div class="alert-info  layout-row layout-align-start-startalert-info "><span class="fa m-r-10 fa-lg fa-exclamation-circle"></span>
+                        <p>Need help finding your "Bundle ID"?<br><a href="http://biznessapps.desk.com/customer/portal/articles/1900977-fix-push-notification-issues"
+                                target="_blank">Learn More</a> OR <a href="https://itunesconnect.apple.com/WebObjects/iTunesConnect.woa"
+                                target="_blank">Login to iTunes Connect</a></p>
+                    </div>
+                </div>
+            </fieldset>
+            <p-footer>
+                <div class="layout-row layout-align-end-center">
+                    <button class="green-btn cursor-p m-t-10 m-r-10" [disabled]="!appPublishForm.valid" type="submit">Submit</button>
+                    <button class="cncl-btn cursor-p m-t-10" (click)="pushPublishModal=false">Cancel</button>
+                </div>
+            </p-footer>
+        </form>
+    </div>
+</p-dialog>
+<p-dialog header="Upload Status" [(visible)]="pushUploadModal" modal="modal" class="update-app-dialog" [draggable]="false">
+    <div *ngIf="ispushPublishModalRunning" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <div *ngIf="!ispushPublishModalRunning" class="pad-15">
+        <div *ngIf="appPublishLog.length" class="alert alert-info formodal layout-row layout-align-start-center">
+            <span class="fa fa-lg fa-exclamation-circle m-r-10"></span>
+            <p>View your iOS app's upload history below.</p>
+        </div>
+        <div class="layout-column flex-100" *ngIf="appPublishLog.length">
+            <div class="layout-column flex-100 m-t-10" *ngFor="let appLog of appPublishLog;let i=index;">
+                <div class="layout-row flex-100 " [style.border]="appLog.status==0?'2px solid #f00':'2px solid #008000'" [style.border-radius]="'5px'">
+                    <div class="layout-column flex-20 layout-align-center-center" [style.background-color]="appLog.status==0?'#f00':'#008000'" [style.color]="'#fff'">
+                        <h4 class="text-center">{{appLog.app_publish_version}}</h4>
+                    </div>
+                    <div class="layout-column flex-80 m-l-10 m-t-10">
+                        <h5>{{appLog.status==0?'REJECTED':'APPROVED'}}</h5>
+                        <p>{{appLog.status==0?'Apple has rejected your app. Please email us for assistance.':'Apple has approved
+                            and released your app!'}} Learn More</p>
+                        <p> <i class="fa fa-calendar"></i>
+                            <span>{{appLog.created_at| date:'medium'}}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div *ngIf="!appPublishLog.length">
+            <div class="alert alert-info formodal layout-row layout-align-start-center" style="display: none;">
+                <span class="fa fa-lg fa-exclamation-circle m-r-10"></span>
+                <p>View your iOS app's upload history below.</p>
+            </div>
+            <div class="upload_history">
+                <div class="no-upload-history text-center">
+                    <img src="../../../assets/img/no-membership.png" alt="">
+                    <h3 class="desc">Nothing to see here!</h3>
+                    <p class="desc form-group">It seems this application hasn’t been submitted to our iOS upload team just yet. If you need help with
+                        your application, try our ”Hire A Designer” service within your app management area, and we’ll have
+                        you submitting apps in no time!</p>
+                </div>
+            </div>
+        </div>
+        <p-footer>
+            <div class="layout-row layout-align-end-center">
+                <button class="cncl-btn cursor-p m-t-10" type="submit" (click)="pushUploadModal=false">Cancel</button>
+            </div>
+        </p-footer>
+    </div>
+</p-dialog>

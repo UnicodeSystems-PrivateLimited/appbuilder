@@ -1,0 +1,6 @@
+<div class="app-display-wrapper layout-row layout-align-space-between-center">
+
+    <div  class="flex-50 layout-row layout-align-center-center cursor-p block-1-1 border-r" [routerLink]="['DisplaySettings']"><a>SETTINGS</a><button class="green-btn layout-row" (click)="onSaveSettings()"><i class="fa fa-save m-r-10"></i>SAVE</button></div>
+    <div class="flex-50 layout-row layout-align-center-center cursor-p block-1-2" [routerLink]="['BackgroundImages']"><a class="">BACKGROUND IMAGES</a><button class="green-btn layout-row" (click)="saveBackgroundImage()"><i class="fa fa-save m-r-10"></i>SAVE</button></div>
+</div>
+<router-outlet></router-outlet>

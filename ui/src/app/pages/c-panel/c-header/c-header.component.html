@@ -1,0 +1,152 @@
+<div class="flex-100 layout-row main-social-tab-container">
+    <div class="flex-35 layout-column cust_head">
+        <div class="layout-column border-all white-bg m-t-20 cust">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Settings</div>
+            <div class="layout-row layout-align-start-center updatecolor-box">
+                <span class="layout-column layout-align-start-center flex-50">Link Color</span>
+                <div class="layout-column stau-switch layout-align-end-center flex-25">
+                    <input class="input-class" [(colorPicker)]="headerData.cHeaderData.header_link_color" [style.background]="headerData.cHeaderData.header_link_color"
+                        [value]="headerData.cHeaderData.header_link_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly/>
+                </div>
+            </div>
+        </div>
+        <div class="layout-column border-all white-bg m-t-20">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Onboarding</div>
+            <div class="layout-row">
+                <span class="layout-column layout-align-start-center flex-50 pad-15">Start Over</span>
+                <div class="layout-column stau-switch layout-align-start-center flex-25">
+                    <input id="cmn-toggle-header" class="cmn-toggle cmn-toggle-round" type="checkbox" [(ngModel)]="headerData.cHeaderData.header_start_over">
+                    <label [attr.for]="'cmn-toggle-header'"></label>
+                </div>
+            </div>
+        </div>
+        <div class="layout-column border-all white-bg m-t-20">
+            <div class="border-b p-b-10 p-t-10 grey-box-bg p-l-10">Navigation</div>
+            <div class="layout-column pad-5">
+                <div class="mob-add-wrap m-t-10" [dragula]="'cpanel-heder-navigation-bag'" [dragulaModel]="headerData.cHeaderData.navigation">
+                    <div *ngFor="let navdata of headerData.cHeaderData.navigation;let i=index;" class="layout-row layout-align-space-between-center wrap-address">
+                        <div class="layout-row">
+                            <span class="layout-row layout-align-center-center"><i class="fa fa-arrows cursor-move" aria-hidden="true"></i></span>
+                            <span class="layout-column">
+                                <span>{{navdata.label}}</span>
+                            </span>
+                        </div>
+                        <div>
+                            <div class="dropdown layout-align-end-center layout-row drop-wrap">
+                                <a id="user-profile-dd" data-toggle="dropdown" aria-expanded="false">
+                                    <i class="fa fa-cog" aria-hidden="true"></i>
+                                </a>
+                                <div class="dropdown-menu top-dropdown-menu profile-dropdown" aria-labelledby="user-profile-dd">
+                                    <ul>
+                                        <!--<li class=""><i class="dropdown-arr"></i></li>-->
+                                        <li class="" (click)="showEditDialog(navdata,2,i)"><a class=""><i class="fa fa-pencil-square-o"></i>Edit</a></li>
+                                        <li class="" (click)="deleteHeaderNavigation(i)"><a class=""><i class="fa fa-trash"></i>Delete</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-column pad-5">
+                <button type="button" class="green-btn m-r-10" (click)="showAddDialog(1)">Add Link</button>
+            </div>
+        </div>
+    </div>
+    <ba-cpanel-preview class="flex-65 p-l-10 m-l-10 layout-column"></ba-cpanel-preview>
+</div>
+
+<!--add/edit modal start-->
+<p-dialog [draggable]="false" [(visible)]="addEditModal" modal="modal" class="app-dialog add-app" >
+    <div>
+        <form class="border-all white-bg">
+            <div class="border-b  grey-box-bg p-l-10">
+                <div class="layout-row">
+                    <div class="layout-row layout-align-start flex-100">
+                        <span class="layout-row flex-50 c-p p-b-10 p-t-10 layout-align-center-center" (click)="onCustomLinkClick()">{{navType==1?"Add Custom Link":"Custom Link"}}</span>
+                        <span class="layout-row flex-50 c-p p-b-10 p-t-10 layout-align-center-center" (click)="onTemplateLinkClick()">{{navType==1?"Add Template Link":"Template Link"}}</span>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="templateLink" class="layout-column pad-15">
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-100">
+                        <label>Template</label>
+                        <div class="layout-row">
+                            <div class=" flex-100 layout-align-end-center layout-row">
+                                <p-dropdown [options]="template" [(ngModel)]="templateValue" class="flex-100 border-all layout-align-center-center layout-row"
+                                    (onChange)="onChangeTemplateDropDown($event)"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>Label</label>
+                        <div class="layout-row flex-100">
+                            <input class="flex-100 ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="cNavigationTemplateData.label">
+                        </div>
+                    </div>
+                    <div class="layout-column flex-50 m-l-10">
+                        <label>Link</label>
+                        <div class="layout-row flex-100">
+                            <input class="flex-100 ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="cNavigationTemplateData.link">
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>Action</label>
+                        <div class="layout-row flex-100">
+                            <div class="flex-100  layout-align-end-center layout-row">
+                                <p-dropdown [options]="action" class="flex-100 border-all  layout-align-center-center layout-row" [(ngModel)]="cNavigationTemplateData.action"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-column flex-50 m-l-10">
+                        <label>Class</label>
+                        <div class="layout-row flex-100">
+                            <input class="flex-100 ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="cNavigationTemplateData.class">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!templateLink" class="layout-column pad-15">
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>Label</label>
+                        <div class="layout-row flex-100">
+                            <input class=" flex-100 ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="cNavigationData.label">
+                        </div>
+                    </div>
+                    <div class="layout-column flex-50 m-l-10">
+                        <label>Link</label>
+                        <div class="layout-row flex-100">
+                            <input class=" flex-100 ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="cNavigationData.link">
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-50 m-r-10">
+                        <label>Action</label>
+                        <div class="layout-row">
+                            <div class="flex-100 layout-align-end-center layout-row">
+                                <p-dropdown [options]="action" class=" flex-100 border-all  layout-align-center-center layout-row" [(ngModel)]="cNavigationData.action"></p-dropdown>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-column flex-50 m-l-10">
+                        <label>Class</label>
+                        <div class="layout-row flex-100">
+                            <input class=" flex-100 ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="cNavigationData.class">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="pad-15">
+                <button type="button" class="blue-btn m-r-10" (click)="hideAddEditDialog()">Cancel</button>
+                <button type="button" class="green-btn m-l-10" (click)="saveNavigation()">Save</button>
+            </footer>
+        </form>
+    </div>
+</p-dialog>

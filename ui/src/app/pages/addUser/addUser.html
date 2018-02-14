@@ -1,0 +1,154 @@
+<div class="access-denied" *ngIf="dataService.account.role != 1">
+    <h2>ACCESS DENIED</h2>
+</div>
+<template [ngIf]="dataService.account.role == 1">
+    <div class="pagination-block layout-row flex-100 layout-wrap">
+        <div class="flex-55 layout-row">
+            <form class="form-search-app layout-row" (ngSubmit)="getUserList()">
+                <div class="drp-da layout-align-center-center layout-row">
+                    <p-dropdown [options]="statusFilterOptions" [(ngModel)]="filters.activated" class="cat-drop app-drop layout-align-center-center layout-row"></p-dropdown>
+                </div>
+                <div class="layout-align-start-center layout-row">
+                    <ul class="link-block layout-row">
+                        <li>
+                            <div class="input-group btn-group">
+                                <input type="text" [(ngModel)]="filters.user" class="form-control txt-less-bottom" placeholder="Search User">
+                                <span class="input-group-btn">
+                            <button class="group-btn-style" type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+                        </span>
+                            </div>
+                        </li>
+                        <li>
+                            <button type="button" (click)="refreshList()"><i class="fa fa-refresh" aria-hidden="true"></i></button>
+                        </li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <div class="page-block flex-45 layout-row layout-align-end-center flex-sm-50">
+            <div class="cate-block flex-20 layout-row layout-align-center-center">
+                <span>Total: {{filters.totalItems}}</span>
+                <p-dropdown [options]="perPageOptions" [(ngModel)]="filters.perPage" (onChange)="onPerPageChange()" class="cat-drop count-drop layout-align-end layout-row"></p-dropdown>
+            </div>
+            <pagination [boundaryLinks]="true" [totalItems]="filters.totalItems" [itemsPerPage]="filters.perPage" [(ngModel)]="filters.currentPage"
+                (pageChanged)="onPageChanged($event)" [maxSize]="maxSize" class="pagination-sm layout-row layout-align-center-center"
+                previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+            </pagination>
+        </div>
+    </div>
+    <div class="ipa-request-app-list user-add-man">
+        <div class="data-table ">
+            <div class="layout-row layout-align-end-center pad-10">
+                <span class="c-p help-ipa" (click)="addUserDialog()">Add User <i class="fa fa-plus" aria-hidden="true"></i></span>
+            </div>
+            <div>
+                <div>
+                    <div class="data-table-list">
+                        <div *ngIf="showGridLoader" class="fm-spinner">
+                            <div class="fm-double-bounce1"></div>
+                            <div class="fm-double-bounce2"></div>
+                        </div>
+                        <div class="data-table-row row ">
+                            <div>
+                                <div class="data-cell col-xs-2 data-cell-date border-ri c-p">
+                                    <strong (click)="sortList('name')"> Name </strong>
+                                    <i *ngIf="filters.sortFor=='name' && filters.sortType=='asc'" class="fa fa-sort-asc" aria-hidden="true"></i>
+                                    <i *ngIf="filters.sortFor=='name' && filters.sortType=='desc'" class="fa fa-sort-desc" aria-hidden="true"></i>
+                                </div>
+                                <div class="data-cell col-xs-3 data-cell-time border-ri c-p">
+                                    <strong (click)="sortList('email')"> Email Address </strong>
+                                    <i *ngIf="filters.sortFor=='email' && filters.sortType=='asc'" class="fa fa-sort-asc" aria-hidden="true"></i>
+                                    <i *ngIf="filters.sortFor=='email' && filters.sortType=='desc'" class="fa fa-sort-desc" aria-hidden="true"></i>
+                                </div>
+                                <div class="data-cell col-xs-2 data-cell-data border-ri c-p">
+                                    <strong (click)="sortList('last_login')">  Last Login </strong>
+                                    <i *ngIf="filters.sortFor=='last_login' && filters.sortType=='asc'" class="fa fa-sort-asc" aria-hidden="true"></i>
+                                    <i *ngIf="filters.sortFor=='last_login' && filters.sortType=='desc'" class="fa fa-sort-desc" aria-hidden="true"></i>
+                                </div>
+                                <div class="data-cell col-xs-2 data-cell-data border-ri ">
+                                    <strong> Role </strong>
+                                </div>
+                                <div class="data-cell col-xs-2 data-cell-data border-ri">
+                                    <strong> Status</strong>
+                                </div>
+                                <div class="data-cell col-xs-1 data-cell-data ">
+                                    <strong> Action</strong>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngFor="let user of usersList" class="data-table-row row">
+                            <div>
+                                <div class="data-cell col-xs-2 data-cell-date border-ri layout-align-start-center layout-row p-l-20">
+                                    <img [src]="user.avatar || 'assets/img/default_social.png'" /> &nbsp; {{(user.first_name
+                                    || '') + ' ' + (user.last_name || '')}}
+                                </div>
+                                <div class="data-cell col-xs-3 data-cell-time border-ri">
+                                    {{user.email}}
+                                </div>
+                                <div class="data-cell col-xs-2 data-cell-data border-ri">
+                                    {{user.last_login | date: 'medium'}}
+                                </div>
+                                <div class="data-cell col-xs-2 data-cell-data border-ri">
+                                    Admin
+                                </div>
+                                <div class="data-cell col-xs-2 data-cell-time border-ri">
+                                    {{user.activated ? 'Active' : 'Banned'}}
+                                </div>
+                                <div class="data-cell col-xs-1 data-cell-data cursor_p ">
+                                    <i (click)="editUserDialog(user.id)" class="fa fa-pencil-square-o"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="!usersList.length && !showGridLoader" class="data-table-row row">
+                            <div>
+                                <div class="data-cell col-xs-12 data-cell-data border-ri">
+                                    No records found.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p-dialog [draggable]="false" [(header)]="userDialogHeader" [(visible)]="userDialog" modal="modal" class="app-dialog carte-dialog adduserDialog">
+        <form class="border-all web-bg white-bg tp-profile" id="saveUserForm" (ngSubmit)="saveUser()">
+            <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input type="text" class="form-control input-class2" id="firstName" [(ngModel)]="userData.first_name">
+            </div>
+            <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input type="text" class="form-control input-class2" id="lastName" [(ngModel)]="userData.last_name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" class="form-control input-class2" id="email" [(ngModel)]="userData.email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" class="form-control input-class2" id="password" [(ngModel)]="userData.password">
+            </div>
+            <div class="form-group">
+                <label for="confirmPassword">Confirm Password</label>
+                <input type="password" class="form-control input-class2" id="confirmPassword" [(ngModel)]="confirmPassword">
+                <span style="color:#f00" *ngIf="showConfirmPasswordMsg">Password and confirm password do not match.</span>
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <input type="text" class="form-control input-class2" id="role" value="Admin" readonly="readonly">
+            </div>
+            <div class="form-group">
+                <label for="status">Status</label>
+                <p-dropdown [options]="statusOptions" id="status" class="border-rad cat-drop app-drop layout-align-center-center layout-row"
+                    [(ngModel)]="userData.activated"></p-dropdown>
+            </div>
+        </form>
+        <p-footer>
+            <div class="layout-row layout-align-end-center m-t-15">
+                <button type="submit" form="saveUserForm" class="green-btn cursor-p">Submit</button>
+            </div>
+        </p-footer>
+    </p-dialog>
+</template>

@@ -1,0 +1,314 @@
+@import '../../theme/sass/flex';
+@media screen and (min-width: 1620px) {
+  .row.shift-up {
+    > * {
+      margin-top: -573px;
+    }
+  }
+}
+@media screen and (max-width: 1620px) {
+  .card.feed-panel.large-card {
+    height: 824px;
+  }
+}
+.user-stats-card {
+  .card-title {
+    padding: 0 0 15px;
+  }
+}
+.blurCalendar {
+  height: 475px;
+}
+/*.under-color {
+    background: #e8e8e8;
+}*/
+.inner-first-container
+{
+    background: #fff;
+    border:1px solid #d0d0d0;
+    margin:15px 0 15px 15px;
+    border-radius: 3px;
+    height: 100%;
+}
+.inner-heading
+{
+    border-bottom: 1px solid #e2e2e2;
+    padding: 10px 18px;
+    border-radius: 3px 3px 0 0;
+    color: #4b4b4b;
+    font-size:15px;
+    background-color: #f8f8f8;
+}
+.inner-container-content
+{
+    padding: 12px 12px 15px 15px;
+    background-color: #fff;
+}
+.inner-first-container .inner-container-content
+{
+    // max-height: 680px;
+    // overflow: auto;
+    padding: 12px 12px 0 15px;
+}
+.container-content-box
+{
+    border-left: 3px solid #cec5ce;
+    margin: 20px 0px 0px 30px;
+}
+.list-content li
+{
+   color: #616161;
+   padding-bottom: 30px;
+   list-style: none;
+   font-size: 15px;
+}
+.list-content li span
+{
+    color: #444444;
+    // font-weight: 500;
+    margin-right: 3px;
+}
+.list-content li strong
+{
+    color: #fc8f44;
+    font-weight: 400;
+}
+.list-small-item
+{
+    font-size: 12px;
+    color: #616161;
+    list-style: none;
+    padding: 0px;
+    margin: 0px;
+    position: relative;
+}
+.list-small-item li
+{
+    padding-bottom: 0px;
+    padding-top:0px;
+}
+.second-container-box
+{
+    border: 1px solid #d0d0d0;
+    height:100%;
+    background: #f6f7f8;
+    margin-left:15px;
+    margin-right:15px;
+}
+.second-main .second-tab-3 > strong, .second-main-2 .second-tab-part > strong {
+    background: #607d8b;
+    border-radius: 2px;
+    color: #ffffff;
+    font-size: 13px;
+    padding: 2px 12px;
+    font-weight:normal;
+}
+.second-main-2 .second-tab-part > strong{
+    background: #61c765;
+}
+.second-container-inner
+{
+    max-height: 680px;
+    overflow: auto;
+    padding: 15px 12px 18px 15px;
+}
+
+.second-container-heading
+{
+    color: #4b4b4b;
+    padding: 19px 18px;
+    font-size:15px;
+    border-bottom: 1px solid #e2e2e2;
+}
+.absolute-li {
+    position: absolute;
+    left: -57px;
+    top: 0px;
+}
+.absolute-li i {
+    background: #ffffff none repeat scroll 0 0;
+    border: 2px solid #607d8b;
+    border-radius: 100%;
+    color: #607d8b;
+    padding: 7px;
+}
+.circle-li i {
+    padding: 0;
+    border: none;
+    color: #ff8c26;
+    background: #fff;
+    font-size: 16px;
+    /* height: 0; */
+}
+.list-content li:nth-child(2) i {
+    color: #607d8b;
+}
+.list-content li:nth-child(2) {
+    color: #898989;
+    padding-top:5px;
+}
+.list-content li .list-small-item li:nth-child(2) {
+    color: #505050;
+    font-weight: 300;
+        padding-bottom: 4px;
+}
+.list-small-item .fa.fa-clock-o {
+    color: #898989;
+}
+li.absolute-li.circle-li {
+    left: -49px;
+    top: -10px;
+}
+.absolute-li.circle-li .fa.fa-circle-o {
+    color: #fc8f44;
+    font-size: 18px;
+    margin-left: -1px;
+    margin-top: 5px;
+}
+.second-tab-2
+{
+ display:inline;
+     color: #484848;
+    font-size: 14px;
+    font-weight: 300;
+}
+.second-tab-3
+{
+    display:inline;
+    padding-left: 15px;
+    color: #828183;
+    font-size: 14px;
+}
+.second-main{
+    padding:15px 5px 15px 0;
+}
+.second-main-2
+{
+    padding-bottom: 12px;
+    padding-left: 0px;
+    padding-right: 5px;
+}
+.second-tab-part
+{
+    display:inline;
+    padding-left: 21px;
+    color: #828183;
+    font-size: 12px;
+}
+.tab-part
+{
+  background: #4badd0;
+    padding: 4px 22px 4px 8px;
+    color: #fff;
+    font-weight: 400;
+    font-size: 11px;
+}
+.tab-part-2
+{
+    background: #83c136;
+    padding: 4px 25px 4px 17px;
+    color: #fff;
+    font-weight: 400;
+}
+.second-tab-parts
+{
+    display:inline-block;
+    padding-left: 8px;
+    font-size: 12px;
+}
+.second-tab-part-new
+{
+    display:inline;
+    padding-left: 11px;
+    font-size: 12px;
+}
+.second-main-3
+{
+    padding-bottom: 12px;
+    padding-left: 0px;
+    padding-top: 4px;
+    padding-right: 5px;
+}
+.list-content li:last-child {
+    padding-bottom: 0;
+}
+.blur .page-top.scrolled {
+    background-color: #fff  !important;
+}
+ .page-block{
+        .pagin-list {
+            li {
+                padding: 7px 10px;
+                border: 1px solid #ddd;
+                margin-right: 5px;
+                border-radius: 3px;
+            }
+            li.prev {
+                color:#91999e;
+                vertical-align: middle;
+                background: #fff;
+            }
+            li.num {
+                color: #4badd0;
+                padding: 7px 12px;
+                background: #fff;
+                transition: all 0.4s ease-in-out;
+            }
+            li.num:hover
+                {
+                background: #4badd0;
+                padding: 7px 12px;
+                color: #fff;
+            }
+            li.num.active-list {
+                border: 1px solid #0b8ba2 !important;
+                background: #4badd0;
+                color: #fff;
+            }
+        }
+    }
+     .cate-block {
+        color: #8a898b;
+        font-size:13px;
+        min-width:140px;
+        .dropdown
+        {
+            background: #fff !important;
+        }
+
+        .dropdown button.btn.btn-default.dropdown-toggle {
+            color: #8a898b;
+            border: 1px solid #8a898b;
+            background-color:#fff !important;
+            border-radius: 0;
+        }
+
+        button.btn.btn-default {
+            border-width: 1px;
+            color: #8a898b;
+            background:#fff;
+            border-color: #8a898b;
+            border-radius: 0;
+        }
+        span {
+            margin-right: 9px;
+        }
+        .btn-group {
+            margin: 0 7px;
+        }
+        .btn-group.border-no.dropdown {
+            margin-right: 0;
+        }
+    }
+    .pagination-sm .page-link {
+    padding: 0.275rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-right: 6px;
+}
+.pagination-sm .page-link {
+    padding:0.275rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-right: 6px;
+}

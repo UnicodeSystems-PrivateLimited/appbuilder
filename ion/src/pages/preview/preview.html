@@ -1,0 +1,7 @@
+<ion-content padding>
+    <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+    <div class="preview-wrap">
+        <input (clickOutside)="clickOutside()" type="text" placeholder="App Code" [(ngModel)]="appCode"/>
+    <button ion-button (click)="onLoadDemoClick()">Load Demo</button>
+    </div>
+</ion-content>

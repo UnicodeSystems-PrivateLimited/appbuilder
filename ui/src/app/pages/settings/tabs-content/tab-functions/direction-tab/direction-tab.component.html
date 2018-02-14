@@ -1,0 +1,151 @@
+<div *ngIf="!ready || showMainLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">You have {{directions.length}} direction(s)</li>-->
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="dotted-bootom-div layout-column layout-align-end">
+                <div class=" layout-row layout-align-space-between-center pdf-box ">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                        <li class="title-sbhead">You have {{directions.length}} direction(s)</li>
+                    </ul>
+                    <button class="green-btn" (click)="showAddDialog()">
+                        <i class="fa fa-plus" aria-hidden="true"></i> Add New Direction
+                    </button>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>
+            </div>
+            <div [dragula]='"website-bag"' [dragulaModel]="directions">
+                <div *ngFor="let direction of directions" class="dotted-bootom-div layout-row somespace-top layout-align-start-center">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedItem[direction.id]" (click)="onCheckTabChange(selectedItem[direction.id], direction.id)">
+                            <span></span>
+                        </label>
+                        <span class="layout-align-center-center layout-row"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+                        <div class="layout-column menu-tb-span">
+                            <span>{{direction.title}}</span>
+                        </div>
+                    </div>
+                    <div class="flex-50 layout-row layout-align-end  remove-r-padding  pad-r-15">
+                        <span><button class="edit-btn m-r-0" (click)="showEditDialog(direction.id)">edit</button></span>
+                        <!--<span class="red"><button class="red" (click)="onDeleteClick(direction.id)">delete</button></span>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+</div>
+<!-- Add Direction Dialog START-->
+<p-dialog [draggable]="false"  header="Add Direction" [(visible)]="addDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add" (onAfterHide)="onDialogHide()"
+    >
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form>
+        <div class="layout-column border-all white-bg">
+            <div class="web-bg">
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-100">
+                        <label>Title
+                            <i class="fa fa-info-circle l" tooltip="Enter a title for this location" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text" [(ngModel)]="addDirectionData.title">
+                    </div>
+                </div>
+                <div class="tb-2 web-bg  layout-row layout-align-center-center no-padding">
+                    <div class="flex-100 tooltip-data">
+                        <location-editor *ngIf="addFormlocationEditorDisplay" [lat]="addDirectionData.m_lat" [long]="addDirectionData.m_long" (latLongChange)="onLatLongChange($event)"></location-editor>
+                        <div class="layout-column dis-wrap">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <p-footer>
+            <div class="save-btn">
+                <button class="blue-btn btn btn-lg" type="button" [disabled]="addSaveButtonHide" (click)="onAddDirection()">SAVE</button>
+            </div>
+        </p-footer>
+    </form>
+</p-dialog>
+<!-- Add Direction Dialog END-->
+
+
+<!-- Delete Direction Dialog START -->
+<p-dialog [draggable]="false"  header="Delete Direction ?" [(visible)]="showDeleteDialog" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected Direction ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteDirection()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteDialog=false">No</a>
+        </div>
+    </footer>
+</p-dialog>
+<!-- Delete Direction Dialog END -->
+
+
+<!-- Edit Direction Dialog START-->
+<p-dialog [draggable]="false"  header="Edit Direction" [(visible)]="editDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add" (onAfterHide)="onDialogHide()"
+   >
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form *ngIf="editDirectionData.id">
+        <div class="layout-column border-all white-bg">
+            <div class="web-bg">
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-100">
+                        <label>Title
+                            <i class="fa fa-info-circle l" tooltip="Specify the website name" tooltipPlacement="right" aria-hidden="true"></i></label>
+                        <input class="input-class" type="text" [(ngModel)]="editDirectionData.title">
+                    </div>
+                </div>
+                <div class="tb-2 web-bg  layout-row layout-align-center-center no-padding">
+                    <div class="flex-100 tooltip-data">
+                        <location-editor *ngIf="editFormlocationEditorDisplay" [lat]="editDirectionData.m_lat" [long]="editDirectionData.m_long"
+                            (latLongChange)="onLatLongChangeEdit($event)"></location-editor>
+                        <div class="layout-column dis-wrap">
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <p-footer>
+            <div class="save-btn">
+                <button class="blue-btn btn btn-lg" type="button" [disabled]="addSaveButtonHide" (click)="onEditDirection()">SAVE CHANGES</button>
+            </div>
+        </p-footer>
+    </form>
+</p-dialog>
+<!-- Edit Direction Dialog END-->

@@ -1,0 +1,58 @@
+<div class="layout-column border-all white-bg">
+    <div class="web-bg">
+        <div class="layout-row m-b-15 flex-100  layout-align-start">
+            <div class="layout-column">
+                <label (click)="onClickToday()">Today</label>
+            </div>
+        </div>
+        <div class="layout-row m-b-15 flex-100  layout-align-start">
+            <div class="layout-column">
+                <label (click)="onClickLastSevenDays()">Last 7 days</label>
+            </div>
+        </div>
+        <div class="layout-row m-b-15 flex-100  layout-align-start">
+            <div class="layout-column">
+                <label (click)="onClickMonthToDate()">Month to date</label>
+            </div>
+        </div>
+        <div class="layout-row m-b-15 flex-100  layout-align-start">
+            <div class="layout-column">
+                <label (click)="onClickYearToDate()">Year to date</label>
+            </div>
+        </div>
+        <div class="layout-row m-b-15 flex-100  layout-align-start">
+            <div class="layout-column">
+                <label >The previous month</label>
+            </div>
+        </div>
+        <div class="layout-row m-b-15 flex-100  layout-align-start">
+            <div class="layout-column">
+                <label>Custom Range</label>
+            </div>
+        </div>
+        <div class="layout-row m-b-15 flex-100  layout-align-start">
+            <div class="layout-column">
+                <label>From</label>
+                <p-calendar [(ngModel)]="fromDate"></p-calendar>
+            </div>
+            <div class="layout-column">
+                <label>To</label>
+                <p-calendar [(ngModel)]="toDate" [minDate]="fromDate"></p-calendar>
+            </div>
+        </div>
+        <div class="layout-row flex-100  layout-align-start">
+            <div class="layout-column">
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" type="button">Apply</button>
+                </div>
+            </div>
+            <div class="layout-column">
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" type="button">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>

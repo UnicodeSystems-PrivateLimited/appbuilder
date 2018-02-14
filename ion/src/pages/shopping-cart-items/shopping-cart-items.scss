@@ -1,0 +1,14 @@
+page-shopping-cart-items {
+    ion-header {
+        ion-toolbar {
+            .toolbar-background {
+                background: transparent;
+            }
+        }
+    }
+
+    .price-heading{
+       font-size: 1.8rem !important;
+       float: right;
+    }
+}

@@ -1,0 +1,800 @@
+<p-tabView class="last-app">
+    <div *ngIf="loader" style="z-index:1000;" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p-tabPanel header="App Information" class="app-info-app">
+        <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+            <div class="flex-15">
+                <div class="layout-column layout-align-center-center align-width">
+                    <img src="{{appData.icon_name}}" alt="" />
+                    <span class="layout-align-start-center layout-row align-widthimg">{{appData.app_icon_name}}</span>
+                </div>
+            </div>
+            <div class="flex-80">
+                <div class="layout-row layout-align-center-center layout-align-space-between other-containers-gap">
+                    <div class="flex-30 layout-column">
+                        <span>App Name <i class="fa fa-info-circle " tooltip="Enter your App Name. This is the title that shows up in the App Store and App Marketplace."   tooltipPlacement="right" aria-hidden="true">
+                                        </i></span>
+                        <span class="layout-row"><input class="input-class" type="text"  [(ngModel)]="appData.app_name">
+                                       </span>
+                    </div>
+                    <div class="flex-30 layout-column">
+                        <span>App Keywords  <i class="fa fa-info-circle " tooltip="Enter keywords that describe your specific app.  Each keyword must be separated with a comma.  Avoid generic terms like \'music\', characters limit is 100.  These will be used for your iTunes App Store listing."   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row"><input class="input-class" type="text" [(ngModel)]="appData.keywords">
+                                       </span>
+                    </div>
+                    <div class="flex-30 layout-column">
+                        <span>App Icon Name(Title) <i class="fa fa-info-circle " tooltip="This will be displayed under your app icon on your users\' homescreen on their device.(12 characters or less)"   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row"><input class="input-class" type="text"  [(ngModel)]="appData.app_icon_name">
+                                       </span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>App Description  <i class="fa fa-info-circle" tooltip="This description will appear in the iTunes App Store/Google Play Store and must meet high standards.  Plain text only, no HTML."   tooltipPlacement="right" aria-hidden="true"></i></span>
+                        <span class="layout-row"><textarea class="textarea-class" [(ngModel)]="appData.description"></textarea>
+                                       </span>
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <span>What's new in this version <span class="small-letter-color">(Edit in list form)<i class="fa fa-info-circle setinput-icon" tooltip="Use this field for app store update information."   tooltipPlacement="right" aria-hidden="true"></i></span></span>
+                        <span class="layout-row">
+                                        <textarea class="textarea-class" type="text" [(ngModel)]="appData.new_info"></textarea>
+                                        </span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>Contact Email <i class="fa fa-info-circle " tooltip="The contact email through which customers can reach to you."   tooltipPlacement="right" aria-hidden="true">
+                                        </i></span>
+                        <span class="layout-row"><input class="input-class-two" (keyup)="pageService.checkEmailValidation(appData.contact_email)" [(ngModel)]="appData.contact_email" type="email">
+                                       </span>
+                    <div class="val-msg" *ngIf="appData.contact_email">{{pageService.msgText}}</div>
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <span>Phone Number <i class="fa fa-info-circle" tooltip="Enter the Phone Number."   tooltipPlacement="right" aria-hidden="true">
+                                        </i></span>
+                        <span class="layout-row"><input class="input-class-two" [(ngModel)]="appData.contact_phone" type="text">
+                                       </span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>Official Website <i class="fa fa-info-circle " tooltip="Enter the URL for your organization’s website here."   tooltipPlacement="right" aria-hidden="true">
+                                        </i></span>
+                        <span class="layout-row"><input (keyup)="pageService.checkUrlValidation(appData.html5_mobile_website_url)" class="input-class-two" [(ngModel)]="appData.html5_mobile_website_url" type="text">
+                                       </span>
+                         <div class="val-msg" *ngIf="appData.html5_mobile_website_url">{{pageService.urlText}}</div>
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <span>Copyright<i class="fa fa-info-circle " tooltip="Enter Copyright Info"   tooltipPlacement="right" aria-hidden="true">
+                                        </i></span>
+                        <span class="layout-row"><input class="input-class-two" [(ngModel)]="appData.copyright" type="text">
+                                        </span>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span>App Category<i class="fa fa-info-circle" tooltip="Choose an App category." tooltipPlacement="right"
+                                aria-hidden="true">
+                                        </i></span>
+                        <div class="layout-row cat-drop">
+                            <p-dropdown class="category-dropdown flex-100 layout-row" [options]="appCategory" [(ngModel)]="appData.category" [style]="{'width':'170px'}"></p-dropdown>
+                            </div>
+
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <span>App Price <i class="fa fa-info-circle " tooltip="You can set any price you want for your app, or you can give it away for free. Most apps range from $0.99 - $4.99"
+                                tooltipPlacement="right" aria-hidden="true">
+                                        </i></span>
+                        <div class="layout-row cat-drop">
+                            <p-dropdown class="category-dropdown flex-100 layout-row " [options]="price" [(ngModel)]="appData.price" [style]="{'width':'170px'}"></p-dropdown>
+                            </div>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between other-containers-gap">
+                    <div class="flex-45 layout-column">
+                        <span class="layout-row ">Choose Default Language<i class="fa fa-info-circle layout-align-center-center layout-row setinput-icon" tooltip="Choose Default Language" tooltipPlacement="right"
+                                aria-hidden="true">
+                                        </i></span>
+                        <div class="layout-row cat-drop">
+                            <p-dropdown class="category-dropdown flex-100 layout-row" [options]="language" [(ngModel)]="appData.language" [style]="{'width':'170px'}"></p-dropdown>
+                            </div>
+
+                    </div>
+                    <div class="flex-45 layout-column">
+                        <label class="set-toplabel checkbox-inline custom-checkbox nowrap m-b-20">
+                                        <input id="inlineCheckbox01" type="checkbox" value="option1" [(ngModel)]="appData.disable_comment">
+                                        <span>Disable commenting for all tabs except Fan Wall and Youtube in the app.</span>
+                                    </label>
+
+                        <label class="secondsetlabel layout-row checkbox-inline custom-checkbox nowrap change-space">
+                                        <input id="inlineCheckbox02" type="checkbox" value="option2" [(ngModel)]="appData.audio_bg_play">
+                                        <span class="space-content">Auto Background Play</span>
+                                        <i class="fa fa-info-circle layout-align-center-center layout-row setinput-icon" aria-hidden="true">
+                                        </i>
+                                    </label>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between">
+                    <div class="flex-45 layout-column">
+                        <span  class="layout-row">Please enter your Google Plus client ID here.<i class="fa fa-info-circle layout-align-center-center layout-row setinput-icon lastboxicon" aria-hidden="true">
+                                        </i></span>
+                        <span class="layout-row flex-100"><div class="layout-row input-group flex-100">
+                                            <span class="input-group-addon input-group-addon-primary addon-left" id="basic-addon1"><i class="fa fa-google-plus" aria-hidden="true"></i></span>
+                        <input aria-describedby="basic-addon1" class="form-control with-primary-addon lastbox"  type="text"
+                            [(ngModel)]="appData.google_plus_id">
+                    </div>
+                    </span>
+
+                </div>
+            </div>
+            <div class="layout-row other-containers-gap">
+                <div class="flex-70 layout-row layout-align-start"></div>
+                <div class="flex-30 layout-row layout-align-end">
+                    <button class="last-button-setting" [disabled]="pageService.msg" (click)="saveChanges()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="App Icon" class="app-icon-wrapper">
+        <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+            <div class="flex-100 layout-row">
+                <div class="layout-row layout-align-start-start layout-align-space-between flex-50">
+                    <span class="layout-row">
+                                        <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon" aria-hidden="true">
+                                        </i>
+                                        <label>Your app icon will show on users' phones and in the App Store/Marketplace.<br>
+                                             *Please do not make your icon transparent. The corners will be rounded for you.</label>
+                                        </span>
+                </div>
+                <div class='layout-column  aap-icon-img'>
+                    <app-live-file-reader class=" layout-row layout-align-center-start" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteImage()"
+                        [defaultPicture]="appData.icon_name" (complete)="onImageChange($event)">
+                    </app-live-file-reader>
+                    <div class="layout-row layout-align-center-center mob-s-d">
+                        <button class="btn-update edit-btn"><a href={{appData.icon_name}} download="{{appData.icon_name}}"> <i class="fa fa-download" title="download"></i></a></button>
+                        <!--<button class="btn-update" (click)="onUploadClick()"><i class="fa fa-upload" title="Upload"></i></button>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Screen Shot" class="screen-shot-wraapper">
+        <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+            <tabset class="container-tab-detail  flex-100 app-disply-section">
+              
+                    <tab heading="IPHONE 4" class="tab-height">
+                        <div class="layout-row layout-align-start-start pad-15">
+                            <div class="layout-column flex-30">
+                                <span class="m-l-10 m-t-10 layout-row m-b-20">  
+                                    <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>
+                                    
+                                    Use our inovative screen shot tool to generate and upload high resolution screen shots for your devices using
+                    predefined logic.</span>
+                <span class="m-l-10">Predefined screen shot locations:</span>
+                <ul class="m-l-10 list-style-none">
+                    <li>Homescreen</li>
+                    <li>More Menu</li>
+                    <li>First App Tab</li>
+                </ul>
+                <button *ngIf="!settingsService.isGeneratingScreenshots" class="green-btn m-l-10" (click)="onGenerateScreenShotsClick()">Generate</button>
+                <span *ngIf="settingsService.isGeneratingScreenshots">Screenshots are being generated. Please check back after a few minutes.</span>
+            
+                            </div>
+                            <div class="layout-column in-betw-line layout-align-start-center flex-20"><span class="one"></span><span>OR</span><span class="one"></span></div>
+                            <div class="layout-column flex-50">
+                                <span class="m-l-10 m-t-10 layout-row">  <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>Upload a custom screen shot for your iPhone app.</span>
+                
+                <ul class="m-l-10 list-style-none">
+                    <li>5 screen shots Maximum</li>
+                    <li>640x960px in PNG Format &nbsp; &nbsp; <a>Learn more</a></li>
+                    <!--<li>First App Tab</li>-->
+                </ul>
+                <!--<span class="m-l-10"></span>-->
+                 <!--<span class="m-l-10"></span>-->
+               
+            
+                            </div>
+                        </div>
+                    <!--<div class="pad-10"> <button (click)="onScreenShot(1)" class="green-btn">Upload</button></div>-->
+                    <div class="layout-row flex-100 pad-10 layout-align-space-around">
+
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>1</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(1,'screen_shot_1')"
+                                [defaultPicture]="appIphoneFourScreenShot.screen_shot_1" (complete)="onScreenOne($event,1)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>2</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(1,'screen_shot_2')"
+                                [defaultPicture]="appIphoneFourScreenShot.screen_shot_2" (complete)="onScreenTwo($event,1)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>3</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(1,'screen_shot_3')"
+                                [defaultPicture]="appIphoneFourScreenShot.screen_shot_3" (complete)="onScreenThree($event,1)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>4</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(1,'screen_shot_4')"
+                                [defaultPicture]="appIphoneFourScreenShot.screen_shot_4" (complete)="onScreenFour($event,1)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>5</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(1,'screen_shot_5')"
+                                [defaultPicture]="appIphoneFourScreenShot.screen_shot_5" (complete)="onScreenFive($event,1)">
+                            </app-live-file-reader>
+                        </div>
+                    </div>
+                </tab>
+
+                <tab heading="iPHONE 5" class="tab-height-2">
+                   <div class="layout-row layout-align-start-start pad-15">
+                            <div class="layout-column flex-30">
+                                <span class="m-l-10 m-t-10 layout-row m-b-20">  
+                                    <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>
+                                    
+                                    Use our inovative screen shot tool to generate and upload high resolution screen shots for your devices using
+                    predefined logic.</span>
+                <span class="m-l-10">Predefined screen shot locations:</span>
+                <ul class="m-l-10 list-style-none">
+                    <li>Homescreen</li>
+                    <li>More Menu</li>
+                    <li>First App Tab</li>
+                </ul>
+                <button *ngIf="!settingsService.isGeneratingScreenshots" class="green-btn m-l-10" (click)="onGenerateScreenShotsClick()">Generate</button>
+                <span *ngIf="settingsService.isGeneratingScreenshots">Screenshots are being generated. Please check back after a few minutes.</span>
+            
+                            </div>
+                            <div class="layout-column in-betw-line layout-align-start-center flex-20"><span class="one"></span><span>OR</span><span class="one"></span></div>
+                            <div class="layout-column flex-50">
+                                <span class="m-l-10 m-t-10 layout-row">  <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>Upload a custom screen shot for your iPhone 5 app.</span>
+                
+                <ul class="m-l-10 list-style-none">
+                    <li>5 screen shots Maximum</li>
+                    <li>640x1136px in PNG Format &nbsp; &nbsp; <a>Learn more</a></li>
+                    <!--<li>First App Tab</li>-->
+                </ul>
+                <!--<span class="m-l-10"></span>-->
+                 <!--<span class="m-l-10"></span>-->
+               
+            
+                            </div>
+                        </div>
+                    <div class="layout-row flex-100 pad-10 layout-align-space-around">
+
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>1</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(2,'screen_shot_1')"
+                                [defaultPicture]="appIphoneFiveScreenShot.screen_shot_1" (complete)="onScreenOne($event,2)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>2</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(2,'screen_shot_2')"
+                                [defaultPicture]="appIphoneFiveScreenShot.screen_shot_2" (complete)="onScreenTwo($event,2)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>3</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(2,'screen_shot_3')"
+                                [defaultPicture]="appIphoneFiveScreenShot.screen_shot_3" (complete)="onScreenThree($event,2)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>4</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(2,'screen_shot_4')"
+                                [defaultPicture]="appIphoneFiveScreenShot.screen_shot_4" (complete)="onScreenFour($event,2)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>5</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(2,'screen_shot_5')"
+                                [defaultPicture]="appIphoneFiveScreenShot.screen_shot_5" (complete)="onScreenFive($event,2)">
+                            </app-live-file-reader>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="IPHONE 6" class="tab-height-3">
+                  <div class="layout-row layout-align-start-start pad-15">
+                            <div class="layout-column flex-30">
+                                <span class="m-l-10 m-t-10 layout-row m-b-20">  
+                                    <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>
+                                    
+                                    Use our inovative screen shot tool to generate and upload high resolution screen shots for your devices using
+                    predefined logic.</span>
+                <span class="m-l-10">Predefined screen shot locations:</span>
+                <ul class="m-l-10 list-style-none">
+                    <li>Homescreen</li>
+                    <li>More Menu</li>
+                    <li>First App Tab</li>
+                </ul>
+                <button *ngIf="!settingsService.isGeneratingScreenshots" class="green-btn m-l-10" (click)="onGenerateScreenShotsClick()">Generate</button>
+                <span *ngIf="settingsService.isGeneratingScreenshots">Screenshots are being generated. Please check back after a few minutes.</span>
+            
+                            </div>
+                            <div class="layout-column in-betw-line layout-align-start-center flex-20"><span class="one"></span><span>OR</span><span class="one"></span></div>
+                            <div class="layout-column flex-50">
+                                <span class="m-l-10 m-t-10 layout-row">  <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>Upload a custom screen shot for your iPhone 6 app.</span>
+                
+                <ul class="m-l-10 list-style-none">
+                    <li>5 screen shots Maximum</li>
+                    <li>750x1334px in PNG Format &nbsp; &nbsp; <a>Learn more</a></li>
+                    <!--<li>First App Tab</li>-->
+                </ul>
+                <!--<span class="m-l-10"></span>-->
+                 <!--<span class="m-l-10"></span>-->
+               
+            
+                            </div>
+                        </div>
+                    <div class="layout-row flex-100 pad-10 layout-align-space-around">
+
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>1</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(3,'screen_shot_1')"
+                                [defaultPicture]="appIphoneSixScreenShot.screen_shot_1" (complete)="onScreenOne($event,3)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>2</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(3,'screen_shot_2')"
+                                [defaultPicture]="appIphoneSixScreenShot.screen_shot_2" (complete)="onScreenTwo($event,3)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>3</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(3,'screen_shot_3')"
+                                [defaultPicture]="appIphoneSixScreenShot.screen_shot_3" (complete)="onScreenThree($event,3)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>4</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(3,'screen_shot_4')"
+                                [defaultPicture]="appIphoneSixScreenShot.screen_shot_4" (complete)="onScreenFour($event,3)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>5</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(3,'screen_shot_5')"
+                                [defaultPicture]="appIphoneSixScreenShot.screen_shot_5" (complete)="onScreenFive($event,3)">
+                            </app-live-file-reader>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="IPHONE 6 PLUS" class="tab-height-3">
+                  <div class="layout-row layout-align-start-start pad-15">
+                            <div class="layout-column flex-30">
+                                <span class="m-l-10 m-t-10 layout-row m-b-20">  
+                                    <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>
+                                    
+                                    Use our inovative screen shot tool to generate and upload high resolution screen shots for your devices using
+                    predefined logic.</span>
+                <span class="m-l-10">Predefined screen shot locations:</span>
+                <ul class="m-l-10 list-style-none">
+                    <li>Homescreen</li>
+                    <li>More Menu</li>
+                    <li>First App Tab</li>
+                </ul>
+                <button *ngIf="!settingsService.isGeneratingScreenshots" class="green-btn m-l-10" (click)="onGenerateScreenShotsClick()">Generate</button>
+                <span *ngIf="settingsService.isGeneratingScreenshots">Screenshots are being generated. Please check back after a few minutes.</span>
+            
+                            </div>
+                            <div class="layout-column in-betw-line layout-align-start-center flex-20"><span class="one"></span><span>OR</span><span class="one"></span></div>
+                            <div class="layout-column flex-50">
+                                <span class="m-l-10 m-t-10 layout-row">  <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>Upload a custom screen shot for your iPhone 6 Plus app.</span>
+                
+                <ul class="m-l-10 list-style-none">
+                    <li>5 screen shots Maximum</li>
+                    <li>1242x2208px in PNG Format &nbsp; &nbsp; <a>Learn more</a></li>
+                    <!--<li>First App Tab</li>-->
+                </ul>
+                <!--<span class="m-l-10"></span>-->
+                 <!--<span class="m-l-10"></span>-->
+               
+            
+                            </div>
+                        </div>
+                    <div class="layout-row flex-100 pad-10 layout-align-space-around">
+
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>1</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(4,'screen_shot_1')"
+                                [defaultPicture]="appIphoneSixPlusScreenShot.screen_shot_1" (complete)="onScreenOne($event,4)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>2</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(4,'screen_shot_2')"
+                                [defaultPicture]="appIphoneSixPlusScreenShot.screen_shot_2" (complete)="onScreenTwo($event,4)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>3</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(4,'screen_shot_3')"
+                                [defaultPicture]="appIphoneSixPlusScreenShot.screen_shot_3" (complete)="onScreenThree($event,4)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>4</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(4,'screen_shot_4')"
+                                [defaultPicture]="appIphoneSixPlusScreenShot.screen_shot_4" (complete)="onScreenFour($event,4)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>5</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(4,'screen_shot_5')"
+                                [defaultPicture]="appIphoneSixPlusScreenShot.screen_shot_5" (complete)="onScreenFive($event,4)">
+                            </app-live-file-reader>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="TABLET" class="tab-height">
+                 <div class="layout-row layout-align-start-start pad-15">
+                            <div class="layout-column flex-30">
+                                <span class="m-l-10 m-t-10 layout-row m-b-20">  
+                                    <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>
+                                    
+                                    Use our inovative screen shot tool to generate and upload high resolution screen shots for your devices using
+                    predefined logic.</span>
+                <span class="m-l-10">Predefined screen shot locations:</span>
+                <ul class="m-l-10 list-style-none">
+                    <li>Homescreen</li>
+                    <li>More Menu</li>
+                    <li>First App Tab</li>
+                </ul>
+                <button *ngIf="!settingsService.isGeneratingScreenshots" class="green-btn m-l-10" (click)="onGenerateScreenShotsClick()">Generate</button>
+                <span *ngIf="settingsService.isGeneratingScreenshots">Screenshots are being generated. Please check back after a few minutes.</span>
+            
+                            </div>
+                            <div class="layout-column in-betw-line layout-align-start-center flex-20"><span class="one"></span><span>OR</span><span class="one"></span></div>
+                            <div class="layout-column flex-50">
+                                <span class="m-l-10 m-t-10 layout-row">  <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon m-l-10" aria-hidden="true"></i>Upload a custom screen shot for your Tablet app.</span>
+                
+                <ul class="m-l-10 list-style-none">
+                    <li>5 screen shots Maximum</li>
+                    <li>1536x2048px in PNG Format &nbsp; &nbsp; <a>Learn more</a></li>
+                    <!--<li>First App Tab</li>-->
+                </ul>
+                <!--<span class="m-l-10"></span>-->
+                 <!--<span class="m-l-10"></span>-->
+               
+            
+                            </div>
+                        </div>
+                    <div class="layout-row flex-100 pad-10 layout-align-space-around">
+
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>1</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(5,'screen_shot_1')"
+                                [defaultPicture]="appTabletScreenShot.screen_shot_1" (complete)="onScreenOne($event,5)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>2</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(5,'screen_shot_2')"
+                                [defaultPicture]="appTabletScreenShot.screen_shot_2" (complete)="onScreenTwo($event,5)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>3</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(5,'screen_shot_3')"
+                                [defaultPicture]="appTabletScreenShot.screen_shot_3" (complete)="onScreenThree($event,5)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>4</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(5,'screen_shot_4')"
+                                [defaultPicture]="appTabletScreenShot.screen_shot_4" (complete)="onScreenFour($event,5)">
+                            </app-live-file-reader>
+                        </div>
+                        <div class="layout-column flex-20 p-r-1">
+                            <div class="count-num"><span>5</span></div>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteScreenShot(5,'screen_shot_5')"
+                                [defaultPicture]="appTabletScreenShot.screen_shot_5" (complete)="onScreenFive($event,5)">
+                            </app-live-file-reader>
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+        </div>
+    </p-tabPanel>
+    <p-tabPanel header="Loading Screen" class="loading-screen-wrap">
+        <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+            <tabset class="container-tab-detail  flex-100 app-disply-section">
+                <tab heading="PHONE">
+                    <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+                        <div class="flex-100 layout-row">
+                            <div class="layout-row layout-align-start-start layout-align-space-between flex-50">
+                                <span class="layout-row">
+                                        <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon" aria-hidden="true">
+                                        </i>
+                                        <label>Upload a splash loading screen. This is the first image that appears when<br> your app is launched.
+                                            *PNG Format: 640x1136px</label>
+                                        </span>
+                            </div>
+                            <div class='layout-column'>
+                                <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteSplashImage('phone')"
+                                    [defaultPicture]="appData.phone_splash_screen" (complete)="onPhoneSplashChange($event)">
+                                </app-live-file-reader>
+                                <div class="layout-row layout-align-center-center mob-s-d">
+                                    <button class="btn-update edit-btn"><a href={{appData.phone_splash_screen}} download="{{appData.phone_splash_screen}}"> <i class="fa fa-download" title="download"></i></a></button>
+                                    <!--<button class="btn-update" (click)="onSplashUploadClick()"><i class="fa fa-upload" title="Upload"></i></button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="TABLET">
+                    <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+                        <div class="flex-100 layout-row">
+                            <div class="layout-row layout-align-start-start layout-align-space-between flex-50">
+                                <span class="layout-row">
+                                        <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon" aria-hidden="true">
+                                        </i>
+                                        <label>Upload a splash loading screen. This is the first image that appears when<br> your app is launched.
+                                            *PNG Format: 1536x2048px</label>
+                                        </span>
+                            </div>
+                            <div class='layout-column'>
+                                <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteSplashImage('tablet')"
+                                    [defaultPicture]="appData.tablet_splash_screen" (complete)="onTabSplashChange($event)">
+                                </app-live-file-reader>
+                                <div class="layout-row layout-align-center-center mob-s-d">
+                                    <button class="btn-update edit-btn"><a href={{appData.tablet_splash_screen}} download="{{appData.tablet_splash_screen}}"> <i class="fa fa-download" title="download"></i></a></button>
+                                    <!--<button class="btn-update" (click)="onSplashUploadClick()"><i class="fa fa-upload" title="Upload"></i></button>-->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+                <tab heading="iPHONE">
+                    <div class="flex-100 layout-row layout-wrap setting4-maincontainer">
+                        <div class="layout-row layout-align-start-start layout-align-space-between flex-50">
+                            <span class="layout-row">
+                                        <i class="fa fa-info-circle layout-align-start-start m-r-10 layout-row setinput-icon" aria-hidden="true">
+                                        </i>
+                                        <label>Upload a splash loading screen. This is the first image that appears when<br> your app is launched.
+                                            *PNG Format: 640x1136px</label>
+                                        </span>
+                        </div>
+                        <div class='layout-column'>
+                            <app-live-file-reader class="layout-row layout-align-start-center" [btnText]="'Select'" [imageTypeHeader]="true" (delete)="deleteSplashImage('iphone')"
+                                [defaultPicture]="appData.iphone_splash_screen" (complete)="onIphoneSplashChange($event)">
+                            </app-live-file-reader>
+                            <div class="layout-row layout-align-center-center mob-s-d">
+                                <button class="btn-update edit-btn"><a href={{appData.iphone_splash_screen}} download="{{appData.iphone_splash_screen}}"> <i class="fa fa-download" title="download"></i></a></button>
+                                <!--<button class="btn-update" (click)="onSplashUploadClick()"><i class="fa fa-upload" title="Upload"></i></button>-->
+                            </div>
+                        </div>
+                    </div>
+                </tab>
+            </tabset>
+            <div class="layout-align-end" *ngIf="!appState.isCustomerLogin">
+                <button class="last-button-setting publisg" (click)="onPublishClick()">Publish Your App</button>
+            </div>
+        </div>
+    </p-tabPanel>
+</p-tabView>
+
+<!--publish dialog start-->
+<p-dialog [draggable]="false"  header="PUBLISH YOUR APP" [(visible)]="publishDialog" (onAfterHide)="onDialogHide()" modal="modal" class="app-dialog add-app s-tab-add" >
+    <div *ngIf="loader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <tabset class="container-tab-detail last-tb-up" [class.pub]="appPublish.iphone_product || appPublish.tab_product" [vertical]="true" >
+        <tab heading="Upload Form" [active]="firstTabActive" [disabled]="!isPublishOption">
+            <form>
+                <div class="layout-column">
+                    <div class="web-bg">
+                        <div class="layout-row m-b-15">
+                            <div class="layout-column flex-100">
+                                <label>Email
+                                <i class="fa fa-info-circle l" tooltip="Please enter the email address where you would like your Executable Android File (APK) to be sent" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                <input class="input-class" (keyup)="pageService.checkEmailValidation(appPublish.email)" type="text" [(ngModel)]="appPublish.email">
+                                <div class="val-msg" *ngIf="appPublish.email">{{pageService.msgText}}</div>
+                            </div>
+                        </div>
+                        <div class="layout-row m-b-10">
+                            <div class="layout-column flex-100">
+                                <label>Product
+                                <i class="fa fa-info-circle l" tooltip="Check all that apply." tooltipPlacement="right" aria-hidden="true"></i></label>
+                            </div>
+                        </div>
+                        <div class="layout-row m-b-15">
+                            <div class="layout-row flex-100">
+                                <label class="checkbox-inline custom-checkbox nowrap m-r-10">
+            <input type="checkbox"  [(ngModel)]="appPublish.android_product">
+            <span>ANDROID</span>
+        </label>
+                                <label class="checkbox-inline custom-checkbox nowrap m-r-10">
+            <input type="checkbox"  [(ngModel)]="appPublish.iphone_product">
+            <span>IPHONE</span>
+        </label>
+                                <label class="checkbox-inline custom-checkbox nowrap">
+            <input type="checkbox"  [(ngModel)]="appPublish.tab_product">
+            <span>TABLET</span>
+        </label>
+                            </div>
+                        </div>
+                        <div *ngIf="appPublish.iphone_product || appPublish.tab_product">
+                            <div class="layout-row m-b-15">
+                                <div class="layout-column flex-100">
+                                    <label>Apple User Name<i class="fa fa-info-circle l ion-left" tooltip="Please enter the email address where you would like your Executable Android File (APK) to be sent" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                    <input class="input-class" type="text" [(ngModel)]="appPublish.apple_user_name">
+
+                                </div>
+                            </div>
+                            <div class="layout-row m-b-15">
+                                <div class="layout-column flex-100">
+                                    <label>Apple Password <i class="fa fa-info-circle l ion-left" tooltip="Please enter the email address where you would like your Executable Android File (APK) to be sent" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                    <input class="input-class" type="text" [(ngModel)]="appPublish.apple_password">
+
+                                </div>
+                            </div>
+                            <div class="layout-row m-b-15">
+                                <div class="layout-column flex-100">
+                                    <label>Apple Developer Name  <i class="fa fa-info-circle l ion-left" tooltip="Please enter the email address where you would like your Executable Android File (APK) to be sent" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                    <input class="input-class" type="text" [(ngModel)]="appPublish.apple_dev_name">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="layout-row m-b-15">
+                            <div class="layout-column flex-100">
+                                <label>Special Upload Instructions</label>
+                                <textarea [(ngModel)]="appPublish.instruction"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <footer>
+                    <div class="layout-align-center-center layout-row m-b-10 m-t-10">
+                        <button *ngIf="appPublish.iphone_product || appPublish.tab_product" class="green-btn btn btn-lg" type="button" (click)="onNextClick()">Next</button>
+                        <button *ngIf="!appPublish.iphone_product && !appPublish.tab_product" class="green-btn btn btn-lg" type="button" (click)="onSavePublish()">SUBMIT</button>
+                    </div>
+                </footer>
+            </form>
+        </tab>
+        <tab *ngIf="appPublish.iphone_product || appPublish.tab_product"  heading="Publish Option" [active]="active" [disabled]="isPublishOption">
+            <div class="layout-column flex-100 pad-15" *ngIf="!editPublish">
+                <div class="flex-100">
+                    <div class="border-all flex-100 layout-column  m-b-20">
+                        <div class=" layout-row layout-align-space-between-start">
+                            <div class="web-bg flex-30 layout-row layout-align-start-center">
+                                <p-radioButton name="group1" [value]="1"  [(ngModel)]="appPublish.update_type"></p-radioButton>
+                                <span class="m-l-10">iTunes Update</span>
+                            </div>
+                            <div class="layout-column layout-align-start-start flex-70">
+                                <div class="web-bg p-l-0">
+                                <label>We'll upload your application without an internal review by our customer success team. This option is the fastest route to the iTunes app store.If you have spoken to someone from our team, please note their name in the "Special Upload Instructions." </label>
+                            </div>
+                            <div>
+                                <label>$50 Fee for Publish Page Changes & Feature Updates</label>
+                            </div>
+                            <div>
+                                <label>3-5 Business Days for Upload</label>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="border-all flex-100 layout-column m-b-20 ">
+                        <div class="layout-row layout-align-space-between-start">
+                            <div class="web-bg flex-30 layout-row layout-align-start-center">
+                                <p-radioButton name="group1" [value]="2"  [(ngModel)]="appPublish.update_type"></p-radioButton>
+                                <span class="m-l-10">Expedited Update</span>
+                            </div>&nbsp;
+                             <div class="layout-column layout-align-start-start flex-70">
+                                <div class="web-bg p-l-0">
+                                <label>Need to reach a deadline? We'll move your app to the front of our upload queue, therefore skipping our normal 7 business day submission requirement.</label>
+                            </div>
+                            <div>
+                                <label>$100 Fee ($50 Update Fee + $50 Expedite Fee)</label>
+                            </div>
+                            <div>
+                                <label>1-2 Business Days for upload</label>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-column flex-100 pad-15" *ngIf="editPublish">
+                <div class="flex-100">
+                    <div class=" flex-100 layout-column m-b-20">
+                        <div class="layout-row layout-align-space-between-start">
+                            <div class="web-bg flex-30 layout-row layout-align-start-center">
+                                <p-radioButton name="group1" [value]="3"  [(ngModel)]="appPublish.update_type"></p-radioButton>
+                                <span class="m-l-10">Standard App Upload</span>
+                            </div>&nbsp;
+                            <div class="layout-column layout-align-start-start flex-70">
+                                <div class="web-bg p-l-0">
+                                    <label>We'll upload your application without an internal review by our customer success team. This option is the standard route to the iTunes app store.</label>
+                                </div>
+                                <div>
+                                    <label>Standard Approval Rate</label>
+                                </div>
+                                <div>
+                                    <label>3-5 Business Days for Upload</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" flex-100 layout-column  m-b-20">
+                        <div class="layout-row layout-align-space-between-start">
+                            <div class="web-bg flex-30 layout-row layout-align-start-center">
+                                <p-radioButton name="group1" [value]="4"  [(ngModel)]="appPublish.update_type"></p-radioButton>
+                                <span class="m-l-10">Expedited Upload</span>
+                            </div>&nbsp;
+                            <div class="layout-column layout-align-start-start flex-70">
+                                <div class="web-bg p-l-0">
+                                    <label>Need to reach a deadline ? We'll move your app to the front of our upload queue therefore, skipping our normal 3-5 business day submission requirement and completing your upload within 2 business day. </label>
+                                </div>
+                                <div>
+                                    <label>One time $50 Fee</label>
+                                </div>
+                                <div>
+                                    <label>1-2 Business Days for upload</label>
+                                </div>    
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" flex-100 layout-column m-b-20 ">
+                        <div class="layout-row layout-align-space-between-start">
+                            <div class="web-bg flex-30 layout-row layout-align-start-center">
+                                <p-radioButton name="group1" [value]="5"  [(ngModel)]="appPublish.update_type"></p-radioButton>
+                                <span class="m-l-10">TappIT Review</span>
+                            </div>&nbsp;
+                            <div class="layout-column layout-align-start-start flex-70">
+                                <div class="web-bg p-l-0">
+                                    <label>Our awesome Customer success team will review your IOS app and provide suggestion to increase the chances of your app being approved by Apple. You can also review our Apple approval information & tips HERE Medium Approval Rate</label>
+                                </div>
+                                <div>
+                                    <label>Medium Approval Rate</label>
+                                </div>
+                                <div>
+                                    <label>48 Hours for Review</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex-100 layout-column m-b-20">
+                        <div class="layout-row layout-align-space-between-start">
+                            <div class="web-bg flex-30 layout-row layout-align-start-center">
+                                <p-radioButton name="group1" [value]="6"  [(ngModel)]="appPublish.update_type"></p-radioButton>
+                                <span class="m-l-10">App Build Service</span>
+                            </div>&nbsp;
+                            <div class="layout-column layout-align-start-start flex-70">
+                                <div class="web-bg p-l-0">
+                                    <label>The TappIT Design Team will build/design your IOS app based on Apple's strict approval guidelines.' For more information click HERE</label>
+                                </div>
+                                <div>
+                                    <label>High Approval Rate</label>
+                                </div>
+                                <div>
+                                    <label>5-15 Business Days for Completion</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="layout-align-center-center layout-row m-b-10 m-t-10">
+                <button class="blue-btn  btn-lg m-r-10" type="button" (click)="onBackClick()">BACK</button>
+                <button class="green-btn btn btn-lg" type="button" (click)="onSavePublish()">SUBMIT</button>
+            </div>
+        </tab>
+    </tabset>
+</p-dialog>
+
+<p-dialog  [draggable]="false" header="FAILED!" [(visible)]="generateScreenshotsDialog" modal="modal" class="app-dialog add-app s-tab-add">
+    <p *ngFor="let data of screenshotGenFailData">
+        You have too many {{phoneNames[data.type]}} screenshots to run the generator. Please delete {{data.imagesToDelete}} more.
+    </p>
+</p-dialog>

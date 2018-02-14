@@ -1,0 +1,404 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready" class="">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">	You have {{pictureGalleryList.length}} gallery(s):</li>-->
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-100 layout-row set-div ">
+        <div class="flex-10 layout-row layout-align-center-center">
+            <div class="layout-row">
+                <span>Image Service:</span>
+            </div>
+        </div>
+        <div class="flex-90 layout-row gallery-img-wrap">
+            <div class="layout-row">
+                <div class="flex-50 layout-row layout-align-center-center cus">
+                    <p-radioButton name="imageService" [value]="IMAGE_SERVICE_TYPE_CUSTOM" [(ngModel)]="imageServiceType.image_service_type"></p-radioButton> <img src="../../assets/img/custom_icon.png" />Custom
+                </div>
+                <!--<div class="flex-25 layout-row layout-align-center-center m-l-10 fli">
+                    <p-radioButton name="imageService" [value]="IMAGE_SERVICE_TYPE_FLICKR" [(ngModel)]="imageServiceType.image_service_type"></p-radioButton> <img src="../../assets/img/flickr.png" />
+                </div>
+                <div class="flex-25 layout-row layout-align-center-center m-l-10 pic">
+                    <p-radioButton name="imageService" [value]="IMAGE_SERVICE_TYPE_PICASA" [(ngModel)]="imageServiceType.image_service_type"></p-radioButton> <img src="../../assets/img/picasa.png" />
+                </div>-->
+                <div class="flex-50 layout-row layout-align-center-center m-l-10 ins">
+                    <p-radioButton name="imageService" [value]="IMAGE_SERVICE_TYPE_INSTAGRAM" [(ngModel)]="imageServiceType.image_service_type"></p-radioButton> <img src="../../assets/img/instagram.png" />
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd ">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="flex-50 layout-column boder-left-div"  *ngIf="imageServiceType.image_service_type == IMAGE_SERVICE_TYPE_CUSTOM">
+            <div class="dotted-bootom-div">
+                <div class="flex-100 layout-row layout-align-space-between-center pdf-box">
+                    <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                        <!--<li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>-->
+                        <li class="title-sbhead"> You have {{pictureGalleryList.length}} gallery(s):</li>
+                    </ul>
+                    <div class="layout-row layout-align-end">
+                        <button class="green-btn" (click)="showImportGalleryDialog()">
+                            <i class="fa fa-plus ion-right" aria-hidden="true"></i>
+                            Import Gallery
+                        </button>
+                        <div class="layout-row m-l-10 ">
+                            <button class="green-btn" (click)="showAddPictureGalleryDialog()">
+                                <i class="fa fa-plus ion-right" aria-hidden="true"></i>
+                                Add New Gallery
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-space-between-center pad-al-15">
+                    <label class="checkbox-inline custom-checkbox nowrap">
+                        <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAll" (change)="onCheckAllChange()" >
+                        <span>Select All</span>
+                    </label>
+                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedItem.length > 0 && selectedItem.indexOf(true) !== -1" (click)="onDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                </div>
+            </div>
+            <div [dragula]='LISTS_BAG' [dragulaModel]="pictureGalleryList">
+                <div *ngFor="let pictureGallery of pictureGalleryList" class="dotted-bootom-div layout-row somespace-top layout-align-start-center">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                        <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" id="inlineCheckbox05"  [(ngModel)]="selectedItem[pictureGallery.id]" (click)="onCheckTabChange(selectedItem[pictureGallery.id], pictureGallery.id)">
+                            <span></span>
+                        </label>
+                        <span class="layout-align-center-center layout-row"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+                        <span><img src="{{pictureGallery.thumbnail || '../../../../assets/img/no-image.png'}}"
+                                   class="website-thumbnail" alt="{{pictureGallery.name + ' thumbnail'}}"></span>
+                        <div class="layout-column menu-tb-span">
+                            <span>{{pictureGallery.name}}</span>
+                            <span>{{pictureGallery.url}}</span>
+                        </div>
+                    </div>
+                    <div class="flex-50 layout-row layout-align-end  remove-r-padding  pad-r-15">
+                        <span><button class="edit-btn m-r-0" (click)="showEditPictureGalleryDialog(pictureGallery.id)">edit</button></span>
+                        <!--<span class="red"><button class="red" (click)="onDeleteClick(pictureGallery.id)">delete</button></span>-->
+                    </div>
+                </div>
+            </div>
+            <div class="flex-100 layout-row ">
+                <div class="layout-align-start save-btn">
+                    <button class="blue-btn btn btn-lg" type="submit" [disabled]="addSaveButtonHide" (click)="saveServiceType()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column boder-left-div" *ngIf="imageServiceType.image_service_type == IMAGE_SERVICE_TYPE_INSTAGRAM">
+            <div class="layout-row insta-setting pad-15 p-t-20 layout-align-start-center">
+                <label>Settings:-</label>
+            <button class="blue-btn m-l-10" *ngIf="!imageServiceType.instagram_user_name" type="submit" (click)="instagramLogin()">Connect Instagram</button>
+            <button class="blue-btn m-l-10" *ngIf="imageServiceType.instagram_user_name" type="submit" (click)="instagramLogout()">Disconnect Instagram</button>
+         
+            </div>
+               <div class="flex-100 layout-row ">
+                <div class="layout-align-start save-btn">
+                    <button [disabled]="addSaveButtonHide" (click)="saveServiceType()" class="blue-btn btn btn-lg" type="submit">Save Changes</button>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+
+    <!-- Add/Edit Picture Gallery Dialog START-->
+    <p-dialog [draggable]="false"  [header]="pictureGalleryHeader" [(visible)]="pictureGalleryDialogDisplay" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onPictureGallerySubmit()">
+            <div class="layout-column ">
+                <div class="web-bg">
+                    <div class="layout-row">
+                        <div class="layout-row flex-100 layout-align-start-center">
+                            <label class="m-r-10">Name</label>
+                            <input class="input-class flex-60" type="text" [(ngModel)]="pictureGalleries.name">
+                        </div>
+                    </div>
+                </div>
+                <div class="web-bg">
+                    <div class="layout-row gallery-wrap">
+                        <div class="layout-row flex-60 layout-align-start-center">
+                            <label class="m-r-10">Thumbnail</label>
+                            <input type="file" (change)="onGalleryThumbnailChange($event)">
+                        </div>
+                        <div class="tablet-header-img thumb-img m-r-10 thumb-img-dif" *ngIf="thumbnailImage">
+                            <i class="fa fa-close" (click)="deleteThumbnailImage('thumbnail',pictureGalleries.id)"></i>
+                            <img style="max-height:64px; max-width: 64px" src="{{thumbnailImage}}">
+                        </div>
+                    </div>
+                </div>
+                <div class="web-bg">
+                    <div class="layout-row m-b-15 border-b">
+                        <label>Settings</label>
+                    </div>
+                    <div class="layout-column ">
+                        <div class=" layout-row m-b-10 ">
+                            <span class="m-r-10 flex-30">Gallery Type
+                                <i class="fa fa-info-circle l" tooltip="Select the display mode for your images. This will decide how images are shown within the app." tooltipPlacement="right" aria-hidden="true"></i>
+                            </span>
+                            <div class="m-l-10 layout-row layout-align-start-center">
+                                <p-radioButton name="galleryType" [value]="GALLERY_TYPE_GRID" [(ngModel)]="pictureGalleries.gallery_type"></p-radioButton> <span class="m-l-10">Grid</span>
+                                <div class="m-l-10 layout-row layout-align-start-center">
+                                    <p-radioButton name="galleryType" [value]="GALLERY_TYPE_COVER_FLOW" [(ngModel)]="pictureGalleries.gallery_type"></p-radioButton><span class="m-l-10"> Cover-flow</span></div>
+                            </div>
+                        </div>
+                        <div class="layout-row ">
+                            <span class="m-r-10 flex-30">Description for image
+                                <i class="fa fa-info-circle l" tooltip="Select 'Yes' if you would like to enable descriptions for your images." tooltipPlacement="right" aria-hidden="true"></i>
+                            </span>
+                            <div class="m-l-10 layout-row layout-align-start-center">
+                                <p-radioButton name="imageDescription" [value]="IMAGE_DESCRIPTION_YES" [(ngModel)]="pictureGalleries.image_description"></p-radioButton> <span class="m-l-10">Yes</span>
+                                <div class="m-l-10 layout-row layout-align-start-center">
+                                    <p-radioButton name="imageDescription" [value]="IMAGE_DESCRIPTION_NO" [(ngModel)]="pictureGalleries.image_description"></p-radioButton> <span class="m-l-10">No</span></div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="web-bg">
+                    <div class="layout-column">
+                        <div class="layout-row flex-100  layout-align-start-center image-wrap-gallery">
+                            <label class="m-r-10">Images</label>
+                            <input type="file" (change)="onGalleryImagesChange($event)" multiple>
+                        </div>
+                        <div [dragula]="IMAGE_BAG" [dragulaModel]="galleryImages" class="layout-row flex-100 layout-wrap height-gallery ">
+                            <div class="tablet-header-img thumb-img m-r-10 thumb-img-dif flex-10 m-b-10  m-t-10" *ngFor="let galleryImage of galleryImages; let i= index">
+                                <i class="fa fa-close cursor-p" (click)="deleteGalleryImage('image',galleryImage.id)"></i>
+                                <img class="cursor-p" (click)="onClickImageZoom(i)" style="height:64px; width: 64px" src="{{galleryImage.image}}">
+                                <div *ngIf="pictureGalleries.image_description==1" (click)="showDescriptionDialog(galleryImage.id)" class="description-galllery">Description</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+                </div>
+            </div>
+
+            <!--            <footer>
+                <div class="">
+                </div>
+            </footer>-->
+        </form>
+    </p-dialog>
+    <!-- Add/Edit Picture Gallery Dialog END-->
+
+    <!-- Zoom Image Dialog START-->
+    <!--<p-dialog [(visible)]="zoomImageDialogDisplay" modal="modal" class="double-dialog app-dialog add-app s-tab-add">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div class="layout-column">
+            <img src="{{galleryImg}}">-->
+    <!--<p>Image {{imgPointer}} of {{totalGalleryImages}}</p>-->
+    <!--</div>
+    </p-dialog>-->
+    <div *ngIf="zoomImageDialogDisplay">
+        <ImageViewer [modalImages]="galleryImg" [imagePointer]="imgPointer" (cancelEvent)="cancelImageModel()"></ImageViewer>
+    </div>
+
+    <!-- Zoom Image Dialog END-->
+
+    <!-- Gallery Picture Description Dialog START-->
+    <p-dialog [draggable]="false"  header="Image Description" [(visible)]="galleryPicDescriptionDialogDisplay" modal="modal" class="double-dialog app-dialog add-app s-tab-add"
+        (onAfterHide)="hideDescDialog()">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onGalleryPictureDescriptionSubmit()">
+            <div class="layout-column">
+                <!--<ckeditor *ngIf="showEditor" [(ngModel)]="galleryPictureData.description"></ckeditor>-->
+                <div id="description-editor"></div>
+                <div class="save-btn">
+                    <button class="green-btn " type="submit">SAVE</button>
+                </div>
+            </div>
+
+            <!--            <footer>
+                <div class="">
+                </div>
+            </footer>-->
+        </form>
+    </p-dialog>
+    <!-- Gallery Picture Description Dialog END-->
+
+    <!-- Delete Picture Gallery Dialog START -->
+    <p-dialog  [draggable]="false" header="Delete Picture Gallery ?" [(visible)]="showDeleteDialog" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <p style="color: #000">Are you sure you want to delete the selected picture gallery ?</p>
+        <footer>
+            <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+                <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deletePictureGallery()">Yes</a>
+                <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteDialog=false">No</a>
+            </div>
+        </footer>
+    </p-dialog>
+    <!-- Delete Picture Gallery Dialog END -->
+
+    <!-- Import Picture Gallery Dialog START -->
+    <p-dialog [draggable]="false"  header="Import Gallery" [(visible)]="importGalleryDialogDisplay" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <form (ngSubmit)="onImportGallerySubmit()">
+            <div class="layout-column">
+                <div class="m-t-10 m-b-15">Import Your Images</div>
+                <div class="web-bg layout-row " (click)="onImportTypeClick(IMPORT_TYPE_FACEBOOK)">
+                    <div class="layout-row  flex-25 layout-align-start-center">
+
+                        <p-radioButton name="importType" [value]="IMPORT_TYPE_FACEBOOK" [(ngModel)]="importGalleryData.importTypeService"></p-radioButton>
+
+                        <label class="m-l-10">Facebook Page URL</label>
+
+
+                    </div>
+                    <div class="layout-row  flex-60 layout-align-start-center">
+                        <input class="input-class" type="text" [disabled]="isFBDisabled" [(ngModel)]="importGalleryData.fbUrl">
+                        <i class="fa fa-info-circle l ion-left" tooltip="Please enter in a Facebook Page url. For example, https://www.facebook.com/CocaColaUnitedStates is the Facebook Page url for Coke. We'll use the Facebook API to easily import events into your application."
+                            tooltipPlacement="right" aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="m-t-10  m-b-15">To learn more about Facebook Pages <a>click here</a></div>
+                <div class="web-bg layout-row layout-align-start-center" (click)="onImportTypeClick(IMPORT_TYPE_WEBSITE)">
+                    <div class="layout-row  flex-25 layout-align-start-center">
+
+                        <p-radioButton name="importType" [value]="IMPORT_TYPE_WEBSITE" [(ngModel)]="importGalleryData.importTypeService"></p-radioButton>
+
+                        <label class="m-l-10">Website URL</label>
+
+
+                    </div>
+                    <div class="layout-row flex-60 layout-align-start-center">
+                        <input class="input-class" type="text" [disabled]="isWebDisabled" [(ngModel)]="importGalleryData.webUrl">
+                        <i class="fa fa-info-circle l ion-left" tooltip="We'll scan your website and import any event based content" tooltipPlacement="right"
+                            aria-hidden="true"></i>
+                    </div>
+                </div>
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg" type="submit">Import</button>
+                </div>
+            </div>
+
+            <!--            <footer>
+                <div class="">
+                </div>
+            </footer>-->
+        </form>
+    </p-dialog>
+    <!-- Import Picture Gallery Dialog END -->
+
+    <!-- Import Picture Gallery No Image Response Dialog START -->
+    <p-dialog [draggable]="false"  header="Import Gallery" [(visible)]="importGalleryNoImgDialogDisplay" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+
+        <div class="layout-column no-img-found">
+            <div class="border-b">
+                <div class="layout-row m-b-15 layout-align-center-center">
+                    <img src="../../assets/img/warning.png" width="150px" />
+                </div>
+                <h6 class="layout-row m-b-15 layout-align-center-center">Sorry no images were found.</h6>
+
+                <p class="layout-row m-b-15 layout-align-center-center">We scanned through the website and were unable to find any images.</p>
+            </div>
+        </div>
+
+        <footer>
+            <div class="">&nbsp;</div>
+        </footer>
+    </p-dialog>
+    <!-- Import Picture Gallery No Image Response Dialog END -->
+
+    <!-- Import Picture Gallery Image Download Progress Dialog START -->
+    <p-dialog [draggable]="false"  header="Import Gallery" [(visible)]="importGalleryImgDownloadDialogDisplay" modal="modal" class="app-dialog add-app">
+        <div class="layout-column found-img-wrap">
+            <div class="layout-row m-b-15 layout-align-center-center">
+                <img src="../../assets/img/image_icon.png" width="150px" />
+            </div>
+
+            <div class="layout-row m-b-15 layout-align-center-center">
+                <p-progressBar [value]="progress" class="layout-row flex-50"></p-progressBar>
+            </div>
+
+            <div class="layout-row m-b-15 layout-align-center-center">
+                <p>Downloaded {{currentImg}} out of {{totalImg}} images found on the webpage</p>
+            </div>
+            <div class="save-btn">
+                <button *ngIf="downloadComplete" class="blue-btn btn btn-lg" (click)="onDownloadComplete()">Ok</button>
+                <button *ngIf="downloadInProgress" class="blue-btn btn btn-lg" (click)="onImportGalleryCancel()">Cancel</button>
+            </div>
+        </div>
+
+        <!--        <footer>
+            <div class="">
+            </div>
+        </footer>-->
+    </p-dialog>
+    <!-- Import Picture Gallery Image Download Progress Dialog END -->
+
+    <!-- Import Picture Gallery Facebook Album List Dialog START -->
+    <p-dialog  [draggable]="false" header="Import Gallery" [(visible)]="importGalleryFBAlbumListDialogDisplay" modal="modal" class="app-dialog add-app">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+
+        <div class="layout-row m-b-15 layout-align-space-between">
+            <p>Which albums would you like to import</p>
+        </div>
+
+        <div class="layout-row m-b-15 layout-align-space-between">
+            <div class="layout-column flex-5">&nbsp;</div>
+            <div class="layout-column flex-60">Album Title</div>
+            <div class="layout-column flex-30">Album's Image</div>
+        </div>
+        <div class="layout-row m-b-15 layout-align-space-between" *ngFor="let album of fbAlbumList; let i = index;">
+            <div class="layout-column flex-5">
+                <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="selectedFBAlbumList[album.id]">
+            </div>
+            <div class="layout-column flex-60">
+                {{album.name}}
+            </div>
+            <div class="layout-column flex-30">
+                {{album.count}}
+            </div>
+        </div>
+
+        <div class="save-btn">
+            <button *ngIf="!albumDownloadInProgress" class="blue-btn btn btn-lg" (click)="onSubmitFBAlbumList(selectedFBAlbumList)">Import</button>
+            <button *ngIf="albumDownloadInProgress" class="blue-btn btn btn-lg">Importing Now</button>
+            <button *ngIf="albumDownloadInProgress" class="blue-btn btn btn-lg">Cancel</button>
+        </div>
+        <!--        <footer>
+            <div class="">
+            </div>
+        </footer>-->
+    </p-dialog>
+    <!-- Import Picture Gallery Facebook Album List Dialog END -->
+</div>

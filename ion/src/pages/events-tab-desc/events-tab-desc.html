@@ -1,0 +1,208 @@
+<!--
+  Generated template for the EventsTabDesc page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{title}}</ion-title>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="onAddEventClick()" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="add"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-navbar>
+
+</ion-header>
+
+
+<ion-content [style.background]="'url(' + bgImage + ')'">
+    <md-spinner [state]="loader || commentLoader" [type]="'fixed'"></md-spinner>
+    <div class="header-image" [class.header-no-image]="!itemData.phone_header_image">
+        <ion-grid>
+            <ion-row *ngIf="itemData.address_sec_1">{{itemData.address_sec_1}}</ion-row>
+            <ion-row *ngIf="itemData.address_sec_2">{{itemData.address_sec_2}}</ion-row>
+        </ion-grid>
+       <div  *ngIf="itemData.phone_header_image"  class="head-wrp-to">
+            <img [src]="itemData.phone_header_image">
+       </div>
+    </div>
+    <ion-row class="padd-5 data-dtl-evt" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar">
+
+        <ion-col width-25 class="text-center">
+            <ion-row class="text-center">{{images.length}}</ion-row>
+            <ion-row class="text-center"> {{'EVENTS.PHOTOS' | translate}}</ion-row>
+        </ion-col>
+        <ion-col width-25 class="text-center">
+            <ion-row class="text-center">{{comments.length}}</ion-row>
+            <ion-row class="text-center"> {{'COMMENTS' | translate}}
+            </ion-row>
+
+        </ion-col>
+        <ion-col width-25 class="text-center">
+
+            <span *ngIf="event_type=='upcoming'"> <ion-row class="text-center">{{goings.length}}</ion-row>
+            <ion-row class="text-center"> {{'EVENTS.GOING' | translate}}</ion-row> </span>
+            <span *ngIf="event_type=='past'"> <ion-row class="text-center">{{goings.length}}</ion-row>
+            <ion-row class="text-center"> {{'EVENTS.WENT' | translate}}</ion-row> </span>
+        </ion-col>
+        <ion-buttons end>
+            <button ion-button icon-only (click)="onSharingClick()" clear [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text">
+                <ion-icon name="ios-share-outline"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-row>
+
+    <ion-row>
+        <ion-col class="text-center">
+            <button ion-button (click)="onGoingClick()" [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+                [style.color]="globalService.initData.globalStyleSettings.features.button_text">
+                         <span *ngIf="event_type=='upcoming'">{{'EVENTS.IGOING' | translate}}</span>
+                          <span *ngIf="event_type=='past'">{{'EVENTS.IWENT' | translate}}</span>
+      </button>
+        </ion-col>
+    </ion-row>
+    <div padding showWhen="ios">
+        <ion-segment [(ngModel)]="tabs">
+            <ion-segment-button value="description">
+                {{'EVENTS.ABOUT' | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="comments" *ngIf="globalService.appScreenConfigData && globalService.appScreenConfigData?.user_comment_ability">
+                {{'COMMENTS' | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="attend">
+                {{'EVENTS.ATTEND' | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="gallery">
+                {{'EVENTS.GALLERY' | translate}}
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+
+    <div showWhen="android">
+        <ion-segment [(ngModel)]="tabs">
+            <ion-segment-button value="description">
+                {{'EVENTS.ABOUT' | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="comments" *ngIf="globalService.appScreenConfigData && globalService.appScreenConfigData?.user_comment_ability">
+                {{'COMMENTS' | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="attend">
+                 {{'EVENTS.ATTEND' | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="gallery">
+                {{'EVENTS.GALLERY' | translate}}
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+    <div [ngSwitch]="tabs">
+        <div class="map-wrap" [class.invisible]="tabs !== 'description'">
+            <div id="map"></div>
+        </div>
+        <div *ngSwitchCase="'description'">
+            <div>
+                <div id="address-overlay" class="padd-5" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+                    [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+                    <h3>{{itemData.name}}</h3>
+                    <span class="padd-5">  <ion-icon name="time"></ion-icon>&nbsp;{{itemData.event_start_time | datetimeformatpipe}} - {{itemData.event_end_time | datetimeformatpipe}}</span>
+                    <span class="padd-5" tappable (click)="onGetDirectionClick(itemData.m_lat, itemData.m_long)"><ion-icon name="ios-redo"></ion-icon> {{'EVENTS.GETDIRECTION' | translate}}</span>
+                    <ion-list-header class="m-tb-10" [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">{{'DESCRIPTION' | translate}}</ion-list-header>
+                    <span class="padd-5" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+                        [innerHTML]="itemData.description"></span>
+                </div>
+            </div>
+        </div>
+
+        <div *ngSwitchCase="'comments'" class="comment-list">
+            <ion-row [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+                <ion-col padding [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text">
+                    {{comments.length}} {{'COMMENTSWITHLENGTH' | translate}}
+                </ion-col>
+                <ion-col>
+                    <button ion-button icon-left (click)="onPostCommentClick()" [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+                        [style.color]="globalService.initData.globalStyleSettings.features.button_text">
+                            <ion-icon name="text"></ion-icon>
+                            {{'POSTBUTTONTEXT' | translate}}
+                        </button>
+                </ion-col>
+            </ion-row>
+            <ion-list *ngIf="comments.length">
+                <ion-item *ngFor="let comment of comments; let i = index;" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar))| hex2rgba">
+                    <ion-avatar *ngIf="comment.picture && comment.picture !== ''" item-left>
+                        <img [src]="comment.picture">
+                    </ion-avatar>
+                    <ion-icon *ngIf="!comment.picture || comment.picture === ''" name="person" item-left></ion-icon>
+                    <span>
+                        <h2 [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{comment.name}}</h2>
+                        <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{comment.comment}}</p>
+                        </span>
+                    <span item-right>
+                  <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{comment.created_at | servertimeformatpipe}}</p>
+                        </span>
+                </ion-item>
+            </ion-list>
+            <ion-item *ngIf="!comments.length" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+                [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+               {{'NOCOMMENTSTEXT' | translate}}
+            </ion-item>
+        </div>
+
+        <div *ngSwitchCase="'attend'" class="comment-list">
+            <ion-row [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+                <ion-col padding [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text">
+                    {{goings.length}}   {{'EVENTS.GOINGWITHLENGTH' | translate}}
+                </ion-col>
+            </ion-row>
+            <ion-list *ngIf="goings.length">
+                <ion-item *ngFor="let going of goings; let i = index;" [style.background-color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+                    <ion-avatar *ngIf="going.picture && going.picture !== ''" item-left>
+                        <img [src]="going.picture">
+                    </ion-avatar>
+                    <ion-icon *ngIf="!going.picture || going.picture === ''" name="person" item-left></ion-icon>
+                    <span>
+                            <h2 [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{going.name}}</h2>
+                            <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{going.description}}</p>
+                        </span>
+                    <span item-right>
+                            <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{going.created_at | servertimeformatpipe}}</p>
+                        </span>
+                </ion-item>
+            </ion-list>
+            <ion-item *ngIf="!goings.length" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+                [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+                {{'NOTHINGTEXT' | translate}}
+            </ion-item>
+        </div>
+
+        <div *ngSwitchCase="'gallery'" class="comment-list">
+            <ion-row [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+                <ion-col padding [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text">
+                    {{images.length}}  {{'EVENTS.PHOTOS' | translate}}
+                </ion-col>
+                <ion-col>
+                    <button ion-button icon-left (click)="addPhotoClick()" [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+                        [style.color]="globalService.initData.globalStyleSettings.features.button_text">
+                           {{'EVENTS.ADDPHOTOS' | translate}}
+                        </button>
+                </ion-col>
+            </ion-row>
+            <ion-grid *ngIf="images.length">
+                <ion-row wrap>
+                    <ion-col center text-center width-33 *ngFor="let image of images; let i = index;">
+                        <img class="photo" [src]="image.image" (click)="onPictureClick(i, images)">
+                    </ion-col>
+                </ion-row>
+            </ion-grid>
+            <ion-item *ngIf="!images.length" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+                [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+                 {{'NOTHINGTEXT' | translate}}
+            </ion-item>
+        </div>
+    </div>
+</ion-content>

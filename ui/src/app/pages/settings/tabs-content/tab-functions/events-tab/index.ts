@@ -1,0 +1,1 @@
+export * from './events-tab.component.ts';

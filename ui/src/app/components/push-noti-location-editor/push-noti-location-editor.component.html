@@ -1,0 +1,32 @@
+<div class="map-wrap">
+    <div class="layout-row add-app layout-align-space-between">
+        <div class="layout-row flex-45 add-app m-r-10">
+            <label class="m-r-10">Latitude
+            </label>
+            <input class="input-class" type="text" [value]="lat" readonly="readonly">
+        </div>
+        <div class="layout-row flex-45 add-app m-r-10">
+            <label class="m-r-10">Longitude
+            </label>
+            <input class="input-class" type="text" [value]="long" readonly="readonly">
+        </div>
+        <div class="layout-row flex-45 add-app m-r-10">
+            <label class="m-r-10">Span
+            </label>
+            <input class="input-class" type="text" [value]="span" readonly="readonly">
+            
+        </div>
+        <div class="layout-row flex-49 add-app m-r-10 layout-align-end-center">
+            <p-dropdown class="border-all m-l-10 flex-100 push-select" [options]="type" (onChange)="onType($event)" [(ngModel)]="typeSelected"></p-dropdown>
+            
+        </div>
+    </div>
+    <div class="layout-row layout-align-space-between add-app">
+        <label class="layout-row">Address
+        <i class="fa fa-info-circle l m-l-10" tooltip="Enter the address here" tooltipPlacement="right" aria-hidden="true"></i>
+    </label>
+        <input id="push-noti-address-input" [(ngModel)]="address" class="input-class flex-85" type="text" placeholder="Enter the address here">
+    </div>
+    <div id="push-noti-map" class="layout-row" [style.width]="'100%'" [style.height.px]="'250'">
+    </div>
+</div>

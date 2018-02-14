@@ -1,0 +1,159 @@
+<div class="cart-email-tab">
+    <div class="layout-row layout-align-space-between-center">
+        <button class="btn green-btn" (click)="onSaveClickEmailCart()">SAVE EMAIL OPTIONS</button>
+    </div>
+    <div class="layout-column  m-t-10 border-b-padding">
+        <tabset class="container-tab-detail email-wrap-tab text-area-align" #emailItemTabset>
+            <tab heading="Customer Confirmation" class="email-wrap-tab-tabset-wrap">
+                <div class="layout-row layout-align-start-start m-t-10 emails-confirmation">
+                    <label class="flex-30">
+                        Subject
+                    </label>
+                    <input class="input-class flex-50" type="text" [(ngModel)]="emailCustomerConfirmation.subject" placeholder="Subject">
+                </div>
+                <div class="layout-column layout-align-start-start m-t-10">
+                    <label class="flex-100">
+                        Message Template
+                        <i class="fa fa-info-circle l" tooltip="Email Message format and body. If nothing is customized, the original email template will be sent."
+                            tooltipPlacement="right" aria-hidden="true"></i>
+                    </label>
+                    <div class="layout-column m-b-20 flex-100" style="width:100%">
+                        <div id="description-editor" class="dev-customer-confirmation-editor"></div>
+                    </div>
+                </div>
+                <div class="layout-column layout-align-start-start m-t-10">
+                    <label class="flex-100">
+                        Email Objects
+                        <i class="fa fa-info-circle l" tooltip="You are able to add any of the 'Email Objects' below to the Message body." tooltipPlacement="right"
+                            aria-hidden="true"></i>
+                    </label>
+                    <textarea class="input-class flex-100" [disabled]="true" style="width:100%;">
+                            {CHECKOUT_METHOD}
+                            {ORDER_NO}
+                            {ORDER_TIME}
+                            {ORDEREDITEMS_LIST}
+                            {OPTIONS}
+                            {SPECIAL_DELIVERY_DETAILS}
+                            {DELIVERY_EMAIL}
+                            {TAX}
+                            {TOTAL}
+                            {SHIPPING_ADDRESS}
+                            {SHIPPING_CHARGES}
+                            {DELIVERY_TYPE}
+                    </textarea>
+                </div>
+            </tab>
+
+            <tab heading="Admin Receipt" class="email-wrap-tab-tabset-2 emails-confirmation">
+                <div class="layout-row layout-align-start-center m-t-10">
+                    <label class="flex-30">
+                        Admin Email
+                        <i class="fa fa-info-circle l" tooltip="New orders will be emailed to this address." tooltipPlacement="right" aria-hidden="true"></i>
+                    </label>
+                    <input class="input-class flex-50 m-t-10" type="text" [(ngModel)]="emailAdminReceipt.admin_email">
+                </div>
+                <div class="layout-row layout-align-start-center m-t-10">
+                    <label class="flex-30">
+                        Subject
+                    </label>
+                    <input class="input-class flex-50 m-t-10" type="text" [(ngModel)]="emailAdminReceipt.subject" placeholder="Subject">
+                </div>
+                <div class="layout-column layout-align-start-start m-t-10">
+                    <label class="flex-30">
+                        Message Template
+                        <i class="fa fa-info-circle l" tooltip="Email Message format and body. If nothing is customized, the original email template will be sent."
+                            tooltipPlacement="right" aria-hidden="true"></i>
+                    </label>
+                    <div class="layout-column" style="width:100%">
+                        <div id="description-editor" class="dev-admin-receipt-editor"></div>
+                    </div>
+                </div>
+                <div class="layout-column layout-align-start-start m-t-10">
+                    <label class="flex-30">
+                        Email Objects
+                        <i class="fa fa-info-circle l" tooltip="You are able to add any of the 'Email Objects' below to the Message body." tooltipPlacement="right"
+                            aria-hidden="true"></i>
+                    </label>
+                    <textarea class="input-class flex-50" [disabled]="true" style="width:100%">
+                            {CHECKOUT_METHOD}
+                            {ORDER_NO}
+                            {ORDER_TIME}
+                            {ORDEREDITEMS_LIST}
+                            {OPTIONS}
+                            {SPECIAL_DELIVERY_DETAILS}
+                            {DELIVERY_EMAIL}
+                            {TAX}
+                            {TOTAL}
+                            {SHIPPING_ADDRESS}
+                            {SHIPPING_CHARGES}
+                            {DELIVERY_TYPE}
+                    </textarea>
+                </div>
+            </tab>
+
+            <tab heading="Custom Guides" class="email-wrap-tab-tabset-3 emails-confirmation">
+                <div class="layout-column layout-align-start-start m-t-10">
+                    <label class="flex-30">
+                        Message Template
+                        <i class="fa fa-info-circle l" tooltip="Email Message format and body. If nothing is customized, the original email template will be sent."
+                            tooltipPlacement="right" aria-hidden="true"></i>
+                    </label>
+                    <div class="layout-column m-b-20" style="width:100%;">
+                        <div id="description-editor" class="dev-custom-guides-editor"></div>
+                    </div>
+                </div>
+                <div class="layout-column layout-align-start-start m-t-10">
+                    <label class="flex-30">
+                        Email Objects
+                        <i class="fa fa-info-circle l" tooltip="You are able to add any of the 'Email Objects' below to the Message body." tooltipPlacement="right"
+                            aria-hidden="true"></i>
+                    </label>
+                    <textarea class="input-class flex-50 m-t-10" [disabled]="true" style="width:100%;">
+                            {COST}
+                            {CURRENCY}
+                            {ORDER_NAME}
+                            {ORDER_NOTE}
+                            {OPTIONS}
+                            {QUANTITY}
+                    </textarea>
+                </div>
+                <div class="layout-row layout-align-start-center m-t-10">
+                    <label class="flex-30">
+                        Customize Specific Text
+                    <i class="fa fa-info-circle l" tooltip="You are able to customize 'Checkout Method' using different languages and text. For Example: Users can type any language or text within these feilds, so they are not hard coded in English" tooltipPlacement="right" aria-hidden="true"></i>
+                    </label>
+                </div>    
+                <div class="layout-row layout-align-start-center m-t-10">
+                    <label class="flex-30">
+                        Shipping Method
+                    </label>
+                    <input class="input-class flex-50 m-t-10" type="text" [(ngModel)]="emailCustomGuides.shipping_method">
+                </div>
+                <div class="layout-row layout-align-start-center m-t-10">
+                    <label class="flex-30">
+                        Pickup Method
+                    </label>
+                    <input class="input-class flex-50 m-t-10" type="text" [(ngModel)]="emailCustomGuides.pickup_method" placeholder="Subject">
+                </div>
+                <div class="layout-row layout-align-start-center m-t-10">
+                    <label class="flex-30">
+                        Digital Method
+                    </label>
+                    <input class="input-class flex-50 m-t-10" type="text" [(ngModel)]="emailCustomGuides.digital_method" placeholder="Subject">
+                </div>
+                <div class="layout-row layout-align-start-center m-t-10">
+                    <label class="flex-30">
+                        Card
+                    </label>
+                    <input class="input-class flex-50 m-t-10" type="text" [(ngModel)]="emailCustomGuides.card" placeholder="Subject">
+                </div>
+                <div class="layout-row layout-align-start-center m-t-10">
+                    <label class="flex-30">
+                        Cash
+                    </label>
+                    <input class="input-class flex-50 m-t-10" type="text" [(ngModel)]="emailCustomGuides.cash" placeholder="Subject">
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</div>

@@ -1,0 +1,477 @@
+<div class="cart-inventory-tab">
+
+    <div *ngIf="categoryList.length" class="pad-12-12 layout-column layout-align-space-between bg-2">
+        <div class="layout-row flex-100 category-view-display view-list-grid">
+            <div class="flex-50">
+                <p>Category View Display
+                    <i class="fa fa-info-circle l" tooltip="Choose the view option for the category page." tooltipPlacement="right" aria-hidden="true"></i>
+                </p>
+            </div>
+
+            <div class="flex-50 layout-row grid-list layout-align-end-center">
+                <button class="grid-list grid" type="button" [class.active]="settings.category_view_display == CATEGORY_VIEW_DISPLAY.GRID"
+                    (click)="onCategoryViewDisplayClick(CATEGORY_VIEW_DISPLAY.GRID)">Grid
+                </button>
+                <button class="grid-list list" type="button" [class.active]="settings.category_view_display == CATEGORY_VIEW_DISPLAY.LIST"
+                    (click)="onCategoryViewDisplayClick(CATEGORY_VIEW_DISPLAY.LIST)">List
+                </button>
+                <button class="green-btn m-l-10" type="button" (click)="onUpdateSettingsClick()">Update</button>
+            </div>
+        </div>
+        <div class="layout-row flex-100">
+            <p>You have {{categoryList.length}} Category(s)
+        </div>
+        <div class="layout-row m-b-10 layout-align-end-center flex-100 add-category-section">
+
+            <button class="set-btn" type="button" (click)="onAddCategoryClick()">Add Category</button>
+            <button class="set-btn m-l-10" type="button" (click)="onAddItemClick()">Add Item</button>
+            <button class="red m-l-10" style="padding:7px 9px" [class.checkTrue]="enableDeleteButton" [disabled]="!enableDeleteButton"
+                (click)="onDeleteClick()">
+                <i aria-hidden="true" class="fa fa-trash"></i>
+            </button>
+        </div>
+
+        <div [dragula]="CATEGORIES_BAG" [dragulaModel]="categoryList" class="layout-column flex-70 layout-align-start-start tab_section">
+
+            <div *ngFor="let category of categoryList" class="layout-column tab-wrapper" (click)="onCategoryDivClick(category.id)">
+                <div class="tab-detail flex-100 layout-row m-t-10 inventory-tab-header" [class.active]="activeCategory === category.id">
+                    <div class="layout-row flex-90 pad-12-12 tab-stauts-cheak layout-align-start-center">
+                        <div class="icon-cheak m-l-10 layout-align-center-center">
+                            <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                                <input type="checkbox" class="ng-valid ng-dirty ng-touched" [(ngModel)]="selectedCategories[category.id]" (click)="onCategoryCheck(category.id)">
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class=" m-l-10 layout-align-center-center">
+                            <span>
+                                <i aria-hidden="true" class="fa fa-arrows dev-cat-drag-handle"></i>
+                            </span>
+                        </div>
+                        <div class="flex-15 layout-align-center-center layout-row">
+                            <div class=" layout-align-center-center">
+                                <label class="switch m-r-10 m-b-0">
+                                    <input type="checkbox" [checked]="category.status === CATEGORY_STATUS.ENABLED" (click)="onCategoryStatusToggle(category)">
+                                    <div class="slider round"></div>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="layout-row flex-60 m-l-10 layout-align-start-start">
+                            <div class="flex-60">{{category.name}}</div>
+                            <div class="layout-row m-r-10 flex-40 item-qty">{{itemList[category.id]?.length || 0}} item(s)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-stauts-cheak layout-row flex-10 layout-align-center-center">
+                        <!-- <div class="icon-name flex-65 layout-align-start-center layout-row">( Shopping Cart )</div> -->
+
+                        <div class="edit-app c-p" (click)="onEditCategoryClick(category)">
+                            <i aria-hidden="true" class="fa fa-pencil"></i>
+                        </div>
+                        <div class="invertory-item-dropdown m-l-10" [class.down]="openedAccordion !== category.id" (click)="onAccordionArrowClick(category.id)"></div>
+                    </div>
+                </div>
+
+                <div *ngIf="openedAccordion === category.id && itemList[category.id]" [dragula]="ITEMS_BAG" [dragulaModel]="itemList[category.id]"
+                    class=" tab-detail-child layout-column inventory-tab-child">
+                    <div *ngFor="let item of itemList[category.id]" class="tab-detail  flex-100  layout-row">
+                        <div class="layout-row flex-90 pad-12-12 tab-stauts-cheak">
+                            <div class="icon-cheak m-l-10 layout-align-center-center layout-row">
+                                <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                                    <input type="checkbox" class="ng-valid ng-dirty ng-touched" [(ngModel)]="selectedItems[category.id][item.id]" (click)="onItemCheck(category.id)">
+                                    <span></span>
+                                </label>
+                            </div>
+                            <div class="layout-row m-l-10 layout-align-center-center">
+                                <span class="layout-row layout-align-center-center">
+                                    <i aria-hidden="true" class="fa fa-arrows dev-item-drag-handle"></i>
+                                </span>
+                            </div>
+                            <div class="flex-15 layout-align-center-center layout-row">
+                                <div class=" layout-align-center-center layout-row">
+                                    <label class="switch m-r-10 m-b-0">
+                                        <input type="checkbox" [checked]="item.status === ITEM_STATUS.ENABLED" (click)="onItemStatusToggle(item)">
+                                        <div class="slider round"></div>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="layout-row flex-60 m-l-10 layout-align-space-between-center">
+                                <div class="">{{item.name}}</div>
+                            </div>
+                        </div>
+                        <div class="tab-stauts-cheak layout-row flex-10 pad-12-12 layout-align-center-center">
+                            <!-- <div class="icon-name flex-65 layout-align-start-center layout-row">( Shopping Cart )</div> -->
+
+                            <div class="edit-app c-p layout-align-center-center" (click)="onEditItemClick(item.id)">
+                                <i aria-hidden="true" class="fa fa-pencil"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--tab-wrapper-->
+        </div>
+    </div>
+
+    <div *ngIf="!categoryList.length" class="nothing-added-section">
+        <span class="layout-row m-b-20 layout-align-center-center text-size"> Nothing to see here! </span>
+        <span class="m-b-20 something-text layout-align-center-center">Looks like you haven't added any menus for your users just yet. Need help adding menus? Check out our help information
+            on how to do so!</span>
+        <div class="layout-column layout-align-center-center flex-100 add-category-section">
+            <button class="set-btn m-b-10" type="button" (click)="onAddCategoryClick()">Add Category</button>
+            <button class="set-btn" type="button" (click)="onAddItemClick()">Add Item</button>
+        </div>
+    </div>
+</div>
+
+<p-dialog [draggable]="false" [header]="categoryFormHeader" [(visible)]="showCategoryFormDialog" modal="modal" class="app-dialog add-app s-tab-add menu-tb-ad image-slider-container">
+    <form (ngSubmit)="onCategoryFormSubmit()" class="white-bg web-bg border-all form-ui" [class.slidemaincontainer]="showCategoryImageSelector">
+        <div class="layout-column m-b-20">
+            <div class="layout-column m-b-10">
+                <label>Category Name
+                    <span class="required">*</span>
+                </label>
+                <input class="input-class flex-100" type="text" [(ngModel)]="category.name" required="required">
+            </div>
+            <div class="layout-row layout-align-space-between ">
+                <div class="layout-column flex-45">
+                    <label>
+                        Image of Category
+                        <i class="fa fa-info-circle l" tooltip="Recommended size '750px x 260px'." tooltipPlacement="right" aria-hidden="true"></i>
+                    </label>
+                </div>
+                <div class="layout-column flex-45">
+                    <button type="button" class="green-btn" (click)="toggleCategoryImageSelector()">{{category.image ? 'Edit' : 'Add'}}</button>
+                </div>
+            </div>
+            <div class="layout-column m-b-10">
+                <label>Or Type The URL</label>
+                <input class="input-class flex-100" type="text" [(ngModel)]="category.image_url">
+            </div>
+        </div>
+        <footer>
+            <div class="">
+                <div class="save-btn">
+                    <button class="blue-btn btn" type="submit">SAVE</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+
+    <div class="sidebar-image-container" [class.opened-side]="showCategoryImageSelector">
+        <div *ngIf="showCategoryImageSelector">
+            <div *ngIf="!categoryImagesRetrieved" class="fm-spinner">
+                <div class="fm-double-bounce1"></div>
+                <div class="fm-double-bounce2"></div>
+            </div>
+            <template [ngIf]="categoryImagesRetrieved">
+                <div class="head-body-container">
+                    <div class="upper-fixede-box" fxLayout="column" fxLayoutAlign="center center">
+                        <div class="border-data">
+                            <input type="file" class="file-styled" (change)="onCategoryImageChange($event)" multiple>
+                            <span class="text-value">Drag Here Or</span>
+                            <span class="text-value">
+                                <div class="input-file">
+                                    <span class="legitRipple" style="user-select: none;">Browse</span>
+                        </div>
+                        </span>
+                        <span class="text-value">Recommended size '750px x 260px'.</span>
+                    </div>
+                </div>
+                <div class="sidebar-body add-category-body">
+                    <div class="body-image" *ngFor="let image of catImagesList;let i=index" [class.selected]="category.image === image.name"
+                        (click)="onCategoryImageClick(image.name)">
+                        <div class="uplaoded-image">
+                            <img [src]="image.url">
+                        </div>
+                        <div class="flyup-overlay flyup-overlay-custom">
+                            <div class="flyup-overlay-inner">
+                                <a [href]="image.url" [download]="image.name" (click)="stopPropagation($event)" class="flyup-action flyup-download">
+                                        <i class="fa fa-download" aria-hidden="true"></i>
+                                    </a>
+                                <a (click)="onCategoryImageDeleteClick(image.name, i, $event)" class="flyup-action flyup-trash">
+                                        <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                    </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        </div>
+        <div class="sidebar-footer">
+            <button type="button" class="btn1" (click)="toggleCategoryImageSelector()">Done</button>
+        </div>
+        </template>
+
+    </div>
+    </div>
+
+</p-dialog>
+
+<p-dialog [draggable]="false" [header]="itemFormHeader" [(visible)]="showItemFormDialog" modal="modal" class="app-dialog add-app s-tab-add menu-tb-ad image-slider-container">
+    <form (ngSubmit)="onItemFormSubmit()" class="white-bg web-bg border-all form-ui" [class.slidemaincontainer]="showItemImageSelector">
+        <tabset class="container-tab-detail email-wrap-tab" #inventoryItemTabset>
+            <tab heading="DETAILS" class="email-wrap-tab-tabset-wrap">
+                <div class="layout-column m-b-20">
+                    <div class="layout-column m-b-10">
+                        <label>Item Name
+                            <span class="required">*</span>
+                        </label>
+                        <input class="input-class flex-100" type="text" [(ngModel)]="item.name" required="required" (invalid)="onItemFormInvalid()">
+                    </div>
+                    <div class="layout-column m-b-10">
+                        <label>Choose Category</label>
+                        <p-dropdown [options]="categoryOptions" [(ngModel)]="item.category_id" class="cat-drop"></p-dropdown>
+                    </div>
+                    <div class="layout-column m-b-10">
+                        <label>Item Description</label>
+                        <textarea class="input-class flex-100" [(ngModel)]="item.description"></textarea>
+                    </div>
+                    <div class="layout-row layout-align-space-between ">
+                        <div class="layout-column flex-45">
+                            <label>Item List Price(
+                                <span class="currency-symbol" [innerHTML]="service.currencySymbolList[currency] || currency"></span>)
+                                <span class="required">*</span>
+                            </label>
+                            <input class="input-class flex-100" type="text" [(ngModel)]="item.price" required="required" (invalid)="onItemFormInvalid()">
+                        </div>
+                        <div class="layout-column flex-45">
+                            <label class="switch m-r-10 m-b-0">
+                                <input type="checkbox" [(ngModel)]="item.is_tax_exempted">
+                                <div class="slider round"></div>
+                            </label>
+                            <span class="m-l-10">Is Tax Exempted</span>
+                        </div>
+                    </div>
+                    <div class="layout-row layout-align-space-between ">
+                        <div class="layout-column flex-45">
+                            <label>Item Inventory
+                                <span class="required">*</span>
+                            </label>
+                            <input class="input-class flex-100" type="text" [(ngModel)]="item.inventory" required="required" (invalid)="onItemFormInvalid()">
+                        </div>
+                    </div>
+                </div>
+            </tab>
+
+            <tab heading="CUSTOMIZE" class="email-wrap-tab-tabset-2">
+                <div class="layout-row layout-align-space-between-center m-t-10">
+                    <div class="layout-row layout-align-start-center">
+                        <label class="custom-checkbox nowrap  layout-row layout-align-center-center">
+                            <input type="checkbox" [(ngModel)]="itemSizesCheckAllToggle" (click)="onItemSizeSelectAllCheck()">
+                            <span>&nbsp;</span>
+                        </label> Select All
+                    </div>
+                    <div class="layout-row layout-align-space-between-center">
+                        <button class="green-btn" type="button" (click)="onAddNewSizeClick()">Add New Size
+                        </button>
+                        <span class="lastspan-out m-l-10">
+                            <button type="button" class="red" [class.checkTrue]="selectedItemSizes.length > 0 && selectedItemSizes.indexOf(true) !== -1"
+                                (click)="onDeleteItemSizesClick()">
+                                <i class="fa fa-trash" title="delete"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div [dragula]="ITEM_SIZES_BAG" [dragulaModel]="itemSizes" class="layout-column flex-100 layout-align-start-start tab_section">
+                    <div *ngFor="let size of itemSizes;let i=index" class="layout-column tab-wrapper flex-100" style="width:100%;">
+                        <div class="tab-detail flex-100 layout-row m-t-10 customize-tab-details">
+                            <div class="layout-row flex-100 pad-12-12 tab-stauts-cheak layout-align-start-center">
+                                <div class="icon-cheak m-l-10 layout-align-center-center">
+                                    <label class="custom-checkbox nowrap layout-row layout-align-start-center">
+                                        <input type="checkbox" class="ng-valid ng-dirty ng-touched" [(ngModel)]="selectedItemSizes[i]" (click)="onItemSizeCheck()">
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class=" m-l-10 layout-align-center-center">
+                                    <span>
+                                        <i aria-hidden="true" class="fa fa-arrows dev-item-size-drag-handle"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-30 layout-align-center-center layout-row m-l-10">
+                                    <div class="layout-column">
+                                        <input class="input-class flex-100" type="text" [(ngModel)]="size.title">
+                                    </div>
+                                </div>
+                                <div class="flex-15 layout-row m-l-10 layout-align-center-center">
+                                    <label>Size</label>
+                                </div>
+                                <div class="flex-30 layout-align-center-center layout-row">
+                                    <div class="layout-column">
+                                        <input class="input-class flex-100" type="text" [(ngModel)]="size.price">
+                                    </div>
+                                </div>
+                                <div class="flex-15 layout-row m-l-10 layout-align-center-center">
+                                    <label>Price(
+                                        <span class="currency-symbol" [innerHTML]="service.currencySymbolList[currency] || currency"></span>)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="layout-row layout-align-space-between-center m-t-10">
+                    <div class="layout-row layout-align-start-center">
+                        <label class="custom-checkbox nowrap  layout-row layout-align-center-center">
+                            <input type="checkbox" [(ngModel)]="itemOptionsCheckAllToggle" (click)="onItemOptionSelectAllCheck()">
+                            <span>&nbsp;</span>
+                        </label> Select All
+                    </div>
+                    <div class="layout-row layout-align-space-between-center">
+                        <button class="green-btn" type="button" (click)="onAddNewOptionClick()">Add New Option
+                        </button>
+                        <span class="lastspan-out m-l-10">
+                            <button type="button" class="red" [class.checkTrue]="selectedItemOptions.length > 0 && selectedItemOptions.indexOf(true) !== -1"
+                                (click)="onDeleteItemOptionsClick()">
+                                <i class="fa fa-trash" title="delete"></i>
+                            </button>
+                        </span>
+                    </div>
+                </div>
+                <div [dragula]="ITEM_OPTIONS_BAG" [dragulaModel]="itemOptions" class="layout-column flex-100 layout-align-start-start tab_section">
+                    <div *ngFor="let option of itemOptions;let i=index" class="layout-column tab-wrapper flex-100" style="width:100%;">
+                        <div class="tab-detail flex-100 layout-row m-t-10 customize-tab-details">
+                            <div class="layout-row flex-100 pad-12-12 tab-stauts-cheak layout-align-start-center">
+                                <div class="icon-cheak m-l-10 layout-align-center-center">
+                                    <label class="custom-checkbox nowrap layout-row layout-align-start-center">
+                                        <input type="checkbox" class="ng-valid ng-dirty ng-touched" [(ngModel)]="selectedItemOptions[i]" (click)="onItemOptionCheck()">
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class=" m-l-10 layout-align-center-center">
+                                    <span>
+                                        <i aria-hidden="true" class="fa fa-arrows dev-item-option-drag-handle"></i>
+                                    </span>
+                                </div>
+                                <div class="flex-30 layout-align-center-center layout-row  m-l-10">
+                                    <div class="layout-column">
+                                        <input class="input-class flex-100" type="text" [(ngModel)]="option.title">
+                                    </div>
+                                </div>
+                                <div class="flex-15 layout-row layout-align-center-center  m-l-10">
+                                    <label>Option</label>
+                                </div>
+                                <div class="flex-30 layout-align-center-center layout-row  m-l-10">
+                                    <div class="layout-column">
+                                        <input class="input-class flex-100" type="text" [(ngModel)]="option.charges">
+                                    </div>
+                                </div>
+                                <div class="flex-15 layout-row layout-align-center-center  m-l-10">
+                                    <label>Charges(
+                                        <span class="currency-symbol" [innerHTML]="service.currencySymbolList[currency] || currency"></span>)</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+
+            <tab heading="IMAGES OF ITEM" class="email-wrap-tab-tabset-3">
+                <div class="see-images-data">
+                    <div class="layout-row flex-100">
+                        <div>
+                            <div [style.background-image]="'url(' + itemImages[0]?.image_url + ')'">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-row flex-100 layoutdata">
+                        <div class="row-xs item-img-list-header">
+                            <div class="col-xs-3 mh">
+                                <div class="choose-all">
+                                    <!--<span class="checker">
+                                        <input type="checkbox" class="check-all" [(ngModel)]="itemImagesCheckAllToggle" (click)="onItemImageSelectAllCheck()">
+                                    </span>-->
+                                    <label class="custom-checkbox checker">
+                            <input type="checkbox" [(ngModel)]="itemImagesCheckAllToggle" (click)="onItemImageSelectAllCheck()">
+                            <span class="only-space">&nbsp;</span>
+                             Select All
+                        </label>
+                                    <!--<span>Select All</span>-->
+                                </div>
+                            </div>
+                            <div class="col-xs-6 mh">
+                                <label>Drag Images To Rearrange The Order</label>
+                            </div>
+                            <div class="col-xs-3 actionbtn-perform">
+                                <button type="button" class="btn-trash" [class.disabled-btn]="disableItemImageDeleteButton" (click)="onDeleteItemImagesClick()">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layout-row flex-100 layoutdata image-final" [dragula]="ITEM_IMAGES_BAG" [dragulaModel]="itemImages">
+                        <div *ngFor="let image of itemImages; let i=index" class="layout-column image-section" [class.dev-primary-image]="i === 0">
+                            <div class="image-header">
+                                <!--<span class="checkbox">
+                                    <input type="checkbox" name="check" [(ngModel)]="selectedItemImages[i]" (click)="onItemImageCheck(i)"> </span>-->
+
+                                <label class="custom-checkbox nowrap  layout-row layout-align-start-center checkbox">
+                            <input type="checkbox" [(ngModel)]="selectedItemImages[i]" (click)="onItemImageCheck(i)">
+                            <span class="only-space">&nbsp;</span>
+                        </label>
+                                <!--<span class="image-sec">Primary image</span>-->
+                                <div class="class-label"><label class="image-sec">Primary Image</label></div>
+                            </div>
+
+
+                            <div class="image-content" [style.background-image]="'url(' + image.image_url + ')'">
+                                <div class="photo-icons" (click)="toggleItemImageSelector(image)">
+                                    <img src="../../assets/img/icon_new_flyup.png">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+        <footer>
+            <div class="">
+                <div class="save-btn">
+                    <button class="blue-btn btn" type="submit">SAVE</button>
+                </div>
+            </div>
+        </footer>
+    </form>
+
+    <div class="sidebar-image-container" [class.opened-side]="showItemImageSelector">
+        <div *ngIf="showItemImageSelector">
+            <div *ngIf="!itemImagesRetrieved" class="fm-spinner">
+                <div class="fm-double-bounce1"></div>
+                <div class="fm-double-bounce2"></div>
+            </div>
+            <template [ngIf]="itemImagesRetrieved">
+                <div class="upper-fixede-box" fxLayout="column" fxLayoutAlign="center center">
+                    <div class="border-data">
+                        <input type="file" class="file-styled" (change)="onItemImageChange($event)" multiple>
+                        <span class="text-value">Drag Here Or</span>
+                        <span class="text-value">
+                            <div class="input-file">
+                                <span class="legitRipple" style="user-select: none;">Browse</span>
+                    </div>
+                    </span>
+                    <span class="text-value">Recommended size '500px x 500px'.</span>
+                </div>
+        </div>
+        <div class="sidebar-body">
+            <div class="body-image" *ngFor="let image of itemImagesList;let i=index" (click)="onItemImageClick(image)" [class.selected]="itemImageOnEdit.image === image.name">
+                <div class="uplaoded-image">
+                    <img [src]="image.url">
+                </div>
+                <div class="flyup-overlay flyup-overlay-custom">
+                    <div class="flyup-overlay-inner">
+                        <a [href]="image.url" [download]="image.name" (click)="stopPropagation($event)" class="flyup-action flyup-download">
+                                    <i class="fa fa-download" aria-hidden="true"></i>
+                                </a>
+                        <a (click)="onItemImageDeleteClick(image.name, i, $event)" href="javascript:void(0)" class="flyup-action flyup-trash">
+                                    <i class="fa fa-trash-o" aria-hidden="true"></i>
+                                </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="sidebar-footer">
+            <button type="button" class="btn1" (click)="toggleItemImageSelector()">Done</button>
+        </div>
+        </template>
+    </div>
+    </div>
+
+</p-dialog>

@@ -1,0 +1,96 @@
+<!--
+  Generated template for the AroundUs page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+    <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+        [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+        [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+        <ion-title *ngIf="searchIcon && tab_nav_type=='tab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]:title:title}}</ion-title>
+        <ion-title *ngIf="searchIcon && tab_nav_type=='subtab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+            [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.sub_tab_translation?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]:title:title}}</ion-title>
+        <ion-buttons end *ngIf="searchIcon">
+            <button (click)="search()" ion-button icon-only clear [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="search"></ion-icon>
+            </button>
+        </ion-buttons>
+        <template [ngIf]="state">
+            <ion-row>
+                <ion-searchbar placeholder="Search" [(ngModel)]="searching" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"></ion-searchbar>
+                <ion-buttons end>
+                    <button ion-button icon-only clear (click)="onCancel()" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                    <ion-icon name="close"></ion-icon>
+                </button>
+                </ion-buttons>
+            </ion-row>
+        </template>
+    </ion-navbar>
+
+</ion-header>
+<ion-content [style.background]="tabs === 'list' ? ('url(' + bgImage + ')') : null" [style.background-color]="tabs === 'map' ? 'rgba(0,0,0,0)' : null">
+    <div padding showWhen="ios">
+        <ion-segment [(ngModel)]="tabs">
+            <ion-segment-button value="map">
+                {{'AROUNDUS.MAP' | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="list">
+                {{'AROUNDUS.LIST' | translate}}
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+
+    <div showWhen="android">
+        <ion-segment [(ngModel)]="tabs">
+            <ion-segment-button value="map">
+                {{'AROUNDUS.MAP' | translate}}
+            </ion-segment-button>
+            <ion-segment-button value="list">
+                {{'AROUNDUS.LIST' | translate}}
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+
+    <div [ngSwitch]="tabs">
+        <div class="map-wrap" [class.invisible]="tabs !== 'map'">
+            <div id="map"></div>
+        </div>
+        <div *ngSwitchCase="'map'"></div>
+        <div *ngSwitchCase="'list'">
+            <md-spinner [state]="loader"></md-spinner>
+            <template [ngIf]="!loader">
+                <ion-list *ngFor="let item of (aroundUsLocation | eventfilterpipe:searching); let i = index;" (click)="onItemClick(item.id, item.name)">
+                    <button ion-item *ngIf="categoryStatus[item.around_us_id]" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar))| hex2rgba">  
+             <ion-avatar item-left>
+     <span> <img *ngIf="item.image && item.image !== ''"  [src]="item.image">
+       <div [style.background-color]='item.color' *ngIf="!item.image" class="noImage"></div></span>
+             </ion-avatar>
+               
+             <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.name}}</p>
+            <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{item.category_name}}</p>
+        </button>
+                </ion-list>
+
+                <ion-item *ngIf="!aroundUsLocation.length" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text"
+                    [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar) | hex2rgba">
+                    {{'NOTHINGTEXT' | translate}}
+                </ion-item>
+            </template>
+        </div>
+    </div>
+</ion-content>
+<ion-footer>
+    <div class="around-us-foot-wrapper">
+        <ion-row class="around-us-foot">
+            <ion-col center text-center *ngFor="let category of categories" [style.background]="category.color" padding-vertical (click)="onCategoryClick(category.id)"
+                [class.active]="categoryStatus[category.id]">
+                <span>{{category.category_name}}</span>
+                <div class="overlay">
+                </div>
+            </ion-col>
+        </ion-row>
+    </div>
+</ion-footer>

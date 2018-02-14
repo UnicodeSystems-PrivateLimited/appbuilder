@@ -1,0 +1,28 @@
+<div class="tabinner-space button-tab-wrapper">
+    <form class="formr">
+        <div class="layout-column  m-t-10">
+            <div class="layout-row">
+                <label class="checkbox-inline custom-checkbox nowrap layout-row layout-align-start-center">
+                    <input type="checkbox" [(ngModel)]="service.individualTabSettings.icon_color.show_icon">
+                    <span>Show Icon </span>
+                </label>
+                
+            </div>
+        </div>
+        <div class="iconColor  m-t-10">
+        <div class="overlay" [style.display]="service.individualTabSettings.icon_color.show_icon ? 'none' : 'block'"></div>
+        <div class="layout-column  m-t-10">
+            <div class="layout-row layout-align-start-center">
+                <label class="flex-20">Icon Color </label>
+                <input class="input-class" [(colorPicker)]="service.individualTabSettings.icon_color.icon_color" [style.background]="service.individualTabSettings.icon_color.icon_color" [value]="service.individualTabSettings.icon_color.icon_color"
+                            [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" />
+            </div>
+        </div>
+        <div class="layout-column  m-t-10">
+            <div class="layout-row">
+                <label>* Color will be applied after saving. </label>
+            </div>
+        </div>
+        </div>
+    </form>
+</div>

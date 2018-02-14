@@ -1,0 +1,24 @@
+<div>
+    <p-dialog  [draggable]="false" header="{{headerTitle}}" [(visible)]="showImageDialog" class="app-dialog add-app info-wrap info-2" modal="modal"
+        responsive="true" (onAfterHide)="onComponentClose()">
+        <div *ngIf="showLoader" class="fm-spinner">
+            <div class="fm-double-bounce1"></div>
+            <div class="fm-double-bounce2"></div>
+        </div>
+        <div>
+            <input type="file" (change)="onImagesChange($event)">
+            <button type="submit" [disabled]="disableButton" class="btn btn-lg green-btn m-r-10" (click)="uploadImage()">Upload</button>
+        </div>
+        <div class="c-panel-logo-images">
+            <div class="layout-row flex-100 layout-wrap m-t-20">
+                <div class="tablet-header-img thumb-img m-r-10 thumb-img-dif flex-10 m-b-10" *ngFor="let img of images;let i=index;" style="max-height:64px; max-width: 64px">
+                    <i class="fa fa-close" *ngIf="images.length>1" (click)="deleteImageDialog(img.id,i)"></i>
+                    <img [class.active]="targatedImageId==img.id" src="{{img.name}}" style="height:100%; width:100%" (click)="targetedImage(img)">
+                </div>
+            </div>
+        </div>
+        <div>
+            <button type="button" (click)="onComponentClose()">Close</button>
+        </div>
+    </p-dialog>
+</div>

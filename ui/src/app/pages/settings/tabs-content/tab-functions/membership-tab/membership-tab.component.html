@@ -1,0 +1,531 @@
+<div *ngIf="!ready || showMainLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready" class="membership-block">
+    <div class="flex-100 spaceborder">
+        <!--<span class="mini-content">Change Feature Order</span>-->
+    </div>
+
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30 contact-us-wrap">
+             <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-100 layout-row main-social-tab-container">
+        <div class="flex-50 layout-column inbox-wrap boder-left-div">
+            <div class="flex-100 layout-row">
+                <div class="layout-align-start">
+                    <span class="layout-row setspace">Member Settings:</span>
+                </div>
+            </div>
+
+            <div class="flex-100 layout-row layout-align-start-center updatecolor-box">
+                <div class="flex-100 layout-row layout-align-start-cente">
+                    <span>	
+                        Login Color
+                        &nbsp; <i class="fa fa-info-circle l m-r-10" tooltip="Select the login color of your login box." tooltipPlacement="right" aria-hidden="true"></i>
+                    </span>
+                    <input class="input-class" [(colorPicker)]="settings.login_color" [style.background]="settings.login_color" [value]="settings.login_color" [cpPosition]="'bottom'" [cpOutputFormat]="'hex'" readonly>
+                </div>
+            </div>
+
+            <div class="inbox-wrap memb-wrap">
+                <div class="flex-100 layout-row layout-align-start">
+                <div class="flex-100 layout-column">
+                    <div class="flex-100 layout-row">
+                        <p-inputSwitch [(ngModel)]="settings.member_login" [class.swtch-log]="settings.member_login" (click)="switchChange()"></p-inputSwitch>
+                        &nbsp; Enable Member Login
+                        &nbsp; <i class="fa fa-info-circle l m-r-10" tooltip="It will allow users to log in as a member." tooltipPlacement="right" aria-hidden="true"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="po-rel ">
+                <div class="flex-100 layout-column layout-align-start inbox-wrap">
+
+                    <div class="flex-100 layout-row layout-align-start">
+                        <div class="overlay" *ngIf="!settings.member_login" [style.display]="outerOverlayDisplay"></div>
+                        <div class="flex-100 layout-column">
+                            <div class="flex-100 layout-row">
+                                <p-inputSwitch [(ngModel)]="settings.guest_login" [class.swtch-log]="settings.guest_login"></p-inputSwitch>
+                                <!--                        <p-inputSwitch [(ngModel)]="settings.guest_login" [class.data-log]="!settings.member_login" [class.swtch-log]="settings.guest_login"></p-inputSwitch>-->
+                                &nbsp; Enable Guest Login
+                                &nbsp; <i class="fa fa-info-circle l m-r-10" tooltip="It will allow users to log in as a guest." tooltipPlacement="right" aria-hidden="true"></i>
+                                &nbsp; <i class="fa fa-pencil-square-o" *ngIf="settings.guest_login" (click)="showGuestLoginDialog()"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-100 layout-row layout-align-start po-rel">
+                        <div class="overlay" *ngIf="settings.type==ACCESS_TYPE_SINGLE" [style.display]="innerOverlayDisplay "></div>
+                        <div class="flex-100 layout-column">
+                            <div class="flex-100 layout-row">
+                                Customize Email Invite Form
+                                &nbsp; <i class="fa fa-info-circle l m-r-10 " tooltip="You can customize the invitation email template for your app." tooltipPlacement="right" aria-hidden="true"></i>
+                                &nbsp; <i class="fa fa-pencil-square-o" (click)="showEditInviteMailDialog()"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="flex-100 layout-row layout-align-start">
+                        <div class="flex-100 layout-column">
+                            <div class="flex-100 layout-row layout-align-start-center">
+                                Type
+                                &nbsp; <i class="fa fa-info-circle l m-r-10" tooltip="Please select the membership type for your app." tooltipPlacement="right" aria-hidden="true"></i>
+                                &nbsp; <p-dropdown [options]="type" [(ngModel)]="settings.type"class="border-all"></p-dropdown>
+                                &nbsp; <i class="fa fa-pencil-square-o" *ngIf="settings.type==ACCESS_TYPE_SINGLE" (click)="showSingleLoginTabsAccessDialog()"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="meber-detail" *ngIf="settings.type==ACCESS_TYPE_SINGLE">
+
+                        <div class="layout-column add-app flex-100 layout-align-start m-b-15">
+                            <label class="flex-20 layout-align-start-center">Username &nbsp; <i class="fa fa-info-circle l m-r-10" tooltip="Enter a username for specific user access" tooltipPlacement="right" aria-hidden="true"></i></label>
+                            <div class="flex-100 layout-row layout-align-start-center"> <input class="input-class flex-80 m-r-10" type="text" [(ngModel)]="singleMemberLoginDetails.user_name">
+
+                            </div>
+                        </div>
+                        <div class="layout-column add-app flex-100 layout-align-start">
+                            <label class="flex-20 layout-align-start-center">Password &nbsp; <i class="fa fa-info-circle l m-r-10" tooltip="Enter a password for specific user access" tooltipPlacement="right" aria-hidden="true"></i>
+                            </label>
+
+                            <div class="flex-100 layout-row layout-align-start-center">
+                                <input class="input-class  flex-80 m-r-10" type="text" [(ngModel)]="singleMemberLoginDetails.password">
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="againtab-container-box" *ngIf="settings.type==ACCESS_TYPE_MULTIPLE">
+                        <div class="header-background">
+                            <tabset class="container-tab-detail contact-us-wrap">
+                                <tab heading="Users">
+                                    <div class="tabinner-space">
+                                        <div class="dotted-bootom-div layout-column layout-align-end">
+                                            <div class=" layout-row layout-align-end"></div>
+                                            <div class="layout-row layout-align-space-between m-t-10">
+                                                <label class="checkbox-inline custom-checkbox nowrap">
+                                                    <input type="checkbox" id="inlineCheckbox01" [(ngModel)]="checkAllUser" (change)="onCheckAllUserChange()">
+                                                    <span>Select All</span>
+                                                </label>
+                                                <div class="layout-row">
+
+                                                    <button class="green-btn m-r-10" (click)="showCreateUserDialog()">
+                                                        CREATE USER
+                                                    </button>
+                                                    <button class="green-btn m-r-10" (click)="showInviteUserDialog()">
+                                                        INVITE USER(S)
+                                                    </button>
+                                                    <span class="lastspan-out"><button class="red" [class.checkTrue]="selectedUser.length > 0 && selectedUser.indexOf(true) !== -1" (click)="onUserDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="dotted-bootom-div layout-row somespace-top" *ngFor="let user of multipleUserList">
+                                             <div class="flex-90 layout-row layout-align-space-between-center">
+                                                <label class="checkbox-inline custom-checkbox nowrap flex-80">
+                                                    <input type="checkbox" id="inlineCheckbox02" [(ngModel)]="selectedUser[user.id]" (click)="onSelectedUserCheckTabChange(selectedUser[user.id], user.id)">
+                                                    <span class="layout-column member-span">{{user.user_name}}</span>
+                                                </label>
+                                                <div class="layout-row menu-tb-span layout-align-start-center">
+                                                    <div>{{user.group_name}}</div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-50 layout-row layout-align-end-center">
+                                                <span><button class="edit-btn" (click)="showEditUserFormDialog(user.id)">Edit</button></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                                <tab heading="Groups">
+                                    <div class="tabinner-space">
+                                        <div class="dotted-bootom-div layout-column layout-align-end">
+                                            <div class=" layout-row layout-align-end"></div>
+                                            <div class="layout-row layout-align-space-between m-t-10">
+                                                <label class="checkbox-inline custom-checkbox nowrap">
+                                                    <input type="checkbox" id="inlineCheckbox03" [(ngModel)]="checkAllGroup" (change)="onCheckAllGroupChange()">
+                                                    <span>Select All</span>
+                                                </label>
+                                                <div class="layout-row">
+                                                    <button class="green-btn  m-r-10" (click)="showCreateGroupFormDialog()">
+                                                        CREATE GROUP
+                                                    </button>
+                                                    <span class="lastspan-out"><button class="red" [class.checkGrpTrue]="selectedGroup.length > 0 && selectedGroup.indexOf(true) !== -1" (click)="onGroupDeleteClick()"><i class="fa fa-trash" title="delete"></i></button></span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="dotted-bootom-div layout-row somespace-top" *ngFor="let group of groupList">
+                                             <div class="flex-90 layout-row layout-align-space=between-center">
+                                                <label class="checkbox-inline custom-checkbox nowrap flex-80">
+                                                    <input type="checkbox" id="inlineCheckbox02" [(ngModel)]="selectedGroup[group.id]" (click)="onSelectedGroupCheckTabChange(selectedGroup[group.id], group.id)">
+                                                    <span class="layout-column member-span">
+                                                        <div>{{group.group_name}}</div>
+                                                    </span>
+                                                </label>
+                                                <div class="layout-row menu-tb-span layout-align-start-center">
+                                                    <div>{{group.user_count}} Users</div>
+                                                </div>
+                                            </div>
+                                            <div class="flex-50 layout-row layout-align-end-center">
+                                                <span><button class="edit-btn" (click)="showEditGroupFormDialog(group.id)">Edit</button></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tab>
+                            </tabset>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            </div>
+            <div class="flex-100 layout-row">
+                <div class="layout-align-start save-btn">
+                    <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" (click)="saveMembershipSettings()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId' [isMembership]='settings.member_login' [isGuestLogin]='settings.guest_login' [guestLoginName]='guestData.user_name' [loginColor]='settings.login_color'></mobile-view>
+        </div>
+    </div>
+
+</div>
+
+<!-- Delete User Dialog START 
+<p-dialog header="Delete User ?" [(visible)]="showDeleteUserDialog" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected User ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type=" " pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteUser()">Yes</a>
+            <a type=" " pButton icon="fa-check" label="No" class="login-btn cncle-btn cursor-p" (click)="showDeleteUserDialog=false">No</a>
+        </div>
+    </footer>
+</p-dialog>
+ Delete User Dialog END -->
+
+<!-- Delete Group Dialog START 
+<p-dialog header="Delete Group ?" [(visible)]="showDeleteGroupDialog" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected Group ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end ">
+            <a type=" " pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteGroup()">Yes</a>
+            <a type=" " pButton icon="fa-check" label="No" class="login-btn cncle-btn cursor-p" (click)="showDeleteGroupDialog=false">No</a>
+        </div>
+    </footer>
+</p-dialog>
+ Delete Group Dialog END -->
+
+<!-- Add/Edit Group Dialog START-->
+<p-dialog  [draggable]="false" [header]="groupHeader" [(visible)]="groupFormDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form (ngSubmit)="onGroupFormSubmit()">
+        <div class="layout-column membr-dialog white-bg web-bg border-all">
+            <div class="web-bg">
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-100">
+                        <label>Group Name</label>
+                        <input class="input-class" type="text" [(ngModel)]="groupData.group_name">
+                    </div>
+                </div>
+            </div>
+
+            <div class="web-bg">
+                <span>Select which tabs this group has access to in your app.</span>
+                <div class="layout-row m-b-15 m-t-10">
+                    <div class="layout-row flex-100 layout-align-start-center p-b-10 border-b">
+                        <label class="checkbox-inline custom-checkbox nowrap">
+                            <input type="checkbox" id="inlineCheckbox04" [(ngModel)]="checkAllGroupTabs" (change)="onCheckAllGroupTabsChange()">
+                            <span>Select All</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="height-data-mem layout-column">
+                    <div class=" m-b-15" *ngFor="let tab of appTabs">
+                         <div class="layout-row flex-100 layout-align-start-center">
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                                <input type="checkbox" id="inlineCheckbox05" [(ngModel)]="selectedGroupTabs[tab.id]" (click)="onGroupCheckTabChange(selectedGroupTabs[tab.id], tab.id)">
+                                <span>{{tab.title}}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="save-btn">
+                <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+            </div>
+        </div>
+<!--        <footer>
+            <div class=" ">
+            </div>
+        </footer>-->
+    </form>
+</p-dialog>
+<!-- Add/Edit Group Dialog END-->
+
+<!-- Add/Edit User Dialog START-->
+<p-dialog [draggable]="false"  [header]="userHeader" [(visible)]="userFormDialogDisplay" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form (ngSubmit)="onUserFormSubmit()">
+        <div class="layout-column membr-dialog white-bg web-bg border-all">
+            <div class="">
+                <div class="layout-row m-b-15 layout-align-space-between-center">
+                    <div class="layout-column flex-45">
+                        <label>Username</label>
+                        <input class="input-class" type="text" [(ngModel)]="userData.user_name">
+                    </div>
+                    <div class="layout-column flex-45">
+                        <label>Email</label>
+                        <input class="input-class" type="text" [(ngModel)]="userData.email">
+                    </div>
+                </div>
+                <div class="layout-row m-b-15 layout-align-space-between-center">
+                    <div class="layout-column flex-45">
+                        <label>Password</label>
+                        <input class="input-class" type="text" [(ngModel)]="userData.password">
+                    </div>
+                    <div class="layout-column flex-45">
+                        <label>Confirm Password</label>
+                        <input class="input-class" type="text" [(ngModel)]="userData.password_confirmation">
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <span>When selecting a group, its tab access selection will apply.</span>
+                <div class="layout-row m-b-15 ">
+                    <div class="layout-column flex-100 m-t-10 layout-align-start ">
+                        <label>Assign Group</label>
+                        <p-dropdown [options]="groups" [(ngModel)]="userData.group_id" class="border-all m-t-10"></p-dropdown>
+                    </div>
+                </div>
+                <div *ngIf="userData.group_id==1.1 || userData.group_id==null">
+                    <span>Select which tabs this user has access to in your app.</span>
+                    <div class="layout-row m-b-15 m-t-10">
+                        <div class="layout-row flex-100 layout-align-start-center p-b-10 border-b">
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                                <input type="checkbox" id="inlineCheckbox06" [(ngModel)]="checkAllUserTabs" (change)="onCheckAllUserTabsChange()">
+                                <span>Select All</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="layout-column height-data-mem">
+                        <div  class="m-b-15" *ngFor="let tab of appTabs">
+                              <div class="layout-row flex-100 layout-align-start-center">
+                                <label class="checkbox-inline custom-checkbox nowrap">
+                                    <input type="checkbox" id="inlineCheckbox07" [(ngModel)]="selectedUserTabs[tab.id]" (click)="onUserCheckTabChange(selectedUserTabs[tab.id], tab.id)">
+                                    <span>{{tab.title}}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="save-btn">
+                <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+            </div>
+        </div>
+<!--        <footer>
+            <div class=" ">
+            </div>
+        </footer>-->
+    </form>
+</p-dialog>
+<!-- Add/Edit User Dialog END-->
+
+<!-- Add/Edit Guest Dialog START-->
+<p-dialog [draggable]="false"  [header]="guestHeader" [(visible)]="guestFormDialogDisplay" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form (ngSubmit)="onGuestFormSubmit()">
+        <div class="layout-column  white-bg web-bg border-all">
+            <div class="web-bg">
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-100">
+                        <label>Guest Login Name</label>
+                        <input class="input-class" type="text" [(ngModel)]="guestData.user_name">
+                    </div>
+                </div>
+            </div>
+
+            <div class="web-bg">
+                <span>Select which tabs this group has access to in your app.</span>
+                <div class="layout-row m-b-15 m-t-10">
+                    <div class="layout-row flex-100 layout-align-start-center p-b-10 border-b">
+                        <label class="checkbox-inline custom-checkbox nowrap">
+                            <input type="checkbox" id="inlineCheckbox08" [(ngModel)]="checkAllGuestTabs" (change)="onCheckAllGuestTabsChange()">
+                            <span>Select All</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="height-data-mem layout-column">
+                    <div class="m-b-15" *ngFor="let tab of appTabs">
+                         <div class="layout-row flex-100 layout-align-start-center">
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                                <input type="checkbox" id="inlineCheckbox09" [(ngModel)]="selectedGuestTabs[tab.id]" (click)="onGuestCheckTabChange(selectedGuestTabs[tab.id], tab.id)">
+                                <span>{{tab.title}}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="save-btn">
+                <button class="blue-btn btn btn-lg" type="submit">SAVE</button>
+            </div>
+        </div>
+<!--        <footer>
+            <div class=" ">
+            </div>
+        </footer>-->
+    </form>
+</p-dialog>
+<!-- Add/Edit Guest Dialog END-->
+
+<!-- Add/Edit Single Login Tab Access Dialog START-->
+<p-dialog [draggable]="false"  header="Edit Single Login" [(visible)]="singleLoginTabAccessFormDialogDisplay" modal="modal" class="app-dialog add-app ">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form (ngSubmit)="onsingleLoginTabAccessFormSubmit()">
+        <div class="membr-dialog white-bg web-bg border-all">
+            <div class="">
+                <span>Select which tabs this group has access to in your app.</span>
+                <div class="layout-row m-b-15 m-t-10">
+                    <div class="layout-row flex-100 layout-align-start-center p-b-10 border-b">
+                        <label class="checkbox-inline custom-checkbox nowrap">
+                            <input type="checkbox" id="inlineCheckbox10" [(ngModel)]="checkAllSingleLoginTabs" (change)="onCheckAllSingleLoginTabsChange()">
+                            <span>Select All</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="height-data-mem layout-column">
+                    <div class="m-b-15" *ngFor="let tab of appTabs">
+                         <div class="layout-row flex-100 layout-align-start-center">
+                            <label class="checkbox-inline custom-checkbox nowrap">
+                                <input type="checkbox" id="inlineCheckbox11" [(ngModel)]="selectedSingleLoginTabs[tab.id]" (click)="onSingleLoginCheckTabChange(selectedSingleLoginTabs[tab.id], tab.id)">
+                                <span>{{tab.title}}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="save-btn">
+                <button class="blue-btn btn btn-lg" type="submit">SAVE</button>
+            </div>
+        </div>
+<!--        <footer>
+            <div class=" ">
+            </div>
+        </footer>-->
+    </form>
+</p-dialog>
+<!-- Add/Edit Single Login Tab Access Dialog END-->
+
+<!-- Edit Invite Email Template Dialog START-->
+<p-dialog [draggable]="false"  header="Customize Email Invite Form" [(visible)]="emailInviteFormDialogDisplay" modal="modal" class="app-dialog add-app s-tab-add">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form (ngSubmit)="onEmailInviteFormSubmit()">
+        <div class="white-bg web-bg border-all">
+            <div class="">
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-100">
+                        <label>Invite Email Form</label>
+                        <!--<ckeditor *ngIf="showEditor" [(ngModel)]="inviteEmailTemplate"></ckeditor>-->
+                    </div>
+                </div>
+            </div>
+            <div class="save-btn">
+                <button class="blue-btn btn btn-lg" type="submit">SAVE</button>
+            </div>
+        </div>
+<!--        <footer>
+            <div class=" ">
+            </div>
+        </footer>-->
+    </form>
+</p-dialog>
+<!-- Edit Invite Email Template Dialog END-->
+
+<!-- Invite User Dialog START-->
+<p-dialog [draggable]="false"  header="Invite User(s)" [(visible)]="inviteUserFormDialogDisplay" modal="modal" class="invite-mem-user app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <form (ngSubmit)="onInviteUserFormSubmit()">
+        <div class="white-bg web-bg border-all">
+            <div class="">
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-100">
+                        <label>
+                            CSV Data <i class="fa fa-info-circle l" tooltip="You can upload your csv data for the multiple emails." tooltipPlacement="right" aria-hidden="true"></i>
+                        </label>
+                        <input type="file" (change)="onCSVDataChange($event)">
+                    </div>
+                </div>
+
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-100">
+                        <label>Email (Multiple Emails Separated By Commas)</label>
+                        <input class="input-class" type="text" [(ngModel)]="inviteUserFormData.email">
+                        <span *ngIf="showError" class="errorLabel" style="color:#ff0000">{{errorMsg}}</span>
+                    </div>
+                </div>
+
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-100">
+                        <label>From Email</label>
+                        <input class="input-class" type="text" [(ngModel)]="inviteUserFormData.from_email">
+                    </div>
+                </div>
+
+                <div class="layout-row m-b-15">
+                    <div class="layout-column flex-100">
+                        <label>Assign Group</label>
+                        <p-dropdown [options]="groups" [(ngModel)]="inviteUserFormData.group_id" class="border-all m-t-10 mem-select"></p-dropdown>
+                    </div>
+                </div>
+                <div class="save-btn">
+                    <button class="blue-btn btn btn-lg"  [disabled]="addSaveButtonHide" type="submit">SAVE</button>
+                </div>
+            </div>
+        </div>
+<!--        <footer>
+            <div class=" ">
+            </div>
+        </footer>-->
+    </form>
+</p-dialog>
+<!-- Invite User Dialog END-->
+

@@ -1,0 +1,55 @@
+<div class="layout-from-wrap">
+	<div class="tabinner-space">
+		<form class="formr">
+			<div class="layout-column">
+				<div class="layout-row m-b-10">
+					<!--                <input >
+                <label> </label>-->
+					<label class="checkbox-inline custom-checkbox nowrap flex-100 layout-row layout-align-start-center">
+                    <input type="checkbox" [(ngModel)]="service.homeScreenSettings.layout.show_status_bar"aria-hidden="true">
+                    <span class="flex-20 layout-row"  tooltipPlacement="right" tooltip="This will show or hide the iOS status bar on your homescreen. The status bar will always display on all other tab views.">Show Status Bar </span>
+                </label>
+				</div>
+			</div>
+			<div class="layout-column">
+				<div class="layout-row layout-align-start-center">
+					<label class="flex-30">Home Layout </label>
+					<p-dropdown [options]="layouts" [(ngModel)]="service.homeScreenSettings.layout.home_layout" tooltip="Pick the design layout for the home screen of your app."
+						tooltipPlacement="right" aria-hidden="true" (onChange)="onHomeLayoutChange()" class="flex-40"></p-dropdown>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<!--layout traditional starts-->
+	<!--<div class="dropdownSelect" *ngIf="traditional" >-->
+	<div class="tabinner-space layout-botton-wrap" *ngIf="service.homeScreenSettings.layout.home_layout == 1">
+		<div class="layout-column ">
+			<div class="layout-row ">
+				<span>
+                    <button [class.active]="service.homeScreenSettings.layout.traditional_position == 2" (click)="onBottomClick(2)">BOTTOM</button>
+                    <button [class.active]="service.homeScreenSettings.layout.traditional_position == 1" (click)="onBottomClick(1)">TOP</button>
+                    <button [class.active]="service.homeScreenSettings.layout.traditional_position == 3" (click)="onBottomClick(3)">LEFT</button>
+                    <button [class.active]="service.homeScreenSettings.layout.traditional_position == 4" (click)="onBottomClick(4)">RIGHT</button>
+                </span>
+			</div>
+		</div>
+		<div *ngIf="service.homeScreenSettings.layout.traditional_position == 2" class="rowoverlay m-t-10">
+			<div class="layout-column flex-100">
+				<div class="layout-row layout-align-start-center">
+					<label class="flex-20">Rows</label>
+					<p-dropdown [options]="rows" [(ngModel)]="service.homeScreenSettings.layout.traditional_rows" (onChange)="onTabRowsChange()"></p-dropdown>
+				</div>
+			</div>
+		</div>
+		<div class="layout-column flex-100 m-t-10">
+			<div class="layout-row layout-align-start-center">
+				<label class="flex-20">Tab Number</label>
+				<p-dropdown [options]="tabs" [(ngModel)]="service.homeScreenSettings.layout.traditional_tab_number"></p-dropdown>
+			</div>
+		</div>
+	</div>
+
+
+	<!--</div>-->
+</div>

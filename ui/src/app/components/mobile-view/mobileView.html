@@ -1,0 +1,215 @@
+<!--Mobile View Model-->
+<div class="flex-100  sid-mob-app">
+    <div class="layout-column layout-align-center-center">
+        <div><span class="change-bottom">Background Image :</span></div>
+        <div class="layout-row m-b-10">
+            <span class="space-right"><i class="fa fa-info-circle layout-row setinput-icon" aria-hidden="true"></i></span>
+            <span>{{phoneTabActive?"Phone Background Image : 640 x 1008 px":tabletTabActive?"Tablet Background Image: 1536x1920px":"iPhone 4 Background Image: 640x832px"}}</span>
+        </div>
+        <tabset class="container-tab-detail background-wrap-tab mobile-view-tabs mobile-view-header " style="max-width: 389px;">
+            <tab heading="PHONE" [active]="phoneTabActive" class="background-wrap-tab-tabset-wrap" (select)="selectedTab($event)">
+                <div class="img-wrap-div layout-column flex-100 sid-mob-updates" style="height: 400px;">
+                    <div class="flex-100 layout-row layout-align-center-center select-btn" *ngIf="!tabData.background_image && !bgImageSettings.tabBgImageSetting.flag_phone_img">
+                        <button class="edit-btn" (click)="changeBackgroundImage(0)">Select</button>
+                    </div>
+                    <div class="" *ngIf="tabData.background_image && !bgImageSettings.tabBgImageSetting.flag_phone_img" style="height: 100%; max-width: 100%; text-align:center">
+                        <img src="{{tabData.background_image}}" style="max-height: 100%; max-width: 100%;">
+                    </div>
+                    <div class="flex-100 layout-column layout-align-start select-btn m-t-10 pad-5" style="text-align: center" *ngIf="bgImageSettings.tabBgImageSetting.flag_phone_img">
+                        <div>
+                            <h5>Use images and Settings from the iPhone 4 Section</h5>
+                        </div>
+                        <div class="layout-row layout-align-start-start"> <i class="fa fa-info-circle layout-row setinput-icon m-r-10 m-l-10" aria-hidden="true"></i><span>MarkThis
+                            is a global setting which is enabled across all tabs within your app. You cannot use images from
+                            the iPhone 4 section on a tab by tab basis.</span>
+                        </div>
+                    </div>
+                    <!--membership-login form-->
+                    <div *ngIf="isMembership" class="layout-column member-update-login" [style.color]="loginColor">
+                        <form class="layout-column member-update-login">
+                            <div> <input class="input-class" placeholder="Username" [style.color]="loginColor" [style.border-color]="loginColor"
+                                /><i class="fa fa-envelope-o" aria-hidden="true"></i></div>
+                            <div><input class="input-class" placeholder="Password" [style.color]="loginColor" [style.border-color]="loginColor"
+                                /><i class="fa fa-key" aria-hidden="true"></i></div>
+                            <button class="login-btn m-t-10 m-b-10" [style.border-color]="loginColor" [style.background-color]="loginColor" [style.color]="loginColor | luminosityChecker">Login</button>
+                            <button class="login-btn" [style.border-color]="loginColor" [style.background-color]="loginColor" [style.color]="loginColor | luminosityChecker"
+                                *ngIf="isGuestLogin">{{guestLoginName}}</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-center-center mob-s-d" *ngIf="tabData.background_image && !bgImageSettings.tabBgImageSetting.flag_phone_img">
+                    <button class="btn-update edit-btn" (click)="changeBackgroundImage(1)">Replace</button>
+                    <button class="btn-update red" (click)="removeTabBackgroundImage()">Delete</button>
+                </div>
+                <div class="flex-100 layout-row  calender-event  layout-align-start-center">
+                    <label class="checkbox-inline custom-checkbox nowrap flex-20 layout-row layout-align-start-center">
+                          <input type="checkbox" id="inlineCheckbox02" [(ngModel)]="bgImageSettings.tabBgImageSetting.flag_phone_img" (change)="onCheckBgImageSetting($event,1)">
+                           <span>Use images and Settings from the iPhone 4 Section</span>         
+                    </label>
+                </div>
+            </tab>
+            <tab heading="TABLET" [active]="tabletTabActive" (select)="selectedTab($event)" class="background-wrap-tab-tabset-wrap">
+                <div class="img-wrap-div layout-column flex-100 sid-mob-updates" style="height: 400px;">
+                    <div class="flex-100 layout-row layout-align-center-center select-btn" *ngIf="!tabData?.tablet_bg_img && !bgImageSettings.tabBgImageSetting.flag_tablet_img">
+                        <button class="edit-btn" (click)="changeBackgroundImage(0)">Select</button>
+                    </div>
+                    <div class="" *ngIf="tabData?.tablet_bg_img && !bgImageSettings.tabBgImageSetting.flag_tablet_img" style="height: 100%; max-width: 100%; text-align:center">
+                        <img src="{{tabData?.tablet_bg_img}}" style="max-height: 100%; max-width: 100%;">
+                    </div>
+                    <div class="flex-100 layout-column layout-align-start select-btn m-t-10 pad-5" style="text-align: center" *ngIf="bgImageSettings.tabBgImageSetting.flag_tablet_img">
+                        <div>
+                            <h5>Use images and Settings from the iPhone 4 Section</h5>
+                        </div>
+                        <div class="layout-row layout-align-start-start"><i class="fa fa-info-circle layout-row setinput-icon m-r-10 m-l-10" aria-hidden="true"></i><span>This
+                            is a global setting which is enabled across all tabs within your app. You cannot use images from
+                            the iPhone 4 section on a tab by tab basis.</span>
+                        </div>
+                    </div>
+                    <!--membership-login form-->
+                    <div *ngIf="isMembership" class="layout-column member-update-login" [style.color]="loginColor">
+                        <form class="layout-column member-update-login">
+                            <div> <input class="input-class" placeholder="Username" [style.color]="loginColor" [style.border-color]="loginColor"
+                                /><i class="fa fa-envelope-o" aria-hidden="true"></i></div>
+                            <div><input class="input-class" placeholder="Password" [style.color]="loginColor" [style.border-color]="loginColor"
+                                /><i class="fa fa-key" aria-hidden="true"></i></div>
+                            <button class="login-btn m-t-10 m-b-10" [style.border-color]="loginColor" [style.background-color]="loginColor" [style.color]="loginColor | luminosityChecker">Login</button>
+                            <button class="login-btn" [style.border-color]="loginColor" [style.background-color]="loginColor" [style.color]="loginColor | luminosityChecker"
+                                *ngIf="isGuestLogin">{{guestLoginName}}</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-center-center mob-s-d" *ngIf="tabData?.tablet_bg_img && !bgImageSettings.tabBgImageSetting.flag_tablet_img">
+                    <button class="btn-update edit-btn" (click)="changeBackgroundImage(1)">Replace</button>
+                    <button class="btn-update red" (click)="removeTabBackgroundImage()">Delete</button>
+                </div>
+                <div class="flex-100 layout-row  calender-event  layout-align-start-center">
+                    <label class="checkbox-inline custom-checkbox nowrap flex-20 layout-row layout-align-start-center">
+                          <input type="checkbox" id="inlineCheckbox02" [(ngModel)]="bgImageSettings.tabBgImageSetting.flag_tablet_img" (change)="onCheckBgImageSetting($event,2)">
+                           <span>Use images and Settings from the iPhone 4 Section</span>         
+                    </label>
+                </div>
+            </tab>
+            <tab heading="IPHONE 4" [active]="iphoneTabActive" (select)="selectedTab($event)" class="background-wrap-tab-tabset-wrap">
+                <div class="img-wrap-div layout-column flex-100 sid-mob-updates" style="height: 400px;">
+                    <div class="flex-100 layout-row layout-align-center-center select-btn" *ngIf="!tabData?.iphone_bg_img && !bgImageSettings.tabBgImageSetting.flag_iphone_img">
+                        <button class="edit-btn" (click)="changeBackgroundImage(0)">Select</button>
+                    </div>
+                    <div class="" *ngIf="tabData?.iphone_bg_img && !bgImageSettings.tabBgImageSetting.flag_iphone_img" style="height: 100%; max-width: 100%; text-align:center">
+                        <img src="{{tabData?.iphone_bg_img}}" style="max-height: 100%; max-width: 100%;">
+                    </div>
+                    <div class="flex-100 layout-column layout-align-start select-btn m-t-10 pad-5" style="text-align: center" *ngIf="bgImageSettings.tabBgImageSetting.flag_iphone_img">
+                        <div>
+                            <h5>Use images and Settings from the Phone Section</h5>
+                        </div>
+                        <div class="layout-row layout-align-start-start"><i class="fa fa-info-circle layout-row setinput-icon m-l-10 m-r-10" aria-hidden="true"></i><span>This
+                            is a global setting which is enabled across all tabs within your app. You cannot use images from
+                            the Phone section on a tab by tab basis.</span>
+                        </div>
+                    </div>
+                    <!--membership-login form-->
+                    <div *ngIf="isMembership" class="layout-column member-update-login" [style.color]="loginColor">
+                        <form class="layout-column member-update-login">
+                            <div> <input class="input-class" placeholder="Username" [style.color]="loginColor" [style.border-color]="loginColor"
+                                /><i class="fa fa-envelope-o" aria-hidden="true"></i></div>
+                            <div><input class="input-class" placeholder="Password" [style.color]="loginColor" [style.border-color]="loginColor"
+                                /><i class="fa fa-key" aria-hidden="true"></i></div>
+                            <button class="login-btn m-t-10 m-b-10" [style.border-color]="loginColor" [style.background-color]="loginColor" [style.color]="loginColor | luminosityChecker">Login</button>
+                            <button class="login-btn" [style.border-color]="loginColor" [style.background-color]="loginColor" [style.color]="loginColor | luminosityChecker"
+                                *ngIf="isGuestLogin">{{guestLoginName}}</button>
+                        </form>
+                    </div>
+                </div>
+                <div class="layout-row layout-align-center-center mob-s-d" *ngIf="tabData?.iphone_bg_img && !bgImageSettings.tabBgImageSetting.flag_iphone_img">
+                    <button class="btn-update edit-btn" (click)="changeBackgroundImage(1)">Replace</button>
+                    <button class="btn-update red" (click)="removeTabBackgroundImage()">Delete</button>
+                </div>
+                <div class="flex-100 layout-row  calender-event  layout-align-start-center">
+                    <label class="checkbox-inline custom-checkbox nowrap flex-20 layout-row layout-align-start-center">
+                          <input type="checkbox" id="inlineCheckbox02" [(ngModel)]="bgImageSettings.tabBgImageSetting.flag_iphone_img" (change)="onCheckBgImageSetting($event,3)">
+                           <span>Use images and Settings from the Phone Section </span>         
+                    </label>
+                </div>
+            </tab>
+        </tabset>
+
+    </div>
+
+</div>
+<p-dialog header="SET A BACKGROUND IMAGE" [(visible)]="addImages" [draggable]="false" modal="modal" class="tab-content-dia backg-inf-dia app-dialog add-app s-tab-add bg-dialog-1" >
+    <div class=" header-background border-all white-bg ">
+        <tabset class="container-tab-detail">
+            <tab heading="LIBRARY" active="!activeYourImagesTab">                               
+                <form>
+                    <div class="layout-column flex-100 web-bg">
+                        <div class="layout-row layout-align-space-between-center">
+                            <!--<span class="layout-column">--> 
+                                <!--<div class="layout-row layout-align-start-center">-->
+                                <label class="font-weight-bold">{{phoneTabActive?"PHONE":tabletTabActive?"TABLET":"IPHONE"}}</label>
+                                <button class="green-btn m-b-20" *ngIf="importImageIds.length" (click)="importLibraryImagesToYourImages()">Import Images</button>
+                                <!--</div>-->
+<!--                                    <div class="layout-row layout-align-start-center"><label>Select your app's industry here 
+                                        to use preset background images.</label>
+                                    <p-dropdown [options]="categoryList" [(ngModel)]="categoryList[0]"  (onChange)="selectedChange($event)"></p-dropdown></div>-->
+                            <!--</span>-->
+                        </div>
+                    </div>
+                </form>
+                <div class="">
+                    <div class="layout-row layout-wrap layout-wrap phone-image-wrap no-bg m-t-10">
+
+                        <div class="flex-25 layout-row layout-align-center-center related-to imag-up" *ngFor="let image of libraryImages" (click)="importImage(image.id)">
+                            <span *ngIf="importImageIds.indexOf(image.id)>=0" class="right-tick"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <img src="{{image.name}}" [class.right-img]="importImageIds.indexOf(image.id)>=0" />
+                        </div>
+                    </div>
+                </div>
+                <!--<button class="green-btn m-b-20" *ngIf="importImageIds.length" (click)="importLibraryImagesToYourImages()">Import Images</button>-->
+            </tab>
+            <tab heading="YOUR IMAGES" active="activeYourImagesTab">
+                
+                <form>
+                    <div class="layout-column flex-100 web-bg">
+                        <div class="layout-column">
+                            <div class="layout-row">                                
+                                <label class="flex-50 font-weight-bold">{{phoneTabActive?"PHONE":tabletTabActive?"TABLET":"IPHONE"}}</label>
+                                <div class="flex-50 layout-align-space-between-center">                                
+                                    <button class="green-btn m-b-20" *ngIf="targetedImageId" (click)="SaveMyChoice()">Save My Choice</button>
+                                    <button class="green-btn m-b-20" *ngIf="targetedImageId" (click)="deleteTargetedImage()">Delete Image</button>
+                                </div>
+                            </div>
+                            <div class="layout-row layout-align-space-between-center"><label><i class="fa fa-info-circle l ion-right"></i>{{phoneTabActive?"Phone Background Image : 640 x 1008 px":tabletTabActive?"Tablet Background Image: 1536x1920px":"iPhone 4 Background Image: 640x832px"}}</label>
+                                <thumbnail-file-reader (change)="onImageSelect($event)" [btnText]="'Choose File'">
+                                </thumbnail-file-reader>
+                            </div>
+                        </div>
+                        <!--<div class="layout-row">
+                            <label><i class="fa fa-info-circle l"></i>Tablet Background Image : 1536x1920px</label>
+                        </div>-->
+                    </div>
+                </form>
+                <div class="">
+                    <div class="layout-row layout-wrap layout-wrap phone-image-wrap no-bg m-t-10">
+                        <div class="flex-25 layout-row layout-align-center-center imag-up" *ngFor="let image of userImages" (click)="targetImage(image.id)">
+                            <span *ngIf="targetedImageId==image.id" class="right-tick"> <i class="fa fa-check" aria-hidden="true"></i></span>
+                            <span *ngIf="userImageInfo[image.id] && userImageInfo[image.id].length">
+                            <template ngFor let-info [ngForOf]="userImageInfo[image.id]" let-i="index">
+                                  <template [ngIf]="i<5">
+                                    {{info}}<br>
+                                </template> 
+                            </template> 
+                            <template [ngIf]="userImageInfo[image.id] &&userImageInfo[image.id].length>5">
+                                {{userImageInfo[image.id].length-5}} More
+                            </template> 
+                        </span>
+                            <img src="{{image.name}}" [class.right-img]="targetedImageId==image.id" />
+                        </div>
+                    </div>
+                </div>
+<!--                <button class="green-btn m-b-20" *ngIf="targetedImageId" (click)="SaveMyChoice()">Save My Choice</button>
+                <button class="green-btn m-b-20" *ngIf="targetedImageId" (click)="deleteTargetedImage()">Delete Image</button>-->
+            </tab>
+        </tabset>
+    </div>
+</p-dialog>
+
+<!--End of mobile view modal-->

@@ -1,0 +1,104 @@
+<div class="Cart-payment">
+    <div class="layout-row layout-align-space-between-center">
+        <button class="btn green-btn" (click)="onSaveClick()">SAVE SERVICES OPTIONS</button>
+    </div>
+    <div class="layout-column  m-t-10">
+        <div class="layout-row layout-align-start-start m-t-10">
+            <label class="flex-30">
+                Select the available services.
+                <i class="fa fa-info-circle l" tooltip="Choose your businesse's payments options" tooltipPlacement="right" aria-hidden="true"></i>
+            </label>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="switch m-r-10 m-b-0">
+                <input type="checkbox" [(ngModel)]="servicesInfo.dine_in">
+                <div class="slider round"></div>
+            </label>
+            <span class="m-l-10 flex-30">Dine In</span>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="switch m-r-10 m-b-0">
+                <input type="checkbox" [(ngModel)]="servicesInfo.take_out">
+                <div class="slider round"></div>
+            </label>
+            <span class="m-l-10 flex-30">Take Out</span>
+            <p-dropdown [disabled]="!servicesInfo.take_out" [options]="daysOptions" [(ngModel)]="servicesInfo.take_out_days" [filter]="true" class="cat-drop flex-30 m-l-10"></p-dropdown>
+            <label class="flex-30 m-l-10">Days In Advance</label>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="switch m-r-10 m-b-0">
+                <input type="checkbox" [(ngModel)]="servicesInfo.delivery">
+                <div class="slider round"></div>
+            </label>
+            <span class="m-l-10 flex-30">Delivery</span>
+            <p-dropdown [disabled]="!servicesInfo.delivery" [options]="daysOptions" [(ngModel)]="servicesInfo.delivery_days" [filter]="true" class="cat-drop flex-30 m-l-10"></p-dropdown>
+            <label class="flex-30 m-l-10">Days In Advance</label>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10">
+            <label class="switch m-r-10 m-b-0">
+                <input type="checkbox" [disabled]="!servicesInfo.delivery" [(ngModel)]="servicesInfo.delivery_address_validation">
+                <div class="slider round"></div>
+            </label>
+            <span class="m-l-10 flex-30">Delivery Address Validation
+                <i class="fa fa-info-circle l" tooltip="Disabling this will also disable Delivery Radius" tooltipPlacement="right" aria-hidden="true"></i>
+            </span>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10 emails-confirmation">
+            <label class="flex-30">Delivery Radius
+                <i class="fa fa-info-circle l" tooltip="Specify how far users can be to place an order." tooltipPlacement="right" aria-hidden="true"></i>
+                <span class="required">*</span>
+            </label>
+            <input class="input-class flex-30 m-l-10" [disabled]="!servicesInfo.delivery_address_validation || !servicesInfo.delivery" type="text" [(ngModel)]="servicesInfo.delivery_radius" required="required">
+            <p-dropdown [disabled]="!servicesInfo.delivery_address_validation || !servicesInfo.delivery" [options]="deliveryDaysOptions" [(ngModel)]="servicesInfo.delivery_radius_type" (onChange)="convertDeliverRadius()" class="cat-drop flex-30 m-l-10"></p-dropdown>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10 emails-confirmation">
+            <label class="flex-30">Delivery Minimum
+                <span class="required">*</span>
+            </label>
+            <input class="input-class flex-30 m-l-10" [disabled]="!servicesInfo.delivery" type="text" [(ngModel)]="servicesInfo.delivery_minimum" required="required">
+            <span class="input-price" [innerHTML]="service.currencySymbolList[currency] || currency"></span>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10 emails-confirmation">
+            <label class="flex-30">Delivery Price Fee
+                <span class="required">*</span>
+            </label>
+            <input class="input-class flex-30 m-l-10" [disabled]="!servicesInfo.delivery" type="text" [(ngModel)]="servicesInfo.delivery_price_fee" required="required">
+            <span class="input-price" [innerHTML]="service.currencySymbolList[currency] || currency"></span>
+            <div class="layout-row layout-align-start-start">
+                <label class="switch m-r-10 m-b-0 m-l-10">
+                    <input type="checkbox" [disabled]="!servicesInfo.delivery" [(ngModel)]="servicesInfo.delivery_price_fee_taxable">
+                    <div class="slider round"></div>
+
+                </label>
+                <span class="">Taxable</span>
+            </div>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10 emails-confirmation">
+            <label class="flex-30">Free Delivery Amount
+                <i class="fa fa-info-circle l" tooltip="Minimum purchase price for free delivery." tooltipPlacement="right" aria-hidden="true"></i>
+                <span class="required">*</span>
+            </label>
+            <input class="input-class flex-30 m-l-10" [disabled]="!servicesInfo.delivery" type="text" [(ngModel)]="servicesInfo.free_delivery_amount" required="required">
+            <span class="input-price" [innerHTML]="service.currencySymbolList[currency] || currency"></span>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10 emails-confirmation">
+            <label class="flex-30">Lead Time
+                <span class="required">*</span>
+            </label>
+            <input class="input-class flex-30 m-l-10" type="text" [(ngModel)]="servicesInfo.lead_time" required="required">
+            <span class="input-price">Minutes</span>
+        </div>
+        <div class="layout-row layout-align-start-center m-t-10 emails-confirmation">
+            <label class="flex-30">Convenience Fee</label>
+            <input class="input-class flex-30 m-l-10" type="text" [(ngModel)]="servicesInfo.convenience_fee" required="required">
+            <span class="input-price" [innerHTML]="service.currencySymbolList[currency] || currency"></span>
+            <div class="layout-row layout-align-start-start">
+                <label class="switch m-r-10 m-b-0 m-l-10">
+                    <input type="checkbox" [(ngModel)]="servicesInfo.convenience_fee_taxable">
+                    <div class="slider round"></div>
+                </label>
+                <span class="">Taxable</span>
+            </div>
+        </div>
+    </div>
+</div>

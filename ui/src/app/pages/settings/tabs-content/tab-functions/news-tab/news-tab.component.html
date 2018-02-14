@@ -1,0 +1,99 @@
+<div *ngIf="!ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="ready">
+    <div class="flex-100 spaceborder">
+    </div>   
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd news-wrapper">
+        <div class="flex-50 layout-column inbox-wrap boder-left-div">
+            <div class="flex-100 layout-row">
+                <div class="layout-row layout-align-space-between-center flex-100 pdf-box">
+                    <span class="layout-row setspace">News Settings:</span>
+                </div>
+            </div>
+            <div class="flex-100 layout-row layout-align-start news-section-tabs">
+                <div class="flex-100 layout-column">
+                    <div class="flex-100 layout-row">
+                        <label class="checkbox-inline custom-checkbox nowrap">
+                            <input type="checkbox" id="show_news_home" [(ngModel)]="news.show_news_home">                            
+                            <span>NewsFeed Widget</span>
+                        </label>
+                        <i aria-hidden="true" class="fa fa-info-circle layout-row setinput-icon m-l-10" tooltip="Check this box to enable our NewsFeed Widget.  This will be shown at the bottom of your homescreen." tooltipplacement="right"></i>
+                    </div>
+                </div>     
+            </div>
+            <div class="flex-100 layout-row layout-align-start news-section-icon-tabs">
+                <div class="flex-100 layout-column">
+                    <div class="flex-100 layout-row">
+                        <img src="../../../../assets/img/google_news.png" style="margin: 0 20px 0 0;">Google News
+                    </div>
+                </div>                
+            </div>
+            <div class="flex-100 layout-row layout-align-start textfield-withinput">
+                <div class="flex-100 layout-column">
+                    <div class="flex-100 layout-row">
+                        <div class="flex-100 layout-column add-app">   
+                            <div class="layout-row">
+                                <label>Google News Keywords</label>
+                                <span><i aria-hidden="true" class="fa fa-info-circle layout-row setinput-icon m-l-10" tooltip="Specify the key words you wish to pull results from" tooltipplacement="right"></i></span>
+                            </div>                           
+                            <input class="ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="news.google_keywords">
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="flex-100 layout-row layout-align-start news-section-icon-tabs">
+                <div class="flex-100 layout-column">
+                    <div class="flex-100 layout-row">
+                        <img src="../../../../assets/img/twitter.png" style="margin: 0 20px 0 0;">Twitter
+                    </div>
+                </div>                
+            </div>
+            <div class="flex-100 layout-row layout-align-start textfield-withinput">
+                <div class="flex-100 layout-column">
+                    <div class="flex-100 layout-row">
+                        <div class="flex-100 layout-column add-app"> 
+                            <div class="layout-row">
+                                <label>Twitter Keywords</label>
+                                <span><i aria-hidden="true" class="fa fa-info-circle layout-row setinput-icon m-l-10" tooltip="Specify the key words you wish to pull results from" tooltipplacement="right"></i></span>
+                            </div>                           
+                            <input class="ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="news.twitter_keywords">
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="flex-100 layout-row layout-align-start news-section-icon-tabs">
+                <div class="flex-100 layout-column">
+                    <div class="flex-100 layout-row">
+                        <img src="../../../../assets/img/facebook_1.png" style="margin: 0 20px 0 0;">Facebook
+                    </div>
+                </div>                
+            </div>
+            <div class="flex-100 layout-row layout-align-start textfield-withinput">
+                <div class="flex-100 layout-column">
+                    <div class="flex-100 layout-row">
+                        <div class="flex-100 layout-column add-app"> 
+                            <div class="layout-row">
+                                <label>Facebook Keywords (Removed as of February 2015)</label>
+                                <span>                                  
+                                    <i aria-hidden="true" class="fa fa-info-circle layout-row setinput-icon m-l-10" tooltip="Type the key words you are interested in." tooltipplacement="right"></i>                            
+                                </span>
+                            </div>
+                            <input class="ng-pristine ng-valid ng-touched" type="text" [(ngModel)]="news.facebook_keywords">
+                        </div>
+                    </div>
+                </div>                
+            </div>
+            <div class="flex-100 layout-row">
+                <div class="layout-align-start save-btn">
+                    <button class="blue-btn btn btn-lg" [disabled]="addSaveButtonHide" (click)="saveNews()">Save Changes</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+</div>

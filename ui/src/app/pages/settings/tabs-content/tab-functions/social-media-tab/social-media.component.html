@@ -1,0 +1,87 @@
+<div *ngIf="showLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div class="around-us-wrap">
+    <div class="flex-100 spaceborder">
+    </div>
+        <div class="flex-100 layout-row secondtab-block">
+            <div class="flex-30">
+                 <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                    <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                </ul>
+            </div>
+        </div>
+
+    <!--settings modal-->
+    <div class="flex-100 layout-column  updatecolor-box">
+        <div class="layout-row">
+            <div class="layout-column flex-25 ">
+                <div class="layout-row add-app layout-align-center-center">
+                    <label class="checkbox-inline custom-checkbox nowrap layout-row ">
+                        <input type="checkbox">
+                        <span class="layout-row p-t-0"><span>Social Onboarding</span><i class="fa fa-info-circle m-l-10" tooltip="Check this box to display a social login screen when your app is launched."
+                                                                                        tooltipPlacement="right" aria-hidden="true"></i> </span>
+                    </label>
+                </div>
+            </div>
+            <div class="layout-column flex-25 ">
+                <div class="layout-row add-app">
+                    <label class="checkbox-inline custom-checkbox nowrap  layout-row ">
+                        <input type="checkbox">
+                        <span class="layout-row p-t-0"><span>Hide Home Screen Widget</span><i class="fa fa-info-circle  m-l-10" tooltip="Check this box to hide the social icon on the home screen."
+                                                                                              tooltipPlacement="right" aria-hidden="true"></i> </span>
+                    </label>
+                </div>
+            </div>
+            <div class="flex-10 layout-column layout-align-center-center">
+                <button class="blue-btn">Update Settings</button>
+            </div>
+        </div>
+    </div>
+    <!--End of settings-->
+
+    <div class="flex-100 layout-row main-social-tab-container">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class=" dotted-bootom-div layout-row  layout-align-start">               
+                <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">   
+                    <li class="title-sbhead">You are showing {{users.length}} user(s):</li>
+                </ul>                
+            </div>
+            <div *ngFor="let user of users">
+                <div class="dotted-bootom-div layout-row somespace-top">
+                    <div class="flex-100 layout-row layout-align-start-center">
+                        <span class="layout-align-start-center layout-row flex-25">{{user.created_at | datePipe}}</span>
+                        <div class="layout-column menu-tb-span flex-50">
+                            <span class="">{{user.name}}</span>
+                            <span><span class="font-weight-bold">Fan Wall Posts:</span>{{user.fanwall}}</span>
+                            <span><span class="font-weight-bold">Comments:</span>{{user.comment}}</span>
+                        </div>
+                        <div class="flex-25 layout-row layout-align-end-center">
+                            <span class="red"><button class="red" (click)="onDelete(user.id)">Delete</button></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Direction Dialog START -->
+<p-dialog [draggable]="false"  header="Delete User ?" [(visible)]="showDeleteDialog" modal="modal" class="app-dialog add-app">
+    <div *ngIf="showLoader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <p style="color: #000">Are you sure you want to delete the selected User ?</p>
+    <footer>
+        <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix layout-row layout-align-end">
+            <a type="" pButton icon="fa-check" label="Yes" class="login-btn" (click)="deleteUser()">Yes</a>
+            <a type="" pButton icon="fa-check" label="No" class=" login-btn cncle-btn cursor-p" (click)="showDeleteDialog=false">No</a>
+        </div>
+    </footer>
+</p-dialog>
+<!-- Delete Direction Dialog END -->

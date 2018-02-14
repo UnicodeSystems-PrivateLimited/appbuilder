@@ -1,0 +1,1 @@
+export * from "./individual-app-tabs.component";

@@ -1,0 +1,94 @@
+<!--
+  Generated template for the EventsTab page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+    [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+    [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+    <ion-title *ngIf="searchIcon && tab_nav_type=='tab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+      [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]:title:title}}</ion-title>
+    <ion-title *ngIf="searchIcon && tab_nav_type=='subtab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+      [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.sub_tab_translation?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]:title:title}}</ion-title>
+    <ion-buttons end *ngIf="searchIcon">
+      <button (click)="search()" ion-button icon-only clear [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                <ion-icon name="search"></ion-icon>
+            </button>
+    </ion-buttons>
+    <template [ngIf]="state">
+      <ion-row>
+        <ion-searchbar placeholder="Search" [(ngModel)]="eventSearch" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"></ion-searchbar>
+        <ion-buttons end>
+          <button ion-button icon-only clear (click)="onCancel()" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color">
+                    <ion-icon name="close"></ion-icon>
+                </button>
+        </ion-buttons>
+      </ion-row>
+
+    </template>
+
+  </ion-navbar>
+  <ion-toolbar no-border-top>
+    <div padding showWhen="ios">
+      <ion-segment [(ngModel)]="events">
+        <ion-segment-button value="upcoming">
+          {{'EVENTS.UPCOMING' | translate}}
+        </ion-segment-button>
+        <ion-segment-button value="past">
+          {{'EVENTS.PAST' | translate}}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+    <div showWhen="android">
+      <ion-segment [(ngModel)]="events">
+        <ion-segment-button value="upcoming">
+          {{'EVENTS.UPCOMING' | translate}}
+        </ion-segment-button>
+        <ion-segment-button value="past">
+          {{'EVENTS.PAST' | translate}}
+        </ion-segment-button>
+      </ion-segment>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content [style.background]="'url(' + bgImage + ')'">
+  <md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+  <template [ngIf]="!loader">
+    <div [ngSwitch]="events">
+      <ion-item-group *ngSwitchCase="'upcoming'">
+        <ion-item-group *ngFor="let item of upcomingEvents">
+          <ion-item-divider *ngIf="item[0].event_end_date >= localYear" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+            [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar) | hex2rgba">{{item[0].event_start_date | yearmonthfilter}}</ion-item-divider>
+          <template ngFor let-upcoming [ngForOf]="item | eventfilterpipe:eventSearch" let-i="index">
+            <button ion-item *ngIf="upcoming.event_end_date >= localDate" (click)="onItemClick(upcoming.id, upcoming.name)" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                 <ion-icon name="calendar" item-left></ion-icon>
+                <p  [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{upcoming.name}}</p>
+                <p  [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" *ngIf="(upcoming.event_start_date | datetimeformatpipe) != (upcoming.event_end_date | datetimeformatpipe)">{{upcoming.event_start_date | datetimeformatpipe}} - {{upcoming.event_end_date | datetimeformatpipe}}</p>
+                <p  [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" *ngIf="(upcoming.event_start_date | datetimeformatpipe) == (upcoming.event_end_date | datetimeformatpipe)">{{upcoming.event_start_date | datetimeformatpipe}}</p>
+            </button>
+          </template>
+        </ion-item-group>
+      </ion-item-group>
+      <ion-item-group *ngSwitchCase="'past'">
+        <ion-item-group *ngFor="let item of pastEvents">
+          <ion-item-divider *ngIf="item[0].event_end_date < localYear" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_text : globalService.initData.globalStyleSettings.lists.section_text"
+            [style.background-color]="(globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.section_bar : globalService.initData.globalStyleSettings.lists.section_bar) | hex2rgba">{{item[0].event_start_date | yearmonthfilter}}</ion-item-divider>
+          <template ngFor let-past [ngForOf]="item | eventfilterpipe:eventSearch" let-i="index">
+            <button ion-item *ngIf="past.event_end_date < localDate" (click)="onItemClick(past.id, past.name)" [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+                 <ion-icon name="calendar" item-left></ion-icon>
+                <p  [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)">{{past.name}}</p>
+                <p  [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" *ngIf="(past.event_start_date | datetimeformatpipe) != (past.event_end_date | datetimeformatpipe)">{{past.event_start_date | datetimeformatpipe}} - {{past.event_end_date | datetimeformatpipe}}</p>
+                <p  [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)" *ngIf="(past.event_start_date | datetimeformatpipe) == (past.event_end_date | datetimeformatpipe)">{{past.event_start_date | datetimeformatpipe}}</p>
+            </button>
+          </template>
+        </ion-item-group>
+      </ion-item-group>
+      <ion-item *ngIf="!upcomingEvents.length && !pastEvents.length">{{'NOTHINGTEXT' | translate}}</ion-item>
+    </div>
+  </template>
+</ion-content>

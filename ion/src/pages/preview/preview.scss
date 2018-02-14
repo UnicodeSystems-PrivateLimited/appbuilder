@@ -1,0 +1,43 @@
+
+page-preview{
+    ion-content {
+    background: url("../assets/icon/splash-screen-tappit.png");
+    background-size: cover;
+    background-position: center center;
+    .content-md {
+    color: #000;
+    background-color: transparent;
+ }
+}
+.preview-wrap{
+       position: absolute;
+    bottom: 13%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    align-content: center;
+    width: 100%;
+    left: 0px;
+    .text-input{
+        border-bottom: 1px solid #fff;
+        padding: 10px 0;
+        color: #fff;
+        
+    }
+}
+.preview-wrap button {
+    width: calc(100% - 8px - 8px) !important;
+    background: #ff6800 !important;
+    margin: 13px 8px 13px 8px;
+}
+input {
+    width: calc(100% - 8px - 8px) !important;
+    height: 40px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid #fff;
+    color: #fff;
+}
+ 
+
+}

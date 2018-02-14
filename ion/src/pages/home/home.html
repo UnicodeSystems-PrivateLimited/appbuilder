@@ -1,0 +1,61 @@
+<!--
+  Generated template for the HomePage page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<template [ngIf]="!globalService.isMemberLogin">
+	<ion-menu [content]="panelMenu" *ngIf="globalService.initData.homeScreenSettings && globalService.initData.homeScreenSettings.layout && globalService.initData.homeScreenSettings.layout.home_layout != 1">
+		<ion-toolbar showWhen="android" [style.background-color]="globalService.initData.homeScreenSettings?.buttons?.background_tint">
+			<ion-searchbar [class.list-menu-searchbar]="globalService.initData.homeScreenSettings.layout?.home_layout == 2" placeholder="Search" [(ngModel)]="tabSearch"></ion-searchbar>
+		</ion-toolbar>
+		<ion-content class="grid-menu" [style.background-color]="globalService.initData.homeScreenSettings?.buttons?.background_tint">
+			<md-spinner [state]="loader" [type]="'fixed'"></md-spinner>
+			<!-- SLIDER GRID -->
+			<ion-grid *ngIf="!globalService.initData.homeScreenSettings || !globalService.initData.homeScreenSettings.layout || globalService.initData.homeScreenSettings.layout.home_layout == 3">
+				<ion-row wrap class="modern-grid">
+					<ion-col tappable *ngFor="let tab of (globalService.tabs | tabFilterPipe:tabSearch)" width-50>
+						<div [style.background]="'url(' + globalService.buttonBgImageSrcs[globalService.initData.individualSettings[tab.id]
+									? globalService.initData.individualSettings[tab.id].buttons.background_img : globalService.initData.homeScreenSettings.buttons.background_img] + ')'"
+						 (click)="pushPage(tab.tab_func_code, tab.id, tab.title,tab,'tab')" [style.background-size]="'100%'" [style.background-repeat]="'round'"
+						 [style.background-color]="globalService.initData.individualSettings[tab.id]?.buttons?.background_tint || globalService.initData.homeScreenSettings?.buttons?.background_tint"
+						 [style.opacity]="globalService.initData.individualSettings[tab.id]
+									? globalService.initData.individualSettings[tab.id].buttons.background_opacity / 100 : globalService.initData.homeScreenSettings.buttons.background_opacity / 100">
+							<ion-grid>
+								<ion-row class="grid-menu-icon">
+									<img src="{{tab.icon_src}}" class="grid-menu-icon" *ngIf="(globalService.initData.individualSettings[tab.id]
+									? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 1)">
+									<i [style.font-size]="'x-large'" [style.color]="(globalService.initData.individualSettings[tab.id]	? globalService.initData.individualSettings[tab.id].icon_color.icon_color : (globalService.initData.homeScreenSettings.icon_color.icon_color? globalService.initData.homeScreenSettings.icon_color.icon_color : (tab.icon_type == 1 ? '#000' : '#fff')))"
+									 *ngIf="(globalService.initData.individualSettings[tab.id] ? globalService.initData.individualSettings[tab.id].icon_color.show_icon == '1' : globalService.initData.homeScreenSettings.icon_color.show_icon == '1') && (tab.type == 2)"
+									 class="Glyphter icon-{{tab.icon_name}}" aria-hidden="true" [style.padding-top]="'12px'"></i>
+								</ion-row>
+								<ion-row class="grid-menu-title">
+									<span *ngIf="globalService.initData.individualSettings[tab.id]
+									? globalService.initData.individualSettings[tab.id].buttons.show_text == '1' : globalService.initData.homeScreenSettings.buttons.show_text == '1'"
+									 [style.color]="globalService.initData.individualSettings[tab.id]
+									? globalService.initData.individualSettings[tab.id].buttons.text_color : globalService.initData.homeScreenSettings.buttons.text_color">{{(globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]:tab.title:tab.title) | trimmer:14:true}}</span>
+								</ion-row>
+							</ion-grid>
+						</div>
+					</ion-col>
+				</ion-row>
+			</ion-grid>
+
+			<!-- SLIDER LIST -->
+			<ion-list *ngIf="globalService.initData.homeScreenSettings && globalService.initData.homeScreenSettings.layout.home_layout == 2">
+				<button ion-item *ngFor="let tab of (globalService.tabs | tabFilterPipe:tabSearch)" (click)="pushPage(tab.tab_func_code, tab.id, tab.title,tab,'tab')"
+				[style.background-color]="globalService.initData.homeScreenSettings?.buttons?.background_tint">
+				<div class="div-img">
+					<img *ngIf="(tab.type == 1)" src="{{tab.icon_src}}" item-left class="list-menu-img">
+	<i [style.color]="(globalService.initData.individualSettings[tab.id]	? globalService.initData.individualSettings[tab.id].icon_color.icon_color : (globalService.initData.homeScreenSettings.icon_color.icon_color? globalService.initData.homeScreenSettings.icon_color.icon_color : (tab.icon_type == 1 ? '#000' : '#fff')))" *ngIf="(tab.type == 2)" 
+	class="Glyphter icon-{{tab.icon_name}} traditional-list-menu-icon" aria-hidden="true"></i>
+				</div>
+                <span [style.color]="globalService.initData.individualSettings[tab.id] ? globalService.initData.individualSettings[tab.id].buttons.text_color : globalService.initData.homeScreenSettings.buttons.text_color">{{(globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tab.id]:tab.title:tab.title) | trimmer:20:true}}</span>
+            </button>
+			</ion-list>
+		</ion-content>
+		<div *ngIf="globalService.initData.homeScreenSettings.layout?.home_layout != 2" [style.background]="'url(' + (globalService.initData.appData ? globalService.initData.appData.background_img : null) + ')'"
+		 class="blur-img"></div>
+	</ion-menu>
+</template>
+<ion-nav id="nav" #panelMenu [root]="rootPage"></ion-nav>

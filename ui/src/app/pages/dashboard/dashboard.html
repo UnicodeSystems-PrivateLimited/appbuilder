@@ -1,0 +1,128 @@
+<div *ngIf="showLoader" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div *ngIf="!showLoader" class="flex-100 layout-row layout-wrap under-color">
+    <div class="flex-70">
+        <div class="inner-first-container">
+            <div class="inner-heading">Recent Activity</div>
+            <div class="inner-container-content">
+                <div class="container-content-box">
+                    <ul class="list-content">
+                        <!--<li>
+                            <ul class="list-small-item">
+                                <li><strong>Today</strong></li>
+                                <li class="absolute-li circle-li"><span><i class="fa fa-circle-o " aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>-->
+
+                        <li *ngFor="let activity of acivities">
+                            <ul class="list-small-item">
+                                <li><strong>{{activity.created_at | dateTimeFormatPipe:dateformat}}</strong></li>
+                                <li>{{activity.activity}}
+                                    <span *ngIf="activity.activity_type == activityType.LOGIN">{{activity.created_at | dateTimeFormatPipe:dateformat}} at
+                                    {{activity.created_at | dateTimeFormatPipe:timeformat}}</span>
+                                </li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> {{activity.created_at | timeDifferenceFormatPipe}}</li>
+                                <li class="absolute-li">
+                                    <span *ngIf="activity.activity_type == activityType.LOGIN"><i class="fa fa-sign-in" aria-hidden="true"></i></span>
+                                    <span *ngIf="activity.activity_type == activityType.NOTIFICATION"><i class="fa fa-bell" aria-hidden="true"></i></span>
+                                    <span *ngIf="activity.activity_type == activityType.APP_PUBLISH"><i class="fa fa-paper-plane" aria-hidden="true"></i></span>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!--<li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 23th, 2016</strong></li>
+                                <li><span>Global Outeach Charter</span>logged in on Friday, June 24, 2016 at 01:46 AM </li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> 16 Minute and 28 seconds ago</li>
+                                <li class="absolute-li"><span><i class="fa fa-sign-in" aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 23th, 2016</strong></li>
+                                <li><span>Deerpark Middle School</span> Successfully published for iphone and ipad and android</li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> 1 Hours and 05 minute ago</li>
+                                <li class="absolute-li"><span><i class="fa fa-paper-plane" aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>-->
+
+                        <!--<li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 23th, 2016</strong></li>
+                                <li class="absolute-li circle-li"><span><i class="fa fa-circle-o " aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>-->
+
+                        <!--<li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 22th, 2016</strong></li>
+                                <li><span>Global Outeach Charter</span> Logged in on Friday, June 24, 2016 at 01:46 Am </li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> 1 Hour 20 minutes ago</li>
+                                <li class="absolute-li"><span><i class="fa fa-sign-in" aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 22th, 2016</strong></li>
+                                <li><span>Global high School</span> Successfully published for iphone and ipad and android. </li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> Less than a minute ago</li>
+                                <li class="absolute-li"><span><i class="fa fa-paper-plane" aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <ul class="list-small-item">
+                                <li><strong>Thursday, June 22th, 2016</strong></li>
+                                <li><span>Deerpark Middle School</span> Logged in on Friday June 24, 2016 at 10:16 am</li>
+                                <li><i class="fa fa-clock-o" aria-hidden="true"></i> 1 Hours and 05 minute ago</li>
+                                <li class="absolute-li"><span><i class="fa fa-sign-in" aria-hidden="true"></i></span></li>
+                            </ul>
+                        </li>-->
+                    </ul>
+                    <div class="page-block flex-45 layout-row layout-align-end-center flex-sm-50">
+                        <div class="cate-block flex-20 layout-row layout-align-center-center">
+                            <span>Total: {{totalItems}}</span>
+                            <p-dropdown [options]="count" [(ngModel)]="selectedCount" (onChange)="setItemsPerPage(selectedCount)" class="cat-drop count-drop layout-align-end layout-row"></p-dropdown>
+                        </div>
+                        <pagination [boundaryLinks]="true" [totalItems]="totalItems" [itemsPerPage]="itemsPerPage" [(ngModel)]="currentPage" (pageChanged)="pageChanged($event)" [maxSize]="maxSize" class="pagination-sm layout-row layout-align-center-center" previousText="&lsaquo;"
+                            nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;">
+                        </pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="flex-30">
+        <div class="inner-first-container second-container-box">
+            <div class="inner-heading">Login Information</div>
+            <div class="second-container-inner">
+                <div class="second-main">
+                    <div class="second-tab-2"><strong>Total Login</strong></div>
+                    <div class="second-tab-3"><strong>11</strong></div>
+                </div>
+
+                <div class="second-main-2">
+                    <div class="second-tab-2"><strong>Last Login</strong></div>
+                    <div class="second-tab-part"><strong>June 28, 2016</strong></div>
+                </div>
+
+                <!--                <div class="second-main-2">
+                    <div class="second-tab-2"><strong>Total Visitors</strong></div>
+                    <div class="second-tab-parts"><strong class="tab-part">120</strong></div>
+                </div>-->
+
+                <!--                <div class="second-main-3">
+                    <div class="second-tab-2"><strong>New Visitors</strong></div>
+                    <div class="second-tab-part-new"><strong class="tab-part-2">3</strong></div>
+                </div>-->
+            </div>
+        </div>
+    </div>
+</div>

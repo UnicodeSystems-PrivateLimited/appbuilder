@@ -1,0 +1,41 @@
+<ion-header>
+
+	<ion-navbar [style.background]="'url(' + globalService.tabHeaderBgImageSrcs[globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_img : globalService.initData.globalStyleSettings.header.background_img] + ')'"
+	 [style.background-color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_color : globalService.initData.globalStyleSettings.header.background_color"
+	 [style.opacity]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.background_opacity : globalService.initData.globalStyleSettings.header.background_opacity">
+		<ion-title *ngIf="tab_nav_type=='tab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+		 [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.tab_translation?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]?globalService.appTabTitleLanguages?.tab_translation[globalService.currentLanguage][tabId]:title:title}}</ion-title>
+		<ion-title *ngIf="tab_nav_type=='subtab'" [style.color]="globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].header.text_color : globalService.initData.globalStyleSettings.header.text_color"
+		 [style.text-shadow]="globalService.initData.individualSettings[tabId] ? '0px 0px 5px ' + globalService.initData.individualSettings[tabId].header.shadow : '0px 0px 5px ' + globalService.initData.globalStyleSettings.header.shadow">{{globalService.appTabTitleLanguages?.sub_tab_translation?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]?globalService.appTabTitleLanguages?.sub_tab_translation[globalService.currentLanguage][subTabId]:title:title}}</ion-title>
+	</ion-navbar>
+
+</ion-header>
+
+<ion-content [style.background]="'url(' + bgImage + ')'">
+	<ion-grid class="scanner">
+		<ion-row>
+			<img src="assets/icon/qrcode.jpg" />
+		</ion-row>
+		<ion-row>
+			<h2>{{'QRSCANNER.TEXT1' | translate}}</h2>
+		</ion-row>
+		<ion-row>
+			<p>{{'QRSCANNER.TEXT2' | translate}}</p>
+		</ion-row>
+		<ion-row>
+			<button ion-button (click)="onScanCodeClick()" [style.background-color]="globalService.initData.globalStyleSettings.features.button_image"
+			 [style.color]="globalService.initData.globalStyleSettings.features.button_text">{{'QRSCANNER.TEXT3' | translate}}</button>
+		</ion-row>
+	</ion-grid>
+	<ion-list>
+		<ion-list-header>
+			{{'QRSCANNER.HISTORY' | translate}}
+		</ion-list-header>
+		<button ion-item *ngFor="let list of qr_code_list;let i=index;" (press)="deleteQrHistoryElement($event,list.id)" (click)="itemSelected(list.body)"
+		 [style.background-color]="((i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_bar : globalService.initData.globalStyleSettings.lists.even_row_bar) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_bar : globalService.initData.globalStyleSettings.lists.row_bar)) | hex2rgba">
+   <p [style.color]="(i % 2 == 0) ? (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.even_row_text : globalService.initData.globalStyleSettings.lists.even_row_text) : (globalService.initData.individualSettings[tabId] ? globalService.initData.individualSettings[tabId].color.row_text : globalService.initData.globalStyleSettings.lists.row_text)"> {{ list.body }}</p>
+  </button>
+        <ion-item *ngIf="!qr_code_list.length">{{'NOTHINGTEXT' | translate}}</ion-item>
+	</ion-list>
+
+</ion-content>

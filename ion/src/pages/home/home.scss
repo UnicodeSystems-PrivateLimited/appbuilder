@@ -1,0 +1,161 @@
+page-home {
+  .grid-menu {
+
+    ion-col > div {
+      background-color: #F9FAFB;
+    //   border: 1px solid #ddd;
+      border-radius: 2px;
+      text-align: center;
+      height: 126px;
+      padding: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      ion-grid {
+        ion-row {
+          justify-content: center;
+
+          &.grid-menu-icon {
+            margin-bottom: 5px;
+            i{
+              font-size: 27px !important;
+            }
+            img {
+              max-height: 64px;
+              max-width: 64px;
+            }
+          }
+
+          &.grid-menu-title {
+            margin-top: 2px;
+            span{
+              font-size: 18px;
+              font-weight: normal;
+            }
+          }
+        }
+      }
+    }
+
+.traditional-list-menu-icon {
+    font-size: 33px;
+    margin: 5px 0;
+}
+
+  }
+
+  .list-menu-searchbar {
+      opacity: 0.5;
+  }
+
+  ion-content {
+    background: url("../img/simu-img.png") no-repeat 0 39px;
+    height: 100%;
+    width: 100%;
+    background-size: 100%;
+  }
+    .list-menu-img {
+        height: 50px;
+        width: 50px;
+    }
+    .menu-inner {
+    /*background: rgba(255, 255, 255, 0.47) !important;*/
+}
+.btn-update.item-md {
+    background-color: rgba(255, 255, 255, 0.28);
+}
+.content-md {
+    color: #000;
+    background-color: rgba(255, 255, 255, 0.69);
+}
+.blur-img{
+    position: absolute;
+    height: 100%;
+    /* z-index: 9999; */
+    top: 0;
+    width: 97%;
+    filter: blur(20px);
+}
+.toolbar-background-md {
+    border-color: #b2b2b2;
+    background: rgba(248, 248, 248, 0.38);
+}
+.list-md .item-inner .label-md, .list-ios .item-inner .label-ios{
+    margin: 13px 8px 13px 0;
+    display: flex;
+    align-items: center;
+    align-content: flex-start;
+}
+.div-img {
+    width: 23%;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+}
+.div-img .list-menu-img {
+    height: 43px;
+    width: 43px;
+    margin: 0 !important;
+}
+.div-img i {
+     vertical-align: middle;
+    display: flex;
+    align-items: center;
+}
+}
+//custom global style
+ion-navbar .toolbar-background{
+  background: transparent;
+}
+.toolbar-title-md {
+    padding: 0 12px;
+    font-size: 2rem;
+    font-weight: 500;
+    color: inherit;
+}
+
+.platform-mobileweb ::-webkit-scrollbar,.platform-core ::-webkit-scrollbar {
+background: #2d2c2c;
+width: 0px;
+}
+.platform-mobileweb ::-webkit-scrollbar-thumb,.platform-core ::-webkit-scrollbar-thumb {
+background-color: #3c3c3c;
+}
+.platform-mobileweb ::-webkit-scrollbar-track,.platform-core ::-webkit-scrollbar-track {
+background: #909090;
+}
+
+// Global rule to fix black screen over map issue.
+ion-app .nav-decor {
+    background-color: rgba(0,0,0,0) !important;
+}
+.modern-grid > ion-col {
+    padding: 2px;
+}
+page-home .grid-menu .modern-grid > ion-col div ion-grid ion-row.grid-menu-icon i {
+    font-size: 47px !important;
+}
+page-home .grid-menu .modern-grid > ion-col div ion-grid ion-row.grid-menu-title span {
+    font-size: 14px;
+    font-weight: normal;
+}
+.menu-inner {
+  width: 261px !important;
+}
+
+.back-button-ios {
+    color: #fff;
+}
+
+ion-label h2 {
+    font-size: 2.0rem !important;
+}
+
+ion-label h3 {
+    font-size: 1.8rem !important;
+}
+
+ion-label p {
+    font-size: 1.6rem !important;
+}

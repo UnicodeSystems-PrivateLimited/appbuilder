@@ -1,0 +1,435 @@
+<div *ngIf="ready" class="fm-spinner">
+    <div class="fm-double-bounce1"></div>
+    <div class="fm-double-bounce2"></div>
+</div>
+<div>
+    <div class="flex-100 spaceborder">
+    </div>
+    <div class="flex-100 layout-row secondtab-block">
+        <div class="flex-30">
+            <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                <li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>
+                <!--<li class="title-sbhead">You have {{loyaltyList.length}} loyalty(s)</li>-->
+            </ul>
+        </div>
+    </div>
+
+    <div class="flex-100 layout-row main-social-tab-container pdf arnd">
+        <div class="flex-50 layout-column boder-left-div">
+            <div class="layout-row layout-align-space-between-center pdf-box">
+                <ul class="secondcontent-block contact-us-wrap " style="padding-left: 0px;">
+                    <!--<li class="title-head">{{tabData.title + ' - ' + tabData.tab_func_name}}</li>-->
+                    <li class="title-sbhead">You have {{loyaltyList.length}} loyalty(s)</li>
+                </ul>
+                <div class=" layout-row layout-align-end ">
+
+                    <button class="green-btn" (click)="showAdvanceDialog()">
+                        <i class="fa fa-plus ion-right" aria-hidden="true"></i> ADD ADVANCED LOYALTY
+                    </button>&nbsp; &nbsp;
+                    <button class="green-btn" (click)="showaddLoyaltyDialog()">
+                        <i class="fa fa-plus ion-right" aria-hidden="true"></i> ADD NEW LOYALTY
+                    </button>
+                </div>
+            </div>
+            <div [dragula]='"website-bag"' [dragulaModel]="loyaltyList">
+                <div *ngFor="let item of loyaltyList" class="dotted-bootom-div layout-row somespace-top layout-align-start-center">
+                    <div class="flex-50 layout-row layout-align-start-center pad-l-15">
+                        <span class="layout-align-center-center layout-row"><i class="fa fa-arrows" aria-hidden="true"></i></span>
+                        <div class="ct3-category-thumb">
+                            <img *ngIf="item.thumbnail" src="{{item.thumbnail}}" width="50px">
+                            <img *ngIf="!item.thumbnail || item.thumbnail == null" src="{{'../../../../assets/img/no-image.png'}}" width="50px">
+                        </div>
+                        <div class="layout-column menu-tb-span">
+                            <span *ngIf="item.reward_text">{{item.reward_text}}</span>
+                            <span *ngIf="item.loyalty_title">{{item.loyalty_title}}</span>
+                            <span *ngIf="item.secret_code">{{item.secret_code}}</span>
+                            <span *ngIf="item.square_count" class="menu-item-disabled">{{item.square_count}} COUPON(S)</span>
+                            <span *ngIf="item.no_of_perks" class="menu-item-disabled">{{item.no_of_perks}} PERK(S)</span>
+                        </div>
+                    </div>
+
+                    <div class="flex-50 layout-row layout-align-end  remove-r-padding  pad-r-15">
+                        <span><button class="edit-btn" *ngIf="item.is_advance == 1" (click)="showEditAdvanceDialog(item.item_id)">edit</button>
+                        <button class="edit-btn" *ngIf="item.is_advance == 0" (click)="showEditLoyaltyDialog(item.item_id)" >edit</button></span>
+                         <span class="red">
+                             <!-- <button *ngIf="item.is_advance == 1" class="red" (click)="onDeleteAdvClick(item.item_id)" >delete</button>  -->
+                        <button class="red" (click)="onDeleteClick(item.item_id,item.is_advance)" >delete</button></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="flex-50 layout-column">
+            <mobile-view [tabId]='tabId'></mobile-view>
+        </div>
+    </div>
+</div>
+
+<!-- Add Advance Loyalty Dialog START-->
+<p-dialog  [draggable]="false" [header]="header" [(visible)]="advanceLoyaltyDialog" modal="modal" class="app-dialog add-app locality-tab" width="1000"
+    height="650" (onAfterHide)="onDialogHide()" >
+    <div *ngIf="loader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <tabset class="container-tab-detail">
+        <tab heading="GENERAL INFORMATION">
+            <form class="white-bg web-bg">
+                <div class="layout-column">
+                    <div class="web-bg">
+                        <div class="layout-row m-b-15">
+                            <div class="layout-column flex-100 m-r-10 pad-r-15">
+                                <div class="layout-column m-b-10">
+                                    <label>Title
+                                <i class="fa fa-info-circle l ion-left" tooltip="Loyalty Title Here" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                    <input class="input-class" type="text" [(ngModel)]="advancedloyaltyData.loyalty_title">
+                                </div>
+                                <div class="layout-row m-b-10">
+                                    <div class="layout-column flex-100 m-r-10 pad-r-15">
+                                        <label>Secret Code
+                                <i class="fa fa-info-circle l ion-left" tooltip="Enter the secret code." tooltipPlacement="right" aria-hidden="true"></i></label>
+                                        <input class="input-class" type="text" [(ngModel)]="advancedloyaltyData.secret_code">
+                                    </div>
+                                    <div class="layout-column flex-100">
+                                        <label>Stamp Award Amount
+                                <i class="fa fa-info-circle l ion-left" tooltip="Enter the amount of award per stamp." tooltipPlacement="right" aria-hidden="true"></i></label>
+                                        <input class="input-class" type="text" [(ngModel)]="advancedloyaltyData.stamp_award_amount">
+
+                                    </div>
+                                </div>
+                                <div class="layout-row m-b-15">
+                                    <div class="layout-column flex-100 m-r-10 pad-r-15">
+                                        <label>Name Your Perks Unit Type
+                                <i class="fa fa-info-circle l ion-left" tooltip="Points." tooltipPlacement="right" aria-hidden="true"></i></label>
+                                        <input class="input-class" type="text" placeholder="Points" [(ngModel)]="advancedloyaltyData.perk_unit_type">
+                                    </div>
+                                    <div class="layout-column flex-100">
+                                        <label>Unit Shorthand 
+                                <i class="fa fa-info-circle l ion-left" tooltip="Pts" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                        <input class="input-class" type="text" placeholder="Pts" [(ngModel)]="advancedloyaltyData.perk_unit">
+
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="layout-column flex-100">
+                                <div class="layout-column m-b-10 event-cal-wrap">
+                                    <label>Instructions on how to use the advanced loyalty feature. Customize the text to your liking to better communicate the abilities and offerings of your loyalty tab.
+                                <i class="fa fa-info-circle l" tooltip="Enter a title for this location" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                    <textarea [(ngModel)]="advancedloyaltyData.instruction" class="m-t-10"></textarea>
+                                </div>
+                                <div class="layout-column">
+                                    <label class="m-l-10">Thumbnail   
+                                <i class="fa fa-info-circle l" tooltip="Upload a Thumbnail Image 140x140px." tooltipPlacement="right" aria-hidden="true"></i></label>
+                                    <thumbnail-file-reader class=" layout-row layout-align-start-center" [btnText]="'Browse'" [imageTypeHeader]="true" (delete)="deleteAdvLoyaltyImage('thumbnail',advancedloyaltyData.item_id)"
+                                        [defaultPicture]="advancedloyaltyData.thumbnail" (complete)="onAdvThumbnailChange($event)">
+                                    </thumbnail-file-reader>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-column">
+                    <div class="web-bg">
+                        <div class="layout-row m-b-15">
+                            <div class="layout-row flex-65 layout-align-start-center">
+                                <label>Total Number of Perks To Offer
+                                <i class="fa fa-info-circle l" tooltip="Total Number of Perks To Offer" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                <p-dropdown class="border-all flex-20 m-l-10" [options]="totalPerks" [style]="{'width':'50px'}" [(ngModel)]="advancedloyaltyData.no_of_perks"
+                                    (onChange)="onPerksClick($event)"></p-dropdown>
+                            </div>
+                            <div class="layout-row flex-90 layout-align-center-center">
+                                <input type="checkbox" [(ngModel)]="advancedloyaltyData.earn_credit">
+                                <label class="m-l-10">Earn Credits for installing / Accepting Push Notes
+                                <i class="fa fa-info-circle l" tooltip="Earn Credits for installing / Accepting Push Notes" tooltipPlacement="right" aria-hidden="true"></i></label>
+
+                            </div>
+
+                            <div class="layout-row flex-25 layout-align-end-center">
+                                <label>Push Accept Award 
+                                <i class="fa fa-info-circle l" tooltip="Push Accept Award" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                <input class="input-class flex-20 m-l-10" type="text" [(ngModel)]="advancedloyaltyData.push_accept_award">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div *ngIf="perkDisplay">
+                    <div *ngFor="let item of perks; let i = index;">
+                        <div class="layout-column">
+                            <div class="web-bg">
+                                <div class="layout-row ">
+                                    <div class="layout-column flex-100">
+                                        <label>Perk &nbsp; {{i + 1}}</label>
+                                    </div>
+                                    <button class="layout-row btn " (click)="toggleperkOpeningCard(item.id)">
+                                        <i class="fa fa-angle-down" *ngIf="!toggle_perk_card[item.id]" aria-hidden="true"></i>
+                                        <i class="fa fa-angle-up" *ngIf="toggle_perk_card[item.id]" aria-hidden="true"></i>
+                                        </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div *ngIf="toggle_perk_card[item.id]">
+                            <div class="layout-column">
+                                <div class="web-bg">
+                                    <div class="layout-row">
+                                        <div class="layout-column flex-100 m-r-10 pad-r-15">
+                                            <label>Title  <i class="fa fa-info-circle l" tooltip="Enter a title for this location" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                            <input class="input-class" name='title' [(ngModel)]="advancedloyaltyData.perkData[i].title" type="text">
+                                        </div>
+                                        <div class="layout-column flex-100">
+                                            <label>Description  <i class="fa fa-info-circle l" tooltip="Enter a title for this location" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                            <textarea [(ngModel)]="advancedloyaltyData.perkData[i].description"></textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-column">
+                                <div class="web-bg">
+                                    <div class="layout-row">
+                                        <div class="layout-row flex-100">
+                                            <label class="m-r-10">Total Number of Points Needed   
+                                   <i class="fa fa-info-circle l" tooltip="Enter a title for this location" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                            <input class="input-class" type="text" [(ngModel)]="advancedloyaltyData.perkData[i].points">
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-column">
+                                <div class="web-bg">
+                                    <div class="layout-row">
+                                        <div class="layout-row flex-100 layout-align-start-center">
+                                            <input class="input-class" type="checkbox" [(ngModel)]="advancedloyaltyData.perkData[i].reuse_perk">
+                                            <label>Can This Perk Be Reused?  
+                                  <i class="fa fa-info-circle l" tooltip="Enter a title for this location" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-column">
+                                <div class="web-bg">
+                                    <div class="layout-row">
+                                        <div class="layout-column flex-100">
+                                            <label>Thumbnail
+                              <i class="fa fa-info-circle l" tooltip="Enter a title for this location" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                            <thumbnail-file-reader class="layout-row layout-align-start-center" [btnText]="'Browse'" [imageTypeHeader]="true" (delete)="deletPerkImage('perk_thumbnail',advancedloyaltyData.perkData[i].id,i)"
+                                                [defaultPicture]="advancedloyaltyData.perkData[i].perk_thumbnail" (complete)="onPerkThumbnailChange($event,i)">upload
+                                            </thumbnail-file-reader>
+                                        </div>
+                                        <div class="layout-column flex-100">
+                                            <label>Gauge Icon
+                               <i class="fa fa-info-circle l" tooltip="Enter a title for this location" tooltipPlacement="right" aria-hidden="true"></i></label>
+                                            <thumbnail-file-reader class="layout-row layout-align-start-center" [btnText]="'Browse'" [imageTypeHeader]="true" (delete)="deletPerkImage('gauge_icon',advancedloyaltyData.perkData[i].id,i)"
+                                                [defaultPicture]="advancedloyaltyData.perkData[i].gauge_icon" (complete)="onGaugeIconChange($event,i)">
+                                            </thumbnail-file-reader>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layout-align-start save-btn">
+                    <button class="green-btn btn btn-lg" type="submit" [disabled]="addSaveButtonHide"  (click)="onSaveAdvancedLoyalty()">Save Changes</button>
+                </div>
+            </form>
+        </tab>
+        <tab heading="ACTIVITIES">
+            <div class="tabinner-space comment-sec">
+                <tabset>
+                    <tab heading="Show all activities">
+                        <div class="coment-conct-wrap">
+                            <table class="flex-100 layout-column opening-time-wrap ">
+                                <thead class="flex-100 layout-row">
+                                    <th class="flex-25 layout-row layout-align-center-center">Date</th>
+                                    <th class="flex-25 layout-row layout-align-center-center">User</th>
+                                    <th class="flex-25 layout-row layout-align-center-center">Action</th>
+                                    <th class="flex-25 layout-row layout-align-center-center"></th>
+                                </thead>
+                                <tbody class="height-tb">
+                                    <tr *ngFor="let item of activity ; let i=index" class="flex-100 layout-row">
+                                        <td class="flex-25 layout-row layout-align-start-center">{{item.created_at}}</td>
+                                        <td class="flex-25 layout-row layout-align-start-center">{{item.name}}</td>
+                                        <td class="flex-25 layout-row layout-align-start-center">{{item.action}}</td>
+                                        <td class="flex-25 layout-row layout-align-center-center">
+                                            <button class="red" type="button" (click)="deleteAdvancedActivity(item.id)">Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </tab>
+                    <tab heading="Group by users">
+                        <div class="coment-conct-wrap">
+                            <table class="flex-100 layout-column opening-time-wrap ">
+                                <thead class="flex-100 layout-row">
+                                    <th class="flex-25 layout-row layout-align-center-center">Date</th>
+                                    <th class="flex-25 layout-row layout-align-center-center">User</th>
+                                    <th class="flex-25 layout-row layout-align-center-center">Action</th>
+                                    <th class="flex-25 layout-row layout-align-center-center"></th>
+                                </thead>
+                                <tbody class="height-tb">
+                                    <tr *ngFor="let item of activityByUser; let i =index;" class="flex-100 layout-row">
+                                        <td class="flex-25 layout-row layout-align-start-center">{{item.created_at}}</td>
+                                        <td class="flex-25 layout-row layout-align-start-center">{{item.name}}</td>
+                                        <td class="flex-25 layout-row layout-align-start-center">{{item.action}}</td>
+                                        <td class="flex-25 layout-row layout-align-center-center">
+                                            <button class="red" type="button" (click)="deleteAdvancedActivity(item.id)">Delete</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </tab>
+    </tabset>
+
+</p-dialog>
+<!-- Add  Advance Loyalty Dialog END-->
+
+<!--Add/Edit Loyalty-->
+<p-dialog [draggable]="false"  [header]="header" [(visible)]="loyaltyDialog" [class.tab-design-class]="tabwrap" modal="modal" class="app-dialog add-app locality-tab locality-tab-2  info-2 evnt-wrap"
+    (onAfterHide)="onLoyaltyDialogHide()" >
+    <div *ngIf="loader" class="fm-spinner">
+        <div class="fm-double-bounce1"></div>
+        <div class="fm-double-bounce2"></div>
+    </div>
+    <tabset class="container-tab-detail gps-coupeon-wrapper">
+        <tab heading="GENERAL INFORMATION">
+            <div class="tabinner-space contact-us">
+                <form class="contact-us-formr web-bg">
+                    <div class="">
+                        <div class="">
+                            <div class="flex-100 layout-row layout-align-space-between web-bg m-b-10">
+                                <div class="layout-column flex-100 add-app ">
+                                    <div class="phone layout-row m-b-10 layout-align-start-center" *ngIf="imageShow">
+                                        <label class="checkbox-inline custom-checkbox nowrap">
+                                    <input id="inlineCheckbox01" type="checkbox" [(ngModel)]="loyaltyData.is_header_required">
+                                    <span>&nbsp;</span>
+                                </label>
+                                  
+                                        <label class="layout-row layout-align-start-center m-b-0">Phone Header Image
+                                                <i class="fa fa-info-circle layout-row setinput-icon" tooltip='Upload a Phone Header Image 640x264px.' tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                        <thumbnail-file-reader class=" layout-row layout-align-start-center" [btnText]="'Browse'" [imageTypeHeader]="true" (delete)="deleteLoyaltyImage('phone_header',loyaltyData.item_id)"
+                                            [defaultPicture]="loyaltyData.phone_header_image" (complete)="onPhoneHeaderImageChange($event)">
+                                        </thumbnail-file-reader>
+                                    </div>
+                                    <div *ngIf="imageShow" class="phone layout-row m-l-25">
+                                        <label class="layout-row layout-align-start-center">Tablet Header Image
+                                                <i class="fa fa-info-circle layout-row setinput-icon" tooltip='Upload a Tablet Header Image 1536x634px.' tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                        <thumbnail-file-reader [btnText]="'Browse'" (delete)="deleteLoyaltyImage('tablet_header',loyaltyData.item_id)" [imageTypeHeader]="true"
+                                            [defaultPicture]="loyaltyData.tablet_header_image" (complete)="onTabletHeaderImageChange($event)">
+                                        </thumbnail-file-reader>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layout-column">
+                                <div class="web-bg">
+                                    <div class="layout-row m-b-15">
+                                        <div class="layout-column flex-100">
+                                            <label>Reward Text  <i class="fa fa-info-circle layout-row setinput-icon" tooltip='Enter text here to describe the reward' tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                            <input type="text" class="input-class" [(ngModel)]="loyaltyData.reward_text">
+                                        </div>
+                                    </div>
+                                    <div class="layout-row m-b-15">
+                                        <div class="layout-column flex-100 m-r-10 pad-r-15 layout-align-start">
+                                            <label>Square Count<i class="fa fa-info-circle layout-row setinput-icon" tooltip='Specify the amount of stamps the user will need to unlock reward' tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                            <p-dropdown class="border-all" [options]="squareCounts" [(ngModel)]="loyaltyData.square_count" [style]="{'width':'50px'}"></p-dropdown>
+                                        </div>
+                                        <div class="layout-column flex-100">
+                                            <label>Secret Code<i class="fa fa-info-circle layout-row setinput-icon" tooltip='Enter a secret code here.' tooltipPlacement="right" aria-hidden="true"></i>
+                                            </label>
+                                            <input type="text" class="input-class" [(ngModel)]="loyaltyData.secret_code">
+                                        </div>
+                                    </div>
+                                    <div class="layout-row m-b-15">
+                                        <div class="layout-row flex-100">
+                                            <label class="checkbox-inline custom-checkbox nowrap">                        
+                            <input type="checkbox" class="input-class m-r-10" [(ngModel)]="loyaltyData.issue_freebie_loyalty" (change)="onRewardClick($event)">
+                            <span>Reward users for downloading your app with one free loyalty. This option allows you to<br/> issue a "freebie" loyalty for users that download your application.
+                                                <i class="fa fa-info-circle layout-row setinput-icon" tooltip='In order to use this feature, please update your source code to our Hazel release version. We do not allow users to cheat by downloading the app a second time.' tooltipPlacement="right" aria-hidden="true"></i></span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="layout-row m-b-15">
+                                        <div class="layout-column flex-100">
+                                            <input type="text" [(ngModel)]="loyaltyData.freebie_text" class="input-class" [disabled]="!showPreview">
+                                        </div>
+                                    </div>
+                                    <div class="layout-column loyl layout-align-center-center flex-100" *ngIf="showPreview">
+                                        <div class="flex-50">
+                                            <div class="web-bg flex-55 layout-column push-prev"><label class="m-r-10 text-center">Loyalty Awarded</label>
+                                                <span class="layout-row layout-align-center relative">{{loyaltyData.freebie_text}}</span></div>
+                                            <div class="layout-row push-prev-2 flex-55">
+                                                <div class="web-bg flex-50 layout-align-center-center layout-row"><label>Close</label></div>&nbsp;
+                                                <div class="web-bg flex-50 layout-align-center-center layout-row"><label>Go</label></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="layout-row m-b-15">
+                                        <div class="layout-column flex-100">
+                                            <label>View Type<i class="fa fa-info-circle layout-row setinput-icon" tooltip='Please select the one of view types Gauge or Stamp.' tooltipPlacement="right" aria-hidden="true"></i>
+                                          </label>
+                                            <p-dropdown class="border-all" [options]="viewType" [(ngModel)]="loyaltyData.view_type" [style]="{'width':'50px'}" (onChange)="onViewChange($event)"></p-dropdown>
+                                        </div>
+                                        <div class="layout-column flex-100" *ngIf="gaugeClick">
+                                            <p-dropdown class="border-all" [options]="gauge" [(ngModel)]="loyaltyData.gauge_display" [style]="{'width':'180px'}"></p-dropdown>
+                                        </div>
+                                    </div>
+                                    <div class="layout-row m-b-15">
+                                        <div class="layout-column flex-100">
+                                            <label>Thumbnail <i class="fa fa-info-circle layout-row setinput-icon" tooltip='Upload a Thumbnail Image 140x140px.' tooltipPlacement="right" aria-hidden="true"></i>
+                                        </label>
+                                            <thumbnail-file-reader [btnText]="'Browse'" (delete)="deleteLoyaltyImage('thumbnail',loyaltyData.item_id)" [imageTypeHeader]="true"
+                                                [defaultPicture]="loyaltyData.thumbnail" (complete)="onThumbnailImageChange($event)">
+                                            </thumbnail-file-reader>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                   
+                    </div>
+                     <div class="layout-align-start save-btn">
+                        <button class="green-btn btn btn-lg" type="submit" [disabled]="addSaveButtonHide" (click)="onSaveLoyalty()">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </tab>
+        <tab heading="ACTIVITIES">
+            <div class="tabinner-space comment-sec">
+                <span>Showing {{activities.length}} Activity(s):</span>
+                <div class="coment-conct-wrap">
+                    <table class="flex-100 layout-column opening-time-wrap ">
+                        <thead class="flex-100 layout-row">
+                            <th class="flex-25 layout-row layout-align-center-center">Date</th>
+                            <th class="flex-25 layout-row layout-align-center-center">User</th>
+                            <th class="flex-25 layout-row layout-align-center-center">Action</th>
+                            <th class="flex-25 layout-row layout-align-center-center"></th>
+                        </thead>
+                        <tbody class="height-tb">
+                            <tr *ngFor="let item of activities ; let i=index" class="flex-100 layout-row">
+                                <td class="flex-25 layout-row layout-align-start-center">{{item.created_at}}</td>
+                                <td class="flex-25 layout-row layout-align-start-center">{{item.name}}</td>
+                                <td class="flex-25 layout-row layout-align-start-center">{{item.action}}</td>
+                                <td class="flex-25 layout-row layout-align-center-center">
+                                    <button class="red" type="button" (click)="deleteActivity(item.id)">Delete</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </tab>
+    </tabset>
+</p-dialog>

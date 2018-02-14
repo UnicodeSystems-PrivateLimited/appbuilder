@@ -1,0 +1,1 @@
+export * from './app-info-view.component';

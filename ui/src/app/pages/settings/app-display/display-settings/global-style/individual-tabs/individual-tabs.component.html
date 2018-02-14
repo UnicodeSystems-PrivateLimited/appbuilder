@@ -1,0 +1,18 @@
+<div class="phone app-screen ">
+    <div class="layout-column border-b ">
+        <div class="layout-row">
+            <label class="f-18  m-b-20 p-t-10">Customize your appearance on a tab by tab basis</label>
+        </div>
+        <div class="height-data pad-5">
+            <div class="layout-column">
+                <label class="box layout-row layout-align-start-center trsh-no" *ngFor="let tab of service.appTabs">
+                                   <span class=" layout-row layout-align-start flex-60" >{{tab.title}}</span>
+                <span class="status-asgn layout-align-center-center flex-20 layout-row" *ngIf='tab.status==1'>Active</span>
+                <span class="status-unasgn layout-align-center-center flex-20 layout-row" *ngIf='tab.status==2'>Inactive</span>
+                <span class=" layout-row layout-align-end flex-20"><i class="fa fa-pencil-square-o" aria-hidden="true" (click)="onEditClick(tab.id)"></i></span>
+            </label>
+            </div>
+        </div>
+    </div>
+</div>
+<individual-app-tabs *ngIf="service.editDialog"></individual-app-tabs>

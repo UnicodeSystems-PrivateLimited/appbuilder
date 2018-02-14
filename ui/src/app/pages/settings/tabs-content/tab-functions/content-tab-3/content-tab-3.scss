@@ -1,0 +1,19 @@
+@import '../../../../../theme/sass/flex';
+
+// .ct3-category-thumb {
+//     margin: 0 10px 0 0;
+//     padding: 2px;
+//     border: 1px solid #ccc;
+//     border-radius: 50%;
+// }
+// .ct3-category-thumb > img {
+//     border-radius: 50%;
+//     height: 50px;
+// }
+.updatecolor-box {
+    position: relative;
+}
+button.red.checkItemTrue {
+    background: red !important;
+    color: #fff;
+}
